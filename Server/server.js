@@ -7,7 +7,7 @@ var connection = mysql.createConnection({
 	host     : 3306,
 	user     : 'root',
 	password : 'password',
-	database : 'testdb'
+	database : 'gigio'
 });
 
 /* connect to database */
@@ -25,28 +25,18 @@ var app = express();
 
 console.log("Server Started");
 
-connection.query("INSERT INTO testtable (name) VALUES ('cs407')", function (err, rows, fields) {
-	if (err) {
-		console.log("An error occurred!");
-	} 
-	else {
-		console.log("The solution is: ", rows);
-	}
-});
-
-connection.query("SELECT * FROM testtable", function(err, rows, fields) {
-	if (err) {
-		console.log("An error occured!");
-	}
-	else {
-		console.log("Returned: ", rows);
-	}
-}); 
-
 /* test */
 app.get('/', function (req, res) {
 	res.sendFile(path.join(__dirname, '/test.html'));
 })
+
+app.get('/Login', function(req, res) {
+
+});
+
+app.get('/Register', function(req, res) {
+
+});
 
 /* start express server */
 var server = app.listen(8081, function() {
