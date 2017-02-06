@@ -32,23 +32,48 @@ app.get('/', function (req, res) {
 
 
 app.get('/Login', function(req, res) {
-
 	/* callback function to handle response */
-	var callback - function(result) {
-		if (result > 0 ) {
+	var callback = function(result) {
+		if (result < 0 ) {
 			/* an error occured */
-			res.json({"resonse": "login failed", "res": "false"});
+			res.json({"resonse": "login failed", "Uid": -1});
 		}
 		else {
-			
+			res.json({"response": "login successful", "Uid": result});
 		}
 	}
 
-	Login();
+	/* check for missing args */
+	if (req.body.username == undefined || req.body.password == undefined) {
+		console.log("Login: undefined args");
+		callback(-1);
+	}
+	else {
+		Login(req.body.username, req.body.password, callback);
+	}
+
 });
 
 app.get('/Register', function(req, res) {
+	/* callback function to handle response */
+	var callback = function(result) {
+		if (result < 0) {
+			/* an error occured */
+			res.json({"resonse": "register failed", "Uid": -1});
+		}
+		else {
+			res.json({"response": "register successful", "Uid": result});
+		}
+	}
 
+	/* check for missing args */
+	if (req.body.username == undefined || req.body.password == undefined) {
+		console.log("Register: undefined args");
+		callback(-1);
+	}
+	else {
+		Register(req.body.username, req.body.password, callback);
+	}
 });
 
 /* start express server */
@@ -56,3 +81,40 @@ var server = app.listen(8081, function() {
 	var host = server.address().address;
 	var post = server.address().port;
 })
+
+function Login(username, password, callback) {
+	console.log("Login: ", username, password);
+
+	var select = "SELECT * FROM Users WHERE Username LIKE '" + username + "' AND Password LIKE '" + password + "'";
+	connection.query(select, function(err, rows) {
+		if (err) {
+			/* an error occured */
+			console.log("Login Failed");
+			return callback(-2);
+		}
+		else {
+			if (rows.length() == 1) {
+				console.log("Login Successful");
+				return callback(0);
+			}
+		}
+	});
+}
+
+function Register(username, password, callback) {
+	console.log("Register: ", username, password);
+
+	var insert = "INSERT INTO Users (Username, Password) VALUES ('" + username + "', '" + password + "')";
+
+	connection.query(insert, function(err, rows) {
+		if (err) {
+			/* an error occured */
+			console.log("Register Failed");
+			return callback(-2);
+		}
+		else {
+			console.log("Register Successful");
+			return callback(0);
+		}
+	});
+}
