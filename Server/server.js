@@ -30,8 +30,21 @@ app.get('/', function (req, res) {
 	res.sendFile(path.join(__dirname, '/test.html'));
 })
 
+
 app.get('/Login', function(req, res) {
 
+	/* callback function to handle response */
+	var callback - function(result) {
+		if (result > 0 ) {
+			/* an error occured */
+			res.json({"resonse": "login failed", "res": "false"});
+		}
+		else {
+			
+		}
+	}
+
+	Login();
 });
 
 app.get('/Register', function(req, res) {
