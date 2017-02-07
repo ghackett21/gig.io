@@ -1,6 +1,7 @@
 var express = require("express");
 var mysql   = require("mysql");
 var path    = require("path");
+var bodyParser = require('body-parser');
 
 /* create database connection */
 var connection = mysql.createConnection({
@@ -22,6 +23,7 @@ connection.connect(function(err) {
 
 /* create express server */
 var app = express();
+app.use(bodyParser.json());
 
 console.log("Server Started");
 
@@ -31,12 +33,13 @@ app.get('/', function (req, res) {
 })
 
 
-app.get('/Login', function(req, res) {
+app.post('/Login', function(req, res) {
+	console.log("Register");
 	/* callback function to handle response */
 	var callback = function(result) {
 		if (result < 0 ) {
 			/* an error occured */
-			res.json({"resonse": "login failed", "Uid": -1});
+			res.json({"resonse": "login failed", "Uid": result});
 		}
 		else {
 			res.json({"response": "login successful", "Uid": result});
@@ -54,12 +57,13 @@ app.get('/Login', function(req, res) {
 
 });
 
-app.get('/Register', function(req, res) {
+app.post('/Register', function(req, res) {
+	console.log("Register");
 	/* callback function to handle response */
 	var callback = function(result) {
 		if (result < 0) {
 			/* an error occured */
-			res.json({"resonse": "register failed", "Uid": -1});
+			res.json({"resonse": "register failed", "Uid": result});
 		}
 		else {
 			res.json({"response": "register successful", "Uid": result});
@@ -93,7 +97,7 @@ function Login(username, password, callback) {
 			return callback(-2);
 		}
 		else {
-			if (rows.length() == 1) {
+			if (rows.length == 1) {
 				console.log("Login Successful");
 				return callback(0);
 			}
@@ -104,12 +108,12 @@ function Login(username, password, callback) {
 function Register(username, password, callback) {
 	console.log("Register: ", username, password);
 
-	var insert = "INSERT INTO Users (Username, Password) VALUES ('" + username + "', '" + password + "')";
+	var insert = "INSERT INTO Users (Username, Password, NumberOfStrikes, TotalNumberOfRatings) VALUES ('" + username + "', '" + password + "', 0, 0)";
 
 	connection.query(insert, function(err, rows) {
 		if (err) {
 			/* an error occured */
-			console.log("Register Failed");
+			console.log("Register Failed", err);
 			return callback(-2);
 		}
 		else {
