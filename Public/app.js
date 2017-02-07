@@ -2,6 +2,8 @@ var app = angular.module("myApp", []);
 
 app.controller("postController", function($scope) {
 
+$scope.img = "http://howtodrawdat.com/wp-content/uploads/2014/03/1stpic-lucky-charms-leprechaun.png";
+
 $scope.postsData  = [
         {
             username: "sfellers",
@@ -23,7 +25,36 @@ $scope.postsData  = [
         }
     ];
 
+$scope.usersData  = [
+        {
+            username: "sfellers",
+           	description: "im sam.",
+            avg_rating: 3.23,
+			num_ratings: 23,
+            location: "839 S Albany Ave.",
+			profile_img: "http://howtodrawdat.com/wp-content/uploads/2014/03/1stpic-lucky-charms-leprechaun.png"
+        },
+        {
+            username: "sfellers1",
+           	description: "im sam.",
+            avg_rating: 3.23,
+			num_ratings: 23,
+            location: "839 S Albany Ave.",
+			profile_img: "http://howtodrawdat.com/wp-content/uploads/2014/03/1stpic-lucky-charms-leprechaun.png"
+        },
+        {
+            username: "sfellers2",
+           	description: "im sam.",
+            avg_rating: 3.23,
+			num_ratings: 23,
+            location: "839 S Albany Ave.",
+			profile_img: "http://howtodrawdat.com/wp-content/uploads/2014/03/1stpic-lucky-charms-leprechaun.png"
+        }
+    ];
 
+$scope.getUserPic = function(username) {
+	console.log("username is :" + username);
+};
 
 });
 
