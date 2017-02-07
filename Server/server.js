@@ -32,7 +32,6 @@ app.get('/', function (req, res) {
 	res.sendFile(path.join(__dirname, '/test.html'));
 })
 
-
 app.post('/Login', function(req, res) {
 	console.log("Register");
 	/* callback function to handle response */
@@ -57,6 +56,25 @@ app.post('/Login', function(req, res) {
 
 });
 
+function Login(username, password, callback) {
+	console.log("Login: ", username, password);
+
+	var select = "SELECT * FROM Users WHERE Username LIKE '" + username + "' AND Password LIKE '" + password + "'";
+	connection.query(select, function(err, rows) {
+		if (err) {
+			/* an error occured */
+			console.log("Login Failed");
+			return callback(-2);
+		}
+		else {
+			if (rows.length == 1) {
+				console.log("Login Successful");
+				return callback(0);
+			}
+		}
+	});
+}
+
 app.post('/Register', function(req, res) {
 	console.log("Register");
 	/* callback function to handle response */
@@ -80,31 +98,6 @@ app.post('/Register', function(req, res) {
 	}
 });
 
-/* start express server */
-var server = app.listen(8081, function() {
-	var host = server.address().address;
-	var post = server.address().port;
-})
-
-function Login(username, password, callback) {
-	console.log("Login: ", username, password);
-
-	var select = "SELECT * FROM Users WHERE Username LIKE '" + username + "' AND Password LIKE '" + password + "'";
-	connection.query(select, function(err, rows) {
-		if (err) {
-			/* an error occured */
-			console.log("Login Failed");
-			return callback(-2);
-		}
-		else {
-			if (rows.length == 1) {
-				console.log("Login Successful");
-				return callback(0);
-			}
-		}
-	});
-}
-
 function Register(username, password, callback) {
 	console.log("Register: ", username, password);
 
@@ -122,3 +115,62 @@ function Register(username, password, callback) {
 		}
 	});
 }
+
+app.post('/Logout', function(req, res) {
+	console.log("Logout");
+
+	/* register callback to handle response */
+	var callback = function(result) {
+		if (result < 0) {
+			/* an error occured */
+			res.json({"resonse": "logout failed"});
+		}
+		else {
+			res.json({"response": "logout successful"});
+		}
+	}
+
+	/* check for missing args */
+	if (req.body.Uid == undefined) {
+		console.log("Logout: undefined args");
+		calback(-1);
+	}
+	else {
+		Logout(Uid, callback);
+	}
+});
+
+function Logout(Uid, callback) {
+	/* do nothing for now */
+	return callback(0);
+}
+
+app.post('/UpdateProfile', function(req, res) {
+	console.log("Update Profile");
+
+	/* register callback to handle response */
+	var callback = function(result) {
+		if (result < 0) {
+			/* an error occured */
+			res.json({'response': 'update failed'});
+		}
+		else {
+			res.json({'response' : 'update successful'});
+		}
+	}
+
+	/* check for missing args */
+	if (req.body.Username == undefined || req.body.password == undefined || req.body.Email == undefined || req.body.Description == undefined || req.body.ProfileImage == undefined || req.body.locaiton == undefined || req.body.PhoneNumber == undefined) {
+		console.log("Update Profile: undefined args");
+		callback(-1);
+	}
+	else {
+		//UpdateProfile(req.body.username, req.body);
+	}
+});
+
+/* start express server */
+var server = app.listen(8081, function() {
+	var host = server.address().address;
+	var post = server.address().port;
+})
