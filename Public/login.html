@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    	<meta charset="UTF-8">
+		<!-- Latest AngularJS lib -->
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
+		<script src="app.js"></script>
+		<!-- Latest compiled and minified CSS -->
+		<link type="text/css" rel="stylesheet" href="assets/css/style.css">
+		<link type="text/css" rel="stylesheet" href="assets/css/bootstrap.min.css">
+		<link type="text/css" rel="stylesheet" href="assets/css/bootstrap-theme.min.css">
+		<link type="text/css" rel="stylesheet" href="assets/css/material.min.css">
+		<link type="text/css" rel="stylesheet" href="assets/css/font-awesome.min.css">
+		<title>Gig.io - Login</title>
+  </head>
+
+<body ng-app="myApp">
+<div ng-include src="'navbar.html'"></div>
+    <h1>gig.io</h1>
+    <form>
+      <p>
+        <label for="username">Username:</label>
+        <input id="username" type="text">
+      </p>
+      <p>
+        <label for="password">Password:</label>
+        <input id="password" type="password">
+      </p>
+    </form><br>
+    <button>Login</button>
+    <script src="login.js"></script>
+  </body>
+</html>
