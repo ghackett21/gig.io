@@ -35,9 +35,11 @@ app.get('/', function (req, res) {
 /**
  * Attempts to log in with the provided username and password.
  * Returns the userId if successful
+ * Accepts: username, password
+ * Returns: State, UserID
  */
 app.post('/Login', function(req, res) {
-	console.log("Register");
+	console.log("Login");
 	/* callback function to handle response */
 	var callback = function(result) {
 		if (result < 0 ) {
@@ -80,6 +82,9 @@ function Login(username, password, callback) {
 				console.log("Login Successful");
 				return callback(0);
 			}
+			else {
+				return callback(-2);
+			}
 		}
 	});
 }
@@ -88,6 +93,8 @@ function Login(username, password, callback) {
 /**
  * Register a new user with the provided username and password.
  * Returns userID if successful.
+ * Accepts: Username, Password
+ * Returns: State, UserID
  */
 app.post('/Register', function(req, res) {
 	console.log("Register");
@@ -119,23 +126,44 @@ app.post('/Register', function(req, res) {
 function Register(username, password, callback) {
 	console.log("Register: ", username, password);
 
-	/* NEED TO CHECK FOR DUPLICATE USERNAMES */
+	/* check for existing user with username */
+	var select = "SELECT * FROM Users WHERE username LIKE '" + username + "'";
 
-	var insert = "INSERT INTO Users (Username, Password, NumberOfStrikes, TotalNumberOfRatings) VALUES ('" + username + "', '" + password + "', 0, 0)";
-
-	connection.query(insert, function(err, rows) {
+	connection.query(select, function(err, rows) {
 		if (err) {
-			/* an error occured */
-			console.log("Register Failed", err);
+			console.log("Register Failed: ", err);
 			return callback(-2);
 		}
 		else {
-			console.log("Register Successful");
-			return callback(rows[0].Uid);
+			/* if user with username already exists... */
+			if (rows.length > 0) {
+				return callback(-3);
+			}
+			else {
+				/* if username is not already used */
+				var insert = "INSERT INTO Users (Username, Password, NumberOfStrikes, TotalNumberOfRatings) VALUES ('" + username + "', '" + password + "', 0, 0)";
+
+				connection.query(insert, function(err, rows) {
+					if (err) {
+						/* an error occured */
+						console.log("Register Failed", err);
+						return callback(-2);
+					}
+					else {
+						console.log("Register Successful");
+						Login(username, password, callback);
+					}
+				});
+			}
 		}
 	});
 }
 
+/** 
+ * Doesn't do anything currently
+ * Accepts: UserID
+ * Returns: State 
+ */
 app.post('/Logout', function(req, res) {
 	console.log("Logout");
 
@@ -165,6 +193,11 @@ function Logout(Uid, callback) {
 	return callback(0);
 }
 
+/** 
+ * Updates a user's profile information in the database 
+ * Accepts: Username, password, Email, description, profile image, location, phone number
+ * Returns: state
+ */
 app.post('/UpdateProfile', function(req, res) {
 	console.log("Update Profile");
 
@@ -192,6 +225,8 @@ app.post('/UpdateProfile', function(req, res) {
 
 /**
  * Creates a new post given the userId of the creator, the location, and the description/title
+ * Accepts: UserId, Location, Description
+ * Returns: State, PostID
  */
 app.post('/CreatePost', function(req, res) {
 	console.log("Create Post");
@@ -240,7 +275,9 @@ function CreatePost(userId, location, description, callback) {
 }
 
 /**
- *	Returns post details given postID
+ * Returns post details given postID
+ * Accepts: PostID
+ * Returns: State, Entire post info from database  
  */
  app.post('/GetPost', function(req, res) {
  	console.log("GetPost");
