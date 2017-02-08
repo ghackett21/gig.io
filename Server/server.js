@@ -29,16 +29,16 @@ console.log("Server Started");
 
 /** Site navigation endpoints */
 app.get('/', function (req, res) {
-	res.sendFile(path.join(__dirname, '/../web/main.html'));
+	res.sendFile(path.join(__dirname, '/../docs/index.html'));
 })
 
-app.get('/Register', function(req, res) {
-	res.sendFile(path.join(__dirname, '/../web/register.html'));
+app.get('/register.html', function(req, res) {
+	res.sendFile(path.join(__dirname, '/../docs/register.html'));
 });
 
-//app.get('/Login', function(req, res) {
-//	res.sendFile(path.join(__dirname, '/../web/register.html'));
-//});
+app.get('/login.html', function(req, res) {
+	res.sendFile(path.join(__dirname, '/../docs/register.html'));
+});
 
 
 /** Database interaction endpoints */
