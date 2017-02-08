@@ -38,10 +38,10 @@ app.post('/Login', function(req, res) {
 	var callback = function(result) {
 		if (result < 0 ) {
 			/* an error occured */
-			res.json({"resonse": "login failed", "Uid": result});
+			res.json({"response": "login failed", "Uid": " ", "State": result});
 		}
 		else {
-			res.json({"response": "login successful", "Uid": result});
+			res.json({"response": "login successful", "Uid": result, "State": 0}); 
 		}
 	}
 
@@ -81,10 +81,10 @@ app.post('/Register', function(req, res) {
 	var callback = function(result) {
 		if (result < 0) {
 			/* an error occured */
-			res.json({"resonse": "register failed", "Uid": result});
+			res.json({"resonse": "register failed", "Uid": " ", "State": result});
 		}
 		else {
-			res.json({"response": "register successful", "Uid": result});
+			res.json({"response": "register successful", "Uid": result, "State": 0});
 		}
 	}
 
@@ -123,10 +123,10 @@ app.post('/Logout', function(req, res) {
 	var callback = function(result) {
 		if (result < 0) {
 			/* an error occured */
-			res.json({"resonse": "logout failed"});
+			res.json({"resonse": "logout failed", "State": result});
 		}
 		else {
-			res.json({"response": "logout successful"});
+			res.json({"response": "logout successful", "State": 0});
 		}
 	}
 
@@ -152,10 +152,10 @@ app.post('/UpdateProfile', function(req, res) {
 	var callback = function(result) {
 		if (result < 0) {
 			/* an error occured */
-			res.json({'response': 'update failed'});
+			res.json({'response': 'update failed', 'State': result});
 		}
 		else {
-			res.json({'response' : 'update successful'});
+			res.json({'response' : 'update successful', 'State': 0});
 		}
 	}
 
