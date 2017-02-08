@@ -29,27 +29,33 @@ console.log("Server Started");
 
 /** Site navigation endpoints */
 app.get('/', function (req, res) {
+	console.log("Default Page: index.html");
 	res.sendFile(path.join(__dirname, '/../docs/index.html'));
 });
 
 app.get('/index.html', function (req, res) {
+	console.log("Index Page");
 	res.sendFile(path.join(__dirname, '/../docs/index.html'));
 });
 
 app.get('/register.html', function(req, res) {
+	console.log("Register Page");
 	res.sendFile(path.join(__dirname, '/../docs/register.html'));
 });
 
 app.get('/login.html', function(req, res) {
+	console.log("Login Page");
 	res.sendFile(path.join(__dirname, '/../docs/register.html'));
 });
 
 app.get('/about.html', function (req, res) {
+	console.log("About Page");
 	res.sendFile(path.join(__dirname, '/../docs/about.html'));
 
 });
 
 app.get('/postings.html', function (req, res) {
+	console.log("Postings Page");
 	res.sendFile(path.join(__dirname, '/../docs/postings.html'));
 })
 
