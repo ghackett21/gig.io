@@ -213,7 +213,7 @@ app.post('/UpdateProfile', function(req, res) {
 	}
 
 	/* check for missing args */
-	if (req.body.Username == undefined || req.body.password == undefined || req.body.Email == undefined || req.body.Description == undefined || req.body.ProfileImage == undefined || req.body.locaiton == undefined || req.body.PhoneNumber == undefined) {
+	if (req.body.userId == undefined || req.body.Username == undefined || req.body.password == undefined || req.body.Email == undefined || req.body.Description == undefined || req.body.ProfileImage == undefined || req.body.location == undefined || req.body.PhoneNumber == undefined) {
 		console.log("Update Profile: undefined args");
 		callback(-1);
 	}
@@ -221,6 +221,15 @@ app.post('/UpdateProfile', function(req, res) {
 		//UpdateProfile(req.body.username, req.body);
 	}
 });
+
+/**
+ * Updates user info in database
+ */
+function UpdateProfile(userID, username, password, email, description, profileImage, location, phoneNumber, callback) {
+	console.log("UpdateProfile: ", userId, username, password, email, description, location, phonenNumber);
+
+	var update = "";
+}
 
 
 /**
