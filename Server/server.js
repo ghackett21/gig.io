@@ -32,6 +32,10 @@ app.get('/', function (req, res) {
 	res.sendFile(path.join(__dirname, '/test.html'));
 })
 
+/**
+ * Attempts to log in with the provided username and password.
+ * Returns the userId if successful
+ */
 app.post('/Login', function(req, res) {
 	console.log("Register");
 	/* callback function to handle response */
@@ -56,6 +60,11 @@ app.post('/Login', function(req, res) {
 
 });
 
+
+/**
+ * Search the database for a User with the given username and password,
+ * if exactly one user matches, return success.
+ */ 
 function Login(username, password, callback) {
 	console.log("Login: ", username, password);
 
@@ -75,6 +84,11 @@ function Login(username, password, callback) {
 	});
 }
 
+
+/**
+ * Register a new user with the provided username and password.
+ * Returns userID if successful.
+ */
 app.post('/Register', function(req, res) {
 	console.log("Register");
 	/* callback function to handle response */
@@ -98,8 +112,14 @@ app.post('/Register', function(req, res) {
 	}
 });
 
+/**
+ * Creates a new user with the given username and password
+ * Checks that no user with the same username exists
+ */
 function Register(username, password, callback) {
 	console.log("Register: ", username, password);
+
+	/* NEED TO CHECK FOR DUPLICATE USERNAMES */
 
 	var insert = "INSERT INTO Users (Username, Password, NumberOfStrikes, TotalNumberOfRatings) VALUES ('" + username + "', '" + password + "', 0, 0)";
 
@@ -111,7 +131,7 @@ function Register(username, password, callback) {
 		}
 		else {
 			console.log("Register Successful");
-			return callback(0);
+			return callback(rows[0].Uid);
 		}
 	});
 }
@@ -168,6 +188,58 @@ app.post('/UpdateProfile', function(req, res) {
 		//UpdateProfile(req.body.username, req.body);
 	}
 });
+
+
+/**
+ * Creates a new post given the userId of the creator, the location, and the description/title
+ */
+app.post('/CreatePost', function(req, res) {
+	console.log("Create Post");
+
+	/* register callback to handle response */
+	var callback = function(result) {
+		if (result < 0) {
+			/* an error occured */
+			res.json({'response': 'createPost failed', 'PostId': " ", 'State': result});
+		}
+		else {
+			res.json({'response' : 'createPost successful', 'PostId': result, 'State': 0});
+		}
+	}
+
+	/* check for missing args */
+	if (req.body.Uid == undefined || req.body.location == undefined || req.body.description) {
+		console.log("CreatePost: undefined args");
+		callback(-1);
+	}
+	else {
+		CreatePost(req.body.Uid, req.body.location, req.body.description, callback);
+	}
+});
+
+/**
+ * inserts new post into the database - does not check for duplicates
+ */
+function CreatePost(userId, location, description, callback) {
+	console.log("CreatePost: ", userId, location, description);
+
+	var creationTime = "1/01/2000, 00:00:00"
+	var insert = "INSERT INTO POSTINGS (Uid, Location, CreationTime, Status, Description) VALUES ('" + userId + "', '" + location + "', '" + creationTime + "', 1, '" + desciption + "')";  
+
+	connection.query(insert, function (err, rows) {
+		if (err) {
+			/* database error occured */
+			console.log("CreatePost: database error: ", err);
+			return callback(-2);
+		}
+		else {
+			/* return the new postId */
+			return callback(rows[0].Pid);
+		}
+	});
+}
+
+
 
 /* start express server */
 var server = app.listen(8081, function() {
