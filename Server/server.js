@@ -30,7 +30,11 @@ console.log("Server Started");
 /** Site navigation endpoints */
 app.get('/', function (req, res) {
 	res.sendFile(path.join(__dirname, '/../docs/index.html'));
-})
+});
+
+app.get('/index.html', function (req, res) {
+	res.sendFile(path.join(__dirname, '/../docs/index.html'));
+});
 
 app.get('/register.html', function(req, res) {
 	res.sendFile(path.join(__dirname, '/../docs/register.html'));
@@ -39,6 +43,17 @@ app.get('/register.html', function(req, res) {
 app.get('/login.html', function(req, res) {
 	res.sendFile(path.join(__dirname, '/../docs/register.html'));
 });
+
+app.get('/about.html', function (req, res) {
+	res.sendFile(path.join(__dirname, '/../docs/about.html'));
+
+});
+
+app.get('/postings.html', function (req, res) {
+	res.sendFile(path.join(__dirname, '/../docs/postings.html'));
+})
+
+
 
 
 /** Database interaction endpoints */
