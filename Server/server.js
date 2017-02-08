@@ -27,10 +27,21 @@ app.use(bodyParser.json());
 
 console.log("Server Started");
 
-/* test */
+/** Site navigation endpoints */
 app.get('/', function (req, res) {
-	res.sendFile(path.join(__dirname, '/test.html'));
+	res.sendFile(path.join(__dirname, '/../web/main.html'));
 })
+
+app.get('/Register', function(req, res) {
+	res.sendFile(path.join(__dirname, '/../web/register.html'));
+});
+
+//app.get('/Login', function(req, res) {
+//	res.sendFile(path.join(__dirname, '/../web/register.html'));
+//});
+
+
+/** Database interaction endpoints */
 
 /**
  * Attempts to log in with the provided username and password.
@@ -38,7 +49,7 @@ app.get('/', function (req, res) {
  * Accepts: username, password
  * Returns: State, UserID
  */
-app.post('/Login', function(req, res) {
+app.post('/LoginButton', function(req, res) {
 	console.log("Login");
 	/* callback function to handle response */
 	var callback = function(result) {
@@ -96,7 +107,7 @@ function Login(username, password, callback) {
  * Accepts: Username, Password
  * Returns: State, UserID
  */
-app.post('/Register', function(req, res) {
+app.post('/RegisterButton', function(req, res) {
 	console.log("Register");
 	/* callback function to handle response */
 	var callback = function(result) {
