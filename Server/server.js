@@ -199,7 +199,7 @@ app.post('/CreatePost', function(req, res) {
 	/* register callback to handle response */
 	var callback = function(result) {
 		if (result < 0) {
-			/* an error occured */
+			/* an error occurred */
 			res.json({'response': 'createPost failed', 'PostId': " ", 'State': result});
 		}
 		else {
@@ -238,6 +238,59 @@ function CreatePost(userId, location, description, callback) {
 		}
 	});
 }
+
+/**
+ *	Returns post details given postID
+ */
+ app.post('/GetPost', function(req, res) {
+ 	console.log("GetPost");
+
+ 	/* register callback to handle response */
+ 	var callback = function(result) {
+ 		if (result < 0) {
+ 			/* an error occurred */
+ 			res.json({'response': 'GetPost failed', 'Post': " ", 'State': result});
+ 		}
+ 		else {
+ 			res.json({'response': 'GetPosts successful', 'Post': result, 'State': 0});
+ 		}
+ 	}
+
+ 	/* check for missing args */
+ 	if (req.body.PostId == undefined) {
+ 		console.log("GetPost: undefined args");
+ 		callback(-1);
+ 	}
+ 	else {
+ 		GetPost(req.body.PostId, callback);
+ 	}
+ });
+
+ /**
+  *	Returns the post information given a postId
+  */
+ function GetPost(PostId, callback) {
+ 	console.log("GetPost: ", PostId);
+
+ 	var select = "GET * FROM POSTINGS WHERE Pid LIKE " + PostId;
+
+ 	connection.query(select, function(err, rows) {
+ 		if (err) {
+ 			/* database error */
+ 			console.log("GetPost: database error: ", err);
+ 			return callback(-2);
+ 		}
+ 		else {
+ 			if (rows.length == 1) {
+ 				return callback(rows[0]);
+ 			}
+ 			else {
+ 				console.log("GetPost: PostId matches multiple posts!");
+ 				return callback(-2);
+ 			}
+ 		}
+ 	});
+ }
 
 
 
