@@ -5,16 +5,16 @@ var bodyParser = require('body-parser');
 
 /* create database connection */
 var connection = mysql.createConnection({
-	host     : 3306,
-	user     : 'root',
-	password : 'password',
-	database : 'gigio'
+	host     : 'mydb.ics.purdue.edu',
+	user     : 'sfellers@sppinsweb01.itap.purdue.edu',
+	password : 'Te5UVB7vvR7SjJ6y',
+	database : 'sfellers'
 });
 
 /* connect to database */
 connection.connect(function(err) {
 	if (err) {
-		console.log("Error connecting to database!");
+		console.log("Error connecting to database!", err);
 	}
 	else {
 		console.log("connection to database successful");
