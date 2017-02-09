@@ -7,23 +7,16 @@
 </head>
 <body>
 
-<!<div w3-include-html="https://ghackett21.github.io/gig.io/navbar.html"></div>
-<ul class="topnav" id="myTopnav">
-  <li><a class="active" href="index.html">Home</a></li>
-  <li><a href="postings.html">Browse Job Postings</a></li>
-  <li><a href="register.html">Register</a><li>
-  <li><a href="login.html">Login</a><li>
-  <li><a href="about.html">About</a></li>
-  <li class="icon">
-    <a href="javascript:void(0);" style="font-size:15px;" onclick="myFunction()">☰</a>
-  </li>
-</ul>
+<div w3-include-html="https://ghackett21.github.io/gig.io/navbar.html"></div>
+
 <div style="padding-left:16px">
   <h2 align=center>Welcome to Gig.io!</h2>
   <p align=center>Gig.io is a user driven service that connects job seekers with people willing to pay for help with tasks.</p>
 </div>
 <!<script src="https://ghackett21.github.io/gig.io/navbar.js"></script> 
 <script>
+w3IncludeHTML();
+
 function myFunction() {
     var x = document.getElementById("myTopnav");
     if (x.className === "topnav") {
