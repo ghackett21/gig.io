@@ -198,6 +198,7 @@ h1 {
 	  <p>Contact Info: (777) 777 - 777</p>
 	  <p>Description: Mow my lawn please</p>
       <p>Location: Earhart Hall</p>
+	  <div id="map" style="width:400px;height:400px;background:yellow"></div>
     </div>
     <div class="modal-footer">
 	<br>
@@ -235,7 +236,34 @@ window.onclick = function(event) {
         modal.style.display = "none";
     }
 }
+
+function myMap() {
+	var address = '1275 1st Street, West Lafayette, IN, USA';
+
+   var map = new google.maps.Map(document.getElementById('map'), { 
+       mapTypeId: google.maps.MapTypeId.TERRAIN,
+       zoom: 10
+   });
+
+   var geocoder = new google.maps.Geocoder();
+
+   geocoder.geocode({
+      'address': address
+   }, 
+   function(results, status) {
+      if(status == google.maps.GeocoderStatus.OK) {
+         new google.maps.Marker({
+            position: results[0].geometry.location,
+            map: map
+         });
+         map.setCenter(results[0].geometry.location);
+      }
+   });
+
+}
 </script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIqZ1SHXEe7CUj8Gv9MvVQLWrI-3k4isQ&callback=myMap"></script>
 
 </body>
 </html>
