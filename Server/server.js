@@ -5,7 +5,7 @@ var bodyParser = require('body-parser');
 
 /* create database connection */
 var connection = mysql.createConnection({
-	host     : 'mydb.ics.purdue.edu',
+	host     : 'sppinsweb01.itap.purdue.edu:48998',
 	user     : 'sfellers',
 	password : 'Te5UVB7vvR7SjJ6y',
 	database : 'sfellers'
