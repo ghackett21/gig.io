@@ -32,7 +32,7 @@ $scope.usersData  = [
             avg_rating: 3.23,
 			num_ratings: 23,
             location: "839 S Albany Ave.",
-			profile_img: "http://howtodrawdat.com/wp-content/uploads/2014/03/1stpic-lucky-charms-leprechaun.png"
+			profile_img: "https://d29vij1s2h2tll.cloudfront.net/~/media/images/taco-bell/products/default/22200_burritos_beanburrito_600x600.jpg"
         },
         {
             username: "sfellers1",
@@ -40,7 +40,7 @@ $scope.usersData  = [
             avg_rating: 3.23,
 			num_ratings: 23,
             location: "839 S Albany Ave.",
-			profile_img: "http://howtodrawdat.com/wp-content/uploads/2014/03/1stpic-lucky-charms-leprechaun.png"
+			profile_img: "https://www.pandasinternational.org/wptemp/wp-content/uploads/2012/10/slider1.jpg"
         },
         {
             username: "sfellers2",
@@ -54,6 +54,14 @@ $scope.usersData  = [
 
 $scope.getUserPic = function(username) {
 	console.log("username is :" + username);
+	for(var i=0;i<3;i++){
+		console.log("username: " + $scope.usersData[i].username + "matches : " + username);
+		if($scope.usersData[i].username == username){
+			console.log("username match :" + username);
+			console.log("returning profile image :" + $scope.usersData[i].profile_img);
+			return $scope.usersData[i].profile_img;
+		}
+	}
 };
 
 });
