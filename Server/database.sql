@@ -56,7 +56,7 @@ CREATE TABLE Bids (
 	Uid int NOT NULL,
 	Pid int NOT NULL,
 	BidTime datetime,
-	Amount decimal,
+	Amount decimal NOT NULL,
 	primary key(Bidid)
 );
 

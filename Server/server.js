@@ -5,9 +5,10 @@ var bodyParser = require('body-parser');
 
 /* create database connection */
 var connection = mysql.createConnection({
-	host     : "mydb.ics.purdue.edu",
-	user     : "sfellers",
-	password : "Te5UVB7vvR7SjJ6y"
+	host     : 3306,
+	user     : "root",
+	password : "password",
+	database : "gigio"
 });
 
 /* connect to database */
@@ -349,7 +350,7 @@ function CreatePost(userId, location, description, callback) {
  function GetPost(PostId, callback) {
  	console.log("GetPost: ", PostId);
 
- 	var select = "GET * FROM POSTINGS WHERE Pid LIKE " + PostId;
+ 	var select = "SELECT * FROM POSTINGS WHERE Pid LIKE " + PostId;
 
  	connection.query(select, function(err, rows) {
  		if (err) {
@@ -370,6 +371,126 @@ function CreatePost(userId, location, description, callback) {
  }
 
 
+/** 
+ * Returns a list of all postIds currently in the database
+ * should it check status?
+ */
+app.post("/GetAllPosts", function(req, res) {
+	console.log("GetALLPosts");
+
+  	/* callback to handle response */
+  	var callback = function(result) {
+  		if (result < 0) {
+  			res.json({"response": "GetAllPosts failed", "result": "", "state": result });
+  		}
+  		else {
+  			res.json({"response": "GetAllPosts successful", "result": result, "state": 0 });
+  		}
+  	}
+
+  	getAllPosts(callback);
+});
+
+function GetAllPosts(callback) {
+  	var select = "SELECT * FROM POSTINGS";
+
+  	connection.query(select, function(err, rows) {
+  		if (err) {
+  			console.log("GetAllPosts: database error", err);
+  			return callback(-2);
+  		}
+  		else {
+  			return callback(rows.PID);
+  		}
+  	});
+}
+
+
+/** 
+ * Place a bid on a post
+ * Accepts: UserId, PostId, and $ Amount
+ * Returns BidID
+ */
+app.post("/Bid", function(req, res) {
+	console.log("Bid");
+
+	/* callback to handle response */
+  	var callback = function(result) {
+  		if (result < 0) {
+  			res.json({"response": "Bid failed", "result": "", "state": result });
+  		}
+  		else {
+  			res.json({"response": "Bid successful", "result": result, "state": 0 });
+  		}
+  	}
+
+  	/* check for missing args */
+  	if (req.body.UserId == undefined || req.body.PostId == undefined || req.body.Amount == undefined) {
+  		console.log("Bid: unddfined args: requires UserId, PostId, and Amount");
+  		callback(-1);
+  	}
+  	else {
+  		Bid(req.body.UserId, req.body.PostId, req.body.Amount, callback);
+  	}
+});
+
+function Bid(userId, postId, amount, callback) {
+	var insert = "INSERT INTO Bids (Uid, Pid, Amount) VALUES (" + userId, ", " + postId + ", " + amount + ")";
+
+	connection.query(insert, function(err, rows) {
+		if (err) {
+			console.log("Bid: database error", err);
+			return callback(-2);
+		}
+		else {
+			return callback(rows.Bidid);
+		}
+	});
+}
+
+
+/**
+ * Returns all bids for a given post
+ * Accepts: PostID
+ * Returns: List of all bids for that post
+ */
+app.post("/GetBids", function(req, res) {
+	console.log("GetBids");
+
+	/* callback to handle response */
+  	var callback = function(result) {
+  		if (result < 0) {
+  			res.json({"response": "GetBids failed", "result": "", "state": result });
+  		}
+  		else {
+  			res.json({"response": "GetBids successful", "result": result, "state": 0 });
+  		}
+  	}
+
+  	if (req.body.postId == undefined) {
+  		console.log("GetBids undfined args: requires PostId");
+  		callback(-1);
+  	}
+  	else {
+  		GetBids(req.body.postId, callback);
+  	}
+});
+
+function GetBids(postId, callback) {
+	console.log("GetBids: " + postId);
+
+	var select = "SELECT * FROM Bids WHERE Pid Like '" + postId + "'";
+
+	connection.query(select, function(err, rows) {
+		if (err) {
+			console.log("GetBids: database error", err);
+			return callback(-2);
+		}
+		else {
+			return callback(rows);
+		}
+	}); 
+}
 
 /* start express server */
 var server = app.listen(8081, function() {
