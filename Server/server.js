@@ -1,7 +1,19 @@
 var express = require("express");
-var mysql   = require("mysql");
+var mysql   = require('mysql');
 var path    = require("path");
 var bodyParser = require('body-parser');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+var flash = require('connect-flash');
+var session = require('express-session');
+
+
+/* mock users for testing */
+var users = [
+             { id: 1, username: 'bob', password: 'secret', email: 'bob@example.com', apikey: 'asdasjsdgfjkjhg' },
+             { id: 2, username: 'joe', password: 'birthday', email: 'joe@example.com', apikey: 'gfsdgsfgsfg' },
+             { id: 3, username: 'sfellers', password: 'lol1', email: 'sfellers@example.com', apikey: 'g4fgh2gfhg' }
+         ];
 
 /* create database connection */
 var connection = mysql.createConnection({
@@ -21,13 +33,89 @@ connection.connect(function(err) {
 	}
 });
 
+
+function findByUsername(username, fn) {
+	for (var i = 0, len = users.length; i < len; i++) {
+	    var user = users[i];
+	    if (user.username === username) {
+	      return fn(null, user);
+	    }
+	  }
+return fn(null, null);
+}
+
+
+
+passport.use(new LocalStrategy(
+		  function(username, password, done) {
+		    findByUsername(username, function (err, user) {
+		      if (err) { return done(err); }
+		      if (!user) {
+		        return done(null, false, { message: 'Incorrect username.' });
+		      }
+		      if (user.password != password) {
+		        return done(null, false, { message: 'Incorrect password.' });
+		      }
+		      console.log("user = " + user);
+		      return done(null, user);
+		    });
+		  }
+		));
+
+
+
+
+
+
+
 /* create express server */
 var app = express();
 app.use(bodyParser.json());
-
+app.use(session({
+	secret: 'keyboard cat',
+	resave: false,
+	saveUninitialized: true,
+	cookie: { secure: true }
+}));
+app.use(flash());
+app.use(passport.initialize());
+app.use(passport.session());
+	
 console.log("Server Started");
+app.use(express.static(path.join(__dirname, '/../docs')));
 
-/** Site navigation endpoints */
+/** Database interaction endpoints */
+
+
+
+app.post('/login',
+		  passport.authenticate('local', { failureRedirect: '/login' }),
+		  function(req, res) {
+		    res.sendStatus(200);
+		  });
+/**
+ * Attempts to log in with the provided username and password.
+ * Returns the userId if successful
+ * Accepts: username, password
+ * Returns: State, UserID
+ */
+app.get('/login', function(req, res, next) {
+	console.log("LoginButton called");
+	
+	passport.authenticate('local', function(err, user, info) {
+		if (err) { 
+			return next(err);
+		}
+		if (!user) {
+			console.log("failed : user : " + user);
+			return res.sendStatus(401); 
+		}
+	})(req, res, next);
+
+});
+
+
+/** Site navigation endpoints 
 app.get('/', function (req, res) {
 	console.log("Default Page: index.html");
 	res.sendFile(path.join(__dirname, '/../docs/index.html'));
@@ -58,7 +146,7 @@ app.get('/postings.html', function (req, res) {
 	console.log("Postings Page");
 	res.sendFile(path.join(__dirname, '/../docs/postings.html'));
 })
-
+*/
 
 
 
