@@ -225,6 +225,7 @@ function Logout(Uid, callback) {
 	return callback(0);
 }
 
+
 /** 
  * Updates a user's profile information in the database 
  * Accepts: Username, password, Email, description, profile image, location, phone number
@@ -240,7 +241,7 @@ app.post('/UpdateProfile', function(req, res) {
 			res.json({'response': 'update failed', 'State': result});
 		}
 		else {
-			res.json({'response' : 'update successful', 'State': 0});
+			res.json({'response' : 'update successful', 'State': result});
 		}
 	}
 
@@ -250,7 +251,7 @@ app.post('/UpdateProfile', function(req, res) {
 		callback(-1);
 	}
 	else {
-		//UpdateProfile(req.body.username, req.body);
+		UpdateProfile(req.body.userId, req.body.Username, req.body.password, req.body.Email, req.body.Description, req.body.ProfileImage, req.body.location, req.body.PhoneNumber, callback);
 	}
 });
 
@@ -260,7 +261,18 @@ app.post('/UpdateProfile', function(req, res) {
 function UpdateProfile(userID, username, password, email, description, profileImage, location, phoneNumber, callback) {
 	console.log("UpdateProfile: ", userId, username, password, email, description, location, phonenNumber);
 
-	var update = "";
+	var update = "UPDATE Users SET Username='" + username + "', Password='" + password + "', EmailAddress='" + email + "', Description='" + description + "', Location='" + location + "', PhoneNumber='" + phoneNumber + "' WHERE Uid=" + userId;
+
+	connection.query(update, function(err, rows) {
+		if (err) {
+			console.log("UpdateProfile: database error:", err);
+
+			return callback(-2);
+		}
+		else {
+			return callback(0);
+		}
+	});
 }
 
 
@@ -435,7 +447,7 @@ app.post("/Bid", function(req, res) {
 });
 
 function Bid(userId, postId, amount, callback) {
-	var insert = "INSERT INTO Bids (Uid, Pid, Amount) VALUES (" + userId, ", " + postId + ", " + amount + ")";
+	var insert = "INSERT INTO Bids (Uid, Pid, Amount) VALUES (" + userId + ", " + postId + ", " + amount + ")";
 
 	connection.query(insert, function(err, rows) {
 		if (err) {
