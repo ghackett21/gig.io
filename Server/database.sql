@@ -1,4 +1,3 @@
-DROP DATABASE IF EXISTS Gigio;
 DROP TABLE IF EXISTS Users;
 Drop TABLE IF EXISTS Ratings;
 DROP TABLE IF EXISTS Posts;
@@ -6,8 +5,7 @@ DROP TABLE IF EXISTS Notifications;
 DROP TABLE IF EXISTS Bids;
 DROP TABLE IF EXISTS Transactions;
 
-CREATE DATABASE Gigio;
-USE Gigio;
+USE sfellers;
 
 CREATE TABLE Users (
 	Uid int NOT NULL AUTO_INCREMENT,
@@ -58,7 +56,7 @@ CREATE TABLE Bids (
 	Uid int NOT NULL,
 	Pid int NOT NULL,
 	BidTime datetime,
-	Amount decimal,
+	Amount decimal NOT NULL,
 	primary key(Bidid)
 );
 
