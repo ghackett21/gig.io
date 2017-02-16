@@ -3,6 +3,11 @@
 	"version": "0.0.1",
 	"dependencies": {
 		"express": "^4.10.6",
-		"mysql": "^2.5.4"
+		"mysql": "^2.5.4",
+		"passport":	"^0.3.2",
+		"passport-localapikey": "^0.0.3",
+		"connect-flash": "0.1.x",
+		"express-session": "^1.15.1",
+		"passport-local": "1.0.0"
 	}
 }

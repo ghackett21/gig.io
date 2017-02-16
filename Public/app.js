@@ -32,7 +32,8 @@ $scope.usersData  = [
             avg_rating: 3.23,
 			num_ratings: 23,
             location: "839 S Albany Ave.",
-			profile_img: "https://d29vij1s2h2tll.cloudfront.net/~/media/images/taco-bell/products/default/22200_burritos_beanburrito_600x600.jpg"
+			profile_img: "https://d29vij1s2h2tll.cloudfront.net/~/media/images/taco-bell/products/default/22200_burritos_beanburrito_600x600.jpg",
+			api_key: "g4fgh2gfhg"	
         },
         {
             username: "jdoe",
@@ -70,18 +71,43 @@ app.controller("loginController", [ '$scope', '$http', function($scope, $http) {
 	$scope.user;
 	
 	$scope.clickButton = function() {
-		console.log("username = " + $scope.user.username);
-		console.log("password = " + $scope.user.password);
+
 		if($scope.user == undefined){
 			return;
 		}
 		if($scope.user == undefined || $scope.user.username == undefined || $scope.user.password == undefined){
 			return;
 		}
-		$http.post('/LoginButton', $scope.user).then(function(response) {
+		console.log("username = " + $scope.user.username);
+		console.log("password = " + $scope.user.password);
+		$http.post('/login', $scope.user).then(function(response) {
+			$scope.user = null;
+			console.log(response.status);
+			console.log(response);
+			if(response.status == 200){
+				console.log("success");
+				window.location.href = 'http://localhost:8081/index.html';
+			}else if(response.status == 401){
+				console.log("failure");
+				window.location.href = 'http://localhost:8081/login.html';
+			}
+			//load response
+		}).catch(function(response) {
+			$scope.user = null;
+			console.log(response.status);
+			console.log(response);
+			if(response.status == 401){
+				console.log("failure");
+				//window.location.href = 'http://localhost:8081/login.html';
+			}
+			//load response
+		})
+		/*
+		$http.post('/api/authenticate', $scope.user.api_key).then(function(response) {
 			$scope.user = null;
 			console.log(response);
 		});
+		*/
 	};
 	
 	

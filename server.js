@@ -2,14 +2,25 @@ var express = require("express");
 var mysql   = require('mysql');
 var path    = require("path");
 var bodyParser = require('body-parser');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+var flash = require('connect-flash');
+var session = require('express-session');
 
 /* create database connection */
 var connection = mysql.createConnection({
-	host     : 'mydb.itap.purdue.edu',
-	user    : 'sfellers',
-	password : 'Te5UVB7vvR7SjJ6y',
-	database : 'sfellers'
+	host : 	"mydb.itap.purdue.edu",
+	user : 	"sfellers",
+	password : 	"Te5UVB7vvR7SjJ6y",
+	database : 	"sfellers"
 });
+
+/* mock users for testing */
+var users = [
+             { id: 1, username: 'bob', password: 'secret', email: 'bob@example.com', apikey: 'asdasjsdgfjkjhg' },
+             { id: 2, username: 'joe', password: 'birthday', email: 'joe@example.com', apikey: 'gfsdgsfgsfg' },
+             { id: 3, username: 'sfellers', password: 'lol1', email: 'sfellers@example.com', apikey: 'g4fgh2gfhg' }
+         ];
 
 /* connect to database
 connection.connect(function(err) {
@@ -21,33 +32,148 @@ connection.connect(function(err) {
 	}
 });
 */
+
+
+function findById(id, fn) {
+	  var idx = id - 1;
+	  if (users[idx]) {
+	    fn(null, users[idx]);
+	  } else {
+	    fn(new Error('User ' + id + ' does not exist'));
+	  }
+	}
+
+	function findByUsername(username, fn) {
+	  for (var i = 0, len = users.length; i < len; i++) {
+	    var user = users[i];
+	    if (user.username === username) {
+	      return fn(null, user);
+	    }
+	  }
+	  return fn(null, null);
+	}
+
+
+	function findByApiKey(apikey, fn) {
+	  for (var i = 0, len = users.length; i < len; i++) {
+	    var user = users[i];
+	    if (user.apikey === apikey) {
+	      return fn(null, user);
+	    }
+	  }
+	  return fn(null, null);
+	}
+
+/*	
+ * 	Passport session setup.
+ *	To support persistent login sessions, Passport needs to be able to
+ *	serialize users into and deserialize users out of the session.  Typically,
+ *	this will be as simple as storing the user ID when serializing, and finding
+ *	the user by ID when deserializing.
+ */
+passport.serializeUser(function(user, done) {
+	done(null, user.id);
+});
+
+passport.deserializeUser(function(id, done) {
+	findById(id, function (err, user) {
+		done(err, user);
+	});
+});
+
+passport.use(new LocalStrategy(
+		  function(username, password, done) {
+		    findByUsername(username, function (err, user) {
+		      if (err) { return done(err); }
+		      if (!user) {
+		        return done(null, false, { message: 'Incorrect username.' });
+		      }
+		      if (user.password != password) {
+		        return done(null, false, { message: 'Incorrect password.' });
+		      }
+		      console.log("user = " + user);
+		      return done(null, user);
+		    });
+		  }
+		));
+
+
+//Simple route middleware to ensure user is authenticated.
+//Use this route middleware on any resource that needs to be protected.  If
+//the request is authenticated (typically via a persistent login session),
+//the request will proceed.  Otherwise, the user will be redirected to the
+//login page.
+function ensureAuthenticated(req, res, next) {
+	if (req.isAuthenticated()) { return next(); }
+	res.redirect('/api/unauthorized')
+}
+
+
 /* create express server */
 var app = express();
-app.use(bodyParser.json());
 
-console.log("Server Started");
-
-app.use(express.static(path.join(__dirname, 'public')));
-
-
-
-
-
+	app.use(bodyParser.json());
+	app.use(session({
+		  secret: 'keyboard cat',
+		  resave: false,
+		  saveUninitialized: true,
+		  cookie: { secure: true }
+	}));
+	app.use(flash());
+	app.use(passport.initialize());
+	app.use(passport.session());
+	
+	console.log("Server Started");
+	
+	app.use(express.static(path.join(__dirname, 'public')));
 
 /** Database interaction endpoints */
 
+
+app.post('/api/authenticate', 
+		  passport.authenticate('local', { failureRedirect: '/api/unauthorized', failureFlash: true }),
+		  function(req, res) {
+		     res.json({ message: "Authenticated" })
+});
+
+app.get('/api/unauthorized', function(req, res){
+	  console.log("auth err");
+	  res.json({ message: "Authentication Error" })
+	});
+/*
+app.post('/login',
+		  passport.authenticate('local', { successRedirect: '/index.html',
+		                                   failureRedirect: '/login',
+		                                   failureFlash: true })
+);
+*/
+app.post('/login',
+		  passport.authenticate('local', { failureRedirect: '/login' }),
+		  function(req, res) {
+		    res.sendStatus(200);
+		  });
 /**
  * Attempts to log in with the provided username and password.
  * Returns the userId if successful
  * Accepts: username, password
  * Returns: State, UserID
  */
-app.post('/LoginButton', function(req, res) {
+app.get('/login', function(req, res, next) {
 	console.log("LoginButton called");
-	/* callback function to handle response */
+	
+	passport.authenticate('local', function(err, user, info) {
+		if (err) { 
+			return next(err);
+		}
+		if (!user) {
+			console.log("failed : user : " + user);
+			return res.sendStatus(401); 
+		}
+	})(req, res, next);
+	/* callback function to handle response 
 	var callback = function(result) {
 		if (result < 0 ) {
-			/* an error occured */
+			// an error occured 
 			res.json({"response": "login failed", "Uid": " ", "State": result});
 		}
 		else {
@@ -55,7 +181,7 @@ app.post('/LoginButton', function(req, res) {
 		}
 	}
 
-	/* check for missing args */
+	// check for missing args
 	if (req.body.username == undefined || req.body.password == undefined) {
 		console.log("Login: undefined args");
 		callback(-1);
@@ -63,6 +189,7 @@ app.post('/LoginButton', function(req, res) {
 	else {
 		Login(req.body.username, req.body.password, callback);
 	}
+	*/
 
 });
 
