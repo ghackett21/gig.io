@@ -45,7 +45,6 @@ return fn(null, null);
 }
 
 
-
 passport.use(new LocalStrategy(
 		  function(username, password, done) {
 		    findByUsername(username, function (err, user) {
@@ -61,11 +60,6 @@ passport.use(new LocalStrategy(
 		    });
 		  }
 		));
-
-
-
-
-
 
 
 /* create express server */
@@ -84,15 +78,13 @@ app.use(passport.session());
 console.log("Server Started");
 app.use(express.static(path.join(__dirname, '/../docs')));
 
-/** Database interaction endpoints */
-
-
 
 app.post('/login',
 		  passport.authenticate('local', { failureRedirect: '/login' }),
 		  function(req, res) {
 		    res.sendStatus(200);
 		  });
+
 /**
  * Attempts to log in with the provided username and password.
  * Returns the userId if successful
@@ -384,8 +376,8 @@ app.post('/CreatePost', function(req, res) {
 	}
 
 	/* check for missing args */
-	if (req.body.Uid == undefined || req.body.location == undefined || req.body.description) {
-		console.log("CreatePost: undefined args");
+	if (req.body.Uid == undefined || req.body.location == undefined || req.body.description == undefined) {
+		console.log("CreatePost: undefined args, requires Uid, location, and description");
 		callback(-1);
 	}
 	else {
@@ -399,8 +391,8 @@ app.post('/CreatePost', function(req, res) {
 function CreatePost(userId, location, description, callback) {
 	console.log("CreatePost: ", userId, location, description);
 
-	var creationTime = "1/01/2000, 00:00:00"
-	var insert = "INSERT INTO POSTINGS (Uid, Location, CreationTime, Status, Description) VALUES ('" + userId + "', '" + location + "', '" + creationTime + "', 1, '" + desciption + "')";  
+	var creationTime = "2000-01-01 00:00:00"
+	var insert = "INSERT INTO Posting (Uid, Location, CreationTime, Status, Description) VALUES ('" + userId + "', '" + location + "', '" + creationTime + "', 1, '" + description + "')";  
 
 	connection.query(insert, function (err, rows) {
 		if (err) {
@@ -410,7 +402,8 @@ function CreatePost(userId, location, description, callback) {
 		}
 		else {
 			/* return the new postId */
-			return callback(rows[0].Pid);
+			console.log("rows:" + rows);
+			return callback(0);
 		}
 	});
 }
@@ -450,7 +443,7 @@ function CreatePost(userId, location, description, callback) {
  function GetPost(PostId, callback) {
  	console.log("GetPost: ", PostId);
 
- 	var select = "SELECT * FROM POSTINGS WHERE Pid LIKE " + PostId;
+ 	var select = "SELECT * FROM Posting WHERE Pid LIKE " + PostId;
 
  	connection.query(select, function(err, rows) {
  		if (err) {
@@ -488,11 +481,11 @@ app.post("/GetAllPosts", function(req, res) {
   		}
   	}
 
-  	getAllPosts(callback);
+  	GetAllPosts(callback);
 });
 
 function GetAllPosts(callback) {
-  	var select = "SELECT * FROM POSTINGS";
+  	var select = "SELECT * FROM Posting";
 
   	connection.query(select, function(err, rows) {
   		if (err) {
@@ -500,6 +493,7 @@ function GetAllPosts(callback) {
   			return callback(-2);
   		}
   		else {
+  			console.log("rows" + rows);
   			return callback(rows.PID);
   		}
   	});
