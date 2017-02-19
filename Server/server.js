@@ -391,7 +391,7 @@ app.post('/CreatePost', function(req, res) {
 function CreatePost(userId, location, description, callback) {
 	console.log("CreatePost: ", userId, location, description);
 
-	var creationTime = "2000-01-01 00:00:00"
+	var creationTime = GetDate();
 	var insert = "INSERT INTO Posting (Uid, Location, CreationTime, Status, Description) VALUES ('" + userId + "', '" + location + "', '" + creationTime + "', 1, '" + description + "')";  
 
 	connection.query(insert, function (err, rows) {
@@ -529,7 +529,8 @@ app.post("/Bid", function(req, res) {
 });
 
 function Bid(userId, postId, amount, callback) {
-	var insert = "INSERT INTO Bids (Uid, Pid, Amount) VALUES (" + userId + ", " + postId + ", " + amount + ")";
+	var bidTime = GetDate();
+	var insert = "INSERT INTO Bids (Uid, Pid, BidTime, Amount) VALUES (" + userId + ", " + postId + ", '" + bidTime + "', " + amount + ")";
 
 	connection.query(insert, function(err, rows) {
 		if (err) {
@@ -561,12 +562,12 @@ app.post("/GetBids", function(req, res) {
   		}
   	}
 
-  	if (req.body.postId == undefined) {
+  	if (req.body.PostId == undefined) {
   		console.log("GetBids undfined args: requires PostId");
   		callback(-1);
   	}
   	else {
-  		GetBids(req.body.postId, callback);
+  		GetBids(req.body.PostId, callback);
   	}
 });
 
@@ -584,6 +585,16 @@ function GetBids(postId, callback) {
 			return callback(rows);
 		}
 	}); 
+}
+
+/**
+ * Get the current date and time in SQL accepted datetime format
+ */
+function GetDate() {
+	var today = new Date();
+	var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+	var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+	return date+' '+time;
 }
 
 /* start express server */
