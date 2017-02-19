@@ -494,7 +494,7 @@ function GetAllPosts(callback) {
   		}
   		else {
   			console.log("rows" + rows);
-  			return callback(rows.PID);
+  			return callback(rows);
   		}
   	});
 }
