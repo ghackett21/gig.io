@@ -17,10 +17,10 @@ var users = [
 
 /* create database connection */
 var connection = mysql.createConnection({
-	host     : 3306,
-	user     : "root",
-	password : "password",
-	database : "gigio"
+	host     : 	"mydb.itap.purdue.edu",
+	user     : 	"sfellers",
+	password : 	"Te5UVB7vvR7SjJ6y",
+	database : 	"sfellers"
 });
 
 /* connect to database */
