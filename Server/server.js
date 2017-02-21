@@ -25,8 +25,6 @@ var connection = mysql.createConnection({
 
 /*
 TODO:
- - normalize json response format 
- - getBids
  - GetUser
  - Return user data with post data 
  */
@@ -319,8 +317,42 @@ function Logout(Uid, callback) {
  * Returns user info (not password)
  */
  app.post('/GetUser', function(req, res) {
- 	console.log("F");
+ 	console.log("GetUser");
+
+ 	/* callback to handle response */
+ 	var callback = function(result) {
+ 		if (result < 0) {
+ 			res.json({'Response': 'GetUser failed', 'State': result, 'Result': ''});
+ 		}
+ 		else {
+ 			res.json({'Response': 'update successful', 'State': 0, 'Result': result});
+ 		}
+ 	}
+
+ 	/* check for undefined args */
+ 	if (req.body.userId == undefined) {
+ 		callback(-1);
+ 	}
+ 	else {
+ 		GetUser(req.body.userId, callback);
+ 	}
  });
+
+ function GetUser(userId, callback) {
+ 	console.log("GetUser: userId" + userId);
+
+ 	var select = "SELECT * FROM Users WHERE Uid LIKE '" + userId + "'";
+
+ 	connection.query(select, function(err, rows) {
+ 		if (err) {
+ 			console.log("GetUser: database error: " + err);
+ 			return callback(-2);
+ 		}
+ 		else {
+ 			return callback(rows);
+ 		}
+ 	});
+ }
 
 
 /** 
@@ -329,7 +361,7 @@ function Logout(Uid, callback) {
  * Returns: state
  */
 app.post('/UpdateProfile', function(req, res) {
-	console.log("Update Profile");
+	console.log("UpdateProfile");
 
 	/* register callback to handle response */
 	var callback = function(result) {
@@ -471,7 +503,7 @@ function CreatePost(userId, location, description, callback) {
  		else {
  			if (rows.length == 1) {
  				/* get user information also */
- 				return callback(rows[0] + );
+ 				return callback(rows[0] + GetUser(rows[0].UID, callback));
  			}
  			else {
  				console.log("GetPost: PostId matches multiple posts!");
