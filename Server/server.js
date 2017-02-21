@@ -331,6 +331,7 @@ function Logout(Uid, callback) {
 
  	/* check for undefined args */
  	if (req.body.userId == undefined) {
+ 		console.log("GetUser: undefined args. Requires userId");
  		callback(-1);
  	}
  	else {
