@@ -1,4 +1,4 @@
-/*var app = angular.module("myApp", []);
+var app = angular.module("myApp", []);
 
 app.controller("postController", function($scope) {
 
@@ -69,7 +69,7 @@ $scope.getUserPic = function(username) {
 
 app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
 	$scope.user;
-
+    $scope.test = "test";
 	$scope.clickButton = function() {
 
 		if($scope.user == undefined){
@@ -80,16 +80,17 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
 		}
 		console.log("username = " + $scope.user.username);
 		console.log("password = " + $scope.user.password);
-		$http.post('/login', $scope.user).then(function(response) {
+		$http.post('/GetAllPosts').then(function(response) {
 			$scope.user = null;
 			console.log(response.status);
 			console.log(response);
 			if(response.status == 200){
 				console.log("success");
-				window.location.href = 'http://localhost:8081/index.html';
+				//window.location.href = 'http://localhost:8081/index.html';
 			}else if(response.status == 401){
 				console.log("failure");
-				window.location.href = 'http://localhost:8081/login.html';
+				//console.log(response.data);
+				//window.location.href = 'http://localhost:8081/login.html';
 			}
 			//load response
 		}).catch(function(response) {
@@ -109,58 +110,4 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
 		});
 		*/
 	};
-
-
-
 }]);
-*/
-// Get the modal
-var modal = document.getElementById('myModal');
-
-// Get the button that opens the modal
-var btn = document.getElementById("mow");
-
-// Get the <span> element that closes the modal
-var span = document.getElementsByClassName("close")[0];
-
-// When the user clicks the button, open the modal
-btn.onclick = function() {
-    modal.style.display = "block";
-}
-
-// When the user clicks on <span> (x), close the modal
-span.onclick = function() {
-    modal.style.display = "none";
-}
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
-}
-
-function myMap() {
-	var address = '1275 1st Street, West Lafayette, IN, USA';
-
-   var map = new google.maps.Map(document.getElementById('map'), {
-       mapTypeId: google.maps.MapTypeId.TERRAIN,
-       zoom: 10
-   });
-
-   var geocoder = new google.maps.Geocoder();
-
-   geocoder.geocode({
-      'address': address
-   },
-   function(results, status) {
-      if(status == google.maps.GeocoderStatus.OK) {
-         new google.maps.Marker({
-            position: results[0].geometry.location,
-            map: map
-         });
-         map.setCenter(results[0].geometry.location);
-      }
-   });
-
-}
