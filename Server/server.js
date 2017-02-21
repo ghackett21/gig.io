@@ -346,12 +346,13 @@ function Logout(Uid, callback) {
  			res.json({'Response': 'GetUser failed', 'State': result, 'Result': ''});
  		}
  		else {
- 			res.json({'Response': 'update successful', 'State': 0, 'Result': result});
+ 			res.json({'Response': 'GetUser successful', 'State': 0, 'Result': result});
  		}
  	}
 
  	/* check for undefined args */
  	if (req.body.userId == undefined) {
+ 		console.log("GetUser: undefined args. Requires userId");
  		callback(-1);
  	}
  	else {
@@ -498,12 +499,12 @@ function CreatePost(userId, location, description, callback) {
  	}
 
  	/* check for missing args */
- 	if (req.body.PostId == undefined) {
- 		console.log("GetPost: undefined args");
+ 	if (req.body.postId == undefined) {
+ 		console.log("GetPost: undefined args. Requires: postId");
  		callback(-1);
  	}
  	else {
- 		GetPost(req.body.PostId, callback);
+ 		GetPost(req.body.postId, callback);
  	}
  });
 
@@ -524,7 +525,7 @@ function CreatePost(userId, location, description, callback) {
  		else {
  			if (rows.length == 1) {
  				/* get user information also */
- 				return callback(rows[0] + GetUser(rows[0].UID, callback));
+ 				return callback(rows[0] + GetUser(rows[0].Uid, callback));
  			}
  			else {
  				console.log("GetPost: PostId matches multiple posts!");
