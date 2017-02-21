@@ -1,4 +1,4 @@
-var app = angular.module("myApp", []);
+/*var app = angular.module("myApp", []);
 
 app.controller("postController", function($scope) {
 
@@ -113,7 +113,7 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
 
 
 }]);
-
+*/
 // Get the modal
 var modal = document.getElementById('myModal');
 
