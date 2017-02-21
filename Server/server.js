@@ -527,7 +527,7 @@ function CreatePost(userId, location, description, callback) {
  				var post = rows[0];
  				
  				/* get user information also */
- 				var select = "SELECT * FROM Users WHERE Uid LIKE '" + userId + "'";
+ 				var select = "SELECT * FROM Users WHERE Uid LIKE '" + post.Uid + "'";
 
 			 	connection.query(select, function(err, rows) {
 			 		if (err) {
