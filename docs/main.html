@@ -1,157 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
-<style>
-ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: #333;
-}
-
-ol {
-    background: #ff9999;
-    padding: 20px;
-}
-
-ol la {
-    background: #ffe5e5;
-    padding: 5px;
-    margin-left: 35px;
-}
-
-li {
-    float: left;
-}
-
-li a {
-    display: block;
-    color: white;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-}
-
-li a:hover:not(.active) {
-    background-color: #111;
-}
-
-.active {
-    background-color: #4CAF50;
-}
-
-table {
-    border-collapse: collapse;
-    width: 100%;
-}
-
-th, td {
-    text-align: left;
-    padding: 8px;
-}
-
-tr:nth-child(even){background-color: #f2f2f2}
-
-th {
-    background-color: #4CAF50;
-    color: white;
-}
-
-h1 {
-    text-align: center;
-    text-transform: uppercase;
-    color: #4CAF50;
-}
-
-.clickable {
-	cursor: pointer;
-}
-
-/* The Modal (background) */
-.modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    padding-top: 100px; /* Location of the box */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-}
-
-/* Modal Content */
-.modal-content {
-    position: relative;
-    background-color: #fefefe;
-    margin: auto;
-    padding: 0;
-    border: 1px solid #888;
-    width: 80%;
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
-    -webkit-animation-name: animatetop;
-    -webkit-animation-duration: 0.4s;
-    animation-name: animatetop;
-    animation-duration: 0.4s
-}
-
-/* Add Animation */
-@-webkit-keyframes animatetop {
-    from {top:-300px; opacity:0} 
-    to {top:0; opacity:1}
-}
-
-@keyframes animatetop {
-    from {top:-300px; opacity:0}
-    to {top:0; opacity:1}
-}
-
-/* The Close Button */
-.close {
-    color: #aaaaaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-    color: #000;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-.modal-header {
-    padding: 2px 16px;
-    background-color: #5cb85c;
-    color: white;
-}
-
-.modal-body {padding: 2px 16px;}
-
-.modal-footer {
-    padding: 2px 16px;
-    background-color: #5cb85c;
-    color: white;
-}
-
-</style>
+  <link href="main_style.css" rel="stylesheet" type="text/css">
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
+  <script src="mainApp.js"></script>
 </head>
-<body>
-
+<body ng-app="myApp" ng-controller="mainController">
 <ul class="topnav" id="myTopnav">
   <li><a class="active" href="index.html">Home</a></li>
   <li><a href="postings.html">Browse Job Postings</a></li>
   <li><a href="register.html">Register</a><li>
-  <li><a href="login.html">Login</a><li>
+  <li><a href="profile.html">My Profile</a><li>
   <li style="float:right"><a class="active" href="about.html">About Us</a></li>
 </ul>
 
 <br>
 <br>
+
 <h1>Welcome to Gig.io</h1>
 <br>
 <br>
@@ -207,11 +72,10 @@ h1 {
 	<br>
     </div>
   </div>
-
 </div>
 
 <script>
-// Get the modal
+  // Get the modal
 var modal = document.getElementById('myModal');
 
 // Get the button that opens the modal
@@ -220,7 +84,7 @@ var btn = document.getElementById("mow");
 // Get the <span> element that closes the modal
 var span = document.getElementsByClassName("close")[0];
 
-// When the user clicks the button, open the modal 
+// When the user clicks the button, open the modal
 btn.onclick = function() {
     modal.style.display = "block";
 }
@@ -240,7 +104,7 @@ window.onclick = function(event) {
 function myMap() {
 	var address = '1275 1st Street, West Lafayette, IN, USA';
 
-   var map = new google.maps.Map(document.getElementById('map'), { 
+   var map = new google.maps.Map(document.getElementById('map'), {
        mapTypeId: google.maps.MapTypeId.TERRAIN,
        zoom: 10
    });
@@ -249,7 +113,7 @@ function myMap() {
 
    geocoder.geocode({
       'address': address
-   }, 
+   },
    function(results, status) {
       if(status == google.maps.GeocoderStatus.OK) {
          new google.maps.Marker({
@@ -262,7 +126,6 @@ function myMap() {
 
 }
 </script>
-
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIqZ1SHXEe7CUj8Gv9MvVQLWrI-3k4isQ&callback=myMap"></script>
 
 </body>

@@ -23,6 +23,12 @@ var connection = mysql.createConnection({
 	database : 	"sfellers"
 });
 
+/*
+TODO:
+ - GetUser
+ - Return user data with post data 
+ */
+
 /* connect to database */
 connection.connect(function(err) {
 	if (err) {
@@ -156,10 +162,10 @@ app.post('/LoginButton', function(req, res) {
 	var callback = function(result) {
 		if (result < 0 ) {
 			/* an error occured */
-			res.json({"response": "login failed", "Uid": " ", "State": result});
+			res.json({"Response": "login failed", "Uid": " ", "State": result});
 		}
 		else {
-			res.json({"response": "login successful", "Uid": result, "State": 0}); 
+			res.json({"Response": "login successful", "Uid": result, "State": 0}); 
 		}
 	}
 
@@ -214,10 +220,10 @@ app.post('/RegisterButton', function(req, res) {
 	var callback = function(result) {
 		if (result < 0) {
 			/* an error occured */
-			res.json({"resonse": "register failed", "Uid": " ", "State": result});
+			res.json({"Resonse": "register failed", "Uid": " ", "State": result});
 		}
 		else {
-			res.json({"response": "register successful", "Uid": result, "State": 0});
+			res.json({"Response": "register successful", "Uid": result, "State": 0});
 		}
 	}
 
@@ -283,10 +289,10 @@ app.post('/Logout', function(req, res) {
 	var callback = function(result) {
 		if (result < 0) {
 			/* an error occured */
-			res.json({"resonse": "logout failed", "State": result});
+			res.json({"Resonse": "logout failed", "State": result});
 		}
 		else {
-			res.json({"response": "logout successful", "State": 0});
+			res.json({"Response": "logout successful", "State": 0});
 		}
 	}
 
@@ -305,6 +311,49 @@ function Logout(Uid, callback) {
 	return callback(0);
 }
 
+/**
+ * Get user info
+ * Accepts: userId
+ * Returns user info (not password)
+ */
+ app.post('/GetUser', function(req, res) {
+ 	console.log("GetUser");
+
+ 	/* callback to handle response */
+ 	var callback = function(result) {
+ 		if (result < 0) {
+ 			res.json({'Response': 'GetUser failed', 'State': result, 'Result': ''});
+ 		}
+ 		else {
+ 			res.json({'Response': 'update successful', 'State': 0, 'Result': result});
+ 		}
+ 	}
+
+ 	/* check for undefined args */
+ 	if (req.body.userId == undefined) {
+ 		callback(-1);
+ 	}
+ 	else {
+ 		GetUser(req.body.userId, callback);
+ 	}
+ });
+
+ function GetUser(userId, callback) {
+ 	console.log("GetUser: userId" + userId);
+
+ 	var select = "SELECT * FROM Users WHERE Uid LIKE '" + userId + "'";
+
+ 	connection.query(select, function(err, rows) {
+ 		if (err) {
+ 			console.log("GetUser: database error: " + err);
+ 			return callback(-2);
+ 		}
+ 		else {
+ 			return callback(rows);
+ 		}
+ 	});
+ }
+
 
 /** 
  * Updates a user's profile information in the database 
@@ -312,16 +361,16 @@ function Logout(Uid, callback) {
  * Returns: state
  */
 app.post('/UpdateProfile', function(req, res) {
-	console.log("Update Profile");
+	console.log("UpdateProfile");
 
 	/* register callback to handle response */
 	var callback = function(result) {
 		if (result < 0) {
 			/* an error occured */
-			res.json({'response': 'update failed', 'State': result});
+			res.json({'Response': 'update failed', 'State': result});
 		}
 		else {
-			res.json({'response' : 'update successful', 'State': result});
+			res.json({'Response' : 'update successful', 'State': result});
 		}
 	}
 
@@ -368,10 +417,10 @@ app.post('/CreatePost', function(req, res) {
 	var callback = function(result) {
 		if (result < 0) {
 			/* an error occurred */
-			res.json({'response': 'createPost failed', 'PostId': " ", 'State': result});
+			res.json({'Response': 'createPost failed', 'PostId': " ", 'State': result});
 		}
 		else {
-			res.json({'response' : 'createPost successful', 'PostId': result, 'State': 0});
+			res.json({'Response' : 'createPost successful', 'PostId': result, 'State': 0});
 		}
 	}
 
@@ -420,10 +469,10 @@ function CreatePost(userId, location, description, callback) {
  	var callback = function(result) {
  		if (result < 0) {
  			/* an error occurred */
- 			res.json({'response': 'GetPost failed', 'Post': " ", 'State': result});
+ 			res.json({'Response': 'GetPost failed', 'Post': " ", 'State': result});
  		}
  		else {
- 			res.json({'response': 'GetPosts successful', 'Post': result, 'State': 0});
+ 			res.json({'Response': 'GetPosts successful', 'Post': result, 'State': 0});
  		}
  	}
 
@@ -453,7 +502,8 @@ function CreatePost(userId, location, description, callback) {
  		}
  		else {
  			if (rows.length == 1) {
- 				return callback(rows[0]);
+ 				/* get user information also */
+ 				return callback(rows[0] + GetUser(rows[0].UID, callback));
  			}
  			else {
  				console.log("GetPost: PostId matches multiple posts!");
@@ -474,10 +524,10 @@ app.post("/GetAllPosts", function(req, res) {
   	/* callback to handle response */
   	var callback = function(result) {
   		if (result < 0) {
-  			res.json({"response": "GetAllPosts failed", "result": "", "state": result });
+  			res.json({"Response": "GetAllPosts failed", "result": "", "State": result });
   		}
   		else {
-  			res.json({"response": "GetAllPosts successful", "result": result, "state": 0 });
+  			res.json({"Response": "GetAllPosts successful", "result": result, "State": 0 });
   		}
   	}
 
@@ -511,10 +561,10 @@ app.post("/Bid", function(req, res) {
 	/* callback to handle response */
   	var callback = function(result) {
   		if (result < 0) {
-  			res.json({"response": "Bid failed", "result": "", "state": result });
+  			res.json({"Response": "Bid failed", "result": "", "State": result });
   		}
   		else {
-  			res.json({"response": "Bid successful", "result": result, "state": 0 });
+  			res.json({"Response": "Bid successful", "result": result, "State": 0 });
   		}
   	}
 
@@ -555,10 +605,10 @@ app.post("/GetBids", function(req, res) {
 	/* callback to handle response */
   	var callback = function(result) {
   		if (result < 0) {
-  			res.json({"response": "GetBids failed", "result": "", "state": result });
+  			res.json({"Response": "GetBids failed", "result": "", "State": result });
   		}
   		else {
-  			res.json({"response": "GetBids successful", "result": result, "state": 0 });
+  			res.json({"Response": "GetBids successful", "result": result, "State": 0 });
   		}
   	}
 
