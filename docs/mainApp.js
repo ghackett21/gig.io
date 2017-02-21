@@ -70,18 +70,24 @@ $scope.getUserPic = function(username) {
 app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
 	$scope.user;
     $scope.test = "test";
-	$scope.clickButton = function() {
+	window.onload = function() {
 
-		if($scope.user == undefined){
+		/*if($scope.user == undefined){
+			console.log("Scope user undefined");
 			return;
 		}
 		if($scope.user == undefined || $scope.user.username == undefined || $scope.user.password == undefined){
+			console.log("Other undefined stuff");
 			return;
 		}
 		console.log("username = " + $scope.user.username);
 		console.log("password = " + $scope.user.password);
+		*/
 		$http.post('/GetAllPosts').then(function(response) {
 			$scope.user = null;
+			$scope.location = response.data.result[1].Location;
+			$scope.desc = response.data.result[1].Description;
+			console.log("Number of returned elements: " + response.data.result.length);
 			console.log(response.status);
 			console.log(response);
 			if(response.status == 200){
