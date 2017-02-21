@@ -524,8 +524,20 @@ function CreatePost(userId, location, description, callback) {
  		}
  		else {
  			if (rows.length == 1) {
+ 				var post = rows[0];
+ 				
  				/* get user information also */
- 				return callback(rows[0] + GetUser(rows[0].Uid, callback));
+ 				var select = "SELECT * FROM Users WHERE Uid LIKE '" + userId + "'";
+
+			 	connection.query(select, function(err, rows) {
+			 		if (err) {
+			 			console.log("GetPost: database error: " + err);
+			 			return callback(-2);
+			 		}
+			 		else {
+			 			return callback(post + rows);
+			 		}
+			 	});
  			}
  			else {
  				console.log("GetPost: PostId matches multiple posts!");
