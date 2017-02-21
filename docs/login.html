@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
-    <script src="login.js"></script>
+    <script src="app.js"></script>
     <link href="login_style.css" rel="stylesheet" type="text/css">
   </head>
   <body ng-app="myApp" ng-controller="loginController">
@@ -18,7 +18,7 @@
           <p class="message">Already registered? <a href="#">Sign In</a></p>
         </form>
         <form class="login-form">
-          <input type="text" placeholder="Username" ng-model="user.username"/>
+          <input type="text" ng-model="user.username" placeholder="Username"/>
           <input type="password" ng-model="user.password" placeholder="Password"/>
           <button ng-click="clickButton()" >login</button>
           <p class="message">Not registered? <a href="register.html">Create an account</a></p>

@@ -40,15 +40,36 @@ connection.connect(function(err) {
 });
 
 
+passport.serializeUser(function(user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function(user, done) {
+  done(null, user);
+});
+
+
 function findByUsername(username, fn) {
-	for (var i = 0, len = users.length; i < len; i++) {
-	    var user = users[i];
-	    if (user.username === username) {
-	      return fn(null, user);
-	    }
-	  }
-return fn(null, null);
-}
+	var select = "SELECT * FROM Users WHERE Username LIKE '" + username + "'";
+	connection.query(select, function(err, rows) {
+		if (err) {
+			/* an error occured */
+			console.log("Failed to find username");
+			return fn(null, null);
+		}
+		else {
+			if (rows.length == 1) {
+				console.log("Found User!");
+				return fn(null, row);
+			}
+			else {
+				return fn(null, null);
+			}
+		}
+	});
+
+	return fn(null, null);
+};
 
 
 passport.use(new LocalStrategy(

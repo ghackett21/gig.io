@@ -111,10 +111,10 @@ app.controller("loginController", [ '$scope', '$http', function($scope, $http) {
 			console.log(response);
 			if(response.data.status == 200){
 				console.log("success");
-				window.location = response.data.redirect;
+				console.log("redirect = ", response.data.redirect);
+				//window.location = response.data.redirect;
 			}else if(response.status == 401){
 				console.log("failure");
-				//window.location.href = 'http://localhost:8081/login.html';
 			}
 			//load response
 		}).catch(function(response) {
@@ -123,7 +123,6 @@ app.controller("loginController", [ '$scope', '$http', function($scope, $http) {
 			console.log(response);
 			if(response.status == 401){
 				console.log("failure1");
-				//window.location.href = 'http://localhost:8081/login.html';
 			}
 			//load response
 		})
