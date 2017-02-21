@@ -325,7 +325,7 @@ function Logout(Uid, callback) {
  			res.json({'Response': 'GetUser failed', 'State': result, 'Result': ''});
  		}
  		else {
- 			res.json({'Response': 'update successful', 'State': 0, 'Result': result});
+ 			res.json({'Response': 'GetUser successful', 'State': 0, 'Result': result});
  		}
  	}
 
