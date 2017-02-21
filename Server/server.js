@@ -82,7 +82,7 @@ app.use(express.static(path.join(__dirname, '/../docs')));
 app.post('/login',
 		  passport.authenticate('local', { failureRedirect: '/login' }),
 		  function(req, res) {
-		    res.sendStatus(200);
+		    res.json({"status": 200, "redirect" : "/index.html"});
 		  });
 
 /**
@@ -100,7 +100,7 @@ app.get('/login', function(req, res, next) {
 		}
 		if (!user) {
 			console.log("failed : user : " + user);
-			return res.sendStatus(401); 
+			res.json({"status": 401, "redirect" : "/login.html"});
 		}
 	})(req, res, next);
 

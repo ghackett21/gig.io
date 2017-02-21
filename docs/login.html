@@ -4,8 +4,10 @@
     <meta charset="utf-8">
     <title>gig.io login</title>
     <link href="login_style.css" rel="stylesheet" type="text/css">
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
+	<script src="app.js"></script>
   </head>
-  <body>
+  <body ng-app="myApp" ng-controller="loginController">
     <h1>gig.io</h1>
     <div class="login-page">
       <div class="form">
@@ -17,9 +19,9 @@
           <p class="message">Already registered? <a href="#">Sign In</a></p>
         </form>
         <form class="login-form">
-          <input type="text" placeholder="username"/>
-          <input type="password" placeholder="password"/>
-          <button>login</button>
+          <input type="text" placeholder="Username" ng-model="user.username"/>
+          <input type="password" ng-model="user.password" placeholder="Password"/>
+          <button ng-click="clickButton()" >login</button>
           <p class="message">Not registered? <a href="register.html">Create an account</a></p>
         </form>
       </div>
