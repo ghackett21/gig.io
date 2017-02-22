@@ -6,14 +6,7 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var flash = require('connect-flash');
 var session = require('express-session');
-
-
-/* mock users for testing */
-var users = [
-             { id: 1, username: 'bob', password: 'secret', email: 'bob@example.com', apikey: 'asdasjsdgfjkjhg' },
-             { id: 2, username: 'joe', password: 'birthday', email: 'joe@example.com', apikey: 'gfsdgsfgsfg' },
-             { id: 3, username: 'sfellers', password: 'lol1', email: 'sfellers@example.com', apikey: 'g4fgh2gfhg' }
-         ];
+var sync = require('synchronize');
 
 /* create database connection */
 var connection = mysql.createConnection({
@@ -25,7 +18,6 @@ var connection = mysql.createConnection({
 
 /*
 TODO:
- - GetUser
  - Return user data with post data 
  */
 
@@ -59,34 +51,19 @@ function findByUsername(username, fn) {
 		}
 		else {
 			if (rows.length == 1) {
-				console.log("Found User!");
-				return fn(null, row);
+				console.log("findbyuser sending rows[0]: %j", rows[0]);
+				return fn(null, rows[0]);
 			}
 			else {
+				console.log("why am i here");
 				return fn(null, null);
 			}
 		}
 	});
 
-	return fn(null, null);
 };
 
 
-passport.use(new LocalStrategy(
-		  function(username, password, done) {
-		    findByUsername(username, function (err, user) {
-		      if (err) { return done(err); }
-		      if (!user) {
-		        return done(null, false, { message: 'Incorrect username.' });
-		      }
-		      if (user.password != password) {
-		        return done(null, false, { message: 'Incorrect password.' });
-		      }
-		      console.log("user = " + user);
-		      return done(null, user);
-		    });
-		  }
-		));
 
 
 /* create express server */
@@ -105,19 +82,32 @@ app.use(passport.session());
 console.log("Server Started");
 app.use(express.static(path.join(__dirname, '/../docs')));
 
+passport.use(new LocalStrategy(
+		  function(username, password, done) {
+		    findByUsername(username, function (err, user) {
+		      if(err) { return done(err); }
+		      if(user == null) {
+				console.log("Incorrect Username");
+		        return done(null, false, { message: 'Incorrect username.' });
+		      }
+		      if(user.Password != password) {
+				console.log("Incorrect Password");
+		        return done(null, false, { message: 'Incorrect password.' });
+		      }
+			  console.log("found user = " + user.Username);
+		      return done(null, user);
+		    });
+		  }
+));
 
 app.post('/login',
 		  passport.authenticate('local', { failureRedirect: '/login' }),
 		  function(req, res) {
+			console.log("sending post login");
 		    res.json({"status": 200, "redirect" : "/index.html"});
-		  });
+});
 
-/**
- * Attempts to log in with the provided username and password.
- * Returns the userId if successful
- * Accepts: username, password
- * Returns: State, UserID
- */
+
 app.get('/login', function(req, res, next) {
 	console.log("LoginButton called");
 	
@@ -126,47 +116,11 @@ app.get('/login', function(req, res, next) {
 			return next(err);
 		}
 		if (!user) {
-			console.log("failed : user : " + user);
 			res.json({"status": 401, "redirect" : "/login.html"});
 		}
-	})(req, res, next);
+		})(req, res, next);
 
 });
-
-
-/** Site navigation endpoints 
-app.get('/', function (req, res) {
-	console.log("Default Page: index.html");
-	res.sendFile(path.join(__dirname, '/../docs/index.html'));
-});
-
-app.get('/index.html', function (req, res) {
-	console.log("Index Page");
-	res.sendFile(path.join(__dirname, '/../docs/index.html'));
-});
-
-app.get('/register.html', function(req, res) {
-	console.log("Register Page");
-	res.sendFile(path.join(__dirname, '/../docs/register.html'));
-});
-
-app.get('/login.html', function(req, res) {
-	console.log("Login Page");
-	res.sendFile(path.join(__dirname, '/../docs/register.html'));
-});
-
-app.get('/about.html', function (req, res) {
-	console.log("About Page");
-	res.sendFile(path.join(__dirname, '/../docs/about.html'));
-
-});
-
-app.get('/postings.html', function (req, res) {
-	console.log("Postings Page");
-	res.sendFile(path.join(__dirname, '/../docs/postings.html'));
-})
-*/
-
 
 
 /** Database interaction endpoints */
@@ -416,7 +370,7 @@ function UpdateProfile(userID, username, password, email, description, profileIm
 
 	connection.query(update, function(err, rows) {
 		if (err) {
-			console.log("UpdateProfile: database error:", err);
+			console.log("UpdateProfile: database error:" + err);
 
 			return callback(-2);
 		}
@@ -578,10 +532,39 @@ function GetAllPosts(callback) {
   		}
   		else {
   			console.log("rows" + rows);
+
+  			for (i in rows) {
+  				/* get user data */
+  				var userInfo = sync.await(GetUser_Helper(rows[i].Uid));
+  				rows[i].Username = userInfo.Username;
+  				rows[i].Description = userInfo.Description;
+  				rows[i].Location = userInfo.Location;
+  				rows[i].PhoneNumber = userInfo.PhoneNumber;
+  				rows[i].EmailAddress = userInfo.EmailAddress;
+  				rows[i].AverageRating = userInfo.AverageRating;
+
+  				console.log(i + ": " + JSON.stringify(rows[i]));
+
+  			}
+
   			return callback(rows);
   		}
   	});
 }
+
+function GetUser_Helper(userId) {
+	var select = "SELECT * FROM Users WHERE Uid LIKE '" + userId + "'";
+
+ 	connection.query(select, function(err, rows) {
+ 		if (err) {
+ 			console.log("GetPost: database error: " + err);
+ 			return null;
+ 		}
+ 		else {
+ 			return rows;
+ 		}
+ 	});
+ }
 
 
 /** 
