@@ -534,13 +534,36 @@ function GetAllPosts(callback) {
 
   			for (i in rows) {
   				/* get user data */
+  				var userInfo = GetUser_Helper(rows[i].Uid);
+  				rows[i].Username = userInfo.Username;
+  				rows[i].Description = userInfo.Description;
+  				rows[i].Location = userInfo.Location;
+  				rows[i].PhoneNumber = userInfo.PhoneNumber;
+  				rows[i].EmailAddress = userInfo.EmailAddress;
+  				rows[i].AverageRating = userInfo.AverageRating;
+
   				console.log(i + ": " + JSON.stringify(rows[i]));
+
   			}
 
   			return callback(rows);
   		}
   	});
 }
+
+function GetUser_Helper(userId) {
+	var select = "SELECT * FROM Users WHERE Uid LIKE '" + userId + "'";
+
+ 	connection.query(select, function(err, rows) {
+ 		if (err) {
+ 			console.log("GetPost: database error: " + err);
+ 			return null;
+ 		}
+ 		else {
+ 			return rows;
+ 		}
+ 	});
+ }
 
 
 /** 
