@@ -531,6 +531,12 @@ function GetAllPosts(callback) {
   		}
   		else {
   			console.log("rows" + rows);
+
+  			for (i in rows) {
+  				/* get user data */
+  				console.log(i + ": " + rows[i]);
+  			}
+
   			return callback(rows);
   		}
   	});
