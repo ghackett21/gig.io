@@ -4,11 +4,13 @@
 
 
 <head>
-<link rel="stylesheet" href="style.css">
+ 
+<link rel="stylesheet" href="style.css" type="text/css">
+<script src="app.js"></script>
 </head>
 <body>
 
-<div w3-include-html="https://ghackett21.github.io/gig.io/navbar.html"></div>
+<div w3-include-html="navbar.html"></div>
 
 
 
@@ -16,25 +18,64 @@
   <h2 align=center>Create an account to get started!</h2>
   <p align=center>Please provide the following information so we can set up your account.</p>
 
-<form>
+<!--<div class="col-md-6 col-md-offset-3">
+    
+    <form name="form" ng-submit="vm.register()" role="form">
+        <div class="form-group" ng-class="{ 'has-error': form.firstName.$dirty && form.firstName.$error.required }">
+            <label for="username">First name</label>
+            <input type="text" name="firstName" id="firstName" class="form-control" ng-model="vm.user.firstName" required />
+            <span ng-show="form.firstName.$dirty && form.firstName.$error.required" class="help-block">*</span>
+        </div>
+        <div class="form-group" ng-class="{ 'has-error': form.lastName.$dirty && form.lastName.$error.required }">
+            <label for="username">Last name</label>
+            <input type="text" name="lastName" id="Text1" class="form-control" ng-model="vm.user.lastName" required />
+            <span ng-show="form.lastName.$dirty && form.lastName.$error.required" class="help-block">*</span>
+        </div>
+        <div class="form-group" ng-class="{ 'has-error': form.username.$dirty && form.username.$error.required }">
+            <label for="username">Username</label>
+            <input type="text" name="username" id="username" class="form-control" ng-model="vm.user.username" required />
+            <span ng-show="form.username.$dirty && form.username.$error.required" class="help-block">*</span>
+        </div>
+        <div class="form-group" ng-class="{ 'has-error': form.password.$dirty && form.password.$error.required }">
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password" class="form-control" ng-model="vm.user.password" required />
+            <span ng-show="form.password.$dirty && form.password.$error.required" class="help-block">*</span>
+        </div>
+        <div class="form-group" ng-class="{ 'has-error': form.password.$dirty && form.password.$error.required }">
+            <label for="retyped password">Confirm Password</label>
+            <input type="retyped password" name="retyped password" id="retyped password" class="form-control" ng-model="vm.user.password" required />
+            <span ng-show="form.password.$dirty && form.password.$error.required" class="help-block">*</span>
+        </div>
+        <div class="form-actions">
+            <button type="submit" id="RegisterButton" ng-disabled="form.$invalid || vm.dataLoading" class="btn btn-primary">Register</button>
+            
+        </div>
+    </form>
+</div>
+-->
+
+<form name="registration" onSubmit="return formValidation();">
       
         <label for="username">Username:</label>
-        <input id="username" type="text">
+        <input id="username" type="text"  class="validate" required>
       <br>
-      
+        <label for="email">Email:</label>
+        <input id="email" type="email"  class="validate" required>
+      <br>  
         <label for="password">Password:</label>
-        <input id="password" type="password">
+        <input id="password" type="password"  class="validate" required>
       <br>
-        <label for="confirmpassword">Confirm Password:</label>
-        <input id="confirmpassword" type="password">
+        <label for="retyped password">Confirm Password:</label>
+        <input id="retyped password" type="password"  class="validate" required>
       <br>
         <label for="firstname">First Name:</label>
-        <input id="firstname" type="text">
+        <input id="firstname" type="text" class="validate" required>
+      <br>  
         <label for="lastname">Last Name:</label>
-        <input id="lastname" type="text">
+        <input id="lastname" type="text"  class="validate" required>
         <br>
         <label for="phone">Phone Number:</label>
-        <input id="phone" type="tel">
+        <input id="phone" type="tel"  class="validate" required>
         <br>
         <input type="submit" value="Submit">
     </form><br>
