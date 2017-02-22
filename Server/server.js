@@ -59,7 +59,7 @@ function findByUsername(username, fn) {
 		else {
 			if (rows.length == 1) {
 				console.log("Found User!");
-				return fn(null, row);
+				return fn(null, rows);
 			}
 			else {
 				return fn(null, null);
