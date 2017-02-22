@@ -7,14 +7,6 @@ var LocalStrategy = require('passport-local').Strategy;
 var flash = require('connect-flash');
 var session = require('express-session');
 
-
-/* mock users for testing */
-var users = [
-             { id: 1, username: 'bob', password: 'secret', email: 'bob@example.com', apikey: 'asdasjsdgfjkjhg' },
-             { id: 2, username: 'joe', password: 'birthday', email: 'joe@example.com', apikey: 'gfsdgsfgsfg' },
-             { id: 3, username: 'sfellers', password: 'lol1', email: 'sfellers@example.com', apikey: 'g4fgh2gfhg' }
-         ];
-
 /* create database connection */
 var connection = mysql.createConnection({
 	host     : 	"mydb.itap.purdue.edu",
