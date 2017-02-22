@@ -522,7 +522,7 @@ app.post("/GetAllPosts", function(req, res) {
 });
 
 function GetAllPosts(callback) {
-  	var select = "SELECT Posting.Pid, Posting.Location, Posting.CreationTime, Posting.Description, Users.Uid, Users.Username, Users.Description, Users.Location, Users.PhoneNumber, Users.DateJoined, Users.EmailAddress, Users.AverageRating FROM Posting Inner Join Users On Postings.Uid=Users.Uid";
+  	var select = "SELECT Posting.Pid, Posting.Location, Posting.CreationTime, Posting.Description, Users.Uid, Users.Username, Users.Description, Users.Location, Users.PhoneNumber, Users.DateJoined, Users.EmailAddress, Users.AverageRating FROM Posting Inner Join Users On Posting.Uid=Users.Uid";
 
   	connection.query(select, function(err, rows) {
   		if (err) {
