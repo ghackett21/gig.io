@@ -6,7 +6,6 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var flash = require('connect-flash');
 var session = require('express-session');
-var sync = require('synchronize');
 
 /* create database connection */
 var connection = mysql.createConnection({
@@ -535,7 +534,7 @@ function GetAllPosts(callback) {
 
   			for (i in rows) {
   				/* get user data */
-  				var userInfo = sync.await(GetUser_Helper(rows[i].Uid));
+  				var userInfo = GetUser_Helper(rows[i].Uid);
   				rows[i].Username = userInfo.Username;
   				rows[i].Description = userInfo.Description;
   				rows[i].Location = userInfo.Location;
