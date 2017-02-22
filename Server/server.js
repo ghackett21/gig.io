@@ -7,14 +7,6 @@ var LocalStrategy = require('passport-local').Strategy;
 var flash = require('connect-flash');
 var session = require('express-session');
 
-
-/* mock users for testing */
-var users = [
-             { id: 1, username: 'bob', password: 'secret', email: 'bob@example.com', apikey: 'asdasjsdgfjkjhg' },
-             { id: 2, username: 'joe', password: 'birthday', email: 'joe@example.com', apikey: 'gfsdgsfgsfg' },
-             { id: 3, username: 'sfellers', password: 'lol1', email: 'sfellers@example.com', apikey: 'g4fgh2gfhg' }
-         ];
-
 /* create database connection */
 var connection = mysql.createConnection({
 	host     : 	"mydb.itap.purdue.edu",
@@ -25,7 +17,6 @@ var connection = mysql.createConnection({
 
 /*
 TODO:
- - GetUser
  - Return user data with post data 
  */
 
@@ -40,32 +31,38 @@ connection.connect(function(err) {
 });
 
 
+passport.serializeUser(function(user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function(user, done) {
+  done(null, user);
+});
+
+
 function findByUsername(username, fn) {
-	for (var i = 0, len = users.length; i < len; i++) {
-	    var user = users[i];
-	    if (user.username === username) {
-	      return fn(null, user);
-	    }
-	  }
-return fn(null, null);
-}
+	var select = "SELECT * FROM Users WHERE Username LIKE '" + username + "'";
+	connection.query(select, function(err, rows) {
+		if (err) {
+			/* an error occured */
+			console.log("Failed to find username");
+			return fn(null, null);
+		}
+		else {
+			if (rows.length == 1) {
+				console.log("findbyuser sending rows[0]: %j", rows[0]);
+				return fn(null, rows[0]);
+			}
+			else {
+				console.log("why am i here");
+				return fn(null, null);
+			}
+		}
+	});
+
+};
 
 
-passport.use(new LocalStrategy(
-		  function(username, password, done) {
-		    findByUsername(username, function (err, user) {
-		      if (err) { return done(err); }
-		      if (!user) {
-		        return done(null, false, { message: 'Incorrect username.' });
-		      }
-		      if (user.password != password) {
-		        return done(null, false, { message: 'Incorrect password.' });
-		      }
-		      console.log("user = " + user);
-		      return done(null, user);
-		    });
-		  }
-		));
 
 
 /* create express server */
@@ -84,19 +81,32 @@ app.use(passport.session());
 console.log("Server Started");
 app.use(express.static(path.join(__dirname, '/../docs')));
 
+passport.use(new LocalStrategy(
+		  function(username, password, done) {
+		    findByUsername(username, function (err, user) {
+		      if(err) { return done(err); }
+		      if(user == null) {
+				console.log("Incorrect Username");
+		        return done(null, false, { message: 'Incorrect username.' });
+		      }
+		      if(user.Password != password) {
+				console.log("Incorrect Password");
+		        return done(null, false, { message: 'Incorrect password.' });
+		      }
+			  console.log("found user = " + user.Username);
+		      return done(null, user);
+		    });
+		  }
+));
 
 app.post('/login',
 		  passport.authenticate('local', { failureRedirect: '/login' }),
 		  function(req, res) {
-		    res.sendStatus(200);
-		  });
+			console.log("sending post login");
+		    res.json({"status": 200, "redirect" : "/index.html"});
+});
 
-/**
- * Attempts to log in with the provided username and password.
- * Returns the userId if successful
- * Accepts: username, password
- * Returns: State, UserID
- */
+
 app.get('/login', function(req, res, next) {
 	console.log("LoginButton called");
 	
@@ -105,47 +115,11 @@ app.get('/login', function(req, res, next) {
 			return next(err);
 		}
 		if (!user) {
-			console.log("failed : user : " + user);
-			return res.sendStatus(401); 
+			res.json({"status": 401, "redirect" : "/login.html"});
 		}
-	})(req, res, next);
+		})(req, res, next);
 
 });
-
-
-/** Site navigation endpoints 
-app.get('/', function (req, res) {
-	console.log("Default Page: index.html");
-	res.sendFile(path.join(__dirname, '/../docs/index.html'));
-});
-
-app.get('/index.html', function (req, res) {
-	console.log("Index Page");
-	res.sendFile(path.join(__dirname, '/../docs/index.html'));
-});
-
-app.get('/register.html', function(req, res) {
-	console.log("Register Page");
-	res.sendFile(path.join(__dirname, '/../docs/register.html'));
-});
-
-app.get('/login.html', function(req, res) {
-	console.log("Login Page");
-	res.sendFile(path.join(__dirname, '/../docs/register.html'));
-});
-
-app.get('/about.html', function (req, res) {
-	console.log("About Page");
-	res.sendFile(path.join(__dirname, '/../docs/about.html'));
-
-});
-
-app.get('/postings.html', function (req, res) {
-	console.log("Postings Page");
-	res.sendFile(path.join(__dirname, '/../docs/postings.html'));
-})
-*/
-
 
 
 /** Database interaction endpoints */
@@ -325,12 +299,13 @@ function Logout(Uid, callback) {
  			res.json({'Response': 'GetUser failed', 'State': result, 'Result': ''});
  		}
  		else {
- 			res.json({'Response': 'update successful', 'State': 0, 'Result': result});
+ 			res.json({'Response': 'GetUser successful', 'State': 0, 'Result': result});
  		}
  	}
 
  	/* check for undefined args */
  	if (req.body.userId == undefined) {
+ 		console.log("GetUser: undefined args. Requires userId");
  		callback(-1);
  	}
  	else {
@@ -394,7 +369,7 @@ function UpdateProfile(userID, username, password, email, description, profileIm
 
 	connection.query(update, function(err, rows) {
 		if (err) {
-			console.log("UpdateProfile: database error:", err);
+			console.log("UpdateProfile: database error:" + err);
 
 			return callback(-2);
 		}
@@ -477,12 +452,12 @@ function CreatePost(userId, location, description, callback) {
  	}
 
  	/* check for missing args */
- 	if (req.body.PostId == undefined) {
- 		console.log("GetPost: undefined args");
+ 	if (req.body.postId == undefined) {
+ 		console.log("GetPost: undefined args. Requires: postId");
  		callback(-1);
  	}
  	else {
- 		GetPost(req.body.PostId, callback);
+ 		GetPost(req.body.postId, callback);
  	}
  });
 
@@ -502,8 +477,20 @@ function CreatePost(userId, location, description, callback) {
  		}
  		else {
  			if (rows.length == 1) {
+ 				var post = rows[0];
+ 				
  				/* get user information also */
- 				return callback(rows[0] + GetUser(rows[0].UID, callback));
+ 				var select = "SELECT * FROM Users WHERE Uid LIKE '" + post.Uid + "'";
+
+			 	connection.query(select, function(err, rows) {
+			 		if (err) {
+			 			console.log("GetPost: database error: " + err);
+			 			return callback(-2);
+			 		}
+			 		else {
+			 			return callback(Object.assign(post, rows));
+			 		}
+			 	});
  			}
  			else {
  				console.log("GetPost: PostId matches multiple posts!");
