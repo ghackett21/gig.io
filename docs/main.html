@@ -21,32 +21,19 @@
 <br>
 <br>
 
-<table>
+<table id="table">
   <tr>
     <th>Job Title</th>
     <th>Owner</th>
     <th>Location</th>
   </tr>
-  <tr class="clickable" id="mow">
-    <td>Lawn mowing</td>
-    <td>Bruce</td>
-    <td>{{location}}</td>
-  </tr>
-  <tr class="clickable" id="wash">
-    <td>Wash car</td>
-    <td>Barry</td>
-    <td>Chauncey Square</td>
-  </tr>
-  <tr class="clickable" id="groceries">
-    <td>Groceries needed</td>
-    <td>Tony</td>
-    <td>Hilltop Apartments</td>
-  </tr>
-  <tr class="clickable" id="fix">
-    <td>Fix drain pipe</td>
-    <td>Steve</td>
-    <td>Third Street Suites</td>
-</tr>
+  <template id="tmplt">
+	  <tr class="clickable">
+    		<td></td>
+    		<td></td>
+    		<td></td>
+  	</tr>
+  </template>
 </table>
 
 <!-- The Modal -->
@@ -61,8 +48,8 @@
     <div class="modal-body">
       <p>Owner: Bruce</p>
 	  <p>Contact Info: (777) 777 - 777</p>
-	  <p>Description: {{desc}}</p>
-	  <p>Location: {{location}}</p>
+	  <p>Description: </p>
+	  <p>Location: </p>
 	  <div id="map" style="width:400px;height:400px;background:yellow"></div>
     </div>
     <div class="modal-footer">
@@ -75,11 +62,11 @@
 </div>
 
 <script>
-  // Get the modal
+//Get the modal
 var modal = document.getElementById('myModal');
 
 // Get the button that opens the modal
-var btn = document.getElementById("mow");
+var btn = document.getElementById("post");
 
 // Get the <span> element that closes the modal
 var span = document.getElementsByClassName("close")[0];
@@ -126,7 +113,6 @@ function myMap() {
 
 }
 </script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIqZ1SHXEe7CUj8Gv9MvVQLWrI-3k4isQ&callback=myMap"></script>
 
 </body>
 </html>

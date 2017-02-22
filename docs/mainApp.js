@@ -85,9 +85,21 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
 		*/
 		$http.post('/GetAllPosts').then(function(response) {
 			$scope.user = null;
-			$scope.location = response.data.result[1].Location;
-			$scope.desc = response.data.result[1].Description;
-			console.log("Number of returned elements: " + response.data.result.length);
+			$scope.count = response.data.result.length;
+			$scope.index = 0;
+			var arr = response.data.result;
+			var template = document.querySelector('#tmplt');
+			for (var i = 1; i < arr.length; i++) {
+				$scope.index = i;
+				var post = arr[i];
+				var clone = template.content.cloneNode(true);
+				var td = clone.querySelectorAll('td');
+				td[0].innerHTML = post.CreationTime;
+				td[1].innerHTML = post.Description;
+				td[2].innerHTML = post.Location;
+				template.parentNode.appendChild(clone);
+			}
+
 			console.log(response.status);
 			console.log(response);
 			if(response.status == 200){
