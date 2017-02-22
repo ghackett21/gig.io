@@ -6,6 +6,7 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var flash = require('connect-flash');
 var session = require('express-session');
+var sync = require('synchronize');
 
 /* create database connection */
 var connection = mysql.createConnection({
