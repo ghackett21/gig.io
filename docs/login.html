@@ -2,28 +2,20 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>gig.io login</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
+    <script src="login.js"></script>
     <link href="login_style.css" rel="stylesheet" type="text/css">
+    <title>gig.io login</title>
   </head>
-  <body>
+  <body ng-app="myApp">
     <h1>gig.io</h1>
-    <div class="login-page">
+    <div class="login-page" ng-controller="loginController">
       <div class="form">
-        <form class="register-form">
-          <input type="text" placeholder="name"/>
-          <input type="password" placeholder="password"/>
-          <input type="text" placeholder="email address"/>
-          <button>create</button>
-          <p class="message">Already registered? <a href="#">Sign In</a></p>
-        </form>
-        <form class="login-form">
-          <input type="text" placeholder="username"/>
-          <input type="password" placeholder="password"/>
-          <button>login</button>
-          <p class="message">Not registered? <a href="register.html">Create an account</a></p>
-        </form>
+        <input type="text" ng-model="user.username" placeholder="username"/>
+        <input type="password" ng-model="user.password" placeholder="password"/>
+        <button a href="#" ng-click="clickButton()">login</button>
+        <p class="message">Not registered? <a href="register.html">Create an account</a></p>
       </div>
     </div>
-    <script src="login.js"></script>
   </body>
 </html>
