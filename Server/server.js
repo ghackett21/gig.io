@@ -534,13 +534,13 @@ function GetAllPosts(callback) {
 
   			for (i in rows) {
   				/* get user data */
-  				var userInfo = GetUser_Helper(rows[i].Uid);
+  				/*var userInfo = GetUser_Helper(rows[i].Uid);
   				rows[i].Username = userInfo.Username;
   				rows[i].Description = userInfo.Description;
   				rows[i].Location = userInfo.Location;
   				rows[i].PhoneNumber = userInfo.PhoneNumber;
   				rows[i].EmailAddress = userInfo.EmailAddress;
-  				rows[i].AverageRating = userInfo.AverageRating;
+  				rows[i].AverageRating = userInfo.AverageRating;*/
 
   				console.log(i + ": " + JSON.stringify(rows[i]));
 
