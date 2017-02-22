@@ -93,6 +93,7 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
 				$scope.index = i;
 				var post = arr[i];
 				var clone = template.content.cloneNode(true);
+				clone.id = "post-"+i;
 				var td = clone.querySelectorAll('td');
 				td[0].innerHTML = post.CreationTime;
 				td[1].innerHTML = post.Description;

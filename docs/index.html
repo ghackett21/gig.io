@@ -4,7 +4,7 @@
   <link href="main_style.css" rel="stylesheet" type="text/css">
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
   <script src="mainApp.js"></script>
-
+  <script src="data.js"></script>
 </head>
 <body ng-app="myApp" ng-controller="mainController">
 
@@ -21,14 +21,14 @@
 <br>
 <br>
 
-<table>
+<table id="table">
   <tr>
     <th>Job Title</th>
     <th>Owner</th>
     <th>Location</th>
   </tr>
   <template id="tmplt">
-  <tr class="clickable">
+	  <tr class="clickable">
     <td></td>
     <td></td>
     <td></td>
@@ -61,20 +61,20 @@
   </div>
 </div>
 
-<script>
+<script defer>
   // Get the modal
 var modal = document.getElementById('myModal');
 
 // Get the button that opens the modal
-//var btn = document.getElementById("mow");
+var btn = document.getElementById("post-1");
 
 // Get the <span> element that closes the modal
 var span = document.getElementsByClassName("close")[0];
 
 // When the user clicks the button, open the modal
-/*btn.onclick = function() {
+btn.onclick = function() {
     modal.style.display = "block";
-}*/
+}
 
 // When the user clicks on <span> (x), close the modal
 span.onclick = function() {
