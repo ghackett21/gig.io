@@ -1,15 +1,24 @@
 var express = require("express");
-var mysql   = require("mysql");
+var mysql   = require('mysql');
 var path    = require("path");
 var bodyParser = require('body-parser');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+var flash = require('connect-flash');
+var session = require('express-session');
 
 /* create database connection */
 var connection = mysql.createConnection({
-	host     : 3306,
-	user     : "root",
-	password : "password",
-	database : "gigio"
+	host     : 	"mydb.itap.purdue.edu",
+	user     : 	"sfellers",
+	password : 	"Te5UVB7vvR7SjJ6y",
+	database : 	"sfellers"
 });
+
+/*
+TODO:
+ - Return user data with post data 
+ */
 
 /* connect to database */
 connection.connect(function(err) {
@@ -21,45 +30,96 @@ connection.connect(function(err) {
 	}
 });
 
+
+passport.serializeUser(function(user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function(user, done) {
+  done(null, user);
+});
+
+
+function findByUsername(username, fn) {
+	var select = "SELECT * FROM Users WHERE Username LIKE '" + username + "'";
+	connection.query(select, function(err, rows) {
+		if (err) {
+			/* an error occured */
+			console.log("Failed to find username");
+			return fn(null, null);
+		}
+		else {
+			if (rows.length == 1) {
+				console.log("findbyuser sending rows[0]: %j", rows[0]);
+				return fn(null, rows[0]);
+			}
+			else {
+				console.log("why am i here");
+				return fn(null, null);
+			}
+		}
+	});
+
+};
+
+
+
+
 /* create express server */
 var app = express();
 app.use(bodyParser.json());
-
+app.use(session({
+	secret: 'keyboard cat',
+	resave: false,
+	saveUninitialized: true,
+	cookie: { secure: true }
+}));
+app.use(flash());
+app.use(passport.initialize());
+app.use(passport.session());
+	
 console.log("Server Started");
+app.use(express.static(path.join(__dirname, '/../docs')));
 
-/** Site navigation endpoints */
-app.get('/', function (req, res) {
-	console.log("Default Page: index.html");
-	res.sendFile(path.join(__dirname, '/../docs/index.html'));
+passport.use(new LocalStrategy(
+		  function(username, password, done) {
+		    findByUsername(username, function (err, user) {
+		      if(err) { return done(err); }
+		      if(user == null) {
+				console.log("Incorrect Username");
+		        return done(null, false, { message: 'Incorrect username.' });
+		      }
+		      if(user.Password != password) {
+				console.log("Incorrect Password");
+		        return done(null, false, { message: 'Incorrect password.' });
+		      }
+			  console.log("found user = " + user.Username);
+		      return done(null, user);
+		    });
+		  }
+));
+
+app.post('/login',
+		  passport.authenticate('local', { failureRedirect: '/login' }),
+		  function(req, res) {
+			console.log("sending post login");
+		    res.json({"status": 200, "redirect" : "/index.html"});
 });
 
-app.get('/index.html', function (req, res) {
-	console.log("Index Page");
-	res.sendFile(path.join(__dirname, '/../docs/index.html'));
-});
 
-app.get('/register.html', function(req, res) {
-	console.log("Register Page");
-	res.sendFile(path.join(__dirname, '/../docs/register.html'));
-});
-
-app.get('/login.html', function(req, res) {
-	console.log("Login Page");
-	res.sendFile(path.join(__dirname, '/../docs/register.html'));
-});
-
-app.get('/about.html', function (req, res) {
-	console.log("About Page");
-	res.sendFile(path.join(__dirname, '/../docs/about.html'));
+app.get('/login', function(req, res, next) {
+	console.log("LoginButton called");
+	
+	passport.authenticate('local', function(err, user, info) {
+		if (err) { 
+			return next(err);
+		}
+		if (!user) {
+			res.json({"status": 401, "redirect" : "/login.html"});
+		}
+		})(req, res, next);
 
 });
-
-app.get('/postings.html', function (req, res) {
-	console.log("Postings Page");
-	res.sendFile(path.join(__dirname, '/../docs/postings.html'));
-})
-
-
 
 
 /** Database interaction endpoints */
@@ -76,10 +136,10 @@ app.post('/LoginButton', function(req, res) {
 	var callback = function(result) {
 		if (result < 0 ) {
 			/* an error occured */
-			res.json({"response": "login failed", "Uid": " ", "State": result});
+			res.json({"Response": "login failed", "Uid": " ", "State": result});
 		}
 		else {
-			res.json({"response": "login successful", "Uid": result, "State": 0}); 
+			res.json({"Response": "login successful", "Uid": result, "State": 0}); 
 		}
 	}
 
@@ -134,10 +194,10 @@ app.post('/RegisterButton', function(req, res) {
 	var callback = function(result) {
 		if (result < 0) {
 			/* an error occured */
-			res.json({"resonse": "register failed", "Uid": " ", "State": result});
+			res.json({"Resonse": "register failed", "Uid": " ", "State": result});
 		}
 		else {
-			res.json({"response": "register successful", "Uid": result, "State": 0});
+			res.json({"Response": "register successful", "Uid": result, "State": 0});
 		}
 	}
 
@@ -203,10 +263,10 @@ app.post('/Logout', function(req, res) {
 	var callback = function(result) {
 		if (result < 0) {
 			/* an error occured */
-			res.json({"resonse": "logout failed", "State": result});
+			res.json({"Resonse": "logout failed", "State": result});
 		}
 		else {
-			res.json({"response": "logout successful", "State": 0});
+			res.json({"Response": "logout successful", "State": 0});
 		}
 	}
 
@@ -225,6 +285,50 @@ function Logout(Uid, callback) {
 	return callback(0);
 }
 
+/**
+ * Get user info
+ * Accepts: userId
+ * Returns user info (not password)
+ */
+ app.post('/GetUser', function(req, res) {
+ 	console.log("GetUser");
+
+ 	/* callback to handle response */
+ 	var callback = function(result) {
+ 		if (result < 0) {
+ 			res.json({'Response': 'GetUser failed', 'State': result, 'Result': ''});
+ 		}
+ 		else {
+ 			res.json({'Response': 'GetUser successful', 'State': 0, 'Result': result});
+ 		}
+ 	}
+
+ 	/* check for undefined args */
+ 	if (req.body.userId == undefined) {
+ 		console.log("GetUser: undefined args. Requires userId");
+ 		callback(-1);
+ 	}
+ 	else {
+ 		GetUser(req.body.userId, callback);
+ 	}
+ });
+
+ function GetUser(userId, callback) {
+ 	console.log("GetUser: userId" + userId);
+
+ 	var select = "SELECT * FROM Users WHERE Uid LIKE '" + userId + "'";
+
+ 	connection.query(select, function(err, rows) {
+ 		if (err) {
+ 			console.log("GetUser: database error: " + err);
+ 			return callback(-2);
+ 		}
+ 		else {
+ 			return callback(rows);
+ 		}
+ 	});
+ }
+
 
 /** 
  * Updates a user's profile information in the database 
@@ -232,16 +336,16 @@ function Logout(Uid, callback) {
  * Returns: state
  */
 app.post('/UpdateProfile', function(req, res) {
-	console.log("Update Profile");
+	console.log("UpdateProfile");
 
 	/* register callback to handle response */
 	var callback = function(result) {
 		if (result < 0) {
 			/* an error occured */
-			res.json({'response': 'update failed', 'State': result});
+			res.json({'Response': 'update failed', 'State': result});
 		}
 		else {
-			res.json({'response' : 'update successful', 'State': result});
+			res.json({'Response' : 'update successful', 'State': result});
 		}
 	}
 
@@ -265,7 +369,7 @@ function UpdateProfile(userID, username, password, email, description, profileIm
 
 	connection.query(update, function(err, rows) {
 		if (err) {
-			console.log("UpdateProfile: database error:", err);
+			console.log("UpdateProfile: database error:" + err);
 
 			return callback(-2);
 		}
@@ -288,16 +392,16 @@ app.post('/CreatePost', function(req, res) {
 	var callback = function(result) {
 		if (result < 0) {
 			/* an error occurred */
-			res.json({'response': 'createPost failed', 'PostId': " ", 'State': result});
+			res.json({'Response': 'createPost failed', 'PostId': " ", 'State': result});
 		}
 		else {
-			res.json({'response' : 'createPost successful', 'PostId': result, 'State': 0});
+			res.json({'Response' : 'createPost successful', 'PostId': result, 'State': 0});
 		}
 	}
 
 	/* check for missing args */
-	if (req.body.Uid == undefined || req.body.location == undefined || req.body.description) {
-		console.log("CreatePost: undefined args");
+	if (req.body.Uid == undefined || req.body.location == undefined || req.body.description == undefined) {
+		console.log("CreatePost: undefined args, requires Uid, location, and description");
 		callback(-1);
 	}
 	else {
@@ -311,8 +415,8 @@ app.post('/CreatePost', function(req, res) {
 function CreatePost(userId, location, description, callback) {
 	console.log("CreatePost: ", userId, location, description);
 
-	var creationTime = "1/01/2000, 00:00:00"
-	var insert = "INSERT INTO POSTINGS (Uid, Location, CreationTime, Status, Description) VALUES ('" + userId + "', '" + location + "', '" + creationTime + "', 1, '" + desciption + "')";  
+	var creationTime = GetDate();
+	var insert = "INSERT INTO Posting (Uid, Location, CreationTime, Status, Description) VALUES ('" + userId + "', '" + location + "', '" + creationTime + "', 1, '" + description + "')";  
 
 	connection.query(insert, function (err, rows) {
 		if (err) {
@@ -322,7 +426,8 @@ function CreatePost(userId, location, description, callback) {
 		}
 		else {
 			/* return the new postId */
-			return callback(rows[0].Pid);
+			console.log("rows:" + rows);
+			return callback(0);
 		}
 	});
 }
@@ -339,20 +444,20 @@ function CreatePost(userId, location, description, callback) {
  	var callback = function(result) {
  		if (result < 0) {
  			/* an error occurred */
- 			res.json({'response': 'GetPost failed', 'Post': " ", 'State': result});
+ 			res.json({'Response': 'GetPost failed', 'Post': " ", 'State': result});
  		}
  		else {
- 			res.json({'response': 'GetPosts successful', 'Post': result, 'State': 0});
+ 			res.json({'Response': 'GetPosts successful', 'Post': result, 'State': 0});
  		}
  	}
 
  	/* check for missing args */
- 	if (req.body.PostId == undefined) {
- 		console.log("GetPost: undefined args");
+ 	if (req.body.postId == undefined) {
+ 		console.log("GetPost: undefined args. Requires: postId");
  		callback(-1);
  	}
  	else {
- 		GetPost(req.body.PostId, callback);
+ 		GetPost(req.body.postId, callback);
  	}
  });
 
@@ -362,7 +467,7 @@ function CreatePost(userId, location, description, callback) {
  function GetPost(PostId, callback) {
  	console.log("GetPost: ", PostId);
 
- 	var select = "SELECT * FROM POSTINGS WHERE Pid LIKE " + PostId;
+ 	var select = "SELECT * FROM Posting WHERE Pid LIKE " + PostId;
 
  	connection.query(select, function(err, rows) {
  		if (err) {
@@ -372,7 +477,20 @@ function CreatePost(userId, location, description, callback) {
  		}
  		else {
  			if (rows.length == 1) {
- 				return callback(rows[0]);
+ 				var post = rows[0];
+ 				
+ 				/* get user information also */
+ 				var select = "SELECT * FROM Users WHERE Uid LIKE '" + post.Uid + "'";
+
+			 	connection.query(select, function(err, rows) {
+			 		if (err) {
+			 			console.log("GetPost: database error: " + err);
+			 			return callback(-2);
+			 		}
+			 		else {
+			 			return callback(Object.assign(post, rows));
+			 		}
+			 	});
  			}
  			else {
  				console.log("GetPost: PostId matches multiple posts!");
@@ -393,18 +511,18 @@ app.post("/GetAllPosts", function(req, res) {
   	/* callback to handle response */
   	var callback = function(result) {
   		if (result < 0) {
-  			res.json({"response": "GetAllPosts failed", "result": "", "state": result });
+  			res.json({"Response": "GetAllPosts failed", "result": "", "State": result });
   		}
   		else {
-  			res.json({"response": "GetAllPosts successful", "result": result, "state": 0 });
+  			res.json({"Response": "GetAllPosts successful", "result": result, "State": 0 });
   		}
   	}
 
-  	getAllPosts(callback);
+  	GetAllPosts(callback);
 });
 
 function GetAllPosts(callback) {
-  	var select = "SELECT * FROM POSTINGS";
+  	var select = "SELECT * FROM Posting";
 
   	connection.query(select, function(err, rows) {
   		if (err) {
@@ -412,10 +530,40 @@ function GetAllPosts(callback) {
   			return callback(-2);
   		}
   		else {
-  			return callback(rows.PID);
+  			console.log("rows" + rows);
+
+  			for (i in rows) {
+  				/* get user data */
+  				var userInfo = GetUser_Helper(rows[i].Uid);
+  				rows[i].Username = userInfo.Username;
+  				rows[i].Description = userInfo.Description;
+  				rows[i].Location = userInfo.Location;
+  				rows[i].PhoneNumber = userInfo.PhoneNumber;
+  				rows[i].EmailAddress = userInfo.EmailAddress;
+  				rows[i].AverageRating = userInfo.AverageRating;
+
+  				console.log(i + ": " + JSON.stringify(rows[i]));
+
+  			}
+
+  			return callback(rows);
   		}
   	});
 }
+
+function GetUser_Helper(userId) {
+	var select = "SELECT * FROM Users WHERE Uid LIKE '" + userId + "'";
+
+ 	connection.query(select, function(err, rows) {
+ 		if (err) {
+ 			console.log("GetPost: database error: " + err);
+ 			return null;
+ 		}
+ 		else {
+ 			return rows;
+ 		}
+ 	});
+ }
 
 
 /** 
@@ -429,10 +577,10 @@ app.post("/Bid", function(req, res) {
 	/* callback to handle response */
   	var callback = function(result) {
   		if (result < 0) {
-  			res.json({"response": "Bid failed", "result": "", "state": result });
+  			res.json({"Response": "Bid failed", "result": "", "State": result });
   		}
   		else {
-  			res.json({"response": "Bid successful", "result": result, "state": 0 });
+  			res.json({"Response": "Bid successful", "result": result, "State": 0 });
   		}
   	}
 
@@ -447,7 +595,8 @@ app.post("/Bid", function(req, res) {
 });
 
 function Bid(userId, postId, amount, callback) {
-	var insert = "INSERT INTO Bids (Uid, Pid, Amount) VALUES (" + userId + ", " + postId + ", " + amount + ")";
+	var bidTime = GetDate();
+	var insert = "INSERT INTO Bids (Uid, Pid, BidTime, Amount) VALUES (" + userId + ", " + postId + ", '" + bidTime + "', " + amount + ")";
 
 	connection.query(insert, function(err, rows) {
 		if (err) {
@@ -472,19 +621,19 @@ app.post("/GetBids", function(req, res) {
 	/* callback to handle response */
   	var callback = function(result) {
   		if (result < 0) {
-  			res.json({"response": "GetBids failed", "result": "", "state": result });
+  			res.json({"Response": "GetBids failed", "result": "", "State": result });
   		}
   		else {
-  			res.json({"response": "GetBids successful", "result": result, "state": 0 });
+  			res.json({"Response": "GetBids successful", "result": result, "State": 0 });
   		}
   	}
 
-  	if (req.body.postId == undefined) {
+  	if (req.body.PostId == undefined) {
   		console.log("GetBids undfined args: requires PostId");
   		callback(-1);
   	}
   	else {
-  		GetBids(req.body.postId, callback);
+  		GetBids(req.body.PostId, callback);
   	}
 });
 
@@ -502,6 +651,16 @@ function GetBids(postId, callback) {
 			return callback(rows);
 		}
 	}); 
+}
+
+/**
+ * Get the current date and time in SQL accepted datetime format
+ */
+function GetDate() {
+	var today = new Date();
+	var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+	var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+	return date+' '+time;
 }
 
 /* start express server */
