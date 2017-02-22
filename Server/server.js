@@ -40,15 +40,36 @@ connection.connect(function(err) {
 });
 
 
+passport.serializeUser(function(user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function(user, done) {
+  done(null, user);
+});
+
+
 function findByUsername(username, fn) {
-	for (var i = 0, len = users.length; i < len; i++) {
-	    var user = users[i];
-	    if (user.username === username) {
-	      return fn(null, user);
-	    }
-	  }
-return fn(null, null);
-}
+	var select = "SELECT * FROM Users WHERE Username LIKE '" + username + "'";
+	connection.query(select, function(err, rows) {
+		if (err) {
+			/* an error occured */
+			console.log("Failed to find username");
+			return fn(null, null);
+		}
+		else {
+			if (rows.length == 1) {
+				console.log("Found User!");
+				return fn(null, row);
+			}
+			else {
+				return fn(null, null);
+			}
+		}
+	});
+
+	return fn(null, null);
+};
 
 
 passport.use(new LocalStrategy(
@@ -88,7 +109,7 @@ app.use(express.static(path.join(__dirname, '/../docs')));
 app.post('/login',
 		  passport.authenticate('local', { failureRedirect: '/login' }),
 		  function(req, res) {
-		    res.sendStatus(200);
+		    res.json({"status": 200, "redirect" : "/index.html"});
 		  });
 
 /**
@@ -106,7 +127,7 @@ app.get('/login', function(req, res, next) {
 		}
 		if (!user) {
 			console.log("failed : user : " + user);
-			return res.sendStatus(401); 
+			res.json({"status": 401, "redirect" : "/login.html"});
 		}
 	})(req, res, next);
 
@@ -325,12 +346,13 @@ function Logout(Uid, callback) {
  			res.json({'Response': 'GetUser failed', 'State': result, 'Result': ''});
  		}
  		else {
- 			res.json({'Response': 'update successful', 'State': 0, 'Result': result});
+ 			res.json({'Response': 'GetUser successful', 'State': 0, 'Result': result});
  		}
  	}
 
  	/* check for undefined args */
  	if (req.body.userId == undefined) {
+ 		console.log("GetUser: undefined args. Requires userId");
  		callback(-1);
  	}
  	else {
@@ -477,12 +499,12 @@ function CreatePost(userId, location, description, callback) {
  	}
 
  	/* check for missing args */
- 	if (req.body.PostId == undefined) {
- 		console.log("GetPost: undefined args");
+ 	if (req.body.postId == undefined) {
+ 		console.log("GetPost: undefined args. Requires: postId");
  		callback(-1);
  	}
  	else {
- 		GetPost(req.body.PostId, callback);
+ 		GetPost(req.body.postId, callback);
  	}
  });
 
@@ -502,8 +524,20 @@ function CreatePost(userId, location, description, callback) {
  		}
  		else {
  			if (rows.length == 1) {
+ 				var post = rows[0];
+ 				
  				/* get user information also */
- 				return callback(rows[0] + GetUser(rows[0].UID, callback));
+ 				var select = "SELECT * FROM Users WHERE Uid LIKE '" + post.Uid + "'";
+
+			 	connection.query(select, function(err, rows) {
+			 		if (err) {
+			 			console.log("GetPost: database error: " + err);
+			 			return callback(-2);
+			 		}
+			 		else {
+			 			return callback(Object.assign(post, rows));
+			 		}
+			 	});
  			}
  			else {
  				console.log("GetPost: PostId matches multiple posts!");
