@@ -522,7 +522,7 @@ app.post("/GetAllPosts", function(req, res) {
 });
 
 function GetAllPosts(callback) {
-  	var select = "SELECT * FROM Posting";
+  	var select = "SELECT Posting.Pid, Posting.Location, Posting.CreationTime, Posting.Description, Users.Uid, Users.Username, Users.Description, Users.Location, Users.PhoneNumber, Users.DateJoined, Users.EmailAddress, Users.AverageRating FROM Posting Inner Join Users On Posting.Uid=Users.Uid";
 
   	connection.query(select, function(err, rows) {
   		if (err) {
@@ -530,21 +530,7 @@ function GetAllPosts(callback) {
   			return callback(-2);
   		}
   		else {
-  			console.log("rows" + rows);
-
-  			for (i in rows) {
-  				/* get user data */
-  				/*var userInfo = GetUser_Helper(rows[i].Uid);
-  				rows[i].Username = userInfo.Username;
-  				rows[i].Description = userInfo.Description;
-  				rows[i].Location = userInfo.Location;
-  				rows[i].PhoneNumber = userInfo.PhoneNumber;
-  				rows[i].EmailAddress = userInfo.EmailAddress;
-  				rows[i].AverageRating = userInfo.AverageRating;*/
-
-  				console.log(i + ": " + JSON.stringify(rows[i]));
-
-  			}
+  			console.log("rows" + JSON.stringify(rows));
 
   			return callback(rows);
   		}
