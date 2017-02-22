@@ -4,12 +4,16 @@
   <link href="main_style.css" rel="stylesheet" type="text/css">
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
   <script src="mainApp.js"></script>
-  <script src="data.js"></script>
+
 </head>
 <body ng-app="myApp" ng-controller="mainController">
 
-<div w3-include-html="navbar.html"></div>
-
+ 
+<ul class="topnav" id="myTopnav">
+  <li><a class="active" href="index.html"><img src="home.png" alt="Home page" height=20 width=20></img></a></li>
+  <li><a href="profile.html">My Profile</a><li>
+  <li style="float:right"><a href="logout.html">Logout</a><li>  
+</ul>
 <br>
 <br>
 
