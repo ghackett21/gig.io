@@ -416,7 +416,7 @@ function UpdateProfile(userID, username, password, email, description, profileIm
 
 	connection.query(update, function(err, rows) {
 		if (err) {
-			console.log("UpdateProfile: database error:", err);
+			console.log("UpdateProfile: database error:" + err);
 
 			return callback(-2);
 		}
