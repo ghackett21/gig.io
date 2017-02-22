@@ -535,7 +535,7 @@ function CreatePost(userId, location, description, callback) {
 			 			return callback(-2);
 			 		}
 			 		else {
-			 			return callback(post + rows);
+			 			return callback(Object.assign(post, rows));
 			 		}
 			 	});
  			}
