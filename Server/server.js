@@ -534,7 +534,7 @@ function GetAllPosts(callback) {
 
   			for (i in rows) {
   				/* get user data */
-  				console.log(i + ": " + rows[i]);
+  				console.log(i + ": " + JSON.stringify(rows[i]);
   			}
 
   			return callback(rows);
