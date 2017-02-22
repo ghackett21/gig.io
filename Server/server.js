@@ -25,7 +25,6 @@ var connection = mysql.createConnection({
 
 /*
 TODO:
- - GetUser
  - Return user data with post data 
  */
 
