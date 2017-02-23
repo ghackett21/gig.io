@@ -546,7 +546,7 @@ app.post("/GetAllPosts", function(req, res) {
 });
 
 function GetAllPosts(callback) {
-  	var select = "SELECT * FROM Posting";
+  	var select = "SELECT Posting.Pid, Posting.P_Location, Posting.CreationTime, Posting.P_Description, Users.Uid, Users.Username, Users.U_Description, Users.U_Location, Users.PhoneNumber, Users.DateJoined, Users.EmailAddress, Users.AverageRating FROM Posting Inner Join Users On Posting.Uid=Users.Uid";
 
   	connection.query(select, function(err, rows) {
   		if (err) {
@@ -554,11 +554,26 @@ function GetAllPosts(callback) {
   			return callback(-2);
   		}
   		else {
-  			console.log("rows" + rows);
+  			console.log("rows[]" + JSON.stringify(rows[2]));
+
   			return callback(rows);
   		}
   	});
 }
+
+function GetUser_Helper(userId) {
+	var select = "SELECT * FROM Users WHERE Uid LIKE '" + userId + "'";
+
+ 	connection.query(select, function(err, rows) {
+ 		if (err) {
+ 			console.log("GetPost: database error: " + err);
+ 			return null;
+ 		}
+ 		else {
+ 			return rows;
+ 		}
+ 	});
+ }
 
 
 /** 
