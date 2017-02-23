@@ -1,0 +1,31 @@
+h1 {
+  font-size: 100px;
+}
+
+form {
+  display: table;
+  display: inline-block;
+}
+
+p {
+  display: table-row;
+}
+
+label {
+  display: table-cell;
+}
+
+input {
+  display: table-cell;
+}
+
+button {
+  width: 80px;
+  height: 30px;
+  font-size: 14px;
+}
+
+body {
+  text-align: center;
+  font-family: sans-serif;
+}

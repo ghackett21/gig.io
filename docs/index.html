@@ -1,18 +1,69 @@
 <!DOCTYPE html>
 <html>
-    <script src="http://www.w3schools.com/lib/w3data.js"></script>
-    
 <head>
-<link rel="stylesheet" href="https://ghackett21.github.io/gig.io/style.css">
+  <link href="main_style.css" rel="stylesheet" type="text/css">
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
+  <script src="mainApp.js"></script>
+  <script src="data.js"></script>
 </head>
-<body>
+<body ng-app="myApp" ng-controller="mainController">
 
-<div w3-include-html="https://ghackett21.github.io/gig.io/navbar.html"></div>
 
-<div style="padding-left:16px">
-  <h2 align=center>Welcome to Gig.io!</h2>
-  <p align=center>Gig.io is a user driven service that connects job seekers with people willing to pay for help with tasks.</p>
+<ul class="topnav" id="myTopnav">
+  <li><a class="active" href="index.html"><img src="home.png" alt="Home page" height=20 width=20></img></a></li>
+  <li><a href="profile.html">My Profile</a><li>
+  <li style="float:right"><a href="logout.html">Logout</a><li>
+</ul>
+<br>
+<br>
+
+<h1>Welcome to Gig.io</h1>
+<br>
+<br>
+<button ng-click="testAuth()">testAuth</button>
+
+<table id="table">
+  <tr>
+    <th>Job Title</th>
+    <th>Owner</th>
+    <th>Location</th>
+  </tr>
+  <template id="tmplt">
+	  <tr class="clickable">
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  </template>
+</table>
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="close">&times;</span>
+      <h2>Job {{pid}}</h2>
+    </div>
+    <div class="modal-body">
+      <p>Owner: {{owner}}</p>
+      <p>Contact Info: {{phone}}</p>
+      <p>Description: {{desc}}</p>
+      <p>Location: {{location}}</p>
+      <div id="map" style="width:400px;height:400px;background:yellow"></div>
+    </div>
+    <div class="modal-footer">
+    <br>
+      <form>
+      <button formaction="bid.html" type="button" align="right-side">Enter Bid</button>
+      </form>
+    <br>
+    <br>
+    </div>
+  </div>
 </div>
-<script src="https://ghackett21.github.io/gig.io/navbar.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIqZ1SHXEe7CUj8Gv9MvVQLWrI-3k4isQ&callback=myMap"></script>
+<script src="navbar.js"></script>
 </body>
 </html>
