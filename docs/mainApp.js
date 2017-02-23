@@ -67,6 +67,8 @@ $scope.getUserPic = function(username) {
 
 });
 
+var arr;
+
 app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
 	$scope.user;
     $scope.test = "test";
@@ -87,20 +89,74 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
 			$scope.user = null;
 			$scope.count = response.data.result.length;
 			$scope.index = 0;
-			var arr = response.data.result;
+			arr = response.data.result;
+			var postData = [];
 			var template = document.querySelector('#tmplt');
 			for (var i = 1; i < arr.length; i++) {
 				$scope.index = i;
 				var post = arr[i];
+				postData.push(arr[i]);
 				var clone = template.content.cloneNode(true);
-				clone.id = "post-"+i;
 				var td = clone.querySelectorAll('td');
 				td[0].innerHTML = post.CreationTime;
-				td[1].innerHTML = post.Description;
+				td[1].innerHTML = post.Username;
 				td[2].innerHTML = post.Location;
+				var tr = clone.querySelectorAll('tr');
+				tr[0].id = "post-"+i;
 				template.parentNode.appendChild(clone);
 			}
 
+            // Get the modal
+            var modal = document.getElementById('myModal');
+
+            // Get the button that opens the modal
+            var rows = document.getElementsByTagName("tr");
+            //console.log(postData[0]);
+            for (var i = 1; i < rows.length; i++) {
+                //console.log(postData);
+                rows[i].onclick = function() {
+                    //console.log(arr);
+                    rowID = this.id;
+                    var j = 1;
+                    var str;
+                    for(j; j < rows.length; j++) {
+                       str = "post-"+j;
+                       if (str === rowID)
+                            break;
+                    }
+                    var post = arr[j];
+                    console.log(j);
+                    console.log(arr[j]);
+                    $scope.owner = post.Username;
+                    console.log($scope.owner);
+                    $scope.phone = "111";
+                    $scope.desc = post.Description;
+                    $scope.location = post.Location;
+                    modal.style.display = "block";
+                    $scope.$apply();
+                };
+            }
+            //var btn = document.getElementById("post-1");
+
+            // Get the <span> element that closes the modal
+            var span = document.getElementsByClassName("close")[0];
+
+            // When the user clicks the button, open the modal
+            /*btn.onclick = function() {
+                modal.style.display = "block";
+            }*/
+
+            // When the user clicks on <span> (x), close the modal
+            span.onclick = function() {
+                modal.style.display = "none";
+            }
+
+            // When the user clicks anywhere outside of the modal, close it
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
 			console.log(response.status);
 			console.log(response);
 			if(response.status == 200){
@@ -122,11 +178,30 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
 			}
 			//load response
 		})
-		/*
-		$http.post('/api/authenticate', $scope.user.api_key).then(function(response) {
-			$scope.user = null;
-			console.log(response);
-		});
-		*/
 	};
 }]);
+
+function myMap() {
+	/*var address = '1275 1st Street, West Lafayette, IN, USA';
+
+   var map = new google.maps.Map(document.getElementById('map'), {
+       mapTypeId: google.maps.MapTypeId.TERRAIN,
+       zoom: 10
+   });
+
+   var geocoder = new google.maps.Geocoder();
+
+   geocoder.geocode({
+      'address': address
+   },
+   function(results, status) {
+      if(status == google.maps.GeocoderStatus.OK) {
+         new google.maps.Marker({
+            position: results[0].geometry.location,
+            map: map
+         });
+         map.setCenter(results[0].geometry.location);
+      }
+   });
+*/
+}
