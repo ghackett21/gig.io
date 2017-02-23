@@ -32,16 +32,42 @@ connection.connect(function(err) {
 
 
 passport.serializeUser(function(user, done) {
+  console.log("serializing user : " + user);
   done(null, user);
 });
 
 passport.deserializeUser(function(user, done) {
-  done(null, user);
+      console.log('no im not serial');
+      done(null, user);
+   
 });
 
 
 function findByUsername(username, fn) {
 	var select = "SELECT * FROM Users WHERE Username LIKE '" + username + "'";
+	connection.query(select, function(err, rows) {
+		if (err) {
+			/* an error occured */
+			console.log("Failed to find username");
+			return fn(null, null);
+		}
+		else {
+			if (rows.length == 1) {
+				console.log("findbyuser sending rows[0]: %j", rows[0]);
+				return fn(null, rows[0]);
+			}
+			else {
+				console.log("why am i here");
+				return fn(null, null);
+			}
+		}
+	});
+
+};
+
+
+function findById(id, fn) {
+	var select = "SELECT * FROM Users WHERE Uid LIKE '" + id + "'";
 	connection.query(select, function(err, rows) {
 		if (err) {
 			/* an error occured */
@@ -71,8 +97,7 @@ app.use(bodyParser.json());
 app.use(session({
 	secret: 'keyboard cat',
 	resave: true,
-	saveUninitialized: true,
-	cookie: { secure: true }
+	saveUninitialized: true
 }));
 app.use(flash());
 app.use(passport.initialize());
@@ -99,11 +124,26 @@ passport.use(new LocalStrategy(
 		  }
 ));
 
-app.post('/login',
-		  passport.authenticate('local', { failureRedirect: '/login' }),
-		  function(req, res) {
-			console.log("sending post login");
-		    res.json({"status": 200, "redirect" : "/index.html"});
+app.post('/login', passport.authenticate('local', { failureRedirect: '/login'}), function(req, res) {
+
+	console.log("sending post login req = %j", req.user);
+	//res.json({"status": 200, "redirect" : "/index.html"});
+	req.logIn(req.user, function(err) {
+			
+			if (err) {
+				   return res.status(500).json({
+				       err: 'Could not log in user'
+				   });
+			}
+			console.log("is auth? + "  + req.isAuthenticated()); 
+			req.session.save(() => {
+				res.json({"status": 200, "redirect" : "/index.html"});
+    		})
+
+
+	});
+			
+			
 });
 
 
@@ -115,7 +155,7 @@ app.get('/login', function(req, res, next) {
 			return next(err);
 		}
 		if (!user) {
-			res.json({"status": 401, "redirect" : "/login.html"});
+			return res.json({"status": 401, "redirect" : "/login.html"});
 		}
 		})(req, res, next);
 
@@ -255,6 +295,7 @@ function Register(username, password, callback) {
 
 function ensureAuthenticated(req, res, next) {
   console.log("is auth? + "  + req.isAuthenticated());
+  console.log("req = %s", JSON.stringify(req.user));
   if (req.isAuthenticated()) {
     // req.user is available for use here
     return next(); }
@@ -263,8 +304,25 @@ function ensureAuthenticated(req, res, next) {
   res.redirect('/')
 }
 
-app.get('/protected', ensureAuthenticated, function(req, res) {
+app.get('/protected', ensureAuthenticated , function(req, res) {
   res.send("access granted. secure stuff happens here");
+});
+
+function isAuthenticated(req,res,next){
+   if(req.user)
+      return next();
+   else
+      return res.status(401).json({
+        error: 'User not authenticated'
+      })
+
+}
+
+app.get('/checkauth', isAuthenticated, function(req, res){
+
+    res.status(200).json({
+        status: 'Login successful!'
+    });
 });
 
 
