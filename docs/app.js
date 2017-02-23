@@ -112,7 +112,7 @@ app.controller("loginController", [ '$scope', '$http', function($scope, $http) {
 			if(response.data.status == 200){
 				console.log("success");
 				console.log("redirect = ", response.data.redirect);
-				//window.location = response.data.redirect;
+				window.location = response.data.redirect;
 			}else if(response.status == 401){
 				console.log("failure");
 			}

@@ -70,7 +70,7 @@ var app = express();
 app.use(bodyParser.json());
 app.use(session({
 	secret: 'keyboard cat',
-	resave: false,
+	resave: true,
 	saveUninitialized: true,
 	cookie: { secure: true }
 }));
@@ -251,6 +251,30 @@ function Register(username, password, callback) {
 	});
 }
 
+/* test stuff by sam, dont worry about this */
+
+function ensureAuthenticated(req, res, next) {
+  console.log("is auth? + "  + req.isAuthenticated());
+  if (req.isAuthenticated()) {
+    // req.user is available for use here
+    return next(); }
+
+  // denied. redirect to login
+  res.redirect('/')
+}
+
+app.get('/protected', ensureAuthenticated, function(req, res) {
+  res.send("access granted. secure stuff happens here");
+});
+
+
+
+
+app.get('/logout'), function(req, res) {
+  console.log('logging out');
+  req.logout();
+  res.redirect('/');
+};
 /** 
  * Doesn't do anything currently
  * Accepts: UserID

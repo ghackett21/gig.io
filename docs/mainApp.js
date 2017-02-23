@@ -70,6 +70,14 @@ $scope.getUserPic = function(username) {
 app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
 	$scope.user;
     $scope.test = "test";
+
+//test stuff for server auth
+	$scope.testAuth = function() {
+		$http.get('/protected').then(function(response) {
+			console.log("protected response = %j", response);
+		});
+	};
+
 	window.onload = function() {
 
 		/*if($scope.user == undefined){
