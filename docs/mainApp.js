@@ -74,18 +74,6 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
 	$scope.user;
     $scope.test = "test";
 	window.onload = function() {
-
-		/*if($scope.user == undefined){
-			console.log("Scope user undefined");
-			return;
-		}
-		if($scope.user == undefined || $scope.user.username == undefined || $scope.user.password == undefined){
-			console.log("Other undefined stuff");
-			return;
-		}
-		console.log("username = " + $scope.user.username);
-		console.log("password = " + $scope.user.password);
-		*/
 		$http.post('/GetAllPosts').then(function(response) {
 			$scope.user = null;
 			$scope.count = response.data.result.length;
