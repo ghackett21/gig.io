@@ -68,6 +68,7 @@ $scope.getUserPic = function(username) {
 });
 
 var arr;
+var address;
 
 app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
 	$scope.user;
@@ -125,13 +126,14 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
                             break;
                     }
                     var post = arr[j];
-                    console.log(j);
-                    console.log(arr[j]);
+                    //console.log(j);
+                    //console.log(arr[j]);
                     $scope.owner = post.Username;
-                    console.log($scope.owner);
-                    $scope.phone = "111";
+                    //console.log($scope.owner);
+                    $scope.phone = post.PhoneNumber;
                     $scope.desc = post.Description;
                     $scope.location = post.Location;
+                    address = post.Location;
                     modal.style.display = "block";
                     $scope.$apply();
                 };
@@ -182,7 +184,7 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
 }]);
 
 function myMap() {
-	/*var address = '1275 1st Street, West Lafayette, IN, USA';
+	var myAddress = address;
 
    var map = new google.maps.Map(document.getElementById('map'), {
        mapTypeId: google.maps.MapTypeId.TERRAIN,
@@ -192,7 +194,7 @@ function myMap() {
    var geocoder = new google.maps.Geocoder();
 
    geocoder.geocode({
-      'address': address
+      'address': myAddress
    },
    function(results, status) {
       if(status == google.maps.GeocoderStatus.OK) {
@@ -203,5 +205,5 @@ function myMap() {
          map.setCenter(results[0].geometry.location);
       }
    });
-*/
+
 }
