@@ -130,7 +130,7 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
                     $scope.phone = post.PhoneNumber;
                     $scope.desc = post.U_Description;
 					$scope.pid = post.Pid;
-                    $scope.location = post.U_Location;
+                    $scope.location = post.P_Location;
                     address = post.P_Location;
                     modal.style.display = "block";
                     $scope.$apply();
