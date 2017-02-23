@@ -73,6 +73,14 @@ var address;
 app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
 	$scope.user;
     $scope.test = "test";
+
+//test stuff for server auth
+	$scope.testAuth = function() {
+		$http.get('/protected').then(function(response) {
+			console.log("protected response = %j", response);
+		});
+	};
+
 	window.onload = function() {
 		$http.post('/GetAllPosts').then(function(response) {
 			$scope.user = null;
@@ -87,9 +95,10 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
 				postData.push(arr[i]);
 				var clone = template.content.cloneNode(true);
 				var td = clone.querySelectorAll('td');
-				td[0].innerHTML = post.CreationTime;
+				console.log("post = %j", post);
+				td[0].innerHTML = post.P_Description;
 				td[1].innerHTML = post.Username;
-				td[2].innerHTML = post.Location;
+				td[2].innerHTML = post.P_Location;
 				var tr = clone.querySelectorAll('tr');
 				tr[0].id = "post-"+i;
 				template.parentNode.appendChild(clone);
@@ -119,11 +128,13 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
                     $scope.owner = post.Username;
                     //console.log($scope.owner);
                     $scope.phone = post.PhoneNumber;
-                    $scope.desc = post.Description;
-                    $scope.location = post.Location;
-                    address = post.Location;
+                    $scope.desc = post.U_Description;
+					$scope.pid = post.Pid;
+                    $scope.location = post.U_Location;
+                    address = post.P_Location;
                     modal.style.display = "block";
                     $scope.$apply();
+					myMap();
                 };
             }
             //var btn = document.getElementById("post-1");
@@ -173,7 +184,7 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
 
 function myMap() {
 	var myAddress = address;
-
+	console.log(myAddress);
    var map = new google.maps.Map(document.getElementById('map'), {
        mapTypeId: google.maps.MapTypeId.TERRAIN,
        zoom: 10
