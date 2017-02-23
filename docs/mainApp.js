@@ -83,17 +83,7 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
 
 	window.onload = function() {
 
-		/*if($scope.user == undefined){
-			console.log("Scope user undefined");
-			return;
-		}
-		if($scope.user == undefined || $scope.user.username == undefined || $scope.user.password == undefined){
-			console.log("Other undefined stuff");
-			return;
-		}
-		console.log("username = " + $scope.user.username);
-		console.log("password = " + $scope.user.password);
-		*/
+
 		$http.post('/GetAllPosts').then(function(response) {
 			$scope.user = null;
 			$scope.count = response.data.result.length;
@@ -146,6 +136,7 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
                     address = post.P_Location;
                     modal.style.display = "block";
                     $scope.$apply();
+					myMap();
                 };
             }
             //var btn = document.getElementById("post-1");
@@ -195,7 +186,7 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
 
 function myMap() {
 	var myAddress = address;
-
+	console.log(myAddress);
    var map = new google.maps.Map(document.getElementById('map'), {
        mapTypeId: google.maps.MapTypeId.TERRAIN,
        zoom: 10
