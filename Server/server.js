@@ -267,7 +267,7 @@ app.post('/RegisterButton', function(req, res) {
 		callback(-1);
 	}
 	else {
-		Register(req.body.username, req.body.password, callback);
+		Register(req.body, callback);
 	}
 });
 
@@ -275,11 +275,12 @@ app.post('/RegisterButton', function(req, res) {
  * Creates a new user with the given username and password
  * Checks that no user with the same username exists
  */
-function Register(username, password, callback) {
-	console.log("Register: ", username, password);
+function Register(user, callback) {
+	
+	console.log("Register: ", user.username, user.password, user.email);
 
 	/* check for existing user with username */
-	var select = "SELECT * FROM Users WHERE username LIKE '" + username + "'";
+	var select = "SELECT * FROM Users WHERE username LIKE '" + user.username + "'";
 
 	connection.query(select, function(err, rows) {
 		if (err) {
@@ -293,7 +294,7 @@ function Register(username, password, callback) {
 			}
 			else {
 				/* if username is not already used */
-				var insert = "INSERT INTO Users (Username, Password, NumberOfStrikes, TotalNumberOfRatings) VALUES ('" + username + "', '" + password + "', 0, 0)";
+				var insert = "INSERT INTO Users (Username, Password, EmailAddress, PhoneNumber, NumberOfStrikes, TotalNumberOfRatings) VALUES ('" + user.username + "', '" + user.password + "','" + user.email + "','" + user.phone + "' , 0, 0)";
 
 				connection.query(insert, function(err, rows) {
 					if (err) {
@@ -303,7 +304,7 @@ function Register(username, password, callback) {
 					}
 					else {
 						console.log("Register Successful");
-						Login(username, password, callback);
+						Login(user.username, user.password, callback);
 					}
 				});
 			}

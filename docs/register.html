@@ -9,15 +9,17 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
 <script src="app.js"></script>
 </head>
-<body>
+<body ng-app="myApp" ng-controller="registrationController">
 
-<div w3-include-html="navbar.html"></div>
+<div ng-include="navbar.html"></div>
 
 
 
 <div style="padding-left:16px">
   <h2 align=center>Create an account to get started!</h2>
   <p align=center>Please provide the following information so we can set up your account.</p>
+<br>
+	<h3 id="status" align=center>{{status}}</h3>
 
 <!--<div class="col-md-6 col-md-offset-3">
     
@@ -55,30 +57,24 @@
 </div>
 -->
 
-<form name="registration" onSubmit="return formValidation();">
+<form name="registration">
       
         <label for="username">Username:</label>
-        <input id="username" type="text"  class="validate" required>
+        <input padding-left="5px" ng-model="user.username" id="username" type="text"  class="validate" required>
       <br>
         <label for="email">Email:</label>
-        <input id="email" type="email"  class="validate" required>
+        <input ng-model="user.email" id="email" type="email"  class="validate" required>
       <br>  
-        <label for="password">Password:</label>
-        <input id="password" type="password"  class="validate" required>
+        <label for="password">Password:	</label>
+        <input ng-model="user.password" id="password" type="password"  class="validate" required>
       <br>
         <label for="retyped password">Confirm Password:</label>
-        <input id="retyped password" type="password"  class="validate" required>
-      <br>
-        <label for="firstname">First Name:</label>
-        <input id="firstname" type="text" class="validate" required>
+        <input ng-model="user.password1" id="retyped password" type="password"  class="validate" required>
       <br>  
-        <label for="lastname">Last Name:</label>
-        <input id="lastname" type="text"  class="validate" required>
-        <br>
         <label for="phone">Phone Number:</label>
-        <input id="phone" type="tel"  class="validate" required>
+        <input ng-model="user.phone" id="phone" type="tel"  class="validate" required>
         <br>
-        <input type="submit" value="Submit">
+        <input ng-click="register()" type="submit" value="Submit">
     </form><br>
     
     </div>
