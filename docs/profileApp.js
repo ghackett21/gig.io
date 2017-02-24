@@ -7,6 +7,12 @@ app.controller("profileController", [ '$scope', '$http', function($scope, $http)
     			//window.location = response.data.redirect;
     		});
     };
+	$scope.logout = function() {
+		$http.post('/logout').then(function(response) {
+			console.log("response = %j", response);
+			window.location = response.data.redirect;
+		});
+	};
     window.onload = function() {
     	$http.post('/GetUser').then(function(response) {
     	    console.log(response.data.Result[0]);
