@@ -104,7 +104,21 @@ app.use(passport.initialize());
 app.use(passport.session());
 	
 console.log("Server Started");
+/*
+app.get('/index.html', ensureAuthenticated, function(req, res) {
+	console.log("jere");
+    res.redirect('/');
+});
+*/
+app.get('/', ensureAuthenticated, function(req, res) {
+	console.log("jere1");
+    res.redirect('/index.html');
+});
+
 app.use(express.static(path.join(__dirname, '/../docs')));
+
+
+
 
 passport.use(new LocalStrategy(
 		  function(username, password, done) {
@@ -161,6 +175,12 @@ app.get('/login', function(req, res, next) {
 
 });
 
+app.post('/logout', function(req, res) {
+  console.log('logging out');
+  req.session.destroy();
+  req.logout();
+  res.json({"redirect": '/login.html'});
+});
 
 /** Database interaction endpoints */
 
@@ -295,13 +315,13 @@ function Register(username, password, callback) {
 
 function ensureAuthenticated(req, res, next) {
   console.log("is auth? + "  + req.isAuthenticated());
-  console.log("req = %s", JSON.stringify(req.user));
+  //console.log("req = %s", JSON.stringify(req.user));
   if (req.isAuthenticated()) {
     // req.user is available for use here
     return next(); }
 
   // denied. redirect to login
-  res.redirect('/')
+  res.redirect('/login.html')
 }
 
 app.get('/protected', ensureAuthenticated , function(req, res) {
@@ -312,9 +332,7 @@ function isAuthenticated(req,res,next){
    if(req.user)
       return next();
    else
-      return res.status(401).json({
-        error: 'User not authenticated'
-      })
+      return res.redirect('login.html');
 
 }
 
@@ -328,23 +346,21 @@ app.get('/checkauth', isAuthenticated, function(req, res){
 
 
 
-app.get('/logout'), function(req, res) {
-  console.log('logging out');
-  req.logout();
-  res.redirect('/');
-};
+
+
 /** 
  * Doesn't do anything currently
  * Accepts: UserID
  * Returns: State 
  */
+/*
 app.post('/Logout', function(req, res) {
 	console.log("Logout");
 
-	/* register callback to handle response */
+	/* register callback to handle response 
 	var callback = function(result) {
 		if (result < 0) {
-			/* an error occured */
+			/* an error occured 
 			res.json({"Resonse": "logout failed", "State": result});
 		}
 		else {
@@ -352,7 +368,7 @@ app.post('/Logout', function(req, res) {
 		}
 	}
 
-	/* check for missing args */
+	/* check for missing args 
 	if (req.body.Uid == undefined) {
 		console.log("Logout: undefined args");
 		calback(-1);
@@ -361,11 +377,7 @@ app.post('/Logout', function(req, res) {
 		Logout(Uid, callback);
 	}
 });
-
-function Logout(Uid, callback) {
-	/* do nothing for now */
-	return callback(0);
-}
+*/
 
 /**
  * Get user info
@@ -374,7 +386,7 @@ function Logout(Uid, callback) {
  */
  app.post('/GetUser', function(req, res) {
  	console.log("GetUser");
-
+	console.log("user = %s", JSON.stringify(req.user) );
  	/* callback to handle response */
  	var callback = function(result) {
  		if (result < 0) {
@@ -386,13 +398,8 @@ function Logout(Uid, callback) {
  	}
 
  	/* check for undefined args */
- 	if (req.body.userId == undefined) {
- 		console.log("GetUser: undefined args. Requires userId");
- 		callback(-1);
- 	}
- 	else {
- 		GetUser(req.body.userId, callback);
- 	}
+ 
+ 	GetUser(req.user.Uid, callback);
  });
 
  function GetUser(userId, callback) {
