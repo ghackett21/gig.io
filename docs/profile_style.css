@@ -34,3 +34,21 @@ h1 {
 	font-size: 3.5em;
 	font-family: "Times New Roman", Times, serif;
 }
+
+input[type=submit] {
+    display: block;
+    width: 10%;
+    background-color: #76b852;
+    color: white;
+    padding: 14px 20px;
+    margin: 5px 5px;
+    border: none;
+    float: right;
+    border-radius: 4px;
+    cursor: pointer;
+    
+}
+
+input[type=submit]:hover {
+    background-color: #569832;
+}
