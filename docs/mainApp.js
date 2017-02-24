@@ -75,9 +75,17 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
     $scope.test = "test";
 
 //test stuff for server auth
+	$scope.logout = function() {
+		$http.post('/logout').then(function(response) {
+			console.log("response = %j", response);
+			window.location = response.data.redirect;
+		});
+	};
+
 	$scope.testAuth = function() {
-		$http.get('/protected').then(function(response) {
-			console.log("protected response = %j", response);
+		$http.post('/protected').then(function(response) {
+			console.log("response = %j", response);
+			//window.location = response.data.redirect;
 		});
 	};
 
