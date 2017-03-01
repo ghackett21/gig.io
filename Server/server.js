@@ -345,41 +345,6 @@ app.get('/checkauth', isAuthenticated, function(req, res){
 });
 
 
-
-
-
-
-/** 
- * Doesn't do anything currently
- * Accepts: UserID
- * Returns: State 
- */
-/*
-app.post('/Logout', function(req, res) {
-	console.log("Logout");
-
-	/* register callback to handle response 
-	var callback = function(result) {
-		if (result < 0) {
-			/* an error occured 
-			res.json({"Resonse": "logout failed", "State": result});
-		}
-		else {
-			res.json({"Response": "logout successful", "State": 0});
-		}
-	}
-
-	/* check for missing args 
-	if (req.body.Uid == undefined) {
-		console.log("Logout: undefined args");
-		calback(-1);
-	}
-	else {
-		Logout(Uid, callback);
-	}
-});
-*/
-
 /**
  * Get user info
  * Accepts: userId
@@ -495,18 +460,22 @@ app.post('/CreatePost', function(req, res) {
 		callback(-1);
 	}
 	else {
-		CreatePost(req.body.Uid, req,body.title, req.body.location, req.body.description, callback);
+		imageLink = "";
+		if (req.body.imageLink != undefined) {
+			imageLink = req.body.imageLink;
+		}
+		CreatePost(req.body.Uid, req,body.title, req.body.location, req.body.description, imageLink, callback);
 	}
 });
 
 /**
- * inserts new post into the database - does not check for duplicates
+ * inserts new post into the database 
  */
-function CreatePost(userId, location, description, callback) {
+function CreatePost(userId, title, location, description, image, callback) {
 	console.log("CreatePost: ", userId, location, description);
 
 	var creationTime = GetDate();
-	var insert = "INSERT INTO Posting (Uid, Location, CreationTime, Status, Description) VALUES ('" + userId + "', '" + location + "', '" + creationTime + "', 1, '" + description + "')";  
+	var insert = "INSERT INTO Posting (Uid, P_Title, Location, CreationTime, Status, Description, P_Image) VALUES ('" + userId + "', '" + title + ", " + location + "', '" + creationTime + "', 1, '" + description + ", " + image + "')";  
 
 	connection.query(insert, function (err, rows) {
 		if (err) {
