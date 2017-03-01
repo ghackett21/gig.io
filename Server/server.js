@@ -345,41 +345,6 @@ app.get('/checkauth', isAuthenticated, function(req, res){
 });
 
 
-
-
-
-
-/** 
- * Doesn't do anything currently
- * Accepts: UserID
- * Returns: State 
- */
-/*
-app.post('/Logout', function(req, res) {
-	console.log("Logout");
-
-	/* register callback to handle response 
-	var callback = function(result) {
-		if (result < 0) {
-			/* an error occured 
-			res.json({"Resonse": "logout failed", "State": result});
-		}
-		else {
-			res.json({"Response": "logout successful", "State": 0});
-		}
-	}
-
-	/* check for missing args 
-	if (req.body.Uid == undefined) {
-		console.log("Logout: undefined args");
-		calback(-1);
-	}
-	else {
-		Logout(Uid, callback);
-	}
-});
-*/
-
 /**
  * Get user info
  * Accepts: userId
@@ -495,18 +460,22 @@ app.post('/CreatePost', function(req, res) {
 		callback(-1);
 	}
 	else {
-		CreatePost(req.body.Uid, req,body.title, req.body.location, req.body.description, callback);
+		imageLink = "";
+		if (req.body.imageLink != undefined) {
+			imageLink = req.body.imageLink;
+		}
+		CreatePost(req.body.Uid, req.body.title, req.body.location, req.body.description, imageLink, callback);
 	}
 });
 
 /**
- * inserts new post into the database - does not check for duplicates
+ * inserts new post into the database 
  */
-function CreatePost(userId, location, description, callback) {
+function CreatePost(userId, title, location, description, image, callback) {
 	console.log("CreatePost: ", userId, location, description);
 
 	var creationTime = GetDate();
-	var insert = "INSERT INTO Posting (Uid, Location, CreationTime, Status, Description) VALUES ('" + userId + "', '" + location + "', '" + creationTime + "', 1, '" + description + "')";  
+	var insert = "INSERT INTO Posting (Uid, P_Title, P_Location, CreationTime, Status, P_Description, P_Image) VALUES ('" + userId + "', '" + title + "', '" + location + "', '" + creationTime + "', 1, '" + description + "', '" + image + "')";  
 
 	connection.query(insert, function (err, rows) {
 		if (err) {
@@ -641,6 +610,42 @@ function GetUser_Helper(userId) {
  	});
  }
 
+/**
+ * Returns posts created by the currently logged in user
+ * Accepts: nothing
+ * Returns: list of posts created by user
+ */
+ app.post("/GetUserPosts", function(req, res) {
+ 	console.log("GetUserPosts");
+
+ 	/* callback to handle response */
+ 	var callback = function(result) {
+ 		if (result < 0) {
+ 			res.json({"Response": "GetUserPosts failed", "Result": "", "State": result});
+ 		}
+ 		else {
+ 			res.json({"Response": "GetUserPosts successful", "Result": result, "State": 0});
+ 		}
+ 	}
+
+ 	GetUserPosts(req.user.Uid, callback);
+ });
+
+ function GetUserPosts(userId, callback) {
+ 	console.log("GetUserPosts: userId " + userId);
+ 	var select = "SELECT Posting.Pid, Posting.P_Location, Posting.CreationTime, Posting.P_Description, Users.Uid, Users.Username, Users.U_Description, Users.U_Location, Users.PhoneNumber, Users.DateJoined, Users.EmailAddress, Users.AVG_PostRate, Users.AVG_BidRate FROM Posting Inner Join Users On Posting.Uid=Users.Uid WHERE Users.Uid LIKE " + userId + ")";
+
+ 	connection.query(select, function(err, rows) {
+ 		if (err) {
+ 			console.log("GetUserPosts: database error: " + err);
+ 			return callback(-2);
+ 		}
+ 		else {
+ 			return callback(rows);
+ 		}
+ 	});
+ } 
+
 
 /** 
  * Place a bid on a post
@@ -653,10 +658,10 @@ app.post("/Bid", function(req, res) {
 	/* callback to handle response */
   	var callback = function(result) {
   		if (result < 0) {
-  			res.json({"Response": "Bid failed", "result": "", "State": result });
+  			res.json({"Response": "Bid failed", "Result": "", "State": result });
   		}
   		else {
-  			res.json({"Response": "Bid successful", "result": result, "State": 0 });
+  			res.json({"Response": "Bid successful", "Result": result, "State": 0 });
   		}
   	}
 
@@ -697,10 +702,10 @@ app.post("/GetBids", function(req, res) {
 	/* callback to handle response */
   	var callback = function(result) {
   		if (result < 0) {
-  			res.json({"Response": "GetBids failed", "result": "", "State": result });
+  			res.json({"Response": "GetBids failed", "Result": "", "State": result });
   		}
   		else {
-  			res.json({"Response": "GetBids successful", "result": result, "State": 0 });
+  			res.json({"Response": "GetBids successful", "Result": result, "State": 0 });
   		}
   	}
 
@@ -728,6 +733,43 @@ function GetBids(postId, callback) {
 		}
 	}); 
 }
+
+/**
+ * Returns the ratings for the currently logged in user
+ * Accepts: nothing
+ * Returns: average ratings for both bidding and posting
+ */
+ app.post("/GetUserRatings", function(req, res) {
+ 	console.log("GetUserRatings");
+
+ 	var callback = function(result) {
+ 		if (result < 0) {
+ 			res.json({"Response": "GetUserRatings failed", "Result": "", "State": result });
+  		}
+  		else {
+  			res.json({"Response": "GetUserRatings successful", "Result": result, "State": 0 });
+  		}
+ 	}
+
+ 	GetUserRatings(req.user.Uid, callback);
+ });
+
+ function GetUserRatings(userId, callback) {
+ 	console.log("GetUserRatings userId " + userId);
+ 	
+ 	//var select 
+ 	return callback(-2);
+ }
+
+ /*
+ function CalculateAvgRatings(userId, callback) {
+
+
+ 	if (callback) {
+ 		return callback();
+ 	}
+ }
+ */
 
 /**
  * Get the current date and time in SQL accepted datetime format
