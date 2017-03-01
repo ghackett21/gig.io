@@ -794,18 +794,8 @@ app.post("/GetUserRatings", function(req, res) {
  	console.log("GetUserRatings userId " + userId);
  	
  	//var select 
- 	return callback(-2);
+ 	return select = "SELECT FROM RATINGS"
  }
-
-/*
-function CalculateAvgRatings(userId, callback) {
-
-
-	if (callback) {
-		return callback();
-	}
-}
-*/
 
 /**
 * Create a new Rating
@@ -856,7 +846,51 @@ function CreateRating(ratingType, userId, userIdRater, comment, ratingValue, cal
 			return callback(-2);
 		}
 		else {
-			return callback(0);
+			//return callback(0);
+			/* update rated user's avg rating and number of ratings for the type of rating */
+			var avg = "AVG_PostRate";
+			var num = "NUM_PostRate";
+			if (ratingType == "Bid") {
+				avg = "AVG_BidRate";
+				num = "NUM_BidRate";
+			}
+
+			var select = "SELECT " + avg + ", " + num + " FROM Users WHERE Uid LIKE " + userId;
+
+			connection.query(select, function(err, rows) {
+				if (err) {
+					console.log("CreateRating: database error: " + err);
+					return callback(-2);
+				}
+				else {
+					if (ratingType == "Post") {
+						num_ratings = rows[0].NUM_PostRate;
+						avg_rating = rows[0].AVG_PostRate
+					}
+					else {
+						num_ratings = rows[0].NUM_BidRate;
+						avg_rating = rows[0].AVG_BidRate
+					}
+
+					/* update number and calculate new average */
+					num_ratings += 1;
+					avg_rating = avg_rating * ((num_ratings - 1) / num_ratings) + ratingValue * (1 / num_ratings);
+
+					console.log("Update: avg_rating: " + avg_rating + ", num_ratings " + num_ratings);
+
+					var update = "UPDATE Users SET " + avg + "=" + avg_rating + "," + num + "=" + num_ratings + " WHERE Uid=" + userId;
+
+					connection.query(update, function(err, rows) {
+						if (err) {
+							console.log("CreateRating: database error: " + err);
+							return callback(-2);
+						}
+						else {
+							return callback(0);
+						}
+					});
+				}
+			});
 		}
 	});
 }
