@@ -32,16 +32,42 @@ connection.connect(function(err) {
 
 
 passport.serializeUser(function(user, done) {
+  console.log("serializing user : " + user);
   done(null, user);
 });
 
 passport.deserializeUser(function(user, done) {
-  done(null, user);
+      console.log('no im not serial');
+      done(null, user);
+   
 });
 
 
 function findByUsername(username, fn) {
 	var select = "SELECT * FROM Users WHERE Username LIKE '" + username + "'";
+	connection.query(select, function(err, rows) {
+		if (err) {
+			/* an error occured */
+			console.log("Failed to find username");
+			return fn(null, null);
+		}
+		else {
+			if (rows.length == 1) {
+				console.log("findbyuser sending rows[0]: %j", rows[0]);
+				return fn(null, rows[0]);
+			}
+			else {
+				console.log("why am i here");
+				return fn(null, null);
+			}
+		}
+	});
+
+};
+
+
+function findById(id, fn) {
+	var select = "SELECT * FROM Users WHERE Uid LIKE '" + id + "'";
 	connection.query(select, function(err, rows) {
 		if (err) {
 			/* an error occured */
@@ -71,15 +97,28 @@ app.use(bodyParser.json());
 app.use(session({
 	secret: 'keyboard cat',
 	resave: true,
-	saveUninitialized: true,
-	cookie: { secure: true }
+	saveUninitialized: true
 }));
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 	
 console.log("Server Started");
+/*
+app.get('/index.html', ensureAuthenticated, function(req, res) {
+	console.log("jere");
+    res.redirect('/');
+});
+*/
+app.get('/', ensureAuthenticated, function(req, res) {
+	console.log("jere1");
+    res.redirect('/index.html');
+});
+
 app.use(express.static(path.join(__dirname, '/../docs')));
+
+
+
 
 passport.use(new LocalStrategy(
 		  function(username, password, done) {
@@ -99,11 +138,26 @@ passport.use(new LocalStrategy(
 		  }
 ));
 
-app.post('/login',
-		  passport.authenticate('local', { failureRedirect: '/login' }),
-		  function(req, res) {
-			console.log("sending post login");
-		    res.json({"status": 200, "redirect" : "/index.html"});
+app.post('/login', passport.authenticate('local', { failureRedirect: '/login'}), function(req, res) {
+
+	console.log("sending post login req = %j", req.user);
+	//res.json({"status": 200, "redirect" : "/index.html"});
+	req.logIn(req.user, function(err) {
+			
+			if (err) {
+				   return res.status(500).json({
+				       err: 'Could not log in user'
+				   });
+			}
+			console.log("is auth? + "  + req.isAuthenticated()); 
+			req.session.save(() => {
+				res.json({"status": 200, "redirect" : "/index.html"});
+    		})
+
+
+	});
+			
+			
 });
 
 
@@ -115,12 +169,18 @@ app.get('/login', function(req, res, next) {
 			return next(err);
 		}
 		if (!user) {
-			res.json({"status": 401, "redirect" : "/login.html"});
+			return res.json({"status": 401, "redirect" : "/login.html"});
 		}
 		})(req, res, next);
 
 });
 
+app.post('/logout', function(req, res) {
+  console.log('logging out');
+  req.session.destroy();
+  req.logout();
+  res.json({"redirect": '/login.html'});
+});
 
 /** Database interaction endpoints */
 
@@ -207,7 +267,7 @@ app.post('/RegisterButton', function(req, res) {
 		callback(-1);
 	}
 	else {
-		Register(req.body.username, req.body.password, callback);
+		Register(req.body, callback);
 	}
 });
 
@@ -215,11 +275,12 @@ app.post('/RegisterButton', function(req, res) {
  * Creates a new user with the given username and password
  * Checks that no user with the same username exists
  */
-function Register(username, password, callback) {
-	console.log("Register: ", username, password);
+function Register(user, callback) {
+	
+	console.log("Register: ", user.username, user.password, user.email);
 
 	/* check for existing user with username */
-	var select = "SELECT * FROM Users WHERE username LIKE '" + username + "'";
+	var select = "SELECT * FROM Users WHERE username LIKE '" + user.username + "'";
 
 	connection.query(select, function(err, rows) {
 		if (err) {
@@ -233,7 +294,7 @@ function Register(username, password, callback) {
 			}
 			else {
 				/* if username is not already used */
-				var insert = "INSERT INTO Users (Username, Password, NumberOfStrikes, TotalNumberOfRatings) VALUES ('" + username + "', '" + password + "', 0, 0)";
+				var insert = "INSERT INTO Users (Username, Password, EmailAddress, PhoneNumber, NumberOfStrikes, TotalNumberOfRatings) VALUES ('" + user.username + "', '" + user.password + "','" + user.email + "','" + user.phone + "' , 0, 0)";
 
 				connection.query(insert, function(err, rows) {
 					if (err) {
@@ -243,7 +304,7 @@ function Register(username, password, callback) {
 					}
 					else {
 						console.log("Register Successful");
-						Login(username, password, callback);
+						Login(user.username, user.password, callback);
 					}
 				});
 			}
@@ -255,38 +316,52 @@ function Register(username, password, callback) {
 
 function ensureAuthenticated(req, res, next) {
   console.log("is auth? + "  + req.isAuthenticated());
+  //console.log("req = %s", JSON.stringify(req.user));
   if (req.isAuthenticated()) {
     // req.user is available for use here
     return next(); }
 
   // denied. redirect to login
-  res.redirect('/')
+  res.redirect('/login.html')
 }
 
-app.get('/protected', ensureAuthenticated, function(req, res) {
+app.get('/protected', ensureAuthenticated , function(req, res) {
   res.send("access granted. secure stuff happens here");
+});
+
+function isAuthenticated(req,res,next){
+   if(req.user)
+      return next();
+   else
+      return res.redirect('login.html');
+
+}
+
+app.get('/checkauth', isAuthenticated, function(req, res){
+
+    res.status(200).json({
+        status: 'Login successful!'
+    });
 });
 
 
 
 
-app.get('/logout'), function(req, res) {
-  console.log('logging out');
-  req.logout();
-  res.redirect('/');
-};
+
+
 /** 
  * Doesn't do anything currently
  * Accepts: UserID
  * Returns: State 
  */
+/*
 app.post('/Logout', function(req, res) {
 	console.log("Logout");
 
-	/* register callback to handle response */
+	/* register callback to handle response 
 	var callback = function(result) {
 		if (result < 0) {
-			/* an error occured */
+			/* an error occured 
 			res.json({"Resonse": "logout failed", "State": result});
 		}
 		else {
@@ -294,7 +369,7 @@ app.post('/Logout', function(req, res) {
 		}
 	}
 
-	/* check for missing args */
+	/* check for missing args 
 	if (req.body.Uid == undefined) {
 		console.log("Logout: undefined args");
 		calback(-1);
@@ -303,11 +378,7 @@ app.post('/Logout', function(req, res) {
 		Logout(Uid, callback);
 	}
 });
-
-function Logout(Uid, callback) {
-	/* do nothing for now */
-	return callback(0);
-}
+*/
 
 /**
  * Get user info
@@ -316,7 +387,7 @@ function Logout(Uid, callback) {
  */
  app.post('/GetUser', function(req, res) {
  	console.log("GetUser");
-
+	console.log("user = %s", JSON.stringify(req.user) );
  	/* callback to handle response */
  	var callback = function(result) {
  		if (result < 0) {
@@ -328,13 +399,8 @@ function Logout(Uid, callback) {
  	}
 
  	/* check for undefined args */
- 	if (req.body.userId == undefined) {
- 		console.log("GetUser: undefined args. Requires userId");
- 		callback(-1);
- 	}
- 	else {
- 		GetUser(req.body.userId, callback);
- 	}
+ 
+ 	GetUser(req.user.Uid, callback);
  });
 
  function GetUser(userId, callback) {
@@ -424,12 +490,12 @@ app.post('/CreatePost', function(req, res) {
 	}
 
 	/* check for missing args */
-	if (req.body.Uid == undefined || req.body.location == undefined || req.body.description == undefined) {
+	if (req.body.Uid == undefined || req.body.title == undefined || req.body.location == undefined || req.body.description == undefined) {
 		console.log("CreatePost: undefined args, requires Uid, location, and description");
 		callback(-1);
 	}
 	else {
-		CreatePost(req.body.Uid, req.body.location, req.body.description, callback);
+		CreatePost(req.body.Uid, req,body.title, req.body.location, req.body.description, callback);
 	}
 });
 

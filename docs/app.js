@@ -141,11 +141,12 @@ app.controller("loginController", [ '$scope', '$http', function($scope, $http) {
 app.controller("registrationController", [ '$scope', '$http', function($scope, $http) {
 	$scope.user;
 	$scope.status = "";
-	$scope.clickButton = function() {
+	$scope.register = function() {
 		console.log("username = " + $scope.user.username);
 		console.log("email = " + $scope.user.email);
 		console.log("password = " + $scope.user.password);
 		console.log("retyped password = " + $scope.user.password1);
+		console.log("phone number = " + $scope.user.phone);
 		if($scope.user == undefined){
 			return;
 		}
@@ -163,8 +164,13 @@ app.controller("registrationController", [ '$scope', '$http', function($scope, $
 		}
 		$http.post('/RegisterButton', $scope.user).then(function(response) {
 			$scope.user = null;
-			$scope.status = "";
+			//$scope.status = "Registration Successful!";
 			console.log(response);
+			if(response.data.State == 0){
+				$scope.status = "Registration Successful! Proceed to Login";
+				//alert("");
+				//window.location = response.data.redirect;
+			}
 		});
 	};
 	

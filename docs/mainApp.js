@@ -75,9 +75,17 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
     $scope.test = "test";
 
 //test stuff for server auth
+	$scope.logout = function() {
+		$http.post('/logout').then(function(response) {
+			console.log("response = %j", response);
+			window.location = response.data.redirect;
+		});
+	};
+
 	$scope.testAuth = function() {
-		$http.get('/protected').then(function(response) {
-			console.log("protected response = %j", response);
+		$http.post('/protected').then(function(response) {
+			console.log("response = %j", response);
+			//window.location = response.data.redirect;
 		});
 	};
 
@@ -130,7 +138,7 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
                     $scope.phone = post.PhoneNumber;
                     $scope.desc = post.U_Description;
 					$scope.pid = post.Pid;
-                    $scope.location = post.U_Location;
+                    $scope.location = post.P_Location;
                     address = post.P_Location;
                     modal.style.display = "block";
                     $scope.$apply();
