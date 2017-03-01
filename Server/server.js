@@ -874,7 +874,7 @@ function CreateRating(ratingType, userId, userIdRater, comment, ratingValue, cal
 
 					/* update number and calculate new average */
 					num_ratings += 1;
-					avg_rating = (avg_rating + ratingValue) / num_ratings;
+					avg_rating = (avg_rating * ((num_ratings - 1) / num_ratings) + ratingValue * (1 / num_ratings)) / num_ratings;
 
 					console.log("Update: avg_rating: " + avg_rating + ", num_ratings " + num_ratings);
 
