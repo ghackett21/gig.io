@@ -809,7 +809,7 @@ function CalculateAvgRatings(userId, callback) {
 
 /**
 * Create a new Rating
-* Accepts: ratingType ("Bid" or "Post"), Comment, userIdRater, userId 
+* Accepts: ratingType ("Bid" or "Post"), Comment, userIdRater, userId, ratingValue 
 * Returns: State
 */
 app.post("/CreateRating", function(req, res){
@@ -826,7 +826,7 @@ app.post("/CreateRating", function(req, res){
 	}
 
 	/* check for undefined args */
-	if (req.body.comment == undefined || req.body.userId == undefined || req.body.userIdRater == undefined) {
+	if (req.body.comment == undefined || req.body.userId == undefined || req.body.userIdRater == undefined || req.body.ratingValue == undefined) {
 		console.log("CreateRating: undefined args: requires ratingType, userId, userIdRater, and comment");
 		callback(-1);
 	}
@@ -843,13 +843,13 @@ app.post("/CreateRating", function(req, res){
 		return callback(-1);
 	}
 
-		CreateRating(req.body.ratingType, req.body.userId, req.body.userIdRater, req.body.comment, callback);
+		CreateRating(req.body.ratingType, req.body.userId, req.body.userIdRater, req.body.comment, req.body.ratingValue, callback);
 });
 
-function CreateRating(ratingType, userId, userIdRater, comment, callback) {
-	console.log("CreateRating: ratingType: " + ratingType + ", userId: " + userId + ", userIdRater: " + userIdRater + ", comment: " + comment);
+function CreateRating(ratingType, userId, userIdRater, comment, ratingValue, callback) {
+	console.log("CreateRating: ratingType: " + ratingType + ", userId: " + userId + ", userIdRater: " + userIdRater + ", comment: " + comment ", ratingValue: " + ratingValue);
 
-	var insert = "INSERT INTO Ratings (Uid, Comment, UidRater, DateOfRating, RatingType) VALUES (" + userId + ", '" + comment + "', " + userIdRating + ", '" + GetDate() + "', '" + ratingType + "')";
+	var insert = "INSERT INTO Ratings (Uid, Comment, UidRater, DateOfRating, RatingType, RatingValue) VALUES (" + userId + ", '" + comment + "', " + userIdRater + ", '" + GetDate() + "', '" + ratingType + "', " + ratingValue + ")";
 
 	connection.query(insert, function(err, rows) { 
 		if (err) {
