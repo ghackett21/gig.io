@@ -876,6 +876,8 @@ function CreateRating(ratingType, userId, userIdRater, comment, ratingValue, cal
 					num_ratings += 1;
 					avg_rating = (avg_rating + ratingValue) / num_ratings;
 
+					console.log("Update: avg_rating: " + avg_rating + ", num_ratings " + num_ratings);
+
 					var update = "UPDATE Users SET " + avg + "=" + avg_rating + "," + num + "=" + num_ratings + " WHERE Uid=" + userId;
 
 					connection.query(update, function(err, rows) {
