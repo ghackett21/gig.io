@@ -826,20 +826,24 @@ app.post("/CreateRating", function(req, res){
 	}
 
 	/* check for undefined args */
-	if (req.body.comment == undefine || req.body.userId == undefined || req.body.userIdRater == undefined) {
+	if (req.body.comment == undefined || req.body.userId == undefined || req.body.userIdRater == undefined) {
 		console.log("CreateRating: undefined args: requires ratingType, userId, userIdRater, and comment");
 		callback(-1);
 	}
-	else {
-			/* check that rating type is valid */
-		if (req.body.ratingType != "Bid" && req.body.ratingType != "Posting") {
-			console.log("CreateRating: ratingType must be either \"Bid\" or \"Post\".");
-			callback(-1);
-		}
-		else {
-			CreateRating(req.body.ratingType, req.body.userId, req.body.userIdRater, req.body.comment, callback);
-		}
+
+		/* check that rating type is valid */
+	if (req.body.ratingType != "Bid" && req.body.ratingType != "Posting") {
+		console.log("CreateRating: ratingType must be either \"Bid\" or \"Post\".");
+		callback(-1);
 	}
+
+	/* check that userId and userIdRater are not equal */
+	if (req.body.userId == req.body.userIdRater) {
+		console.log("CreateRating: a user cannot rate themselves!");
+		return callback(-1);
+	}
+
+		CreateRating(req.body.ratingType, req.body.userId, req.body.userIdRater, req.body.comment, callback);
 });
 
 function CreateRating(ratingType, userId, userIdRater, comment, callback) {
