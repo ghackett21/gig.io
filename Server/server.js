@@ -678,8 +678,8 @@ function DeletePost(postId, callback) {
 		}
 		else {
 			return callback(0);
-		});
-	}
+		}
+	});
 }
 
 
