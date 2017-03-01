@@ -610,6 +610,11 @@ function GetUser_Helper(userId) {
  	});
  }
 
+/**
+ * Returns posts created by the currently logged in user
+ * Accepts: nothing
+ * Returns: list of posts created by user
+ */
  app.post("/GetUserPosts", function(req, res) {
  	console.log("GetUserPosts");
 
@@ -627,6 +632,7 @@ function GetUser_Helper(userId) {
  });
 
  function GetUserPosts(userId, callback) {
+ 	console.log("GetUserPosts: userId " + userId);
  	var select = "SELECT Posting.Pid, Posting.P_Location, Posting.CreationTime, Posting.P_Description, Users.Uid, Users.Username, Users.U_Description, Users.U_Location, Users.PhoneNumber, Users.DateJoined, Users.EmailAddress, Users.AVG_PostRate, Users.AVG_BidRate FROM Posting Inner Join Users On Posting.Uid=Users.Uid WHERE Users.Uid LIKE " + userId + ")";
 
  	connection.query(select, function(err, rows) {
@@ -727,6 +733,43 @@ function GetBids(postId, callback) {
 		}
 	}); 
 }
+
+/**
+ * Returns the ratings for the currently logged in user
+ * Accepts: nothing
+ * Returns: average ratings for both bidding and posting
+ */
+ app.post("/GetUserRatings", function(req, res) {
+ 	console.log("GetUserRatings");
+
+ 	var callback = function(result) {
+ 		if (result < 0) {
+ 			res.json({"Response": "GetUserRatings failed", "Result": "", "State": result });
+  		}
+  		else {
+  			res.json({"Response": "GetUserRatings successful", "Result": result, "State": 0 });
+  		}
+ 	}
+
+ 	GetUserRatings(req.user.Uid, callback);
+ });
+
+ function GetUserRatings(userId, callback) {
+ 	console.log("GetUserRatings userId " + userId);
+ 	
+ 	//var select 
+ 	return callback(-2);
+ }
+
+ /*
+ function CalculateAvgRatings(userId, callback) {
+
+
+ 	if (callback) {
+ 		return callback();
+ 	}
+ }
+ */
 
 /**
  * Get the current date and time in SQL accepted datetime format
