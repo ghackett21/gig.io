@@ -623,11 +623,11 @@ function GetUser_Helper(userId) {
  		}
  	}
 
- 	GetUserPosts(callback);
+ 	GetUserPosts(req.user.Uid, callback);
  });
 
- function GetUserPosts(callback) {
- 	var select = "SELECT Posting.Pid, Posting.P_Location, Posting.CreationTime, Posting.P_Description, Users.Uid, Users.Username, Users.U_Description, Users.U_Location, Users.PhoneNumber, Users.DateJoined, Users.EmailAddress, Users.AVG_PostRate, Users.AVG_BidRate FROM Posting Inner Join Users On Posting.Uid=Users.Uid WHERE Uid LIKE " + req.user.Uid;
+ function GetUserPosts(userId, callback) {
+ 	var select = "SELECT Posting.Pid, Posting.P_Location, Posting.CreationTime, Posting.P_Description, Users.Uid, Users.Username, Users.U_Description, Users.U_Location, Users.PhoneNumber, Users.DateJoined, Users.EmailAddress, Users.AVG_PostRate, Users.AVG_BidRate FROM Posting Inner Join Users On Posting.Uid=Users.Uid WHERE Uid LIKE " + userId;
 
  	connection.query(select, function(err, rows) {
  		if (err) {
