@@ -669,9 +669,9 @@ app.post("/DeletePost", function(req, res) {
 function DeletePost(postId, callback) {
 	console.log("DeletePost: postId: " + postId);
 
-	var delete = "DELETE FROM Posting WHERE Pid = " + postId;
+	var deleteStatment = "DELETE FROM Posting WHERE Pid = " + postId;
 
-	connection.query(delete, function(err, rows) {
+	connection.query(deleteStatement, function(err, rows) {
 		if (err) {
 			console.log("DeletePost: database error, " + err);
 			return callback(-2);
