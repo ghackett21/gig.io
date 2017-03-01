@@ -464,7 +464,7 @@ app.post('/CreatePost', function(req, res) {
 		if (req.body.imageLink != undefined) {
 			imageLink = req.body.imageLink;
 		}
-		CreatePost(req.body.Uid, req,body.title, req.body.location, req.body.description, imageLink, callback);
+		CreatePost(req.body.Uid, req.body.title, req.body.location, req.body.description, imageLink, callback);
 	}
 });
 
@@ -475,7 +475,7 @@ function CreatePost(userId, title, location, description, image, callback) {
 	console.log("CreatePost: ", userId, location, description);
 
 	var creationTime = GetDate();
-	var insert = "INSERT INTO Posting (Uid, P_Title, Location, CreationTime, Status, Description, P_Image) VALUES ('" + userId + "', '" + title + ", " + location + "', '" + creationTime + "', 1, '" + description + ", " + image + "')";  
+	var insert = "INSERT INTO Posting (Uid, P_Title, P_Location, CreationTime, Status, P_Description, P_Image) VALUES ('" + userId + "', '" + title + ", " + location + "', '" + creationTime + "', 1, '" + description + ", " + image + "')";  
 
 	connection.query(insert, function (err, rows) {
 		if (err) {
