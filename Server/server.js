@@ -775,7 +775,7 @@ function GetBids(postId, callback) {
  * Accepts: nothing
  * Returns: average ratings for both bidding and posting
  */
- app.post("/GetUserRatings", function(req, res) {
+app.post("/GetUserRatings", function(req, res) {
  	console.log("GetUserRatings");
 
  	var callback = function(result) {
@@ -788,7 +788,7 @@ function GetBids(postId, callback) {
  	}
 
  	GetUserRatings(req.user.Uid, callback);
- });
+});
 
  function GetUserRatings(userId, callback) {
  	console.log("GetUserRatings userId " + userId);
@@ -797,15 +797,66 @@ function GetBids(postId, callback) {
  	return callback(-2);
  }
 
- /*
- function CalculateAvgRatings(userId, callback) {
+/*
+function CalculateAvgRatings(userId, callback) {
 
 
- 	if (callback) {
- 		return callback();
- 	}
- }
- */
+	if (callback) {
+		return callback();
+	}
+}
+*/
+
+/**
+* Create a new Rating
+* Accepts: ratingType ("Bid" or "Post"), Comment, userIdRater, userId 
+* Returns: State
+*/
+app.post("/CreateRating", function(req, res){
+	console.log("CreateRating");
+
+	/* callback to handle response */
+	var callback = function(result) {
+		if (result < 0) {
+ 			res.json({"Response": "CreateRating failed", "State": result });
+  		}
+  		else {
+  			res.json({"Response": "CreateRating successful", "State": result });
+  		}
+	}
+
+	/* check for undefined args */
+	if (req.body.comment == undefine || req.body.userId == undefined || req.body.userIdRater == undefined) {
+		console.log("CreateRating: undefined args: requires ratingType, userId, userIdRater, and comment");
+		callback(-1);
+	}
+	else {
+			/* check that rating type is valid */
+		if (req.body.ratingType != "Bid" && req.body.ratingType != "Posting") {
+			console.log("CreateRating: ratingType must be either \"Bid\" or \"Post\".");
+			callback(-1);
+		}
+		else {
+			CreateRating(req.body.ratingType, req.body.userId, req.body.userIdRater, req.body.comment, callback);
+		}
+	}
+});
+
+function CreateRating(ratingType, userId, userIdRater, comment, callback) {
+	console.log("CreateRating: ratingType: " + ratingType + ", userId: " + userId + ", userIdRater: " + userIdRater + ", comment: " + comment);
+
+	var insert = "INSERT INTO Ratings (Uid, Comment, UidRater, DateOfRating, RatingType) VALUES (" + userId + ", '" + comment + "', " + userIdRating + ", '" + GetDate() + "', '" + ratingType + "')";
+
+	connection.query(insert, function(err, rows) { 
+		if (err) {
+			console.log("CreateRating: database error: " + err);
+			return callback(-2);
+		}
+		else {
+			return callback(0);
+		}
+	});
+}
 
 /**
  * Get the current date and time in SQL accepted datetime format
