@@ -610,6 +610,26 @@ function GetUser_Helper(userId) {
  	});
  }
 
+ app.post("/GetUserPosts", function(req, res) {
+ 	console.log("GetUserPosts");
+
+ 	/* callback to handle response */
+ 	var callback = function(result) {
+ 		if (result < 0) {
+ 			res.json({"Response": "GetUserPosts failed", "Result": "", "State": result});
+ 		}
+ 		else {
+ 			res.json({"Response": "GetUserPosts successful", "Result": result, "State": 0});
+ 		}
+ 	}
+
+ 	GetUserPosts(callback);
+ });
+
+ function GetUserPosts(callback) {
+ 	
+ } 
+
 
 /** 
  * Place a bid on a post
@@ -622,10 +642,10 @@ app.post("/Bid", function(req, res) {
 	/* callback to handle response */
   	var callback = function(result) {
   		if (result < 0) {
-  			res.json({"Response": "Bid failed", "result": "", "State": result });
+  			res.json({"Response": "Bid failed", "Result": "", "State": result });
   		}
   		else {
-  			res.json({"Response": "Bid successful", "result": result, "State": 0 });
+  			res.json({"Response": "Bid successful", "Result": result, "State": 0 });
   		}
   	}
 
@@ -666,10 +686,10 @@ app.post("/GetBids", function(req, res) {
 	/* callback to handle response */
   	var callback = function(result) {
   		if (result < 0) {
-  			res.json({"Response": "GetBids failed", "result": "", "State": result });
+  			res.json({"Response": "GetBids failed", "Result": "", "State": result });
   		}
   		else {
-  			res.json({"Response": "GetBids successful", "result": result, "State": 0 });
+  			res.json({"Response": "GetBids successful", "Result": result, "State": 0 });
   		}
   	}
 
