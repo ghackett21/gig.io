@@ -847,7 +847,7 @@ app.post("/CreateRating", function(req, res){
 });
 
 function CreateRating(ratingType, userId, userIdRater, comment, ratingValue, callback) {
-	console.log("CreateRating: ratingType: " + ratingType + ", userId: " + userId + ", userIdRater: " + userIdRater + ", comment: " + comment ", ratingValue: " + ratingValue);
+	console.log("CreateRating: ratingType: " + ratingType + ", userId: " + userId + ", userIdRater: " + userIdRater + ", comment: " + comment + ", ratingValue: " + ratingValue);
 
 	var insert = "INSERT INTO Ratings (Uid, Comment, UidRater, DateOfRating, RatingType, RatingValue) VALUES (" + userId + ", '" + comment + "', " + userIdRater + ", '" + GetDate() + "', '" + ratingType + "', " + ratingValue + ")";
 
