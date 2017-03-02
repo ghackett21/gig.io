@@ -593,7 +593,7 @@ app.post("/GetAllPosts", function(req, res) {
 });
 
 function GetAllPosts(callback) {
-  	var select = "SELECT Posting.Pid, Posting.P_Location, Posting.CreationTime, Posting.P_Description, Users.Uid, Users.Username, Users.U_Description, Users.U_Location, Users.PhoneNumber, Users.DateJoined, Users.EmailAddress, Users.AVG_PostRate, Users.AVG_BidRate FROM Posting Inner Join Users On Posting.Uid=Users.Uid";
+  	var select = "SELECT Posting.Pid, Posting.P_Location, Posting.CreationTime, Posting.P_Description, Posting.NumberOfBids, Users.Uid, Users.Username, Users.U_Description, Users.U_Location, Users.PhoneNumber, Users.DateJoined, Users.EmailAddress, Users.AVG_PostRate, Users.AVG_BidRate FROM Posting Inner Join Users On Posting.Uid=Users.Uid";
 
   	connection.query(select, function(err, rows) {
   		if (err) {
