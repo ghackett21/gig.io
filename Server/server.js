@@ -6,6 +6,7 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var flash = require('connect-flash');
 var session = require('express-session');
+var bcrypt = require('bcrypt');
 
 /* create database connection */
 var connection = mysql.createConnection({
@@ -121,21 +122,21 @@ app.use(express.static(path.join(__dirname, '/../docs')));
 
 
 passport.use(new LocalStrategy(
-		  function(username, password, done) {
-		    findByUsername(username, function (err, user) {
-		      if(err) { return done(err); }
-		      if(user == null) {
+	function(username, password, done) {
+		findByUsername(username, function (err, user) {
+			if(err) { return done(err); }
+		    if(user == null) {
 				console.log("Incorrect Username");
 		        return done(null, false, { message: 'Incorrect username.' });
-		      }
-		      if(user.Password != password) {
+		    }
+		    if(user.Password != password) {
 				console.log("Incorrect Password");
 		        return done(null, false, { message: 'Incorrect password.' });
-		      }
-			  console.log("found user = " + user.Username);
-		      return done(null, user);
-		    });
-		  }
+		   	}
+			console.log("found user = " + user.Username);
+		    return done(null, user);
+		});
+	}
 ));
 
 app.post('/login', passport.authenticate('local', { failureRedirect: '/login'}), function(req, res) {
@@ -278,7 +279,7 @@ app.post('/RegisterButton', function(req, res) {
 function Register(user, callback) {
 	
 	console.log("Register: ", user.username, user.password, user.email);
-
+	
 	/* check for existing user with username */
 	var select = "SELECT * FROM Users WHERE username LIKE '" + user.username + "'";
 
@@ -293,6 +294,8 @@ function Register(user, callback) {
 				return callback(-3);
 			}
 			else {
+				var hash = bcrypt.hashSync(user.password, 10);
+				console.log("HASH = " + hash);
 				/* if username is not already used */
 				var insert = "INSERT INTO Users (Username, Password, EmailAddress, PhoneNumber, NumberOfStrikes, TotalNumberOfRatings) VALUES ('" + user.username + "', '" + user.password + "','" + user.email + "','" + user.phone + "' , 0, 0)";
 
@@ -311,6 +314,15 @@ function Register(user, callback) {
 		}
 	});
 }
+
+function hash(user){
+
+bcrypt.hash(user.password, 10, function(err, hash) {
+	user.password = hash;
+  // Store hash in your password DB. 
+});
+
+};
 
 /* test stuff by sam, dont worry about this */
 
