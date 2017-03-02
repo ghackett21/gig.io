@@ -357,41 +357,6 @@ app.get('/checkauth', isAuthenticated, function(req, res){
 });
 
 
-
-
-
-
-/** 
- * Doesn't do anything currently
- * Accepts: UserID
- * Returns: State 
- */
-/*
-app.post('/Logout', function(req, res) {
-	console.log("Logout");
-
-	/* register callback to handle response 
-	var callback = function(result) {
-		if (result < 0) {
-			/* an error occured 
-			res.json({"Resonse": "logout failed", "State": result});
-		}
-		else {
-			res.json({"Response": "logout successful", "State": 0});
-		}
-	}
-
-	/* check for missing args 
-	if (req.body.Uid == undefined) {
-		console.log("Logout: undefined args");
-		calback(-1);
-	}
-	else {
-		Logout(Uid, callback);
-	}
-});
-*/
-
 /**
  * Get user info
  * Accepts: userId
@@ -502,23 +467,27 @@ app.post('/CreatePost', function(req, res) {
 	}
 
 	/* check for missing args */
-	if (req.body.Uid == undefined || req.body.location == undefined || req.body.description == undefined) {
+	if (req.body.Uid == undefined || req.body.title == undefined || req.body.location == undefined || req.body.description == undefined) {
 		console.log("CreatePost: undefined args, requires Uid, location, and description");
 		callback(-1);
 	}
 	else {
-		CreatePost(req.body.Uid, req.body.location, req.body.description, callback);
+		imageLink = "";
+		if (req.body.imageLink != undefined) {
+			imageLink = req.body.imageLink;
+		}
+		CreatePost(req.body.Uid, req.body.title, req.body.location, req.body.description, imageLink, callback);
 	}
 });
 
 /**
- * inserts new post into the database - does not check for duplicates
+ * inserts new post into the database 
  */
-function CreatePost(userId, location, description, callback) {
+function CreatePost(userId, title, location, description, image, callback) {
 	console.log("CreatePost: ", userId, location, description);
 
 	var creationTime = GetDate();
-	var insert = "INSERT INTO Posting (Uid, Location, CreationTime, Status, Description) VALUES ('" + userId + "', '" + location + "', '" + creationTime + "', 1, '" + description + "')";  
+	var insert = "INSERT INTO Posting (Uid, P_Title, P_Location, CreationTime, Status, P_Description, P_Image) VALUES ('" + userId + "', '" + title + "', '" + location + "', '" + creationTime + "', 1, '" + description + "', '" + image + "')";  
 
 	connection.query(insert, function (err, rows) {
 		if (err) {
@@ -624,7 +593,7 @@ app.post("/GetAllPosts", function(req, res) {
 });
 
 function GetAllPosts(callback) {
-  	var select = "SELECT Posting.Pid, Posting.P_Location, Posting.CreationTime, Posting.P_Description, Users.Uid, Users.Username, Users.U_Description, Users.U_Location, Users.PhoneNumber, Users.DateJoined, Users.EmailAddress, Users.AverageRating FROM Posting Inner Join Users On Posting.Uid=Users.Uid";
+  	var select = "SELECT Posting.Pid, Posting.P_Location, Posting.CreationTime, Posting.P_Description, Users.Uid, Users.Username, Users.U_Description, Users.U_Location, Users.PhoneNumber, Users.DateJoined, Users.EmailAddress, Users.AVG_PostRate, Users.AVG_BidRate FROM Posting Inner Join Users On Posting.Uid=Users.Uid";
 
   	connection.query(select, function(err, rows) {
   		if (err) {
@@ -653,6 +622,78 @@ function GetUser_Helper(userId) {
  	});
  }
 
+/**
+ * Returns posts created by the currently logged in user
+ * Accepts: nothing
+ * Returns: list of posts created by user
+ */
+ app.post("/GetUserPosts", function(req, res) {
+ 	console.log("GetUserPosts");
+
+ 	/* callback to handle response */
+ 	var callback = function(result) {
+ 		if (result < 0) {
+ 			res.json({"Response": "GetUserPosts failed", "Result": "", "State": result});
+ 		}
+ 		else {
+ 			res.json({"Response": "GetUserPosts successful", "Result": result, "State": 0});
+ 		}
+ 	}
+
+ 	GetUserPosts(req.user.Uid, callback);
+ });
+
+ function GetUserPosts(userId, callback) {
+ 	console.log("GetUserPosts: userId " + userId);
+ 	var select = "SELECT Posting.Pid, Posting.P_Location, Posting.CreationTime, Posting.P_Description, Users.Uid, Users.Username, Users.U_Description, Users.U_Location, Users.PhoneNumber, Users.DateJoined, Users.EmailAddress, Users.AVG_PostRate, Users.AVG_BidRate FROM Posting Inner Join Users On Posting.Uid=Users.Uid WHERE Users.Uid LIKE " + userId + ")";
+
+ 	connection.query(select, function(err, rows) {
+ 		if (err) {
+ 			console.log("GetUserPosts: database error: " + err);
+ 			return callback(-2);
+ 		}
+ 		else {
+ 			return callback(rows);
+ 		}
+ 	});
+ } 
+
+/**
+* Delete post based on postId
+* Accepts: postId
+* Returns: State
+*/ 
+app.post("/DeletePost", function(req, res) {
+	console.log("DeletePost");
+
+	var callback = function(result) {
+		if (result < 0) {
+			res.json({"Response": "DeletePost failed", "State": result });
+		}
+		else {
+			res.json({"Response": "DeletePost successful", "State": result });
+		}
+	}
+
+	DeletePost(req.body.postId, callback);
+});
+
+function DeletePost(postId, callback) {
+	console.log("DeletePost: postId: " + postId);
+
+	var deleteStatement = "DELETE FROM Posting WHERE Pid = " + postId;
+
+	connection.query(deleteStatement, function(err, rows) {
+		if (err) {
+			console.log("DeletePost: database error, " + err);
+			return callback(-2);
+		}
+		else {
+			return callback(0);
+		}
+	});
+}
+
 
 /** 
  * Place a bid on a post
@@ -665,10 +706,10 @@ app.post("/Bid", function(req, res) {
 	/* callback to handle response */
   	var callback = function(result) {
   		if (result < 0) {
-  			res.json({"Response": "Bid failed", "result": "", "State": result });
+  			res.json({"Response": "Bid failed", "Result": "", "State": result });
   		}
   		else {
-  			res.json({"Response": "Bid successful", "result": result, "State": 0 });
+  			res.json({"Response": "Bid successful", "Result": result, "State": 0 });
   		}
   	}
 
@@ -709,10 +750,10 @@ app.post("/GetBids", function(req, res) {
 	/* callback to handle response */
   	var callback = function(result) {
   		if (result < 0) {
-  			res.json({"Response": "GetBids failed", "result": "", "State": result });
+  			res.json({"Response": "GetBids failed", "Result": "", "State": result });
   		}
   		else {
-  			res.json({"Response": "GetBids successful", "result": result, "State": 0 });
+  			res.json({"Response": "GetBids successful", "Result": result, "State": 0 });
   		}
   	}
 
@@ -739,6 +780,141 @@ function GetBids(postId, callback) {
 			return callback(rows);
 		}
 	}); 
+}
+
+/**
+ * Returns the ratings for the currently logged in user
+ * Accepts: nothing
+ * Returns: average ratings for both bidding and posting
+ */
+app.post("/GetUserRatings", function(req, res) {
+ 	console.log("GetUserRatings");
+
+ 	var callback = function(result) {
+ 		if (result < 0) {
+ 			res.json({"Response": "GetUserRatings failed", "Result": "", "State": result });
+  		}
+  		else {
+  			res.json({"Response": "GetUserRatings successful", "Result": result, "State": 0 });
+  		}
+ 	}
+
+ 	GetUserRatings(req.user.Uid, callback);
+});
+
+ function GetUserRatings(userId, callback) {
+ 	console.log("GetUserRatings userId " + userId);
+ 	
+ 	//var select 
+ 	return select = "SELECT FROM AVG_PostRate, AVG_BidRate FROM Users WHERE Uid LIKE " + userId;
+
+ 	connection.query(select, function(err, rows) { 
+ 		if (err) {
+ 			console.log("GetUserRatings: database error: " + err);
+ 			return callback(-2);
+ 		}
+ 		else {
+ 			return callback(rows[0]);
+ 		}
+ 	});
+ }
+
+/**
+* Create a new Rating
+* Accepts: ratingType ("Bid" or "Post"), Comment, userIdRater, userId, ratingValue 
+* Returns: State
+*/
+app.post("/CreateRating", function(req, res){
+	console.log("CreateRating");
+
+	/* callback to handle response */
+	var callback = function(result) {
+		if (result < 0) {
+ 			res.json({"Response": "CreateRating failed", "State": result });
+  		}
+  		else {
+  			res.json({"Response": "CreateRating successful", "State": result });
+  		}
+	}
+
+	/* check for undefined args */
+	if (req.body.comment == undefined || req.body.userId == undefined || req.body.userIdRater == undefined || req.body.ratingValue == undefined) {
+		console.log("CreateRating: undefined args: requires ratingType, userId, userIdRater, and comment");
+		callback(-1);
+	}
+	else if (req.body.ratingType != "Bid" && req.body.ratingType != "Posting") {
+		/* check that rating type is valid */
+		console.log("CreateRating: ratingType must be either \"Bid\" or \"Post\".");
+		callback(-1);
+	}
+	else if (req.body.userId == req.body.userIdRater) {
+		/* check that userId and userIdRater are not equal */
+		console.log("CreateRating: a user cannot rate themselves!");
+		return callback(-1);
+	}
+	else {
+		CreateRating(req.body.ratingType, req.body.userId, req.body.userIdRater, req.body.comment, req.body.ratingValue, callback);
+	}
+});
+
+function CreateRating(ratingType, userId, userIdRater, comment, ratingValue, callback) {
+	console.log("CreateRating: ratingType: " + ratingType + ", userId: " + userId + ", userIdRater: " + userIdRater + ", comment: " + comment + ", ratingValue: " + ratingValue);
+
+	var insert = "INSERT INTO RATINGS (Uid, Comment, UidRater, DateOfRating, RatingType, RatingValue) VALUES (" + userId + ", '" + comment + "', " + userIdRater + ", '" + GetDate() + "', '" + ratingType + "', " + ratingValue + ")";
+
+	connection.query(insert, function(err, rows) { 
+		if (err) {
+			console.log("CreateRating: database error: " + err);
+			return callback(-2);
+		}
+		else {
+			//return callback(0);
+			/* update rated user's avg rating and number of ratings for the type of rating */
+			var avg = "AVG_PostRate";
+			var num = "NUM_PostRate";
+			if (ratingType == "Bid") {
+				avg = "AVG_BidRate";
+				num = "NUM_BidRate";
+			}
+
+			var select = "SELECT " + avg + ", " + num + " FROM Users WHERE Uid LIKE " + userId;
+
+			connection.query(select, function(err, rows) {
+				if (err) {
+					console.log("CreateRating: database error: " + err);
+					return callback(-2);
+				}
+				else {
+					if (ratingType == "Post") {
+						num_ratings = rows[0].NUM_PostRate;
+						avg_rating = rows[0].AVG_PostRate
+					}
+					else {
+						num_ratings = rows[0].NUM_BidRate;
+						avg_rating = rows[0].AVG_BidRate
+					}
+
+					/* update number and calculate new average */
+					num_ratings += 1;
+					avg_rating = avg_rating * ((num_ratings - 1) / num_ratings) + ratingValue * (1 / num_ratings);
+
+					console.log("Update: avg_rating: " + avg_rating + ", num_ratings " + num_ratings);
+
+					var update = "UPDATE Users SET " + avg + "=" + avg_rating + "," + num + "=" + num_ratings + " WHERE Uid=" + userId;
+
+					connection.query(update, function(err, rows) {
+						if (err) {
+							console.log("CreateRating: database error: " + err);
+							return callback(-2);
+						}
+						else {
+							return callback(0);
+						}
+					});
+				}
+			});
+		}
+	});
 }
 
 /**

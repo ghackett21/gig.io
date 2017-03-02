@@ -97,13 +97,12 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
 			arr = response.data.result;
 			var postData = [];
 			var template = document.querySelector('#tmplt');
-			for (var i = 1; i < arr.length; i++) {
+			for (var i = 0 ; i < arr.length; i++) {
 				$scope.index = i;
 				var post = arr[i];
 				postData.push(arr[i]);
 				var clone = template.content.cloneNode(true);
 				var td = clone.querySelectorAll('td');
-				console.log("post = %j", post);
 				td[0].innerHTML = post.P_Description;
 				td[1].innerHTML = post.Username;
 				td[2].innerHTML = post.P_Location;
@@ -117,13 +116,13 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
 
             // Get the button that opens the modal
             var rows = document.getElementsByTagName("tr");
-            //console.log(postData[0]);
-            for (var i = 1; i < rows.length; i++) {
+
+            for (var i = 0; i < rows.length; i++) {
                 //console.log(postData);
                 rows[i].onclick = function() {
                     //console.log(arr);
                     rowID = this.id;
-                    var j = 1;
+                    var j = 0;
                     var str;
                     for(j; j < rows.length; j++) {
                        str = "post-"+j;
@@ -131,10 +130,7 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
                             break;
                     }
                     var post = arr[j];
-                    //console.log(j);
-                    //console.log(arr[j]);
                     $scope.owner = post.Username;
-                    //console.log($scope.owner);
                     $scope.phone = post.PhoneNumber;
                     $scope.desc = post.U_Description;
 					$scope.pid = post.Pid;
@@ -187,6 +183,117 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
 			}
 			//load response
 		})
+	};
+
+	$scope.sortByAge = function() {
+	    var time1;
+        var time2;
+        var temp;
+        var swapped;
+        $http.post('/GetAllPosts').then(function(response) {
+            posts = response.data.result;
+
+            //Sort by date
+            do {
+                swapped = false;
+                for (var i=0; i < posts.length-1; i++) {
+                    time1 = new Date(posts[i].CreationTime);
+                    time2 = new Date(posts[i+1].CreationTime);
+
+                    if (time1.getTime() < time2.getTime()) {
+                        console.log("I'm In!");
+                        var temp = posts[i];
+                        posts[i] = posts[i+1];
+                        posts[i+1] = temp;
+                        swapped = true;
+                    }
+                }
+            } while (swapped);
+
+            var template = document.querySelector('#tmplt');
+            for (var i = 0; i < posts.length; i++) {
+                var currRow = document.getElementById("post-"+i);
+                var td = currRow.querySelectorAll('td');
+                td[0].innerHTML = posts[i].P_Description;
+                td[1].innerHTML = posts[i].Username;
+                td[2].innerHTML = posts[i].P_Location;
+            }
+
+            // Get the modal
+            var modal = document.getElementById('myModal');
+
+            // Get the button that opens the modal
+            var rows = document.getElementsByTagName("tr");
+
+            for (var i = 0; i < rows.length; i++) {
+                //console.log(postData);
+                rows[i].onclick = function() {
+                    //console.log(arr);
+                    rowID = this.id;
+                    var j = 0;
+                    var str;
+                    for(j; j < rows.length; j++) {
+                       str = "post-"+j;
+                       if (str === rowID)
+                            break;
+                    }
+                    var post = posts[j];
+
+                    $scope.owner = post.Username;
+
+                    $scope.phone = post.PhoneNumber;
+                    $scope.desc = post.U_Description;
+                    $scope.pid = post.Pid;
+                    $scope.location = post.P_Location;
+                    address = post.P_Location;
+                    modal.style.display = "block";
+                    $scope.$apply();
+                    myMap();
+                };
+            }
+            //var btn = document.getElementById("post-1");
+
+            // Get the <span> element that closes the modal
+            var span = document.getElementsByClassName("close")[0];
+
+            // When the user clicks the button, open the modal
+            /*btn.onclick = function() {
+                modal.style.display = "block";
+            }*/
+
+            // When the user clicks on <span> (x), close the modal
+            span.onclick = function() {
+                modal.style.display = "none";
+            }
+
+            // When the user clicks anywhere outside of the modal, close it
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+
+            console.log(response.status);
+            console.log(response);
+            if(response.status == 200){
+                console.log("success");
+                //window.location.href = 'http://localhost:8081/index.html';
+            }else if(response.status == 401){
+                console.log("failure");
+                //console.log(response.data);
+                //window.location.href = 'http://localhost:8081/login.html';
+            }
+            //load response
+        }).catch(function(response) {
+            //$scope.user = null;
+            console.log(response.status);
+            console.log(response);
+            if(response.status == 401){
+                console.log("failure");
+                //window.location.href = 'http://localhost:8081/login.html';
+            }
+            //load response
+        })
 	};
 }]);
 
