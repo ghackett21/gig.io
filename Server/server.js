@@ -315,7 +315,7 @@ function Register(user, callback) {
 					else {
 						console.log("Register Successful");
 						//Login(user.username, user.password, callback);
-						
+
 					}
 				});
 			}
@@ -733,7 +733,20 @@ function Bid(userId, postId, amount, callback) {
 			return callback(-2);
 		}
 		else {
-			return callback(rows.Bidid);
+			bidId = rows[0].Bidid;
+			
+			/* increment the number of bids on the post the bid was for */
+			var update = "UPDATE Posting SET NumberOfBids=NumberOfBids+1 WHERE PID=" + postId;
+
+			connection.query(update, function(err, rows) {
+				if (err) {
+					console.log("Bid: database error: " + err);
+					return callback(-2);
+				}
+				else {
+					return callback(bidId);
+				}
+			});
 		}
 	});
 }
