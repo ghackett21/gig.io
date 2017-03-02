@@ -794,7 +794,17 @@ app.post("/GetUserRatings", function(req, res) {
  	console.log("GetUserRatings userId " + userId);
  	
  	//var select 
- 	return select = "SELECT FROM RATINGS"
+ 	return select = "SELECT FROM AVG_PostRate, AVG_BidRate FROM Users WHERE Uid LIKE " + userId;
+
+ 	connection.query(select, function(err, rows) { 
+ 		if (err) {
+ 			console.log("GetUserRatings: database error: " + err);
+ 			return callback(-2);
+ 		}
+ 		else {
+ 			return callback(rows[0]);
+ 		}
+ 	});
  }
 
 /**
