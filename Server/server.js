@@ -129,7 +129,8 @@ passport.use(new LocalStrategy(
 				console.log("Incorrect Username");
 		        return done(null, false, { message: 'Incorrect username.' });
 		    }
-		    if(user.Password != password) {
+		console.log("password = %s, hash = %s, result = %b\n", password,  user.Password, bcrypt.compareSync(password, user.Password));
+		    if(!bcrypt.compareSync(password, user.Password)){
 				console.log("Incorrect Password");
 		        return done(null, false, { message: 'Incorrect password.' });
 		   	}
@@ -222,8 +223,7 @@ app.post('/LoginButton', function(req, res) {
  */ 
 function Login(username, password, callback) {
 	console.log("Login: ", username, password);
-
-	var select = "SELECT * FROM Users WHERE Username LIKE '" + username + "' AND Password LIKE '" + password + "'";
+	var select = "SELECT * FROM Users WHERE Username LIKE '" + username + "'";
 	connection.query(select, function(err, rows) {
 		if (err) {
 			/* an error occured */
@@ -232,8 +232,14 @@ function Login(username, password, callback) {
 		}
 		else {
 			if (rows.length == 1) {
-				console.log("Login Successful");
-				return callback(0);
+					console.log("password = %s, hash = %s\n", password, rows.password);
+				if(bcrypt.compareSync(password, rows.password)){
+					console.log("Login Successful");
+					return callback(0);
+				}else{
+					console.log("Login Failed: Bad Pass");
+					return callback(-3);
+				}
 			}
 			else {
 				return callback(-2);
@@ -297,7 +303,7 @@ function Register(user, callback) {
 				var hash = bcrypt.hashSync(user.password, 10);
 				console.log("HASH = " + hash);
 				/* if username is not already used */
-				var insert = "INSERT INTO Users (Username, Password, EmailAddress, PhoneNumber, NumberOfStrikes, TotalNumberOfRatings) VALUES ('" + user.username + "', '" + user.password + "','" + user.email + "','" + user.phone + "' , 0, 0)";
+				var insert = "INSERT INTO Users (Username, Password, EmailAddress, PhoneNumber, NumberOfStrikes, NUM_BidRate, NUM_PostRate, AVG_BidRate, AVG_PostRate, DateJoined) VALUES ('" + user.username + "', '" + hash + "','" + user.email + "','" + user.phone + "' , 0, 0, 0, 0, 0, '" + GetDate() + "' )";
 
 				connection.query(insert, function(err, rows) {
 					if (err) {
@@ -315,14 +321,6 @@ function Register(user, callback) {
 	});
 }
 
-function hash(user){
-
-bcrypt.hash(user.password, 10, function(err, hash) {
-	user.password = hash;
-  // Store hash in your password DB. 
-});
-
-};
 
 /* test stuff by sam, dont worry about this */
 
