@@ -16,11 +16,6 @@ var connection = mysql.createConnection({
 	database : 	"sfellers"
 });
 
-/*
-TODO:
- - Return user data with post data 
- */
-
 /* connect to database */
 connection.connect(function(err) {
 	if (err) {
@@ -105,12 +100,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 	
 console.log("Server Started");
-/*
-app.get('/index.html', ensureAuthenticated, function(req, res) {
-	console.log("jere");
-    res.redirect('/');
-});
-*/
+
+
 app.get('/', ensureAuthenticated, function(req, res) {
 	console.log("jere1");
     res.redirect('/index.html');
@@ -315,7 +306,6 @@ function Register(user, callback) {
 					else {
 						console.log("Register Successful");
 						return callback(0);
-						//Login(user.username, user.password, callback);
 
 					}
 				});
@@ -882,7 +872,6 @@ function CreateRating(ratingType, userId, userIdRater, comment, ratingValue, cal
 			return callback(-2);
 		}
 		else {
-			//return callback(0);
 			/* update rated user's avg rating and number of ratings for the type of rating */
 			var avg = "AVG_PostRate";
 			var num = "NUM_PostRate";
