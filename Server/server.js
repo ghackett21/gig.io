@@ -314,7 +314,8 @@ function Register(user, callback) {
 					}
 					else {
 						console.log("Register Successful");
-						Login(user.username, user.password, callback);
+						//Login(user.username, user.password, callback);
+						
 					}
 				});
 			}
