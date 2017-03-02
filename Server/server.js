@@ -232,8 +232,8 @@ function Login(username, password, callback) {
 		}
 		else {
 			if (rows.length == 1) {
-					console.log("password = %s, hash = %s\n", password, rows.password);
-				if(bcrypt.compareSync(password, rows.password)){
+					console.log("password = %s, hash = %s\n", password, rows[0].Password);
+				if(bcrypt.compareSync(password, rows[0].Password)){
 					console.log("Login Successful");
 					return callback(0);
 				}else{
@@ -297,6 +297,7 @@ function Register(user, callback) {
 		else {
 			/* if user with username already exists... */
 			if (rows.length > 0) {
+				console.log("user exists")
 				return callback(-3);
 			}
 			else {
