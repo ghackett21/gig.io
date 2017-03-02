@@ -1,4 +1,5 @@
 var app = angular.module("myApp", []);
+var distance;
 
 app.controller("postController", function($scope) {
 
@@ -106,6 +107,16 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
 				td[0].innerHTML = post.P_Description;
 				td[1].innerHTML = post.Username;
 				td[2].innerHTML = post.P_Location;
+
+                console.log();
+				var date = post.CreationTime.substring(0,10);
+				var day = date.substring(8,date.length);
+				var month = date.substring(5,7);
+				var year = date.substring(0,4);
+
+				date = month + "/" + day + "/" + year;
+
+				td[3].innerHTML = date;
 				var tr = clone.querySelectorAll('tr');
 				tr[0].id = "post-"+i;
 				template.parentNode.appendChild(clone);
@@ -201,7 +212,7 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
                     time2 = new Date(posts[i+1].CreationTime);
 
                     if (time1.getTime() < time2.getTime()) {
-                        console.log("I'm In!");
+                        //console.log("I'm In!");
                         var temp = posts[i];
                         posts[i] = posts[i+1];
                         posts[i+1] = temp;
@@ -299,7 +310,17 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
 
 function myMap() {
 	var myAddress = address;
-	console.log(myAddress);
+	console.log("My Address: " + myAddress);
+
+	console.log(navigator.geolocation.getCurrentPosition(function(position) {
+         var pos = {
+           lat: position.coords.latitude,
+           lng: position.coords.longitude
+         };
+         console.log(pos);
+
+    }));
+
    var map = new google.maps.Map(document.getElementById('map'), {
        mapTypeId: google.maps.MapTypeId.TERRAIN,
        zoom: 10
@@ -320,4 +341,9 @@ function myMap() {
       }
    });
 
+}
+
+function getMonth(str) {
+    console.log(str);
+    return str;
 }
