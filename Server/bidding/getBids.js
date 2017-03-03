@@ -5,7 +5,7 @@ var connection = require('./../helpers/connection');
  * Accepts: PostID
  * Returns: List of all bids for that post
  */
-modeule.exports = function(req, res) {
+module.exports = function(req, res) {
 	console.log("GetBids");
 
 	/* callback to handle response */
