@@ -823,7 +823,7 @@ app.post("/GetUserRatings", function(req, res) {
  	});
  }
 
- app.post("/CreateRating", require(createRating));
+ app.post("/CreateRating", require('./createRating'));
 
 /**
  * Get the current date and time in SQL accepted datetime format
