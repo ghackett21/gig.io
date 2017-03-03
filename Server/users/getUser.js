@@ -5,7 +5,7 @@ var connection = require('./../helpers/connection');
  * Accepts: userId
  * Returns user info (not password)
  */
-modules.exports = function(req, res) {
+module.exports = function(req, res) {
  	console.log("GetUser");
 	console.log("user = %s", JSON.stringify(req.user) );
  	/* callback to handle response */
