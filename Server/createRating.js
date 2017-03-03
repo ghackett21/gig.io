@@ -41,7 +41,7 @@ module.exports = function(req, res){
 function createRatingHelper(ratingType, userId, userIdRater, comment, ratingValue, callback) {
 	console.log("CreateRating: ratingType: " + ratingType + ", userId: " + userId + ", userIdRater: " + userIdRater + ", comment: " + comment + ", ratingValue: " + ratingValue);
 
-	var insert = "INSERT INTO RATINGS (Uid, Comment, UidRater, DateOfRating, RatingType, RatingValue) VALUES (" + userId + ", '" + comment + "', " + userIdRater + ", '" + GetDate() + "', '" + ratingType + "', " + ratingValue + ")";
+	var insert = "INSERT INTO RATINGS (Uid, Comment, UidRater, DateOfRating, RatingType, RatingValue) VALUES (" + userId + ", '" + comment + "', " + userIdRater + ", '" + getDate() + "', '" + ratingType + "', " + ratingValue + ")";
 
 	connection.query(insert, function(err, rows) { 
 		if (err) {
