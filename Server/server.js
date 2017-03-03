@@ -825,7 +825,9 @@ app.post("/GetUserRatings", function(req, res) {
  	});
  }
 
- app.post("/CreateRating", createRating(req, res));
+ app.post("/CreateRating", function(req, res){
+ 	createRating(req, res);
+ });
 
 /**
  * Get the current date and time in SQL accepted datetime format
