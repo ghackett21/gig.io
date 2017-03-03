@@ -7,8 +7,14 @@ var flash = require('connect-flash');
 var session = require('express-session');
 var bcrypt = require('bcrypt');
 
+/* delete later */
 var getDate = require('./helpers/getDate');
 var connection = require('./helpers/connection');
+
+/* bidding */
+var getBids = require('./bidding/getBids');
+
+/* rating system endpoints */
 var createRating = require('./ratings/createRating');
 var getUserRatings = require('./ratings/getUserRatings');
 
@@ -735,42 +741,8 @@ function Bid(userId, postId, amount, callback) {
  * Returns: List of all bids for that post
  */
 app.post("/GetBids", function(req, res) {
-	console.log("GetBids");
-
-	/* callback to handle response */
-  	var callback = function(result) {
-  		if (result < 0) {
-  			res.json({"Response": "GetBids failed", "Result": "", "State": result });
-  		}
-  		else {
-  			res.json({"Response": "GetBids successful", "Result": result, "State": 0 });
-  		}
-  	}
-
-  	if (req.body.PostId == undefined) {
-  		console.log("GetBids undfined args: requires PostId");
-  		callback(-1);
-  	}
-  	else {
-  		GetBids(req.body.PostId, callback);
-  	}
+	getBids(req, res);
 });
-
-function GetBids(postId, callback) {
-	console.log("GetBids: " + postId);
-
-	var select = "SELECT * FROM Bids WHERE Pid Like '" + postId + "'";
-
-	connection.query(select, function(err, rows) {
-		if (err) {
-			console.log("GetBids: database error", err);
-			return callback(-2);
-		}
-		else {
-			return callback(rows);
-		}
-	}); 
-}
 
 app.post('GetUserRatings', function(req, res) {
 	getUserRatings(req, res);
