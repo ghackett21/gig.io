@@ -11,6 +11,9 @@ var bcrypt = require('bcrypt');
 var getDate = require('./helpers/getDate');
 var connection = require('./helpers/connection');
 
+/* posts */
+var getAllPosts = require('./posts/getAllPosts');
+
 /* bidding */
 var getBids = require('./bidding/getBids');
 
@@ -560,36 +563,8 @@ function CreatePost(userId, title, location, description, image, callback) {
  * should it check status?
  */
 app.post("/GetAllPosts", function(req, res) {
-	console.log("GetALLPosts");
-
-  	/* callback to handle response */
-  	var callback = function(result) {
-  		if (result < 0) {
-  			res.json({"Response": "GetAllPosts failed", "result": "", "State": result });
-  		}
-  		else {
-  			res.json({"Response": "GetAllPosts successful", "result": result, "State": 0 });
-  		}
-  	}
-
-  	GetAllPosts(callback);
+	getAllPosts(req, res);
 });
-
-function GetAllPosts(callback) {
-  	var select = "SELECT Posting.Pid, Posting.P_Location, Posting.CreationTime, Posting.P_Description, Posting.NumberOfBids, Users.Uid, Users.Username, Users.U_Description, Users.U_Location, Users.PhoneNumber, Users.DateJoined, Users.EmailAddress, Users.AVG_PostRate, Users.AVG_BidRate FROM Posting Inner Join Users On Posting.Uid=Users.Uid";
-
-  	connection.query(select, function(err, rows) {
-  		if (err) {
-  			console.log("GetAllPosts: database error", err);
-  			return callback(-2);
-  		}
-  		else {
-  			console.log("rows[]" + JSON.stringify(rows[2]));
-
-  			return callback(rows);
-  		}
-  	});
-}
 
 function GetUser_Helper(userId) {
 	var select = "SELECT * FROM Users WHERE Uid LIKE '" + userId + "'";
