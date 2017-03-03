@@ -13,6 +13,7 @@ var connection = require('./helpers/connection');
 
 /* users */
 var updateProfile = require('./users/updateProfile');
+var getUser = require('./users/getUser');
 
 /* posts */
 var getAllPosts = require('./posts/getAllPosts');
@@ -186,12 +187,11 @@ app.post('/logout', function(req, res) {
  * Accepts: username, password
  * Returns: State, UserID
  */
+ /*
 app.post('/LoginButton', function(req, res) {
 	console.log("Login");
-	/* callback function to handle response */
 	var callback = function(result) {
 		if (result < 0 ) {
-			/* an error occured */
 			res.json({"Response": "login failed", "Uid": " ", "State": result});
 		}
 		else {
@@ -199,7 +199,6 @@ app.post('/LoginButton', function(req, res) {
 		}
 	}
 
-	/* check for missing args */
 	if (req.body.username == undefined || req.body.password == undefined) {
 		console.log("Login: undefined args");
 		callback(-1);
@@ -208,7 +207,7 @@ app.post('/LoginButton', function(req, res) {
 		Login(req.body.username, req.body.password, callback);
 	}
 
-});
+}); */
 
 
 /**
@@ -350,45 +349,9 @@ app.get('/checkauth', isAuthenticated, function(req, res){
     });
 });
 
-
-/**
- * Get user info
- * Accepts: userId
- * Returns user info (not password)
- */
- app.post('/GetUser', function(req, res) {
- 	console.log("GetUser");
-	console.log("user = %s", JSON.stringify(req.user) );
- 	/* callback to handle response */
- 	var callback = function(result) {
- 		if (result < 0) {
- 			res.json({'Response': 'GetUser failed', 'State': result, 'Result': ''});
- 		}
- 		else {
- 			res.json({'Response': 'GetUser successful', 'State': 0, 'Result': result});
- 		}
- 	}
-
- 	/* check for undefined args */
- 
- 	GetUser(req.user.Uid, callback);
- });
-
- function GetUser(userId, callback) {
- 	console.log("GetUser: userId" + userId);
-
- 	var select = "SELECT * FROM Users WHERE Uid LIKE '" + userId + "'";
-
- 	connection.query(select, function(err, rows) {
- 		if (err) {
- 			console.log("GetUser: database error: " + err);
- 			return callback(-2);
- 		}
- 		else {
- 			return callback(rows);
- 		}
- 	});
- }
+app.post('/GetUser', function(req, res) {
+ 	getUser(req, res);
+});
 
 app.post('/UpdateProfile', function(req, res) {
 	updateProfile(req, res);
