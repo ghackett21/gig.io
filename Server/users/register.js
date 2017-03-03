@@ -1,3 +1,4 @@
+var bcrypt = require('bcrypt');
 var connection = require('./../helpers/connection');
 
 /**
