@@ -1,0 +1,57 @@
+var connection = require('./../helpers/connection');
+
+/**
+ * Creates a new post given the userId of the creator, the location, and the description/title
+ * Accepts: UserId, Location, Description
+ * Returns: State, PostID
+ */
+module.exports = function(req, res) {
+	console.log("Create Post");
+
+	/* register callback to handle response */
+	var callback = function(result) {
+		if (result < 0) {
+			/* an error occurred */
+			res.json({'Response': 'createPost failed', 'PostId': " ", 'State': result});
+		}
+		else {
+			res.json({'Response' : 'createPost successful', 'PostId': result, 'State': 0});
+		}
+	}
+
+	/* check for missing args */
+	if (req.body.Uid == undefined || req.body.title == undefined || req.body.location == undefined || req.body.description == undefined) {
+		console.log("CreatePost: undefined args, requires Uid, location, and description");
+		callback(-1);
+	}
+	else {
+		imageLink = "";
+		if (req.body.imageLink != undefined) {
+			imageLink = req.body.imageLink;
+		}
+		createPost(req.body.Uid, req.body.title, req.body.location, req.body.description, imageLink, callback);
+	}
+}
+
+/**
+ * inserts new post into the database 
+ */
+function createPost(userId, title, location, description, image, callback) {
+	console.log("CreatePost: ", userId, location, description);
+
+	var creationTime = GetDate();
+	var insert = "INSERT INTO Posting (Uid, P_Title, P_Location, CreationTime, Status, P_Description, P_Image) VALUES ('" + userId + "', '" + title + "', '" + location + "', '" + creationTime + "', 1, '" + description + "', '" + image + "')";  
+
+	connection.query(insert, function (err, rows) {
+		if (err) {
+			/* database error occured */
+			console.log("CreatePost: database error: ", err);
+			return callback(-2);
+		}
+		else {
+			/* return the new postId */
+			console.log("rows:" + rows);
+			return callback(0);
+		}
+	});
+}

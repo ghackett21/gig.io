@@ -11,11 +11,19 @@ var bcrypt = require('bcrypt');
 var getDate = require('./helpers/getDate');
 var connection = require('./helpers/connection');
 
+/* users */
+var updateProfile = require('./users/updateProfile');
+
 /* posts */
 var getAllPosts = require('./posts/getAllPosts');
+var deletePost = require('./posts/deletePost');
+var getUserPosts = require('./posts/getUserPosts');
+var getPost = require('./posts/getPost');
+var createPost = require('./posts/createPost');
 
 /* bidding */
 var getBids = require('./bidding/getBids');
+var bid = require('./bidding/bid');
 
 /* rating system endpoints */
 var createRating = require('./ratings/createRating');
@@ -382,186 +390,18 @@ app.get('/checkauth', isAuthenticated, function(req, res){
  	});
  }
 
-
-/** 
- * Updates a user's profile information in the database 
- * Accepts: Username, password, Email, description, profile image, location, phone number
- * Returns: state
- */
 app.post('/UpdateProfile', function(req, res) {
-	console.log("UpdateProfile");
-
-	/* register callback to handle response */
-	var callback = function(result) {
-		if (result < 0) {
-			/* an error occured */
-			res.json({'Response': 'update failed', 'State': result});
-		}
-		else {
-			res.json({'Response' : 'update successful', 'State': result});
-		}
-	}
-
-	/* check for missing args */
-	if (req.body.userId == undefined || req.body.Username == undefined || req.body.password == undefined || req.body.Email == undefined || req.body.Description == undefined || req.body.ProfileImage == undefined || req.body.location == undefined || req.body.PhoneNumber == undefined) {
-		console.log("Update Profile: undefined args");
-		callback(-1);
-	}
-	else {
-		UpdateProfile(req.body.userId, req.body.Username, req.body.password, req.body.Email, req.body.Description, req.body.ProfileImage, req.body.location, req.body.PhoneNumber, callback);
-	}
+	updateProfile(req, res);
 });
 
-/**
- * Updates user info in database
- */
-function UpdateProfile(userID, username, password, email, description, profileImage, location, phoneNumber, callback) {
-	console.log("UpdateProfile: ", userId, username, password, email, description, location, phonenNumber);
-
-	var update = "UPDATE Users SET Username='" + username + "', Password='" + password + "', EmailAddress='" + email + "', Description='" + description + "', Location='" + location + "', PhoneNumber='" + phoneNumber + "' WHERE Uid=" + userId;
-
-	connection.query(update, function(err, rows) {
-		if (err) {
-			console.log("UpdateProfile: database error:" + err);
-
-			return callback(-2);
-		}
-		else {
-			return callback(0);
-		}
-	});
-}
-
-
-/**
- * Creates a new post given the userId of the creator, the location, and the description/title
- * Accepts: UserId, Location, Description
- * Returns: State, PostID
- */
 app.post('/CreatePost', function(req, res) {
-	console.log("Create Post");
-
-	/* register callback to handle response */
-	var callback = function(result) {
-		if (result < 0) {
-			/* an error occurred */
-			res.json({'Response': 'createPost failed', 'PostId': " ", 'State': result});
-		}
-		else {
-			res.json({'Response' : 'createPost successful', 'PostId': result, 'State': 0});
-		}
-	}
-
-	/* check for missing args */
-	if (req.body.Uid == undefined || req.body.title == undefined || req.body.location == undefined || req.body.description == undefined) {
-		console.log("CreatePost: undefined args, requires Uid, location, and description");
-		callback(-1);
-	}
-	else {
-		imageLink = "";
-		if (req.body.imageLink != undefined) {
-			imageLink = req.body.imageLink;
-		}
-		CreatePost(req.body.Uid, req.body.title, req.body.location, req.body.description, imageLink, callback);
-	}
+	createPost(req, res);
 });
 
-/**
- * inserts new post into the database 
- */
-function CreatePost(userId, title, location, description, image, callback) {
-	console.log("CreatePost: ", userId, location, description);
-
-	var creationTime = GetDate();
-	var insert = "INSERT INTO Posting (Uid, P_Title, P_Location, CreationTime, Status, P_Description, P_Image) VALUES ('" + userId + "', '" + title + "', '" + location + "', '" + creationTime + "', 1, '" + description + "', '" + image + "')";  
-
-	connection.query(insert, function (err, rows) {
-		if (err) {
-			/* database error occured */
-			console.log("CreatePost: database error: ", err);
-			return callback(-2);
-		}
-		else {
-			/* return the new postId */
-			console.log("rows:" + rows);
-			return callback(0);
-		}
-	});
-}
-
-/**
- * Returns post details given postID
- * Accepts: PostID
- * Returns: State, Entire post info from database  
- */
  app.post('/GetPost', function(req, res) {
- 	console.log("GetPost");
+ 	getPost(req, res);
+});
 
- 	/* register callback to handle response */
- 	var callback = function(result) {
- 		if (result < 0) {
- 			/* an error occurred */
- 			res.json({'Response': 'GetPost failed', 'Post': " ", 'State': result});
- 		}
- 		else {
- 			res.json({'Response': 'GetPosts successful', 'Post': result, 'State': 0});
- 		}
- 	}
-
- 	/* check for missing args */
- 	if (req.body.postId == undefined) {
- 		console.log("GetPost: undefined args. Requires: postId");
- 		callback(-1);
- 	}
- 	else {
- 		GetPost(req.body.postId, callback);
- 	}
- });
-
- /**
-  *	Returns the post information given a postId
-  */
- function GetPost(PostId, callback) {
- 	console.log("GetPost: ", PostId);
-
- 	var select = "SELECT * FROM Posting WHERE Pid LIKE " + PostId;
-
- 	connection.query(select, function(err, rows) {
- 		if (err) {
- 			/* database error */
- 			console.log("GetPost: database error: ", err);
- 			return callback(-2);
- 		}
- 		else {
- 			if (rows.length == 1) {
- 				var post = rows[0];
- 				
- 				/* get user information also */
- 				var select = "SELECT * FROM Users WHERE Uid LIKE '" + post.Uid + "'";
-
-			 	connection.query(select, function(err, rows) {
-			 		if (err) {
-			 			console.log("GetPost: database error: " + err);
-			 			return callback(-2);
-			 		}
-			 		else {
-			 			return callback(Object.assign(post, rows));
-			 		}
-			 	});
- 			}
- 			else {
- 				console.log("GetPost: PostId matches multiple posts!");
- 				return callback(-2);
- 			}
- 		}
- 	});
- }
-
-
-/** 
- * Returns a list of all postIds currently in the database
- * should it check status?
- */
 app.post("/GetAllPosts", function(req, res) {
 	getAllPosts(req, res);
 });
@@ -580,141 +420,18 @@ function GetUser_Helper(userId) {
  	});
  }
 
-/**
- * Returns posts created by the currently logged in user
- * Accepts: nothing
- * Returns: list of posts created by user
- */
  app.post("/GetUserPosts", function(req, res) {
- 	console.log("GetUserPosts");
+ 	getUserPosts(req, res);
+});
 
- 	/* callback to handle response */
- 	var callback = function(result) {
- 		if (result < 0) {
- 			res.json({"Response": "GetUserPosts failed", "Result": "", "State": result});
- 		}
- 		else {
- 			res.json({"Response": "GetUserPosts successful", "Result": result, "State": 0});
- 		}
- 	}
-
- 	GetUserPosts(req.user.Uid, callback);
- });
-
- function GetUserPosts(userId, callback) {
- 	console.log("GetUserPosts: userId " + userId);
- 	var select = "SELECT Posting.Pid, Posting.P_Location, Posting.CreationTime, Posting.P_Description, Users.Uid, Users.Username, Users.U_Description, Users.U_Location, Users.PhoneNumber, Users.DateJoined, Users.EmailAddress, Users.AVG_PostRate, Users.AVG_BidRate FROM Posting Inner Join Users On Posting.Uid=Users.Uid WHERE Users.Uid LIKE " + userId + ")";
-
- 	connection.query(select, function(err, rows) {
- 		if (err) {
- 			console.log("GetUserPosts: database error: " + err);
- 			return callback(-2);
- 		}
- 		else {
- 			return callback(rows);
- 		}
- 	});
- } 
-
-/**
-* Delete post based on postId
-* Accepts: postId
-* Returns: State
-*/ 
 app.post("/DeletePost", function(req, res) {
-	console.log("DeletePost");
-
-	var callback = function(result) {
-		if (result < 0) {
-			res.json({"Response": "DeletePost failed", "State": result });
-		}
-		else {
-			res.json({"Response": "DeletePost successful", "State": result });
-		}
-	}
-
-	DeletePost(req.body.postId, callback);
+	deletePost(req, res);
 });
 
-function DeletePost(postId, callback) {
-	console.log("DeletePost: postId: " + postId);
-
-	var deleteStatement = "DELETE FROM Posting WHERE Pid = " + postId;
-
-	connection.query(deleteStatement, function(err, rows) {
-		if (err) {
-			console.log("DeletePost: database error, " + err);
-			return callback(-2);
-		}
-		else {
-			return callback(0);
-		}
-	});
-}
-
-
-/** 
- * Place a bid on a post
- * Accepts: UserId, PostId, and $ Amount
- * Returns BidID
- */
 app.post("/Bid", function(req, res) {
-	console.log("Bid");
-
-	/* callback to handle response */
-  	var callback = function(result) {
-  		if (result < 0) {
-  			res.json({"Response": "Bid failed", "Result": "", "State": result });
-  		}
-  		else {
-  			res.json({"Response": "Bid successful", "Result": result, "State": 0 });
-  		}
-  	}
-
-  	/* check for missing args */
-  	if (req.body.UserId == undefined || req.body.PostId == undefined || req.body.Amount == undefined) {
-  		console.log("Bid: unddfined args: requires UserId, PostId, and Amount");
-  		callback(-1);
-  	}
-  	else {
-  		Bid(req.body.UserId, req.body.PostId, req.body.Amount, callback);
-  	}
+	bid(req, res);
 });
 
-function Bid(userId, postId, amount, callback) {
-	var bidTime = GetDate();
-	var insert = "INSERT INTO Bids (Uid, Pid, BidTime, Amount) VALUES (" + userId + ", " + postId + ", '" + bidTime + "', " + amount + ")";
-
-	connection.query(insert, function(err, rows) {
-		if (err) {
-			console.log("Bid: database error", err);
-			return callback(-2);
-		}
-		else {
-			bidId = rows[0].Bidid;
-			
-			/* increment the number of bids on the post the bid was for */
-			var update = "UPDATE Posting SET NumberOfBids=NumberOfBids+1 WHERE PID=" + postId;
-
-			connection.query(update, function(err, rows) {
-				if (err) {
-					console.log("Bid: database error: " + err);
-					return callback(-2);
-				}
-				else {
-					return callback(bidId);
-				}
-			});
-		}
-	});
-}
-
-
-/**
- * Returns all bids for a given post
- * Accepts: PostID
- * Returns: List of all bids for that post
- */
 app.post("/GetBids", function(req, res) {
 	getBids(req, res);
 });
