@@ -1,4 +1,5 @@
 var getDate = require('./helpers/getDate');
+var connection = require('./helpers/connection');
 
 /**
 * Create a new Rating
