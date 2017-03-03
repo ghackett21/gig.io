@@ -406,20 +406,6 @@ app.post("/GetAllPosts", function(req, res) {
 	getAllPosts(req, res);
 });
 
-function GetUser_Helper(userId) {
-	var select = "SELECT * FROM Users WHERE Uid LIKE '" + userId + "'";
-
- 	connection.query(select, function(err, rows) {
- 		if (err) {
- 			console.log("GetPost: database error: " + err);
- 			return null;
- 		}
- 		else {
- 			return rows;
- 		}
- 	});
- }
-
  app.post("/GetUserPosts", function(req, res) {
  	getUserPosts(req, res);
 });
