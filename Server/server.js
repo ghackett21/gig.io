@@ -179,36 +179,6 @@ app.post('/logout', function(req, res) {
   res.json({"redirect": '/login.html'});
 });
 
-/** Database interaction endpoints */
-
-/**
- * Attempts to log in with the provided username and password.
- * Returns the userId if successful
- * Accepts: username, password
- * Returns: State, UserID
- */
- /*
-app.post('/LoginButton', function(req, res) {
-	console.log("Login");
-	var callback = function(result) {
-		if (result < 0 ) {
-			res.json({"Response": "login failed", "Uid": " ", "State": result});
-		}
-		else {
-			res.json({"Response": "login successful", "Uid": result, "State": 0}); 
-		}
-	}
-
-	if (req.body.username == undefined || req.body.password == undefined) {
-		console.log("Login: undefined args");
-		callback(-1);
-	}
-	else {
-		Login(req.body.username, req.body.password, callback);
-	}
-
-}); */
-
 
 /**
  * Search the database for a User with the given username and password,
