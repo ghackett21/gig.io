@@ -5,7 +5,7 @@ var connection = require('./../helpers/connection');
  * Accepts: nothing
  * Returns: list of posts created by user
  */
- module exports = function(req, res) {
+ module.exports = function(req, res) {
  	console.log("GetUserPosts");
 
  	/* callback to handle response */
