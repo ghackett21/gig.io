@@ -1,4 +1,4 @@
-var connection = require('./helpers/connection')
+var connection = require('./../helpers/connection')
 
 /**
  * Returns the ratings for the currently logged in user
