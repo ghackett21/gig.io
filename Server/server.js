@@ -12,6 +12,8 @@ var getDate = require('./helpers/getDate');
 var connection = require('./helpers/connection');
 
 /* users */
+var login = require('./users/login');
+var register = require('./users/register');
 var updateProfile = require('./users/updateProfile');
 var getUser = require('./users/getUser');
 
@@ -89,8 +91,6 @@ function findById(id, fn) {
 };
 
 
-
-
 /* create express server */
 var app = express();
 app.use(bodyParser.json());
@@ -114,8 +114,6 @@ app.get('/', ensureAuthenticated, function(req, res) {
 app.use(express.static(path.join(__dirname, '/../docs')));
 
 
-
-
 passport.use(new LocalStrategy(
 	function(username, password, done) {
 		findByUsername(username, function (err, user) {
@@ -136,21 +134,7 @@ passport.use(new LocalStrategy(
 ));
 
 app.post('/login', passport.authenticate('local', { failureRedirect: '/login'}), function(req, res) {
-
-	console.log("sending post login req = %j", req.user);
-	//res.json({"status": 200, "redirect" : "/index.html"});
-	req.logIn(req.user, function(err) {
-			
-			if (err) {
-				   return res.status(500).json({
-				       err: 'Could not log in user'
-				   });
-			}
-			console.log("is auth? + "  + req.isAuthenticated()); 
-			req.session.save(() => {
-				res.json({"status": 200, "redirect" : "/index.html"});
-    		})
-	});	
+	login(req, res);
 });
 
 
@@ -176,37 +160,6 @@ app.post('/logout', function(req, res) {
 });
 
 
-/**
- * Search the database for a User with the given username and password,
- * if exactly one user matches, return success.
- */ 
-function Login(username, password, callback) {
-	console.log("Login: ", username, password);
-	var select = "SELECT * FROM Users WHERE Username LIKE '" + username + "'";
-	connection.query(select, function(err, rows) {
-		if (err) {
-			/* an error occured */
-			console.log("Login Failed");
-			return callback(-2);
-		}
-		else {
-			if (rows.length == 1) {
-					console.log("password = %s, hash = %s\n", password, rows[0].Password);
-				if(bcrypt.compareSync(password, rows[0].Password)){
-					console.log("Login Successful");
-					return callback(0);
-				}else{
-					console.log("Login Failed: Bad Pass");
-					return callback(-3);
-				}
-			}
-			else {
-				return callback(-2);
-			}
-		}
-	});
-}
-
 
 /**
  * Register a new user with the provided username and password.
@@ -215,73 +168,8 @@ function Login(username, password, callback) {
  * Returns: State, UserID
  */
 app.post('/RegisterButton', function(req, res) {
-	console.log("Register");
-	/* callback function to handle response */
-	var callback = function(result) {
-		if (result < 0) {
-			/* an error occured */
-			res.json({"Resonse": "register failed", "Uid": " ", "State": result});
-		}
-		else {
-			res.json({"Response": "register successful", "Uid": result, "State": 0});
-		}
-	}
-
-	/* check for missing args */
-	if (req.body.username == undefined || req.body.password == undefined) {
-		console.log("Register: undefined args");
-		callback(-1);
-	}
-	else {
-		Register(req.body, callback);
-	}
+	register(req, res);
 });
-
-/**
- * Creates a new user with the given username and password
- * Checks that no user with the same username exists
- */
-function Register(user, callback) {
-	
-	console.log("Register: ", user.username, user.password, user.email);
-	
-	/* check for existing user with username */
-	var select = "SELECT * FROM Users WHERE username LIKE '" + user.username + "'";
-
-	connection.query(select, function(err, rows) {
-		if (err) {
-			console.log("Register Failed: ", err);
-			return callback(-2);
-		}
-		else {
-			/* if user with username already exists... */
-			if (rows.length > 0) {
-				console.log("user exists")
-				return callback(-3);
-			}
-			else {
-				var hash = bcrypt.hashSync(user.password, 10);
-				console.log("HASH = " + hash);
-				/* if username is not already used */
-				var insert = "INSERT INTO Users (Username, Password, EmailAddress, PhoneNumber, NumberOfStrikes, NUM_BidRate, NUM_PostRate, AVG_BidRate, AVG_PostRate, DateJoined) VALUES ('" + user.username + "', '" + hash + "','" + user.email + "','" + user.phone + "' , 0, 0, 0, 0, 0, '" + GetDate() + "' )";
-
-				connection.query(insert, function(err, rows) {
-					if (err) {
-						/* an error occured */
-						console.log("Register Failed", err);
-						return callback(-2);
-					}
-					else {
-						console.log("Register Successful");
-						return callback(0);
-
-					}
-				});
-			}
-		}
-	});
-}
-
 
 /* test stuff by sam, dont worry about this */
 
