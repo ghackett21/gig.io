@@ -154,7 +154,6 @@ app.post('/login', passport.authenticate('local', { failureRedirect: '/login'}),
 });
 
 
-/*
 app.get('/login', function(req, res, next) {
 	console.log("LoginButton called");
 	
@@ -168,7 +167,6 @@ app.get('/login', function(req, res, next) {
 		})(req, res, next);
 
 });
-*/
 
 app.post('/logout', function(req, res) {
   console.log('logging out');
