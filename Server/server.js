@@ -8,6 +8,8 @@ var flash = require('connect-flash');
 var session = require('express-session');
 var bcrypt = require('bcrypt');
 
+var createRating = require('./createRating');
+
 /* create database connection */
 var connection = mysql.createConnection({
 	host     : 	"mydb.itap.purdue.edu",
@@ -823,7 +825,7 @@ app.post("/GetUserRatings", function(req, res) {
  	});
  }
 
- app.post("/CreateRating", require('./createRating')(req, res));
+ app.post("/CreateRating", createRating(req, res));
 
 /**
  * Get the current date and time in SQL accepted datetime format
