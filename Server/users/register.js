@@ -1,4 +1,4 @@
-var connection = require('./../helper/connection');
+var connection = require('./../helpers/connection');
 
 /**
  * Register a new user with the provided username and password.
