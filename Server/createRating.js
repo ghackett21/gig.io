@@ -3,7 +3,7 @@
 * Accepts: ratingType ("Bid" or "Post"), Comment, userIdRater, userId, ratingValue 
 * Returns: State
 */
-var createRating = function(req, res){
+module.exports = function(req, res){
 	console.log("CreateRating");
 
 	/* callback to handle response */
@@ -94,5 +94,3 @@ function createRatingHelper(ratingType, userId, userIdRater, comment, ratingValu
 		}
 	});
 }
-
-module.exports = createRating;
