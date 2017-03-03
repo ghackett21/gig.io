@@ -1,3 +1,5 @@
+var getDate = require('./helpers/getDate');
+
 /**
 * Create a new Rating
 * Accepts: ratingType ("Bid" or "Post"), Comment, userIdRater, userId, ratingValue 

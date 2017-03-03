@@ -9,6 +9,7 @@ var session = require('express-session');
 var bcrypt = require('bcrypt');
 
 var createRating = require('./createRating');
+var getDate = require('./helpers/getDate');
 
 /* create database connection */
 var connection = mysql.createConnection({
@@ -828,16 +829,6 @@ app.post("/GetUserRatings", function(req, res) {
  app.post("/CreateRating", function(req, res){
  	createRating(req, res);
  });
-
-/**
- * Get the current date and time in SQL accepted datetime format
- */
-function GetDate() {
-	var today = new Date();
-	var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-	var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-	return date+' '+time;
-}
 
 /* start express server */
 var server = app.listen(8081, function() {
