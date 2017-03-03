@@ -1,5 +1,4 @@
 var express = require("express");
-var mysql   = require('mysql');
 var path    = require("path");
 var bodyParser = require('body-parser');
 var passport = require('passport');
@@ -8,9 +7,10 @@ var flash = require('connect-flash');
 var session = require('express-session');
 var bcrypt = require('bcrypt');
 
-var createRating = require('./createRating');
 var getDate = require('./helpers/getDate');
 var connection = require('./helpers/connection');
+var createRating = require('./ratings/createRating');
+var getUserRatings = require('./ratings/getUserRatings');
 
 
 passport.serializeUser(function(user, done) {
@@ -772,44 +772,11 @@ function GetBids(postId, callback) {
 	}); 
 }
 
-/**
- * Returns the ratings for the currently logged in user
- * Accepts: nothing
- * Returns: average ratings for both bidding and posting
- */
-app.post("/GetUserRatings", function(req, res) {
- 	console.log("GetUserRatings");
+app.post('GetUserRatings', function(req, res) {
+	getUserRatings(req, res);
+})
 
- 	var callback = function(result) {
- 		if (result < 0) {
- 			res.json({"Response": "GetUserRatings failed", "Result": "", "State": result });
-  		}
-  		else {
-  			res.json({"Response": "GetUserRatings successful", "Result": result, "State": 0 });
-  		}
- 	}
-
- 	GetUserRatings(req.user.Uid, callback);
-});
-
- function GetUserRatings(userId, callback) {
- 	console.log("GetUserRatings userId " + userId);
- 	
- 	//var select 
- 	return select = "SELECT FROM AVG_PostRate, AVG_BidRate FROM Users WHERE Uid LIKE " + userId;
-
- 	connection.query(select, function(err, rows) { 
- 		if (err) {
- 			console.log("GetUserRatings: database error: " + err);
- 			return callback(-2);
- 		}
- 		else {
- 			return callback(rows[0]);
- 		}
- 	});
- }
-
- app.post("/CreateRating", function(req, res){
+ app.post("/CreateRating", function(req, res) {
  	createRating(req, res);
  });
 
