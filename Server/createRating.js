@@ -32,7 +32,7 @@ module.exports = function(req, res){
 		return callback(-1);
 	}
 	else {
-		createRating(req.body.ratingType, req.body.userId, req.body.userIdRater, req.body.comment, req.body.ratingValue, callback);
+		createRatingHelper(req.body.ratingType, req.body.userId, req.body.userIdRater, req.body.comment, req.body.ratingValue, callback);
 	}
 }
 
