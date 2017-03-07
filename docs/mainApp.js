@@ -1,6 +1,8 @@
 var app = angular.module("myApp", []);
 var distance;
 
+//var directionsService = new google.maps.DirectionsService();
+
 app.controller("postController", function($scope) {
 
 $scope.img = "http://howtodrawdat.com/wp-content/uploads/2014/03/1stpic-lucky-charms-leprechaun.png";
@@ -70,6 +72,7 @@ $scope.getUserPic = function(username) {
 
 var arr;
 var address;
+var myUser;
 
 app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
 	$scope.user;
@@ -91,6 +94,11 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
 	};
 
 	window.onload = function() {
+	    $http.post('/GetUser').then(function(response) {
+                        //console.log(response.data.Result[0]);
+                        myUser = response.data.Result[0];
+        })
+
 		$http.post('/GetAllPosts').then(function(response) {
 			$scope.user = null;
 			$scope.count = response.data.result.length;
@@ -149,7 +157,7 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
                     address = post.P_Location;
                     modal.style.display = "block";
                     $scope.$apply();
-					myMap();
+					myMap(myUser.U_Location);
                 };
             }
             //var btn = document.getElementById("post-1");
@@ -259,7 +267,7 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
                     address = post.P_Location;
                     modal.style.display = "block";
                     $scope.$apply();
-                    myMap();
+                    myMap(myUser.U_Location);
                 };
             }
             //var btn = document.getElementById("post-1");
@@ -306,20 +314,150 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
             //load response
         })
 	};
+
+	$scope.sortByNumOfBids = function() {
+    	    var time1;
+            var time2;
+            var temp;
+            var swapped;
+            $http.post('/GetAllPosts').then(function(response) {
+                posts = response.data.result;
+
+                //Sort by date
+                do {
+                    swapped = false;
+                    for (var i=0; i < posts.length-1; i++) {
+                        nbids1 = new Date(posts[i].NumberOfBids);
+                        nbids2 = new Date(posts[i+1].NumberOfBids);
+
+                        if (nbids1 < nbids2) {
+                            //console.log("I'm In!");
+                            var temp = posts[i];
+                            posts[i] = posts[i+1];
+                            posts[i+1] = temp;
+                            swapped = true;
+                        }
+                    }
+                } while (swapped);
+
+                var template = document.querySelector('#tmplt');
+                for (var i = 0; i < posts.length; i++) {
+                    var currRow = document.getElementById("post-"+i);
+                    var td = currRow.querySelectorAll('td');
+                    td[0].innerHTML = posts[i].P_Description;
+                    td[1].innerHTML = posts[i].Username;
+                    td[2].innerHTML = posts[i].P_Location;
+                }
+
+                // Get the modal
+                var modal = document.getElementById('myModal');
+
+                // Get the button that opens the modal
+                var rows = document.getElementsByTagName("tr");
+
+                for (var i = 0; i < rows.length; i++) {
+                    //console.log(postData);
+                    rows[i].onclick = function() {
+                        //console.log(arr);
+                        rowID = this.id;
+                        var j = 0;
+                        var str;
+                        for(j; j < rows.length; j++) {
+                           str = "post-"+j;
+                           if (str === rowID)
+                                break;
+                        }
+                        var post = posts[j];
+
+                        $scope.owner = post.Username;
+
+                        $scope.phone = post.PhoneNumber;
+                        $scope.desc = post.U_Description;
+                        $scope.pid = post.Pid;
+                        $scope.location = post.P_Location;
+                        address = post.P_Location;
+                        modal.style.display = "block";
+                        $scope.$apply();
+                        myMap(myUser.U_Location);
+                    };
+                }
+                //var btn = document.getElementById("post-1");
+
+                // Get the <span> element that closes the modal
+                var span = document.getElementsByClassName("close")[0];
+
+                // When the user clicks the button, open the modal
+                /*btn.onclick = function() {
+                    modal.style.display = "block";
+                }*/
+
+                // When the user clicks on <span> (x), close the modal
+                span.onclick = function() {
+                    modal.style.display = "none";
+                }
+
+                // When the user clicks anywhere outside of the modal, close it
+                window.onclick = function(event) {
+                    if (event.target == modal) {
+                        modal.style.display = "none";
+                    }
+                }
+
+                console.log(response.status);
+                console.log(response);
+                if(response.status == 200){
+                    console.log("success");
+                    //window.location.href = 'http://localhost:8081/index.html';
+                }else if(response.status == 401){
+                    console.log("failure");
+                    //console.log(response.data);
+                    //window.location.href = 'http://localhost:8081/login.html';
+                }
+                //load response
+            }).catch(function(response) {
+                //$scope.user = null;
+                console.log(response.status);
+                console.log(response);
+                if(response.status == 401){
+                    console.log("failure");
+                    //window.location.href = 'http://localhost:8081/login.html';
+                }
+                //load response
+            })
+    };
 }]);
 
-function myMap() {
+function myMap(loc) {
+    console.log("Loc: " + loc);
 	var myAddress = address;
 	console.log("My Address: " + myAddress);
 
-	console.log(navigator.geolocation.getCurrentPosition(function(position) {
+    var request = {
+      origin      : loc, // a city, full address, landmark etc
+      destination : myAddress,
+      travelMode  : google.maps.DirectionsTravelMode.DRIVING
+    };
+
+    var directionsService = new google.maps.DirectionsService();
+    directionsService.route(request, function(response, status) {
+      if ( status == google.maps.DirectionsStatus.OK ) {
+        console.log( response.routes[0].legs[0].distance.value ); // the distance in metres
+      }
+      else {
+        // oops, there's no route between these two locations
+        // every time this happens, a kitten dies
+        // so please, ensure your address is formatted properly
+      }
+    });
+
+	/*console.log(navigator.geolocation.getCurrentPosition(function(position) {
          var pos = {
            lat: position.coords.latitude,
            lng: position.coords.longitude
          };
          console.log(pos);
 
-    }));
+    }));*/
 
    var map = new google.maps.Map(document.getElementById('map'), {
        mapTypeId: google.maps.MapTypeId.TERRAIN,
