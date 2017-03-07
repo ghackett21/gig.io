@@ -306,6 +306,11 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
             //load response
         })
 	};
+
+    $scope.placeBid = function() {
+        console.log("button clicked");
+    };
+
 }]);
 
 function myMap() {
