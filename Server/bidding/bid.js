@@ -30,7 +30,7 @@ module.exports = function(req, res) {
 }
 
 function bid(userId, postId, amount, callback) {
-	var bidTime = GetDate();
+	var bidTime = getDate();
 	var insert = "INSERT INTO Bids (Uid, Pid, BidTime, Amount) VALUES (" + userId + ", " + postId + ", '" + bidTime + "', " + amount + ")";
 
 	connection.query(insert, function(err, rows) {
