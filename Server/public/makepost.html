@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+        <script src="data.js"></script>
+
+
+<head>
+ 
+<link rel="stylesheet" href="register_style.css" type="text/css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
+<script src="app.js"></script>
+</head>
+<div ng-include="'navbar.html'"></div>
+<body ng-app="myApp" ng-controller="registrationController">
+
+
+
+
+<div style="padding-left:16px" >
+  <h2 align=center>Create a post for a job you're looking for someone to help with!</h2>
+  <p align=center></p>
+<br>
+	<h3 id="status" align=center>{{status}}</h3>
+
+
+<form name="registration">
+      
+        <label for="title">Post title:</label>
+        <input padding-left="5px" ng-model="user.username" id="username" type="text"  class="validate" required>
+      <br>
+        <label for="description">Description of the work you are requesting:</label>
+        <input ng-model="user.email" id="email" type="email"  class="validate" required>
+      <br>
+	<label for="location">Location where the work will take place:</label>
+        <input padding-left="5px" ng-model="user.username" id="username" type="text"  class="validate" required>
+      <br>
+	<label for="image">Picture (Optional):</label>
+        <input padding-left="5px" ng-model="user.username" id="username" type="text"  class="validate" required>
+      <br>  
+        <input ng-click="register()" type="submit" value="Submit">
+    </form><br>
+    
+    </div>
+<script src="https://ghackett21.github.io/gig.io/navbar.js"></script>
+</body>
+</html>
