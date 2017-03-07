@@ -481,9 +481,23 @@ function myMap(loc) {
             map: map
          });
          map.setCenter(results[0].geometry.location);
+         getCoordinates(myAddress);
       }
    });
 
+}
+
+function getCoordinates(location) {
+    var geocoder = new google.maps.Geocoder();
+    geocoder.geocode({
+        'address' : location
+        },
+        function(results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                var myResult = results[0].geometry.location;
+                console.log(myResult.lat() + " , " + myResult.lng());
+            }
+    });
 }
 
 function getMonth(str) {
