@@ -39,19 +39,41 @@ function bid(userId, postId, amount, callback) {
 		}
 		else {
 			bidId = rows[0].Bidid;
-			
-			// check if lowest bid
 
 			/* increment the number of bids on the post the bid was for */
-			var update = "UPDATE Posting SET NumberOfBids=NumberOfBids+1 WHERE PID=" + postId;
+			var updateNumBids = "UPDATE Posting SET NumberOfBids=NumberOfBids+1 WHERE PID=" + postId;
 
-			connection.query(update, function(err, rows) {
+			connection.query(updateNumBids, function(err, rows) {
 				if (err) {
 					console.log("Bid: database error: " + err);
 					return callback(-2);
 				}
 				else {
-					return callback(bidId);
+					/* check lowest bid and update if needed */
+					var selectLowestBid = "SELECT LowestBid FROM Posting WHERE Pid=" + postId;
+
+					connection.query(selectLowestBid, function(err, rows) {
+						if (err) {
+							console.log("Bid: database error: " + err);
+							return callback(-2);
+						}
+						else {
+							if (rows[0].LowestBid == 0.0 || amount < rows[0].LowestBid) {
+								/* update value in Db */
+								var updateLowestBid = "UPDATE Posting SET LowestBid=" + amount + " WHERE Pid=" + postId;
+
+								connection.query(updateLowestBid, function(err, rows) {
+									if (err) {
+										console.log("Bid: database error: " + err);
+										return callback(-2);
+									}
+									else {
+										return callback(bidId);
+									}
+								});
+							}
+						}
+					});
 				}
 			});
 		}
