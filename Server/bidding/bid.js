@@ -40,6 +40,8 @@ function bid(userId, postId, amount, callback) {
 		else {
 			bidId = rows[0].Bidid;
 			
+			// check if lowest bid
+
 			/* increment the number of bids on the post the bid was for */
 			var update = "UPDATE Posting SET NumberOfBids=NumberOfBids+1 WHERE PID=" + postId;
 
