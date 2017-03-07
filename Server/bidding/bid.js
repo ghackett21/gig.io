@@ -1,4 +1,5 @@
 var connection = require('./../helpers/connection');
+var getDate = require('./../helpers/getDate');
 
 /** 
  * Place a bid on a post
