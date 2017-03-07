@@ -55,18 +55,53 @@
       <h2>Job {{pid}}</h2>
     </div>
     <div class="modal-body">
-      <p>Owner: {{owner}}</p>
-      <p>Contact Info: {{phone}}</p>
-      <p>Description: {{desc}}</p>
-      <p>Location: {{location}}</p>
-      <div id="map" style="width:400px;height:400px;background:yellow"></div>
+      <table> class="modal-table">
+        <td>
+          <p>Owner: {{owner}}</p>
+          <p>Contact Info: {{phone}}</p>
+          <p>Description: {{desc}}</p>
+          <p>Location: {{location}}</p>
+          <div id="map" style="width:400px;height:400px;background:yellow"></div>
+        </td>
+        <td valign="top">
+          <p>Bid history:</p>
+          <table class="bid-table">
+          <tr>
+            <th>Time</th>
+            <th>User</th>
+            <th>Amount</th>
+          </tr>
+          <tr>
+            <td>3pm</td>
+            <td>Bob</td>
+            <td>$0.99</td>
+          </tr>
+          <tr>
+              <td>2pm</td>
+              <td>Jim</td>
+              <td>$40</td>
+          </tr>
+          </tr>
+              <td>3:04pm</td>
+              <td>George</td>
+              <td>$33</td>
+          </tr>
+        </table>
+        <br><p>Enter bid:</p>
+        <p>
+          <i>$</i><input type="text" placeholder="Bid amount"/>
+          <button ng-click="placeBid()">Place bid</button>
+        </p>
+        </td>
+      </tr>
+      </table>
     </div>
     <div class="modal-footer">
-    <br>
+    <!--<br>
       <form>
       <button formaction="bid.html" type="button" align="right-side">Enter Bid</button>
       </form>
-    <br>
+    <br>-->
     <br>
     </div>
   </div>
