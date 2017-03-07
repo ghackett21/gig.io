@@ -36,7 +36,7 @@ module.exports = function(req, res) {
 /**
  * inserts new post into the database 
  */
-function createPost(userId, title, location, lat, long description, image, callback) {
+function createPost(userId, title, location, lat, long, description, image, callback) {
 	console.log("CreatePost: ", userId, location, description);
 
 	var creationTime = GetDate();
