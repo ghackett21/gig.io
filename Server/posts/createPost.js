@@ -29,18 +29,18 @@ module.exports = function(req, res) {
 		if (req.body.imageLink != undefined) {
 			imageLink = req.body.imageLink;
 		}
-		createPost(req.body.Uid, req.body.title, req.body.location, req.body.description, imageLink, callback);
+		createPost(req.body.Uid, req.body.title, req.body.location, req.body.lat, req.body.long, req.body.description, imageLink, callback);
 	}
 }
 
 /**
  * inserts new post into the database 
  */
-function createPost(userId, title, location, description, image, callback) {
+function createPost(userId, title, location, lat, long description, image, callback) {
 	console.log("CreatePost: ", userId, location, description);
 
 	var creationTime = GetDate();
-	var insert = "INSERT INTO Posting (Uid, P_Title, P_Location, CreationTime, Status, P_Description, P_Image) VALUES ('" + userId + "', '" + title + "', '" + location + "', '" + creationTime + "', 1, '" + description + "', '" + image + "')";  
+	var insert = "INSERT INTO Posting (Uid, P_Title, P_Location, P_Lat, P_Long, CreationTime, Status, P_Description, P_Image) VALUES ('" + userId + "', '" + title + "', '" + location + "', " + lat + ", " + long + ", '" + creationTime + "', 1, '" + description + "', '" + image + "')";  
 
 	connection.query(insert, function (err, rows) {
 		if (err) {
