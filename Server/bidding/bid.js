@@ -25,7 +25,7 @@ module.exports = function(req, res) {
   		callback(-1);
   	}
   	else {
-  		bid(req.body.UserId, req.body.PostId, req.body.Amount, callback);
+  		bid(req.User.Uid, req.body.PostId, req.body.Amount, callback);
   	}
 }
 
