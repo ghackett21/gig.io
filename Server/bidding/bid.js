@@ -12,10 +12,10 @@ module.exports = function(req, res) {
 	/* callback to handle response */
   	var callback = function(result) {
   		if (result < 0) {
-  			res.json({"Response": "Bid failed", "Result": "", "State": result });
+  			res.json({"Response": "Bid failed", "State": result });
   		}
   		else {
-  			res.json({"Response": "Bid successful", "Result": result, "State": 0 });
+  			res.json({"Response": "Bid successful", "State": 0 });
   		}
   	}
 
@@ -39,7 +39,7 @@ function bid(userId, postId, amount, callback) {
 			return callback(-2);
 		}
 		else {
-			bidId = rows[0].Bidid;
+			//bidId = rows[0].Bidid;
 
 			/* increment the number of bids on the post the bid was for */
 			var updateNumBids = "UPDATE Posting SET NumberOfBids=NumberOfBids+1 WHERE PID=" + postId;
@@ -69,7 +69,7 @@ function bid(userId, postId, amount, callback) {
 										return callback(-2);
 									}
 									else {
-										return callback(bidId);
+										return callback(0);
 									}
 								});
 							}
