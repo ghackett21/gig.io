@@ -8,7 +8,6 @@ var session = require('express-session');
 var bcrypt = require('bcrypt');
 
 /* delete later */
-var getDate = require('./helpers/getDate');
 var connection = require('./helpers/connection');
 
 /* users */
@@ -41,7 +40,6 @@ passport.serializeUser(function(user, done) {
 passport.deserializeUser(function(user, done) {
       console.log('no im not serial');
       done(null, user);
-   
 });
 
 
@@ -64,7 +62,6 @@ function findByUsername(username, fn) {
 			}
 		}
 	});
-
 };
 
 
@@ -87,7 +84,6 @@ function findById(id, fn) {
 			}
 		}
 	});
-
 };
 
 
@@ -191,14 +187,6 @@ app.post('/logout', function(req, res) {
   res.json({"redirect": '/login.html'});
 });
 
-
-
-/**
- * Register a new user with the provided username and password.
- * Returns userID if successful.
- * Accepts: Username, Password
- * Returns: State, UserID
- */
 app.post('/RegisterButton', function(req, res) {
 	register(req, res);
 });
