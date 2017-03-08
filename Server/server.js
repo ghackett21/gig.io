@@ -105,6 +105,13 @@ app.use(passport.session());
 	
 console.log("Server Started");
 
+app.use(function (req, res, next) {
+    res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+    res.header('Expires', '-1');
+    res.header('Pragma', 'no-cache');
+    next()
+});
+
 app.get('/index.html', ensureAuthenticated, function(req, res) {
 	console.log("dir = " + __dirname);
     res.sendFile(__dirname + '/public/index.html');
