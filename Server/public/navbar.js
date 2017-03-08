@@ -1,4 +1,3 @@
-w3IncludeHTML();
 
 function myFunction() {
     $(function() {
