@@ -428,7 +428,15 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
     
 	$scope.placeBid = function() {
         	console.log("button clicked");
-    	};
+
+            $http.post('/Bid').then(function(response) {
+                console.log($scope.pid);
+                console.log($scope.bidAmount);
+                //TODO - get userID
+            }).catch(function(response) {
+                console.log("error")
+            })
+    };
 
 }]);
 
