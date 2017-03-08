@@ -177,7 +177,8 @@ app.controller("registrationController", [ '$scope', '$http', function($scope, $
 	
 
 }]);
-
+var mylong;
+var mylat;
 app.controller("makePostController", [ '$scope', '$http', function($scope, $http) {
 	$scope.user;
 	$scope.status = "";
@@ -202,9 +203,18 @@ app.controller("makePostController", [ '$scope', '$http', function($scope, $http
 
 		//NEED TO CONVERT LOCATION TO COORDINATES AND SEND TO DATABASE AS WELL
 		var myloc = $scope.user.location;
-		$scope.coordinates = myMap(myloc);
-		console.log("Coordinates: = " +$scope.coordinates);
+		console.log("My loc:  = " + myloc);
+		for(var i=0;i<10;i++){
+		getCoordinates(myloc);}
+		console.log("My longitude = "+mylong);
+		console.log("My latitude = "+mylat);
+		$scope.user.lat=mylat;
+		$scope.user.lng=mylong;
+		console.log("scope.user.lat="+$scope.user.lat+"    scope.user.lng="+$scope.user.lng);
 		$http.post('/RegisterButton', $scope.user).then(function(response) {
+			getCoordinates(myloc);
+		console.log("My longitude = "+mylong);
+		console.log("My latitude = "+mylat);
 			$scope.user = null;
 			//$scope.status = "Post successfully created!";
 			console.log(response);
@@ -222,7 +232,7 @@ app.controller("makePostController", [ '$scope', '$http', function($scope, $http
 
 
 function getCoordinates(location) {
-console.log("ruh roh");
+//console.log("ruh roh");
     var geocoder = new google.maps.Geocoder();
     geocoder.geocode({
         'address' : location
@@ -230,11 +240,14 @@ console.log("ruh roh");
         function(results, status) {
             if (status == google.maps.GeocoderStatus.OK) {
                 var myResult = results[0].geometry.location;
-				console.log("A: " + myResult.lat());
-				console.log("B: " + myResult.lng());
-                console.log(myResult.lat() + " , " + myResult.lng());
-				var coords = myResult.lat() + "," + myResult.lng();
-				return coords;
+				console.log("calculating coordinates");
+				mylong=myResult.lng();
+				mylat=myResult.lat();
+				//console.log("A: " + myResult.lat());
+				//console.log("B: " + myResult.lng());
+                //console.log(myResult.lat() + " , " + myResult.lng());
+				//var coords = myResult.lat() + "," + myResult.lng();
+				//return coords;
 
             }
 			
@@ -242,9 +255,9 @@ console.log("ruh roh");
 }
 
 function myMap(loc) {
-    console.log("Loc: " + loc);
+    //console.log("Loc: " + loc);
 	var myAddress = loc;
-	console.log("My Address: " + myAddress);
+	//console.log("My Address: " + myAddress);
 
     var request = {
       origin      : loc, // a city, full address, landmark etc
@@ -253,7 +266,6 @@ function myMap(loc) {
     };
 
     var directionsService = new google.maps.DirectionsService();
-console.log("ruh roh");
     directionsService.route(request, function(response, status) {
       if ( status == google.maps.DirectionsStatus.OK ) {
         console.log( response.routes[0].legs[0].distance.value ); // the distance in metres
@@ -271,9 +283,9 @@ console.log("ruh roh");
       'address': myAddress
    },
    function(results, status) {
+	
       if(status == google.maps.GeocoderStatus.OK) {
-console.log("ruh roh");
-         getCoordinates(myAddress);
+         return getCoordinates(myAddress);
       }
    });
 
