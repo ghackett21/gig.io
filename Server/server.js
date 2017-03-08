@@ -42,7 +42,6 @@ passport.deserializeUser(function(user, done) {
       done(null, user);
 });
 
-
 function findByUsername(username, fn) {
 	var select = "SELECT * FROM Users WHERE Username LIKE '" + username + "'";
 	connection.query(select, function(err, rows) {
@@ -64,7 +63,6 @@ function findByUsername(username, fn) {
 	});
 };
 
-
 function findById(id, fn) {
 	var select = "SELECT * FROM Users WHERE Uid LIKE '" + id + "'";
 	connection.query(select, function(err, rows) {
@@ -85,7 +83,6 @@ function findById(id, fn) {
 		}
 	});
 };
-
 
 /* create express server */
 var app = express();
@@ -131,16 +128,6 @@ app.get('/bid.html', ensureAuthenticated, function(req, res) {
 });
 
 app.use(express.static(path.join(__dirname, '/public')));
-
-//app.use(ensureAuthenticated);
-/*
-app.get('/login.html', function(req, res) {
-    res.sendFile(__dirname + '/login.html');
-});
-
-*/
-
-
 
 passport.use(new LocalStrategy(
 	function(username, password, done) {
@@ -203,7 +190,6 @@ function ensureAuthenticated(req, res, next) {
   // denied. redirect to login
   res.redirect('/login.html')
 }
-
 
 app.post('/GetUser', function(req, res) {
  	getUser(req, res);
