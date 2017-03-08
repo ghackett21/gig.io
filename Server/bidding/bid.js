@@ -39,8 +39,6 @@ function bid(userId, postId, amount, callback) {
 			return callback(-2);
 		}
 		else {
-			//bidId = rows[0].Bidid;
-
 			/* increment the number of bids on the post the bid was for */
 			var updateNumBids = "UPDATE Posting SET NumberOfBids=NumberOfBids+1 WHERE PID=" + postId;
 
