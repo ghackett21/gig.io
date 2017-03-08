@@ -178,3 +178,103 @@ app.controller("registrationController", [ '$scope', '$http', function($scope, $
 
 }]);
 
+app.controller("makePostController", [ '$scope', '$http', function($scope, $http) {
+	$scope.user;
+	$scope.status = "";
+	
+	$scope.makePost = function() {
+		console.log("title = " + $scope.user.title);
+		console.log("description = " + $scope.user.description);
+		console.log("location = " + $scope.user.location);
+		console.log("picture = " + $scope.user.picture);
+		
+		if($scope.user == undefined){
+			return;
+		}
+		if($scope.user == undefined || $scope.user.title == undefined || $scope.user.description == undefined || $scope.user.location == undefined){
+			$scope.status = "Make Sure to fill in all required fields.";
+			return;
+		}
+		/*if($scope.user.picture.match((http(s?):)|([/|.|\w|\s])*\.(?:jpg|gif|png) == null){
+			$scope.status = "Please enter a valid picture URL";
+			return;
+		}*/
+
+		//NEED TO CONVERT LOCATION TO COORDINATES AND SEND TO DATABASE AS WELL
+		var myloc = $scope.user.location;
+		$scope.coordinates = myMap(myloc);
+		console.log("Coordinates: = " +$scope.coordinates);
+		$http.post('/RegisterButton', $scope.user).then(function(response) {
+			$scope.user = null;
+			//$scope.status = "Post successfully created!";
+			console.log(response);
+			if(response.data.State == 0){
+				$scope.status = "Post successfully created! Don't forget to check for bids.";
+				//alert("");
+				//window.location = response.data.redirect;
+			}
+		});
+	};
+	
+	
+
+}]);
+
+
+function getCoordinates(location) {
+console.log("ruh roh");
+    var geocoder = new google.maps.Geocoder();
+    geocoder.geocode({
+        'address' : location
+        },
+        function(results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                var myResult = results[0].geometry.location;
+				console.log("A: " + myResult.lat());
+				console.log("B: " + myResult.lng());
+                console.log(myResult.lat() + " , " + myResult.lng());
+				var coords = myResult.lat() + "," + myResult.lng();
+				return coords;
+
+            }
+			
+    });
+}
+
+function myMap(loc) {
+    console.log("Loc: " + loc);
+	var myAddress = loc;
+	console.log("My Address: " + myAddress);
+
+    var request = {
+      origin      : loc, // a city, full address, landmark etc
+      destination : myAddress,
+      travelMode  : google.maps.DirectionsTravelMode.DRIVING
+    };
+
+    var directionsService = new google.maps.DirectionsService();
+console.log("ruh roh");
+    directionsService.route(request, function(response, status) {
+      if ( status == google.maps.DirectionsStatus.OK ) {
+        console.log( response.routes[0].legs[0].distance.value ); // the distance in metres
+      }
+      else {
+        // oops, there's no route between these two locations
+        // every time this happens, a kitten dies
+        // so please, ensure your address is formatted properly
+      }
+    });
+
+   var geocoder = new google.maps.Geocoder();
+
+   geocoder.geocode({
+      'address': myAddress
+   },
+   function(results, status) {
+      if(status == google.maps.GeocoderStatus.OK) {
+console.log("ruh roh");
+         getCoordinates(myAddress);
+      }
+   });
+
+}
