@@ -57,7 +57,7 @@ function register(user, callback) {
 				var hash = bcrypt.hashSync(user.password, 10);
 				console.log("HASH = " + hash);
 				/* if username is not already used */
-				var insert = "INSERT INTO Users (Username, Password, EmailAddress, PhoneNumber, NumberOfStrikes, NUM_BidRate, NUM_PostRate, AVG_BidRate, AVG_PostRate, DateJoined) VALUES ('" + user.username + "', '" + hash + "','" + user.email + "','" + user.phone + "' , 0, 0, 0, 0, 0, '" + getDate() + "' )";
+				var insert = "INSERT INTO Users (Username, Password, EmailAddress, PhoneNumber, NumberOfStrikes, NUM_BidRate, NUM_PostRate, AVG_BidRate, AVG_PostRate, DateJoined) VALUES ('" + connection.escape(user.username) + "', '" + hash + "','" + connection.escape(user.email) + "','" + connection.escape(user.phone) + "' , 0, 0, 0, 0, 0, '" + getDate() + "' )";
 
 				connection.query(insert, function(err, rows) {
 					if (err) {
