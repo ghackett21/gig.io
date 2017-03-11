@@ -43,7 +43,7 @@ passport.deserializeUser(function(user, done) {
 });
 
 function findByUsername(username, fn) {
-	var select = "SELECT * FROM Users WHERE Username LIKE '" + username + "'";
+	var select = "SELECT * FROM Users WHERE Username LIKE " + connection.escape(username);
 	connection.query(select, function(err, rows) {
 		if (err) {
 			/* an error occured */

@@ -40,7 +40,7 @@ function register(user, callback) {
 	console.log("Register: ", user.username, user.password, user.email);
 	
 	/* check for existing user with username */
-	var select = "SELECT * FROM Users WHERE username LIKE '" + user.username + "'";
+	var select = "SELECT * FROM Users WHERE username LIKE " + connection.escape(user.username);
 
 	connection.query(select, function(err, rows) {
 		if (err) {
