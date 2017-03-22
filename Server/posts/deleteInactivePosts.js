@@ -22,7 +22,7 @@ module.exports = function() {
 			console.log(JSON.stringify(rows));
 			for (var post in rows) {
 				/* check date of post - ignore if less than 30 days old */
-				console.log(post.creationTime);
+				console.log(post.CreationTime);
 				//if (post.CreationTime)
 			}
 		}
