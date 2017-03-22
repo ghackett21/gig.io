@@ -20,6 +20,11 @@ module.exports = function() {
 		}
 		else {
 			console.log(JSON.stringify(rows));
+			for (var post in rows) {
+				/* check date of post - ignore if less than 30 days old */
+				console.log(post.creationTime);
+				//if (post.CreationTime)
+			}
 		}
 
 	});
