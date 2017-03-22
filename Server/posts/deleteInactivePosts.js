@@ -12,7 +12,7 @@ module.exports = function() {
 	 occured more than 30 days ago */
 	 
 	/* get list of all postIds */
-	var selectPostIds = "SELECT Pid, CreationTime, Status FROM POSTINGS";
+	var selectPostIds = "SELECT Pid, CreationTime, Status FROM Posting";
 
 	connection.query(selectPostIds, function(err, rows) {
 		if (err) {
