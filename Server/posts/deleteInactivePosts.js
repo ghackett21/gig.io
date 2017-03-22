@@ -1,3 +1,5 @@
+var connection = require('./../helpers/connection');
+
 /**
  * automatic inactive post deletion 
  * delete any and all posts that have been inactive for 30 or more days
@@ -11,6 +13,16 @@ module.exports = function() {
 	 
 	/* get list of all postIds */
 	var selectPostIds = "SELECT Pid, CreationTime, Status FROM POSTINGS";
+
+	connection.query(selectPostIds, function(err, rows) {
+		if (err) {
+			console.log("Delete Inactive Posts: database error: " + err);
+		}
+		else {
+			console.log(JSON.stringify(rows));
+		}
+
+	});
 
 	/* for each postId - check date - if post is less than 30 days old, move on */
 
