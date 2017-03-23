@@ -22,7 +22,7 @@ module.exports = function() {
 			console.log(JSON.stringify(rows));
 			for (const key of Object.keys(rows)) {
 				console.log(key, rows[key]);
-				console.log(rows[key].RowDataPacket.Pid);
+				console.log(rows[key].Pid);
 			}
 
 				/* check date of post - ignore if less than 30 days old */
