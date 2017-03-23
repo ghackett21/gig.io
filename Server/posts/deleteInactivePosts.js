@@ -23,7 +23,7 @@ module.exports = function() {
 			console.log();
 			for (var post in rows) {
 				if (rows.hasOwnProperty(post)) {
-					console.log(JSON.stringify(Pid));
+					console.log(JSON.stringify(post));
 				}
 
 				/* check date of post - ignore if less than 30 days old */
