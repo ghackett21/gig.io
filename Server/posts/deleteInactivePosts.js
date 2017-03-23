@@ -20,9 +20,13 @@ module.exports = function() {
 		}
 		else {
 			console.log(JSON.stringify(rows));
+			console.log();
 			for (var post in rows) {
+				if (rows.hasOwnProperty(post)) {
+					console.log(JSON.stringify(Pid));
+				}
+
 				/* check date of post - ignore if less than 30 days old */
-				console.log(JSON.stringify(post));
 				//if (post.CreationTime)
 			}
 		}
