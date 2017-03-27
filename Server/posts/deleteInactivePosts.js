@@ -54,7 +54,7 @@ module.exports = function() {
 								var mostRecentDate = postDate;
 								for (const bidKey of Object.keys(bidRows)) {
 									console.log("Pid:" + postRows[postKey], bidKey, bidRows[bidKey]);
-									var bidmsec = Date.parse(bidRows[bidKeys].BidTime);
+									var bidmsec = Date.parse(bidRows[bidKey].BidTime);
 									bidmsec += 2592000000;	/* add 30 days in milliseconds */
 									var bidDate = convertDateToUTC(bidmsec);
 									console.log("Bid date: " + bidDate);
