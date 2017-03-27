@@ -1,4 +1,5 @@
 var connection = require('./../helpers/connection');
+var deletePostHelper = require("./../helpers/deletePostHelper");
 
 /**
 * Delete post based on postId
@@ -18,20 +19,4 @@ module.exports = function(req, res) {
 	}
 
 	deletePost(req.body.postId, callback);
-}
-
-function deletePost(postId, callback) {
-	console.log("DeletePost: postId: " + postId);
-
-	var deleteStatement = "DELETE FROM Posting WHERE Pid = " + postId;
-
-	connection.query(deleteStatement, function(err, rows) {
-		if (err) {
-			console.log("DeletePost: database error, " + err);
-			return callback(-2);
-		}
-		else {
-			return callback(0);
-		}
-	});
 }
