@@ -20,7 +20,7 @@ module.exports = function() {
 			console.log("Delete Inactive Posts: database error: " + err);
 		}
 		else {
-			console.log(JSON.stringify(rows));
+			console.log(JSON.stringify(postRows));
 			for (const postKey of Object.keys(postRows)) {
 				console.log("\n" + key, postRows[postKey]);
 
