@@ -24,24 +24,30 @@ module.exports = function() {
 			for (const key of Object.keys(rows)) {
 				console.log(key, rows[key]);
 				console.log(rows[key].Pid);
-				
-				/* check date of post - ignore if less than 30 days old */
-				var msec = Date.parse(rows[key].CreationTime);
-				console.log("old date: " + convertDateToUTC(new Date(msec)));
-				msec += 2592000000;	/* add 30 days in milliseconds */
-				var postDate = convertDateToUTC(new Date(msec));
-				console.log("updated date: " + postDate);
-				var currentDate = convertDateToUTC(new Date());
-				console.log("current date: " + currentDate);
 
-				/* compare dates */
-				if (postDate > currentDate) {
-					console.log("Older than 30 days: false");
+				/* check state of the post - only delete if still open */
+				if (rows[key].Status == 0) {
+					
+					/* check date of post - ignore if less than 30 days old */
+					var msec = Date.parse(rows[key].CreationTime);
+					console.log("old date: " + convertDateToUTC(new Date(msec)));
+					msec += 2592000000;	/* add 30 days in milliseconds */
+					var postDate = convertDateToUTC(new Date(msec));
+					console.log("updated date: " + postDate);
+					var currentDate = convertDateToUTC(new Date());
+					console.log("current date: " + currentDate);
+
+					/* compare dates */
+					if (postDate > currentDate) {
+						console.log("Older than 30 days: false");
+					}
+					else {
+						console.log("Older than 30 days: true");
+					}
 				}
 				else {
-					console.log("Older than 30 days: true");
+					console.log("Post Pending");
 				}
-
 			}
 		}
 
