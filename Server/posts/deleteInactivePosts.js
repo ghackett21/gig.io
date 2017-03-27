@@ -23,10 +23,13 @@ module.exports = function() {
 			for (const key of Object.keys(rows)) {
 				console.log(key, rows[key]);
 				console.log(rows[key].Pid);
-			}
 
+				
 				/* check date of post - ignore if less than 30 days old */
-				//if (post.CreationTime)
+				var msec = Date.parse(rows[key].CreationTime);
+				console.log("msec: " + msec);
+
+			}
 		}
 
 	});
