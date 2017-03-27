@@ -28,7 +28,7 @@ module.exports = function() {
 				
 				/* check date of post - ignore if less than 30 days old */
 				var msec = Date.parse(rows[key].CreationTime);
-				console.log("old date: " + convertToUTC(new Date(msec));
+				console.log("old date: " + convertToUTC(new Date(msec)));
 				msec += 2592000000;	/* add 30 days in milliseconds */
 				var postDate = convertToUTC(new Date(msec));
 				console.log("updated date: " + postDate);
