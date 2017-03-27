@@ -50,7 +50,7 @@ module.exports = function() {
 								console.log("Datebase error retrieving bids!");
 							}
 							else {
-								console.log("Number of bids: " + bidRows.size());
+								console.log("Number of bids: " + bidRows.length);
 								var mostRecentDate = postDate;
 								for (const bidKey of Object.keys(bidRows)) {
 									console.log("Pid:" + postRows[postKey], bidKey, bidRows[bidKey]);
