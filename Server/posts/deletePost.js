@@ -1,5 +1,5 @@
 var connection = require('./../helpers/connection');
-var deletePostHelper = require("./../helpers/deletePostHelper");
+var deletePostHelper = require("./../posts/deletePostHelper");
 
 /**
 * Delete post based on postId

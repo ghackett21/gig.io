@@ -1,6 +1,6 @@
 var connection = require('./../helpers/connection');
 var convertDateToUTC = require('./../helpers/convertDateToUTC');
-var deletePostHelper = require("./../helpers/deletePostHelper");
+var deletePostHelper = require("./../posts/deletePostHelper");
 
 /**
  * automatic inactive post deletion 
