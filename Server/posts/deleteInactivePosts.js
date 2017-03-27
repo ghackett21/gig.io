@@ -1,5 +1,5 @@
 var connection = require('./../helpers/connection');
-var convertToUTC = require('./../helpers/convertDateToUTC');
+var convertDateToUTC = require('./../helpers/convertDateToUTC');
 
 /**
  * automatic inactive post deletion 
@@ -24,16 +24,23 @@ module.exports = function() {
 			for (const key of Object.keys(rows)) {
 				console.log(key, rows[key]);
 				console.log(rows[key].Pid);
-
 				
 				/* check date of post - ignore if less than 30 days old */
 				var msec = Date.parse(rows[key].CreationTime);
-				console.log("old date: " + convertToUTC(new Date(msec)));
+				console.log("old date: " + convertDateToUTC(new Date(msec)));
 				msec += 2592000000;	/* add 30 days in milliseconds */
-				var postDate = convertToUTC(new Date(msec));
+				var postDate = convertDateToUTC(new Date(msec));
 				console.log("updated date: " + postDate);
-				var currentDate = convertToUTC(new Date());
+				var currentDate = convertDateToUTC(new Date());
 				console.log("current date: " + currentDate);
+
+				/* compare dates */
+				if (postDate > currentDate) {
+					console.log("true");
+				}
+				else {
+					console.log("false");
+				}
 
 			}
 		}
