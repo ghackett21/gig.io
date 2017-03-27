@@ -15,21 +15,19 @@ module.exports = function() {
 	/* get list of all postIds */
 	var selectPostIds = "SELECT Pid, CreationTime, Status FROM Posting";
 
-	connection.query(selectPostIds, function(err, rows) {
+	connection.query(selectPostIds, function(err, postRows) {
 		if (err) {
 			console.log("Delete Inactive Posts: database error: " + err);
 		}
 		else {
 			console.log(JSON.stringify(rows));
-			for (const key of Object.keys(rows)) {
-				console.log(key, rows[key]);
-				console.log(rows[key].Pid);
+			for (const postKey of Object.keys(postRows)) {
+				console.log("\n" + key, postRows[postKey]);
 
 				/* check state of the post - only delete if still open */
-				if (rows[key].Status == 0) {
-					
+				if (postRows[postKey].Status == 0) {
 					/* check date of post - ignore if less than 30 days old */
-					var msec = Date.parse(rows[key].CreationTime);
+					var msec = Date.parse(postRows[postKey].CreationTime);
 					console.log("old date: " + convertDateToUTC(new Date(msec)));
 					msec += 2592000000;	/* add 30 days in milliseconds */
 					var postDate = convertDateToUTC(new Date(msec));
@@ -43,6 +41,20 @@ module.exports = function() {
 					}
 					else {
 						console.log("Older than 30 days: true");
+
+						/* find most recent bid on post */
+						var selectBids = "SELECT BidTime FROM Bids WHERE Pid=" + postRows[postKey].Pid;
+
+						connection.query(selectBids, function(err, bidRows) {
+							if (err) {
+								console.log("Datebase error retrieving bids!");
+							}
+							else {
+								for (const bidKey of Object.keys(bidRows)) {
+									console.log(bidKey, bidRows[bidKey]);
+								}
+							}
+						});
 					}
 				}
 				else {
