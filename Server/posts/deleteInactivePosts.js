@@ -72,10 +72,10 @@ module.exports = function() {
 									/* most recent date is now the time of the most recent bid */
 									console.log("Most recent date: " + mostRecentDate);
 									if (mostRecentDate < currentDate) {
-										console.log("Pid: " + postRows[postKey] + ", Inactive for 30 days or more: true");
+										console.log("Pid: " + postRows[postKey].Pid + ", Inactive for 30 days or more: true");
 									}
 									else {
-										console.log("Pid: " + postRows[postKey] + ", Inactive for 30 days or more: false");
+										console.log("Pid: " + postRows[postKey].Pid + ", Inactive for 30 days or more: false");
 									}
 								}
 							}
