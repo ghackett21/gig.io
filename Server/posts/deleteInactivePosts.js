@@ -53,6 +53,7 @@ module.exports = function() {
 								console.log("Number of bids: " + bidRows.length);
 								if (bidRows.length == 0) {
 									/* delete post */
+									console.log("Delete Post: " + postRows[postKey].Pid);
 								}
 								else {
 									var mostRecentDate = postDate;
@@ -71,10 +72,10 @@ module.exports = function() {
 									/* most recent date is now the time of the most recent bid */
 									console.log("Most recent date: " + mostRecentDate);
 									if (mostRecentDate < currentDate) {
-										"Inactive for 30 days or more: true";
+										console.log("Inactive for 30 days or more: true");
 									}
 									else {
-										"Inactive for 30 days or more: fakse";
+										console.log("Inactive for 30 days or more: false");
 									}
 								}
 							}
