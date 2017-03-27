@@ -51,26 +51,31 @@ module.exports = function() {
 							}
 							else {
 								console.log("Number of bids: " + bidRows.length);
-								var mostRecentDate = postDate;
-								for (const bidKey of Object.keys(bidRows)) {
-									console.log("Pid:" + postRows[postKey], bidKey, bidRows[bidKey]);
-									var bidmsec = Date.parse(bidRows[bidKey].BidTime);
-									bidmsec += 2592000000;	/* add 30 days in milliseconds */
-									var bidDate = convertDateToUTC(new Date(bidmsec));
-									console.log("Bid date: " + bidDate);
-
-									if (bidDate > mostRecentDate) {
-										mostRecentDate = bidDate;
-									}
-								}
-
-								/* most recent date is now the time of the most recent bid */
-								console.log("Most recent date: " + mostRecentDate);
-								if (mostRecentDate < currentDate) {
-									"Inactive for 30 days or more: true";
+								if (bidRows.length == 0) {
+									/* delete post */
 								}
 								else {
-									"Inactive for 30 days or more: fakse";
+									var mostRecentDate = postDate;
+									for (const bidKey of Object.keys(bidRows)) {
+										console.log("Pid:" + postRows[postKey], bidKey, bidRows[bidKey]);
+										var bidmsec = Date.parse(bidRows[bidKey].BidTime);
+										bidmsec += 2592000000;	/* add 30 days in milliseconds */
+										var bidDate = convertDateToUTC(new Date(bidmsec));
+										console.log("Bid date: " + bidDate);
+
+										if (bidDate > mostRecentDate) {
+											mostRecentDate = bidDate;
+										}
+									}
+
+									/* most recent date is now the time of the most recent bid */
+									console.log("Most recent date: " + mostRecentDate);
+									if (mostRecentDate < currentDate) {
+										"Inactive for 30 days or more: true";
+									}
+									else {
+										"Inactive for 30 days or more: fakse";
+									}
 								}
 							}
 						});
