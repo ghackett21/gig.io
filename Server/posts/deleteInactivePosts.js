@@ -36,10 +36,10 @@ module.exports = function() {
 
 				/* compare dates */
 				if (postDate > currentDate) {
-					console.log("true");
+					console.log("Older than 30 days: false");
 				}
 				else {
-					console.log("false");
+					console.log("Older than 30 days: true");
 				}
 
 			}
