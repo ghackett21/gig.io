@@ -50,8 +50,27 @@ module.exports = function() {
 								console.log("Datebase error retrieving bids!");
 							}
 							else {
+								console.log("Number of bids: " + bidRows.size());
+								var mostRecentDate = postDate;
 								for (const bidKey of Object.keys(bidRows)) {
-									console.log(bidKey, bidRows[bidKey]);
+									console.log("Pid:" + postRows[postKey], bidKey, bidRows[bidKey]);
+									var bidmsec = Date.parse(bidRows[bidKeys].BidTime);
+									bidmsec += 2592000000;	/* add 30 days in milliseconds */
+									var bidDate = convertDateToUTC(bidmsec);
+									console.log("Bid date: " + bidDate);
+
+									if (bidDate > mostRecentDate) {
+										mostRecentDate = bidDate;
+									}
+								}
+
+								/* most recent date is now the time of the most recent bid */
+								console.log("Most recent date: " + mostRecentDate);
+								if (mostRecentDate < currentDate) {
+									"Inactive for 30 days or more: true";
+								}
+								else {
+									"Inactive for 30 days or more: fakse";
 								}
 							}
 						});
