@@ -22,7 +22,7 @@ module.exports = function() {
 		else {
 			console.log(JSON.stringify(postRows));
 			for (const postKey of Object.keys(postRows)) {
-				console.log("\n" + key, postRows[postKey]);
+				console.log("\n" + postKey, postRows[postKey]);
 
 				/* check state of the post - only delete if still open */
 				if (postRows[postKey].Status == 0) {
