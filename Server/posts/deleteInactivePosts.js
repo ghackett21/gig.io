@@ -27,7 +27,8 @@ module.exports = function() {
 				
 				/* check date of post - ignore if less than 30 days old */
 				var msec = Date.parse(rows[key].CreationTime);
-				console.log("msec: " + msec);
+				var postDate = new Date(msec);
+				console.log("date: " + postDate);
 
 			}
 		}
