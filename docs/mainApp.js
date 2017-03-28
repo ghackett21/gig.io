@@ -206,10 +206,7 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
 	};
 
 	$scope.sortByAge = function() {
-
-		$http.post('/sendMail').then(function(response) {
-			console.log("sent");
-		});
+		
 
 	    var time1;
         var time2;

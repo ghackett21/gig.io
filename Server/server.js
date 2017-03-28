@@ -7,6 +7,13 @@ var flash = require('connect-flash');
 var session = require('express-session');
 var bcrypt = require('bcrypt');
 var nodemailer = require('nodemailer');
+var transporter = nodemailer.createTransport({
+        service: 'mail',
+        auth: {
+            user: 'gig.io@mail.com', // Your email id
+            pass: 'GIGIOISTHEBEST' // Your password
+        }
+    });
 
 /* delete later */
 var connection = require('./helpers/connection');
@@ -239,19 +246,16 @@ app.post("/CreateRating", function(req, res) {
  createRating(req, res);
 });
 
-
-
-var mailTransport = nodemailer.createTransport('smtps://gigdotio%40tutanota.com:89j34fjide89j34fjide@smtp.tutanota.com');
-
-var mailOptions = {
-   from: "Sender Name <admin@example.com>",
-   to: "Sam Fellers <spfellers@gmail.com>",
-   subject: "Hello World",
-   text: "Test email with node.js",
-   html: '<b>Test email with node.js</b>'
-};
+			
 
 app.post("/sendMail", function(req, res) {
+
+	var mailOptions = {
+		from: 'boilersvp@gmail.com', // sender address
+		to: 'spfellers@gmail.com', // list of receivers
+		subject: 'Account Verification', // Subject line
+		text: "WHEEEEW."
+	};
 
 	mailTransport.sendMail(mailOptions, function(error, info){
 		if(error){
