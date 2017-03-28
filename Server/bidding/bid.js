@@ -21,17 +21,19 @@ module.exports = function(req, res) {
 
   	/* check for missing args */
   	if (req.body.UserId == undefined || req.body.PostId == undefined || req.body.Amount == undefined) {
-  		console.log("Bid: unddfined args: requires UserId, PostId, and Amount");
+        console.log("Bid: unddfined args: requires UserId, PostId, and Amount");
   		callback(-1);
   	}
   	else {
-  		bid(req.User.Uid, req.body.PostId, req.body.Amount, callback);
+  		//bid(req.User.Uid, req.body.PostId, req.body.Amount, callback);
+        bid(req.body.UserId, req.body.PostId, req.body.Amount, callback);
   	}
 }
 
 function bid(userId, postId, amount, callback) {
 	var bidTime = getDate();
 	var insert = "INSERT INTO Bids (Uid, Pid, BidTime, Amount) VALUES (" + userId + ", " + postId + ", '" + bidTime + "', " + amount + ")";
+
 
 	connection.query(insert, function(err, rows) {
 		if (err) {

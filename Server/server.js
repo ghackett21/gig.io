@@ -23,6 +23,7 @@ var deletePost = require('./posts/deletePost');
 var getUserPosts = require('./posts/getUserPosts');
 var getPost = require('./posts/getPost');
 var createPost = require('./posts/createPost');
+var deleteInactivePosts = require('./posts/deleteInactivePosts');
 
 /* bidding */
 var getBids = require('./bidding/getBids');
@@ -105,6 +106,8 @@ app.use(function (req, res, next) {
     res.header('Pragma', 'no-cache');
     next()
 });
+
+deleteInactivePosts();
 
 app.get('/index.html', ensureAuthenticated, function(req, res) {
 	console.log("dir = " + __dirname);
