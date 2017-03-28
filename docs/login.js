@@ -5,6 +5,7 @@ app.controller("loginController", [ '$scope', '$http', function($scope, $http) {
 
 	$scope.clickButton = function() {
 
+
 		if($scope.user == undefined || $scope.user.username == undefined || $scope.user.password == undefined){
       return;
 		}
@@ -24,4 +25,5 @@ app.controller("loginController", [ '$scope', '$http', function($scope, $http) {
 
 		})
 	};
+
 }]);

@@ -6,6 +6,7 @@ var LocalStrategy = require('passport-local').Strategy;
 var flash = require('connect-flash');
 var session = require('express-session');
 var bcrypt = require('bcrypt');
+var nodemailer = require('nodemailer');
 
 /* delete later */
 var connection = require('./helpers/connection');
@@ -231,10 +232,32 @@ app.post('GetUserRatings', function(req, res) {
 	getUserRatings(req, res);
 })
 
- app.post("/CreateRating", function(req, res) {
- 	createRating(req, res);
- });
+app.post("/CreateRating", function(req, res) {
+ createRating(req, res);
+});
 
+
+
+var mailTransport = nodemailer.createTransport('smtps://gigdotio%40tutanota.com:89j34fjide89j34fjide@smtp.tutanota.com');
+
+var mailOptions = {
+   from: "Sender Name <admin@example.com>",
+   to: "Sam Fellers <spfellers@gmail.com>",
+   subject: "Hello World",
+   text: "Test email with node.js",
+   html: '<b>Test email with node.js</b>'
+};
+
+app.post("/sendMail", function(req, res) {
+
+	mailTransport.sendMail(mailOptions, function(error, info){
+		if(error){
+		    return console.log(error);
+		}
+		console.log('Message sent: ' + info.response);
+	});
+
+});
 /* start express server */
 var server = app.listen(8081, function() {
 	var host = server.address().address;

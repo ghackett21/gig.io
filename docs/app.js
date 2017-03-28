@@ -103,6 +103,8 @@ app.controller("loginController", [ '$scope', '$http', function($scope, $http) {
 		if($scope.user == undefined || $scope.user.username == undefined || $scope.user.password == undefined){
 			return;
 		}
+		
+
 		console.log("username = " + $scope.user.username);
 		console.log("password = " + $scope.user.password);
 		$http.post('/login', $scope.user).then(function(response) {

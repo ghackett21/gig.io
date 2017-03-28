@@ -97,6 +97,7 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
 	    $http.post('/GetUser').then(function(response) {
                         //console.log(response.data.Result[0]);
                         myUser = response.data.Result[0];
+						console.log("myUser = " + myUser );
         })
 
 		$http.post('/GetAllPosts').then(function(response) {
@@ -205,6 +206,11 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
 	};
 
 	$scope.sortByAge = function() {
+
+		$http.post('/sendMail').then(function(response) {
+			console.log("sent");
+		});
+
 	    var time1;
         var time2;
         var temp;
