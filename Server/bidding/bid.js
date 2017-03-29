@@ -26,8 +26,8 @@ module.exports = function(req, res) {
   	}
   	else {
   		/* assume current user is placing bid */
-  		bid(req.User.Uid, req.body.PostId, req.body.Amount, callback);
-        //bid(req.body.UserId, req.body.PostId, req.body.Amount, callback);
+  		//bid(req.User.Uid, req.body.PostId, req.body.Amount, callback);
+        bid(req.body.UserId, req.body.PostId, req.body.Amount, callback);
   	}
 }
 
