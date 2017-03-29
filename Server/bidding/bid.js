@@ -42,7 +42,7 @@ function bid(userId, postId, amount, callback) {
 			return callback(-2);
 		}
 		else {
-			if (rows[0].Uid == userID) {
+			if (rows[0].Uid == userId) {
 				console.log("Bid: User cannot bid on their own post!");
 				return callback(-3);
 			}
