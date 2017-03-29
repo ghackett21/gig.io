@@ -32,7 +32,7 @@ module.exports = function(req, res) {
 
 function bid(userId, postId, amount, callback) {
 	/* check userId of bid aginst userId of post */
-	ver selectPostUserId = "SELECT Uid FROM Posting WHERER Pid=" + Pid;
+	var selectPostUserId = "SELECT Uid FROM Posting WHERER Pid=" + Pid;
 
 	connection.query(selectPostUserId, function(err, rows) {
 		if (err) {
