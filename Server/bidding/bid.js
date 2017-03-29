@@ -32,6 +32,7 @@ module.exports = function(req, res) {
 }
 
 function bid(userId, postId, amount, callback) {
+	console.log("Bid: userId=" + userId + ", postId=" + postId + ", amount=" + amount);
 	/* check userId of bid aginst userId of post */
 	var selectPostUserId = "SELECT Uid FROM Posting WHERER Pid=" + postId;
 
