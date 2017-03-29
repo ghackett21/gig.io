@@ -120,7 +120,7 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
 				var date = post.CreationTime.substring(0,10);
 				var day = date.substring(8,date.length);
 				var month = date.substring(5,7);
-				var year = date.substring(0,4);
+	    		var year = date.substring(0,4);
 
 				date = month + "/" + day + "/" + year;
 
@@ -158,6 +158,28 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
                     modal.style.display = "block";
                     $scope.$apply();
 					myMap(myUser.U_Location);
+
+                    //TODO - load bids
+                    var bidData = new Object();
+                    bidData.PostId = post.Pid;
+                    $http.post("/GetBids", bidData).then(function(response) {
+
+                        var bids = response.data.Result;
+                        console.log(bids);
+                        var bidData = []
+                        var template = document.querySelector('#bidTemplate');
+                        for (var i = 0; i < bids.length; i++) {
+                            var clone = template.content.cloneNode(true);
+                            var td = clone.querySelectorAll('td');
+                            td[0].innerHTML = bids[i].BidTime;
+                            td[1].innerHTML = bids[i].Uid;
+                            td[2].innerHTML = bids[i].Amount;
+                            template.parentNode.appendChild(clone);
+                        }
+
+                    }).catch(function(response) {
+                        console.log("error getting bids");
+                    })
                 };
             }
             //var btn = document.getElementById("post-1");
@@ -202,6 +224,7 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
 			}
 			//load response
 		})
+        
 	};
 
 	$scope.sortByAge = function() {
@@ -298,6 +321,7 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
                 console.log("success");
                 //window.location.href = 'http://localhost:8081/index.html';
             }else if(response.status == 401){
+                B
                 console.log("failure");
                 //console.log(response.data);
                 //window.location.href = 'http://localhost:8081/login.html';
@@ -415,6 +439,7 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
                 }
                 //load response
             }).catch(function(response) {
+                //A
                 //$scope.user = null;
                 console.log(response.status);
                 console.log(response);
@@ -427,8 +452,26 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
     };
     
 	$scope.placeBid = function() {
-        	console.log("button clicked");
-    	};
+
+            if ($scope.bid.Amount == "") {
+                alert("No bid amount entered!");
+                return;
+            }
+
+            $scope.bid.PostId = $scope.pid;
+            $scope.bid.UserId = myUser.Uid;
+
+            $http.post('/Bid', $scope.bid).then(function(response) {
+                console.log(response);
+                
+            }).catch(function(response) {
+                console.log(response.status);
+                console.log(response);
+                if (response.status == 401) {
+                    console.log("failure");
+                }
+            })
+    };
 
 }]);
 
@@ -504,3 +547,4 @@ function getMonth(str) {
     console.log(str);
     return str;
 }
+

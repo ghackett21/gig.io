@@ -8,7 +8,6 @@ var session = require('express-session');
 var bcrypt = require('bcrypt');
 
 /* delete later */
-var getDate = require('./helpers/getDate');
 var connection = require('./helpers/connection');
 
 /* users */
@@ -23,6 +22,7 @@ var deletePost = require('./posts/deletePost');
 var getUserPosts = require('./posts/getUserPosts');
 var getPost = require('./posts/getPost');
 var createPost = require('./posts/createPost');
+var deleteInactivePosts = require('./posts/deleteInactivePosts');
 
 /* bidding */
 var getBids = require('./bidding/getBids');
@@ -41,12 +41,10 @@ passport.serializeUser(function(user, done) {
 passport.deserializeUser(function(user, done) {
       console.log('no im not serial');
       done(null, user);
-   
 });
 
-
 function findByUsername(username, fn) {
-	var select = "SELECT * FROM Users WHERE Username LIKE '" + username + "'";
+	var select = "SELECT * FROM Users WHERE Username LIKE " + connection.escape(username);
 	connection.query(select, function(err, rows) {
 		if (err) {
 			/* an error occured */
@@ -64,9 +62,7 @@ function findByUsername(username, fn) {
 			}
 		}
 	});
-
 };
-
 
 function findById(id, fn) {
 	var select = "SELECT * FROM Users WHERE Uid LIKE '" + id + "'";
@@ -87,9 +83,7 @@ function findById(id, fn) {
 			}
 		}
 	});
-
 };
-
 
 /* create express server */
 var app = express();
@@ -105,14 +99,38 @@ app.use(passport.session());
 	
 console.log("Server Started");
 
-
-app.get('/', ensureAuthenticated, function(req, res) {
-	console.log("jere1");
-    res.redirect('/index.html');
+app.use(function (req, res, next) {
+    res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+    res.header('Expires', '-1');
+    res.header('Pragma', 'no-cache');
+    next()
 });
 
-app.use(express.static(path.join(__dirname, '/../docs')));
+deleteInactivePosts();
 
+app.get('/index.html', ensureAuthenticated, function(req, res) {
+	console.log("dir = " + __dirname);
+    res.sendFile(__dirname + '/public/index.html');
+});
+
+app.get('/', ensureAuthenticated, function(req, res) {
+    res.sendFile(__dirname + '/public/index.html');
+});
+
+app.get('/makepost.html', ensureAuthenticated, function(req, res) {
+    res.sendFile(__dirname + '/public/makepost.html');
+});
+
+app.get('/profile.html', ensureAuthenticated, function(req, res) {
+	console.log("dir = " + __dirname);
+    res.sendFile(__dirname + '/public/profile.html');
+});
+
+app.get('/bid.html', ensureAuthenticated, function(req, res) {
+    res.sendFile(__dirname + '/public/bid.html');
+});
+
+app.use(express.static(path.join(__dirname, '/public')));
 
 passport.use(new LocalStrategy(
 	function(username, password, done) {
@@ -159,14 +177,6 @@ app.post('/logout', function(req, res) {
   res.json({"redirect": '/login.html'});
 });
 
-
-
-/**
- * Register a new user with the provided username and password.
- * Returns userID if successful.
- * Accepts: Username, Password
- * Returns: State, UserID
- */
 app.post('/RegisterButton', function(req, res) {
 	register(req, res);
 });
@@ -175,7 +185,7 @@ app.post('/RegisterButton', function(req, res) {
 
 function ensureAuthenticated(req, res, next) {
   console.log("is auth? + "  + req.isAuthenticated());
-  //console.log("req = %s", JSON.stringify(req.user));
+  //console.log("req = %s", JSON.stringify(req.url));
   if (req.isAuthenticated()) {
     // req.user is available for use here
     return next(); }
@@ -183,25 +193,6 @@ function ensureAuthenticated(req, res, next) {
   // denied. redirect to login
   res.redirect('/login.html')
 }
-
-app.get('/protected', ensureAuthenticated , function(req, res) {
-  res.send("access granted. secure stuff happens here");
-});
-
-function isAuthenticated(req,res,next){
-   if(req.user)
-      return next();
-   else
-      return res.redirect('login.html');
-
-}
-
-app.get('/checkauth', isAuthenticated, function(req, res){
-
-    res.status(200).json({
-        status: 'Login successful!'
-    });
-});
 
 app.post('/GetUser', function(req, res) {
  	getUser(req, res);

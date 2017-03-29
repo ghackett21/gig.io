@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <link href="main_style.css" rel="stylesheet" type="text/css">
+  <link href="assets/css/main_style.css" rel="stylesheet" type="text/css">
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
   <script src="mainApp.js"></script>
   <script src="data.js"></script>
@@ -71,26 +71,18 @@
             <th>User</th>
             <th>Amount</th>
           </tr>
+          <template id="bidTemplate">
           <tr>
-            <td>3pm</td>
-            <td>Bob</td>
-            <td>$0.99</td>
+            <td></td>
+            <td></td>
+            <td></td>
           </tr>
-          <tr>
-              <td>2pm</td>
-              <td>Jim</td>
-              <td>$40</td>
-          </tr>
-          </tr>
-              <td>3:04pm</td>
-              <td>George</td>
-              <td>$33</td>
-          </tr>
+          </template>
         </table>
         <br><p>Enter bid:</p>
         <p>
-          <i>$</i><input type="text" placeholder="Bid amount"/>
-          <button ng-click="placeBid()">Place bid</button>
+          <i>$</i><input type="number" ng-model="bid.Amount" placeholder="Bid amount"/>
+          <button ng-click="placeBid(); $event.stopPropagation();">Place bid</button>
         </p>
         </td>
       </tr>
