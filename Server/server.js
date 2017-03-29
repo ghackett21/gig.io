@@ -23,6 +23,7 @@ var getUserPosts = require('./posts/getUserPosts');
 var getPost = require('./posts/getPost');
 var createPost = require('./posts/createPost');
 var deleteInactivePosts = require('./posts/deleteInactivePosts');
+var closePost = require('./posts/closePost');
 
 /* bidding */
 var getBids = require('./bidding/getBids');
@@ -236,6 +237,10 @@ app.post('GetUserRatings', function(req, res) {
 
  app.post("/CreateRating", function(req, res) {
  	createRating(req, res);
+ });
+
+ app.post("/ClosePost", function(req, res) { 
+ 	closePost(req, res);
  });
 
 /* start express server */
