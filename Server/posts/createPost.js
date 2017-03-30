@@ -7,7 +7,7 @@ var connection = require('./../helpers/connection');
  */
 module.exports = function(req, res) {
 	console.log("Create Post");
-
+	console.log("post = %s\n title = %s", JSON.stringify(req.body), req.body.title );
 	/* register callback to handle response */
 	var callback = function(result) {
 		if (result < 0) {
@@ -18,7 +18,7 @@ module.exports = function(req, res) {
 			res.json({'Response' : 'createPost successful', 'PostId': result, 'State': 0});
 		}
 	}
-
+	
 	/* check for missing args */
 	if (req.body.title == undefined || req.body.location == undefined || req.body.description == undefined) {
 		console.log("CreatePost: undefined args, requires Uid, location, and description");
