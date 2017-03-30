@@ -161,15 +161,12 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
 					//TODO - undo
                     //myMap(myUser.U_Location);
 
-                    // TODO - finish
                     // Load bid history for current post
                     var bidData = new Object();
                     bidData.PostId = post.Pid;
                     $http.post("/GetBids", bidData).then(function(response) {
 
                         var bids = response.data.Result;
-                        console.log("TEST");
-                        console.log(response.data.Result);
                         var bidData = []
                         var template = document.querySelector('#bidTemplate');
                         while(template.parentNode.hasChildNodes()) {
@@ -479,13 +476,12 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
 
             // Bid
             $http.post('/Bid', $scope.bid).then(function(response) {
-                console.log(response);  
+                
             }).catch(function(response) {
                 console.log("error bidding");
             })
 
             // Update bids displayed
-            // TODO - do this and bidding synchronously
             var bidData = new Object();
             bidData.PostId = $scope.pid;
             $http.post('/GetBids', bidData).then(function(response) {
@@ -496,13 +492,11 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
                            bids[bids.length - 1].BidTime.substring(0, 4) + ", " +
                            bids[bids.length - 1].BidTime.substring(11, 16);
 
-                console.log(date);
-
                 var template = document.querySelector('#bidTemplate');
                 var clone = template.content.cloneNode(true);
                 var td = clone.querySelectorAll('td');
                 td[0].innerHTML = date;
-                td[1].innerHTML = bids[bids.length - 1].Uid;
+                td[1].innerHTML = bids[bids.length - 1].Username;
                 td[2].innerHTML = "$" + bids[bids.length - 1].Amount;
                 template.parentNode.appendChild(clone);
 
