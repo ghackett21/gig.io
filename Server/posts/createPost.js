@@ -40,7 +40,7 @@ function createPost(userId, title, location, lat, long, description, image, call
 	console.log("CreatePost: ", userId, title, location, description, lat, long, image);
 
 	var creationTime = getDate();
-	var insert = "INSERT INTO Posting (Uid, P_Title, P_Location, P_Lat, P_Long, CreationTime, Status, P_Description, P_Image) VALUES ('" + userId + "', '" + title + "', '" + location + "', " + lat + ", " + long + ", '" + creationTime + "', 1, '" + description + "', '" + image + "')";  
+	var insert = "INSERT INTO Posting (Uid, P_Title, P_Location, P_Lat, P_Long, CreationTime, Status, P_Description, P_Image) VALUES ('" + userId + "', '" + title + "', '" + location + "', " + lat + ", " + long + ", '" + creationTime + "', 0, '" + description + "', '" + image + "')";  
 
 	connection.query(insert, function (err, rows) {
 		if (err) {
