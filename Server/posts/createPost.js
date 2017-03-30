@@ -25,7 +25,7 @@ module.exports = function(req, res) {
 		callback(-1);
 	}
 	else {
-		imageLink = "";
+		var imageLink = "";
 		if (req.body.imageLink != undefined) {
 			imageLink = req.body.imageLink;
 		}
