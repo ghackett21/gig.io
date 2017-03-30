@@ -168,6 +168,8 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
                     $http.post("/GetBids", bidData).then(function(response) {
 
                         var bids = response.data.Result;
+                        console.log("TEST");
+                        console.log(response.data.Result);
                         var bidData = []
                         var template = document.querySelector('#bidTemplate');
                         while(template.parentNode.hasChildNodes()) {
@@ -186,7 +188,7 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
                             var clone = template.content.cloneNode(true);
                             var td = clone.querySelectorAll('td');
                             td[0].innerHTML = date; //bids[i].BidTime;
-                            td[1].innerHTML = bids[i].Uid;
+                            td[1].innerHTML = bids[i].Username;
                             td[2].innerHTML = "$" + bids[i].Amount;
                             template.parentNode.appendChild(clone);
                         }
