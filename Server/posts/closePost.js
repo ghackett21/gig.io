@@ -42,17 +42,18 @@ function closePost(userId, postId, amount) {
 	else {
 		console.log("Close post " + postId + " with winning bid by user " + userId);
 
-    /* change post status to pending */
-    var updatePostStatus = "UPDATE Posting SET STATUS=" + 1 + " WHERE Pid=" + postId;
+	    /* change post status to pending */
+	    var updatePostStatus = "UPDATE Posting SET STATUS=" + 1 + " WHERE Pid=" + postId;
 
-    connection.query(updatePostStatus, function(err, rows) {
-      if (err) {
-        console.log("Close Post: database error!");
-        return callback(-2);
-      }
-      else {
-        return callback(0);
-      }
-    });
+	    connection.query(updatePostStatus, function(err, rows) {
+	      if (err) {
+	        console.log("Close Post: database error!");
+	        return callback(-2);
+	      }
+	      else {
+	      	/* send notification */
+	        return callback(0);
+	      }
+	    });
 	}
 }
