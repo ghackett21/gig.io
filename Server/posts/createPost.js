@@ -20,7 +20,7 @@ module.exports = function(req, res) {
 	}
 
 	/* check for missing args */
-	if (req.body.Uid == undefined || req.body.title == undefined || req.body.location == undefined || req.body.description == undefined) {
+	if (req.body.title == undefined || req.body.location == undefined || req.body.description == undefined) {
 		console.log("CreatePost: undefined args, requires Uid, location, and description");
 		callback(-1);
 	}
@@ -29,7 +29,7 @@ module.exports = function(req, res) {
 		if (req.body.imageLink != undefined) {
 			imageLink = req.body.imageLink;
 		}
-		createPost(req.body.Uid, req.body.title, req.body.location, req.body.lat, req.body.long, req.body.description, imageLink, callback);
+		createPost(req.user.Uid, req.body.title, req.body.location, req.body.lat, req.body.long, req.body.description, imageLink, callback);
 	}
 }
 
