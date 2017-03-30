@@ -26,14 +26,15 @@ module.exports = function(req, res) {
   	}
   	else {
   		/* assume current user is placing bid */
-  		bid(req.User.Uid, req.body.PostId, req.body.Amount, callback);
-        //bid(req.body.UserId, req.body.PostId, req.body.Amount, callback);
+  		//bid(req.User.Uid, req.body.PostId, req.body.Amount, callback);
+        bid(req.body.UserId, req.body.PostId, req.body.Amount, callback);
   	}
 }
 
 function bid(userId, postId, amount, callback) {
+	console.log("Bid: userId=" + userId + ", postId=" + postId + ", amount=" + amount);
 	/* check userId of bid aginst userId of post */
-	var selectPostUserId = "SELECT Uid FROM Posting WHERER Pid=" + Pid;
+	var selectPostUserId = "SELECT Uid FROM Posting WHERE Pid=" + postId;
 
 	connection.query(selectPostUserId, function(err, rows) {
 		if (err) {
@@ -41,7 +42,7 @@ function bid(userId, postId, amount, callback) {
 			return callback(-2);
 		}
 		else {
-			if (rows[0].Uid == userID) {
+			if (rows[0].Uid == userId) {
 				console.log("Bid: User cannot bid on their own post!");
 				return callback(-3);
 			}
