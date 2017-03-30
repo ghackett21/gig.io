@@ -30,7 +30,7 @@ module.exports = function(req, res) {
 function getBids(postId, callback) {
 	console.log("GetBids: " + postId);
 
-	var select = "SELECT * FROM Bids WHERE Pid Like '" + postId + "'";
+	var select = "SELECT Bid.Bidid, Bid.Uid, Bid.Pid, Bid.BidTime, Bid.Amount, Users.Username FROM Bids Inner Join Users On Bid.Uid=Users.Uid WHERE Bid.Pid Like '" + postId + "'";
 
 	connection.query(select, function(err, rows) {
 		if (err) {
