@@ -25,16 +25,16 @@
 <form name="postCreation">
       
         <label for="title">Post title:</label>
-        <input padding-left="5px" ng-model="user.title" id="title" type="text"  class="validate" required>
+        <input padding-left="5px" ng-model="post.title" id="title" type="text"  class="validate" required>
       <br>
         <label for="description">Description of the work you are requesting:</label>
-        <input ng-model="user.description" id="description" type="text"  class="validate" required>
+        <input ng-model="post.description" id="description" type="text"  class="validate" required>
       <br>
 	<label for="location">Location where the work will take place:</label>
-        <input padding-left="5px" ng-model="user.location" id="location" type="text"  class="validate" required>
+        <input padding-left="5px" ng-model="post.location" id="location" type="text"  class="validate" required>
       <br>
 	<label for="image">Picture URL (Optional):</label>
-        <input padding-left="5px" ng-model="user.picture" id="picture" type="url">
+        <input padding-left="5px" ng-model="post.picture" id="picture" type="url">
       <br>  
         <input ng-click="makePost()" type="submit" value="Submit">
     </form><br>
