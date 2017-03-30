@@ -266,12 +266,9 @@ app.post("/sendMail", function(req, res) {
 	});
 
 });
-=======
  app.post("/ClosePost", function(req, res) { 
  	closePost(req, res);
  });
-
->>>>>>> d4fb43d42541bd1fa343b70b7060fbb2ebca4768
 /* start express server */
 var server = app.listen(8081, function() {
 	var host = server.address().address;
