@@ -94,7 +94,7 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
 	};
 
 	window.onload = function() {
-	    $http.post('/GetUser').then(function(response) {
+        $http.post('/GetUser').then(function(response) {
                         //console.log(response.data.Result[0]);
                         myUser = response.data.Result[0];
         })
@@ -130,6 +130,7 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
 				template.parentNode.appendChild(clone);
 			}
 
+
             // Get the modal
             var modal = document.getElementById('myModal');
 
@@ -157,17 +158,23 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
                     address = post.P_Location;
                     modal.style.display = "block";
                     $scope.$apply();
-					myMap(myUser.U_Location);
+					//TODO - undo
+                    //myMap(myUser.U_Location);
 
-                    //TODO - load bids
+                    // TODO
+                    // Load bid history for current post
                     var bidData = new Object();
                     bidData.PostId = post.Pid;
                     $http.post("/GetBids", bidData).then(function(response) {
 
                         var bids = response.data.Result;
-                        console.log(bids);
                         var bidData = []
                         var template = document.querySelector('#bidTemplate');
+                        while(template.parentNode.hasChildNodes()) {
+                            if (template.parentNode.lastChild == template)
+                                break;
+                            template.parentNode.removeChild(template.parentNode.lastChild);
+                        }
                         for (var i = 0; i < bids.length; i++) {
                             var clone = template.content.cloneNode(true);
                             var td = clone.querySelectorAll('td');
@@ -180,6 +187,7 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
                     }).catch(function(response) {
                         console.log("error getting bids");
                     })
+        
                 };
             }
             //var btn = document.getElementById("post-1");
@@ -321,7 +329,6 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
                 console.log("success");
                 //window.location.href = 'http://localhost:8081/index.html';
             }else if(response.status == 401){
-                B
                 console.log("failure");
                 //console.log(response.data);
                 //window.location.href = 'http://localhost:8081/login.html';
@@ -439,7 +446,6 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
                 }
                 //load response
             }).catch(function(response) {
-                //A
                 //$scope.user = null;
                 console.log(response.status);
                 console.log(response);
