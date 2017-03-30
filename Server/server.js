@@ -8,10 +8,10 @@ var session = require('express-session');
 var bcrypt = require('bcrypt');
 var nodemailer = require('nodemailer');
 var transporter = nodemailer.createTransport({
-        service: 'mail',
+        service: 'gmail',
         auth: {
-            user: 'gig.io@mail.com', // Your email id
-            pass: 'GIGIOISTHEBEST' // Your password
+            user: 'gigdotio@gmail.com', // Your email id
+            pass: 'geofffff' // Your password
         }
     });
 
@@ -249,15 +249,15 @@ app.post("/CreateRating", function(req, res) {
 			
 
 app.post("/sendMail", function(req, res) {
-
+	console.log("sending mail");
 	var mailOptions = {
-		from: 'boilersvp@gmail.com', // sender address
+		from: 'gigdotio@gmail.com', // sender address
 		to: 'spfellers@gmail.com', // list of receivers
 		subject: 'Account Verification', // Subject line
 		text: "WHEEEEW."
 	};
 
-	mailTransport.sendMail(mailOptions, function(error, info){
+	transporter.sendMail(mailOptions, function(error, info){
 		if(error){
 		    return console.log(error);
 		}
