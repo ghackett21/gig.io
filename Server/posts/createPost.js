@@ -1,5 +1,5 @@
 var connection = require('./../helpers/connection');
-
+var getDate = require('./../helpers/getDate');
 /**
  * Creates a new post given the userId of the creator, the location, and the description/title
  * Accepts: UserId, Location, Description
@@ -39,7 +39,7 @@ module.exports = function(req, res) {
 function createPost(userId, title, location, lat, long, description, image, callback) {
 	console.log("CreatePost: ", userId, location, description);
 
-	var creationTime = GetDate();
+	var creationTime = getDate();
 	var insert = "INSERT INTO Posting (Uid, P_Title, P_Location, P_Lat, P_Long, CreationTime, Status, P_Description, P_Image) VALUES ('" + userId + "', '" + title + "', '" + location + "', " + lat + ", " + long + ", '" + creationTime + "', 1, '" + description + "', '" + image + "')";  
 
 	connection.query(insert, function (err, rows) {
