@@ -139,7 +139,7 @@ h1 {
 }
 
 .bid-table {
-    overflow-y: scroll;
+    overflow-y: auto;
     height: 300px;
     display: block;
 }

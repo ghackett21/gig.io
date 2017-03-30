@@ -161,7 +161,7 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
 					//TODO - undo
                     //myMap(myUser.U_Location);
 
-                    // TODO
+                    // TODO - finish
                     // Load bid history for current post
                     var bidData = new Object();
                     bidData.PostId = post.Pid;
@@ -176,11 +176,18 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
                             template.parentNode.removeChild(template.parentNode.lastChild);
                         }
                         for (var i = 0; i < bids.length; i++) {
+
+                            // Format date
+                            var date = bids[i].BidTime.substring(5, 7) + "/" +
+                                       bids[i].BidTime.substring(8, 10) + "/" +
+                                       bids[i].BidTime.substring(0, 4) + ", " +
+                                       bids[i].BidTime.substring(11, 16);
+
                             var clone = template.content.cloneNode(true);
                             var td = clone.querySelectorAll('td');
-                            td[0].innerHTML = bids[i].BidTime;
+                            td[0].innerHTML = date; //bids[i].BidTime;
                             td[1].innerHTML = bids[i].Uid;
-                            td[2].innerHTML = bids[i].Amount;
+                            td[2].innerHTML = "$" + bids[i].Amount;
                             template.parentNode.appendChild(clone);
                         }
 
@@ -456,7 +463,8 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
                 //load response
             })
     };
-    
+
+    // Called when the "Place bid" button is clicked
 	$scope.placeBid = function() {
 
             if ($scope.bid.Amount == "") {
@@ -467,16 +475,39 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
             $scope.bid.PostId = $scope.pid;
             $scope.bid.UserId = myUser.Uid;
 
+            // Bid
             $http.post('/Bid', $scope.bid).then(function(response) {
-                console.log(response);
-                
+                console.log(response);  
             }).catch(function(response) {
-                console.log(response.status);
-                console.log(response);
-                if (response.status == 401) {
-                    console.log("failure");
-                }
+                console.log("error bidding");
             })
+
+            // Update bids displayed
+            // TODO - do this and bidding synchronously
+            var bidData = new Object();
+            bidData.PostId = $scope.pid;
+            $http.post('/GetBids', bidData).then(function(response) {
+                var bids = response.data.Result;
+
+                var date = bids[bids.length - 1].BidTime.substring(5, 7) + "/" +
+                           bids[bids.length - 1].BidTime.substring(8, 10) + "/" +
+                           bids[bids.length - 1].BidTime.substring(0, 4) + ", " +
+                           bids[bids.length - 1].BidTime.substring(11, 16);
+
+                console.log(date);
+
+                var template = document.querySelector('#bidTemplate');
+                var clone = template.content.cloneNode(true);
+                var td = clone.querySelectorAll('td');
+                td[0].innerHTML = date;
+                td[1].innerHTML = bids[bids.length - 1].Uid;
+                td[2].innerHTML = "$" + bids[bids.length - 1].Amount;
+                template.parentNode.appendChild(clone);
+
+            }).catch(function(response) {
+                console.log("error getting bids");
+            })
+
     };
 
 }]);
