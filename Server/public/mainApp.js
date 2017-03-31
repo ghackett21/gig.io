@@ -98,7 +98,6 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
                         modal.style.display = "block";
                         $scope.$apply();
     					//TODO - undo
-                        myMap(myUser.U_Location);
 
                         // Load bid history for current post
                         var bidData = new Object();
@@ -127,6 +126,7 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
                                 td[1].innerHTML = bids[i].Username;
                                 td[2].innerHTML = "$" + bids[i].Amount;
                                 template.parentNode.appendChild(clone);
+                                myMap(myUser.U_Location);
                             }
 
                         }).catch(function(response) {
