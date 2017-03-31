@@ -140,7 +140,7 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
             for (var i = 0; i < rows.length; i++) {
                 //console.log(postData);
                 rows[i].onclick = function() {
-                    //console.log(arr);
+                    console.log(arr);
                     rowID = this.id;
                     var j = 0;
                     var str;
