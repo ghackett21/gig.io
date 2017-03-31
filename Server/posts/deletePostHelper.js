@@ -1,3 +1,5 @@
+var connection = require('./../helpers/connection');
+
 module.exports = function(postId, callback) {
 	console.log("DeletePost: postId: " + postId);
 
