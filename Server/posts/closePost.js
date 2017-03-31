@@ -32,7 +32,7 @@ module.exports = function(req, res) {
 	}
 }
 
-function closePost(userId, postId, amount) {
+function closePost(userId, postId, amount, callback) {
 	/* check if there is winner */
 	if (userId == null) {
 		/* no winner - delete post */
