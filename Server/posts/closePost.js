@@ -25,14 +25,14 @@ module.exports = function(req, res) {
 		callback(-1);
 	}
 	else if (req.body.UserId == undefined) {
-		closeBid(null, req.body.PostId, req.body.Amount, callback);
+		closePost(null, req.body.PostId, req.body.Amount, callback);
 	}
 	else {
-      closeBid(req.body.UserId, req.body.PostId, req.body.Amount, callback);
+      closePost(req.body.UserId, req.body.PostId, req.body.Amount, callback);
 	}
 }
 
-function closePost(userId, postId, amount) {
+function closePost(userId, postId, amount, callback) {
 	/* check if there is winner */
 	if (userId == null) {
 		/* no winner - delete post */

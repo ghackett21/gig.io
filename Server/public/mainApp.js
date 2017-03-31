@@ -845,10 +845,10 @@ $scope.sortByLowestBid = function() {
                 }).catch(function(response) {
                     console.log("error getting bids");
                 })
+                
             }).catch(function(response) {
                 console.log("error bidding");
             })
-
     };
 
 }]);

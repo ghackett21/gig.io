@@ -83,7 +83,7 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
             for (var i = 0; i < rows.length; i++) {
                 //console.log(postData);
                 rows[i].onclick = function() {
-                    //console.log(arr);
+                    console.log("post " + i + " selected!");
 
                     /* check that a row is not already expanded */
                     if (expanded == 0) {
@@ -755,7 +755,21 @@ $scope.sortByLowestBid = function() {
             })
     };
 
+
+    // Called when the "Place bid" button is clicked
+    $scope.closePostButton = function() {
+        var bid = {userid:null, PostId:$scope.pid, Amount:0};
+
+        /* close post */
+        $http.post('/ClosePost', bid).then(function(response) {
+           console.log("Close Post");
+           location.reload(true);
+        }).catch(function(response) {
+            console.log("error in Close Post");
+        })
+    }
 }]);
+
 
 function myMap(loc) {
     console.log("Loc: " + loc);
