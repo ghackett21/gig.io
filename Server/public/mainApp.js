@@ -817,8 +817,6 @@ $scope.sortByLowestBid = function() {
             // Bid
             $http.post('/Bid', $scope.bid).then(function(response) {
                 // Update bids displayed
-
-                /*
                 var bidData = new Object();
                 bidData.PostId = $scope.pid;
                 $http.post('/GetBids', bidData).then(function(response) {
@@ -840,11 +838,12 @@ $scope.sortByLowestBid = function() {
                 }).catch(function(response) {
                     console.log("error getting bids");
                 })
-                */
+                
             }).catch(function(response) {
                 console.log("error bidding");
             })
 
+            location.reload(true);
     };
 
 }]);
