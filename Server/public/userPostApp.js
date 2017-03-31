@@ -452,7 +452,7 @@ $scope.sortByLowestBid = function() {
                             }
 
                             /* set bid onlick() */
-                            var bidRows = document.getElementById("bid-table").rows;
+                            var bidRows = document.getElementById("bidTable").rows;
 
                             for (var j = 0; j < bidRows.length; j++) {
                                 bidRows[i].onclick() = function() {
