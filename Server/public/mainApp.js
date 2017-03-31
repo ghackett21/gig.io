@@ -806,6 +806,12 @@ $scope.sortByLowestBid = function() {
     // Called when the "Place bid" button is clicked
 	$scope.placeBid = function() {
 
+            // Check that user isn't poster
+            if ($scope.owner == myUser.Username) {
+                alert("You can't bid on your own post!");
+                return;
+            }
+
             if ($scope.bid.Amount == "") {
                 alert("No bid amount entered!");
                 return;
@@ -820,6 +826,7 @@ $scope.sortByLowestBid = function() {
                 var bidData = new Object();
                 bidData.PostId = $scope.pid;
                 $http.post('/GetBids', bidData).then(function(response) {
+                
                     var bids = response.data.Result;
 
                     var date = bids[bids.length - 1].BidTime.substring(5, 7) + "/" +
