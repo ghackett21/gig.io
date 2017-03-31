@@ -450,6 +450,16 @@ $scope.sortByLowestBid = function() {
                                 td[2].innerHTML = "$" + bids[i].Amount;
                                 template.parentNode.appendChild(clone);
                             }
+
+                            /* set bid onlick() */
+                            var bidRows = document.getElementById("bid-table").rows;
+
+                            for var j = 0; j < bidRows.length; j++) {
+                                bidRows[i].onclick() = function() {
+                                    console.log("bid " + i + " clicked!");
+                                }
+                            }
+
                             myMap(myUser.U_Location);
 
                         }).catch(function(response) {
