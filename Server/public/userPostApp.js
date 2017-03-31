@@ -758,7 +758,7 @@ $scope.sortByLowestBid = function() {
 
     // Called when the "Place bid" button is clicked
     $scope.closePostButton = function() {
-        var bid = {null, PostId = $scope.pid};
+        var bid = {userid:null, PostId:$scope.pid};
 
         /* close post */
         $http.post('/ClosePost', bid).then(function(response) {
