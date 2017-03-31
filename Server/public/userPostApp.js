@@ -165,7 +165,7 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
         var temp;
         var swapped;
         $http.post('/getUserPosts').then(function(response) {
-            posts = response.data.result;
+            posts = response.data.Result;
 
             //Sort by date
             do {
@@ -283,33 +283,180 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
         })
 	};
 
+$scope.sortByLowestBid = function() {
+	    var bidVal1;
+        var bidVal2;
+        var temp;
+        var swapped;
+        $http.post('/getUserPosts').then(function(response) {
+            posts = response.data.Result;
+
+            //Sort by date
+            do {
+                swapped = false;
+                for (var i=0; i < posts.length-1; i++) {
+                    bidVal1 = posts[i].NumberOfBids;
+                    bidVal2 = posts[i+1].NumberOfBids;
+
+                    if (bidVal1 < bidVal2) {
+                        //console.log("I'm In!");
+                        var temp = posts[i];
+                        posts[i] = posts[i+1];
+                        posts[i+1] = temp;
+                        swapped = true;
+                    }
+                }
+            } while (swapped);
+
+            var template = document.querySelector('#tmplt');
+            for (var i = 0; i < posts.length; i++) {
+                var currRow = document.getElementById("post-"+i);
+                var td = currRow.querySelectorAll('td');
+                td[0].innerHTML = posts[i].P_Description;
+                td[1].innerHTML = posts[i].Username;
+                td[2].innerHTML = posts[i].P_Location;
+                var date = posts[i].CreationTime.substring(0,10);
+                var day = date.substring(8,date.length);
+                var month = date.substring(5,7);
+                var year = date.substring(0,4);
+
+                date = month + "/" + day + "/" + year;
+
+                td[3].innerHTML = date;
+            }
+
+            // Get the modal
+            var modal = document.getElementById('myModal');
+
+            // Get the button that opens the modal
+            var rows = document.getElementById("postTable").rows;
+
+            for (var i = 0; i < rows.length; i++) {
+                //console.log(postData);
+                rows[i].onclick = function() {
+                    if (expanded == 0) {
+                        /* set flag */
+                        expanded = 1;
+                        //console.log(arr);
+                        rowID = this.id;
+                        var j = 0;
+                        var str;
+                        for(j; j < rows.length; j++) {
+                           str = "post-"+j;
+                           if (str === rowID)
+                                break;
+                        }
+                        var post = posts[j];
+
+                        $scope.owner = post.Username;
+
+                        $scope.phone = post.PhoneNumber;
+                        $scope.desc = post.U_Description;
+                        $scope.pid = post.Pid;
+                        $scope.location = post.P_Location;
+                        address = post.P_Location;
+                        modal.style.display = "block";
+                        $scope.$apply();
+
+                        // Load bid history for current post
+                        var bidData = new Object();
+                        bidData.PostId = post.Pid;
+                        $http.post("/GetBids", bidData).then(function(response) {
+
+                            var bids = response.data.Result;
+                            var bidData = []
+                            var template = document.querySelector('#bidTemplate');
+                            while(template.parentNode.hasChildNodes()) {
+                                if (template.parentNode.lastChild == template)
+                                    break;
+                                template.parentNode.removeChild(template.parentNode.lastChild);
+                            }
+                            for (var i = 0; i < bids.length; i++) {
+
+                                // Format date
+                                var date = bids[i].BidTime.substring(5, 7) + "/" +
+                                           bids[i].BidTime.substring(8, 10) + "/" +
+                                           bids[i].BidTime.substring(0, 4) + ", " +
+                                           bids[i].BidTime.substring(11, 16);
+
+                                var clone = template.content.cloneNode(true);
+                                var td = clone.querySelectorAll('td');
+                                td[0].innerHTML = date; //bids[i].BidTime;
+                                td[1].innerHTML = bids[i].Username;
+                                td[2].innerHTML = "$" + bids[i].Amount;
+                                template.parentNode.appendChild(clone);
+                            }
+                            myMap(myUser.U_Location);
+
+                        }).catch(function(response) {
+                            console.log("error getting bids");
+                        })
+                    }
+                };
+            }
+            //var btn = document.getElementById("post-1");
+
+            // Get the <span> element that closes the modal
+            var span = document.getElementsByClassName("close")[0];
+
+            // When the user clicks the button, open the modal
+
+            // When the user clicks on <span> (x), close the modal
+            span.onclick = function() {
+                /* set flag */
+                expanded = 0;
+                modal.style.display = "none";
+            }
+
+            // When the user clicks anywhere outside of the modal, close it
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    /* set flag */
+                    expanded = 0;
+                    modal.style.display = "none";
+                }
+            }
+
+            console.log(response.status);
+            console.log(response);
+            if(response.status == 200){
+                console.log("success");
+                //window.location.href = 'http://localhost:8081/index.html';
+            }else if(response.status == 401){
+                console.log("failure");
+                //console.log(response.data);
+                //window.location.href = 'http://localhost:8081/login.html';
+            }
+            //load response
+        }).catch(function(response) {
+            //$scope.user = null;
+            console.log(response.status);
+            console.log(response);
+            if(response.status == 401){
+                console.log("failure");
+                //window.location.href = 'http://localhost:8081/login.html';
+            }
+            //load response
+        })
+	};
+
 	$scope.sortByDistance = function() {
         	    var time1;
                 var time2;
                 var temp;
                 var swapped;
                 $http.post('/getUserPosts').then(function(response) {
-                    posts = response.data.result;
+                    posts = response.data.Result;
 
-                    //Sort by distance
-
-                    var loc = "Chicago, IL";
                     do {
                         swapped = false;
                         for (var i=0; i < posts.length-1; i++) {
-                            calculateDistance(loc, posts[i].P_Location);
-                            dist1 = loc_distance;
-                            calculateDistance(loc, posts[i+1].P_Location);
-                            dist2 = loc_distance;
-                            console.log("Dist1: " + dist1   + "|" +   "Dist2: " + dist2);
+                            dist1 = getDistanceFromLatLonInKm(posts[i].P_Lat, posts[i].P_Long, myUser.U_Lat, myUser.U_Long)
 
-                            if (dist1 === parseInt(dist1, 10))
-                                console.log("dist1 is integer");
-                            else
-                                console.log("dist1 is not an integer");
+                            dist2 = getDistanceFromLatLonInKm(posts[i+1].P_Lat, posts[i+1].P_Long, myUser.U_Lat, myUser.U_Long);
 
                             if (dist1 < dist2) {
-                                console.log("I'm In!");
+                                //console.log("I'm In!");
                                 var temp = posts[i];
                                 posts[i] = posts[i+1];
                                 posts[i+1] = temp;
@@ -410,7 +557,7 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
             var temp;
             var swapped;
             $http.post('/getUserPosts').then(function(response) {
-                posts = response.data.result;
+                posts = response.data.Result;
 
                 //Sort by date
                 do {
@@ -643,7 +790,7 @@ function calculateDistance(origin, destination) {
     }
   }
 
-  /*function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
+  function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
     var R = 6371; // Radius of the earth in km
     var dLat = deg2rad(lat2-lat1);  // deg2rad below
     var dLon = deg2rad(lon2-lon1);
@@ -659,4 +806,4 @@ function calculateDistance(origin, destination) {
 
   function deg2rad(deg) {
     return deg * (Math.PI/180)
-  }*/
+  }
