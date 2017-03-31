@@ -23,8 +23,10 @@ app.controller("profileController", [ '$scope', '$http', function($scope, $http)
             h1[0].innerHTML = user.Username;
             var h3 = clone.querySelectorAll('h3');
             h3[0].innerHTML = user.U_Description;
-            h3[1].innerHTML = user.PhoneNumber;
-            h3[2].innerHTML = user.EmailAddress;
+            h3[1].innerHTML = user.AVG_PostRate;
+            h3[2].innerHTML = user.AVG_BidRate;
+            h3[3].innerHTML = user.PhoneNumber;
+            h3[4].innerHTML = user.EmailAddress;
 
             /*var rating = user.AverageRating;
 
