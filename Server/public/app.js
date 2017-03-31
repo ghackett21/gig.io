@@ -187,7 +187,7 @@ app.controller("makePostController", [ '$scope', '$http', function($scope, $http
 		console.log("title = " + $scope.post.title);
 		console.log("description = " + $scope.post.description);
 		console.log("location = " + $scope.post.location);
-		console.log("picture = " + $scope.post.picture);
+		console.log("imageLink = " + $scope.post.imageLink);
 		
 		if($scope.post == undefined){
 			return;
@@ -196,8 +196,8 @@ app.controller("makePostController", [ '$scope', '$http', function($scope, $http
 			$scope.status = "Make Sure to fill in all required fields.";
 			return;
 		}
-		/*if($scope.post.picture.match((http(s?):)|([/|.|\w|\s])*\.(?:jpg|gif|png) == null){
-			$scope.status = "Please enter a valid picture URL";
+		/*if($scope.post.imageLink.match((http(s?):)|([/|.|\w|\s])*\.(?:jpg|gif|png) == null){
+			$scope.status = "Please enter a valid imageLink URL";
 			return;
 		}*/
 
@@ -209,12 +209,12 @@ app.controller("makePostController", [ '$scope', '$http', function($scope, $http
 		console.log("My longitude = "+mylong);
 		console.log("My latitude = "+mylat);
 		$scope.post.lat=mylat;
-		$scope.post.lng=mylong;
+		$scope.post.long=mylong;
 		console.log("scope.post.lat="+$scope.post.lat+"    scope.post.lng="+$scope.post.lng);
 		$http.post('/CreatePost', $scope.post).then(function(response) {
-			getCoordinates(myloc);
-		console.log("My longitude = "+mylong);
-		console.log("My latitude = "+mylat);
+			//getCoordinates(myloc);
+			console.log("My longitude = "+mylong);
+			console.log("My latitude = "+mylat);
 			$scope.post = null;
 			//$scope.status = "Post successfully created!";
 			console.log(response);
