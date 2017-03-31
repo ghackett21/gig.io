@@ -6,6 +6,15 @@ var LocalStrategy = require('passport-local').Strategy;
 var flash = require('connect-flash');
 var session = require('express-session');
 var bcrypt = require('bcrypt');
+var nodemailer = require('nodemailer');
+
+var transporter = nodemailer.createTransport({
+        service: 'Gmail',
+        auth: {
+            user: 'gigdotio@gmail.com', // Your email id
+            pass: 'geofffff' // Your password
+        }
+    });
 
 /* delete later */
 var connection = require('./helpers/connection');
@@ -23,6 +32,7 @@ var getUserPosts = require('./posts/getUserPosts');
 var getPost = require('./posts/getPost');
 var createPost = require('./posts/createPost');
 var deleteInactivePosts = require('./posts/deleteInactivePosts');
+var closePost = require('./posts/closePost');
 
 /* bidding */
 var getBids = require('./bidding/getBids');
@@ -234,10 +244,31 @@ app.post('GetUserRatings', function(req, res) {
 	getUserRatings(req, res);
 })
 
- app.post("/CreateRating", function(req, res) {
- 	createRating(req, res);
- });
+app.post("/CreateRating", function(req, res) {
+ createRating(req, res);
+});
 
+
+app.post("/sendMail", function(req, res) {
+
+            var mailOptions = {
+				from: 'gigdotio@gmail.com', // sender address
+				to: 'putemailhere', // list of receivers
+				subject: 'Subject', // Subject line
+				text: "text"
+			};
+
+	transporter.sendMail(mailOptions, function(error, info){
+		if(error){
+		    return console.log(error);
+		}
+		console.log('Message sent: ' + info.response);
+	});
+
+});
+ app.post("/ClosePost", function(req, res) { 
+ 	closePost(req, res);
+ });
 /* start express server */
 var server = app.listen(8081, function() {
 	var host = server.address().address;

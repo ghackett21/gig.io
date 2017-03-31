@@ -4,14 +4,14 @@
 
 <head>
  
-<link rel="stylesheet" href="assets/css/register_style.css" type="text/css">
+<link rel="stylesheet" href="assets/css/style.css" type="text/css">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
 	
-<script src="app.js"></script>
+<script src="makePostController.js"></script>
 </head>
-<div ng-include="'navbar.html'"></div>
 <body ng-app="myApp" ng-controller="makePostController">
 
+<div ng-include="'navbar.html'"></div>
 
 
 
@@ -25,16 +25,16 @@
 <form name="postCreation">
       
         <label for="title">Post title:</label>
-        <input padding-left="5px" ng-model="user.title" id="title" type="text"  class="validate" required>
+        <input padding-left="5px" ng-model="post.title" id="title" type="text"  class="validate" required>
       <br>
         <label for="description">Description of the work you are requesting:</label>
-        <input ng-model="user.description" id="description" type="text"  class="validate" required>
+        <input ng-model="post.description" id="description" type="text"  class="validate" required>
       <br>
 	<label for="location">Location where the work will take place:</label>
-        <input padding-left="5px" ng-model="user.location" id="location" type="text"  class="validate" required>
+        <input padding-left="5px" ng-model="post.location" id="location" type="text"  class="validate" required>
       <br>
 	<label for="image">Picture URL (Optional):</label>
-        <input padding-left="5px" ng-model="user.picture" id="picture" type="url">
+        <input padding-left="5px" ng-model="post.imageLink" id="picture" type="url">
       <br>  
         <input ng-click="makePost()" type="submit" value="Submit">
     </form><br>

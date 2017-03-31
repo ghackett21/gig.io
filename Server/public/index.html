@@ -31,7 +31,7 @@
   </tr>
 </table>
 
-<table id="table">
+<table id="postTable">
   <tr>
     <th>Job Title</th>
     <th>Owner</th>
@@ -74,26 +74,18 @@
             <th>User</th>
             <th>Amount</th>
           </tr>
+          <template id="bidTemplate">
           <tr>
-            <td>3pm</td>
-            <td>Bob</td>
-            <td>$0.99</td>
+            <td></td>
+            <td></td>
+            <td></td>
           </tr>
-          <tr>
-              <td>2pm</td>
-              <td>Jim</td>
-              <td>$40</td>
-          </tr>
-          </tr>
-              <td>3:04pm</td>
-              <td>George</td>
-              <td>$33</td>
-          </tr>
+          </template>
         </table>
         <br><p>Enter bid:</p>
         <p>
-          <i>$</i><input type="text" ng-model="bidAmount placeholder="Bid amount"/>
-          <button ng-click="placeBid()">Place bid</button>
+          <i>$</i><input type="number" ng-model="bid.Amount" placeholder="Bid amount"/>
+          <button ng-click="placeBid(); $event.stopPropagation();">Place bid</button>
         </p>
         </td>
       </tr>
