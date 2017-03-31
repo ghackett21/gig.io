@@ -131,6 +131,10 @@ app.get('/makepost.html', ensureAuthenticated, function(req, res) {
     res.sendFile(__dirname + '/public/makepost.html');
 });
 
+app.get('/userPost.html', ensureAuthenticated, function(req, res) {
+    res.sendFile(__dirname + '/public/userPost.html');
+});
+
 app.get('/profile.html', ensureAuthenticated, function(req, res) {
 	console.log("dir = " + __dirname);
     res.sendFile(__dirname + '/public/profile.html');
