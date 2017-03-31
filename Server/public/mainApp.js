@@ -226,7 +226,6 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
                 td[3].innerHTML = date;
             }
 
-            /*
             // Get the modal
             var modal = document.getElementById('myModal');
 
@@ -237,27 +236,30 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
                 //console.log(postData);
                 rows[i].onclick = function() {
                     if (expanded == 0) {
-                    //console.log(arr);
-                    rowID = this.id;
-                    var j = 0;
-                    var str;
-                    for(j; j < rows.length; j++) {
-                       str = "post-"+j;
-                       if (str === rowID)
-                            break;
+                        /* set flag */
+                        expanded = 1;
+                        //console.log(arr);
+                        rowID = this.id;
+                        var j = 0;
+                        var str;
+                        for(j; j < rows.length; j++) {
+                           str = "post-"+j;
+                           if (str === rowID)
+                                break;
+                        }
+                        var post = posts[j];
+
+                        $scope.owner = post.Username;
+
+                        $scope.phone = post.PhoneNumber;
+                        $scope.desc = post.U_Description;
+                        $scope.pid = post.Pid;
+                        $scope.location = post.P_Location;
+                        address = post.P_Location;
+                        modal.style.display = "block";
+                        $scope.$apply();
+                        myMap(myUser.U_Location);
                     }
-                    var post = posts[j];
-
-                    $scope.owner = post.Username;
-
-                    $scope.phone = post.PhoneNumber;
-                    $scope.desc = post.U_Description;
-                    $scope.pid = post.Pid;
-                    $scope.location = post.P_Location;
-                    address = post.P_Location;
-                    modal.style.display = "block";
-                    $scope.$apply();
-                    myMap(myUser.U_Location);
                 };
             }
             //var btn = document.getElementById("post-1");
@@ -269,12 +271,16 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
 
             // When the user clicks on <span> (x), close the modal
             span.onclick = function() {
+                /* set flag */
+                expanded = 0;
                 modal.style.display = "none";
             }
 
             // When the user clicks anywhere outside of the modal, close it
             window.onclick = function(event) {
                 if (event.target == modal) {
+                    /* set flag */
+                    expanded = 0;
                     modal.style.display = "none";
                 }
             }
@@ -298,7 +304,7 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
                 console.log("failure");
                 //window.location.href = 'http://localhost:8081/login.html';
             }
-            //load response */
+            //load response 
         })
 	};
 
@@ -353,27 +359,31 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
                 for (var i = 0; i < rows.length; i++) {
                     //console.log(postData);
                     rows[i].onclick = function() {
-                        //console.log(arr);
-                        rowID = this.id;
-                        var j = 0;
-                        var str;
-                        for(j; j < rows.length; j++) {
-                           str = "post-"+j;
-                           if (str === rowID)
-                                break;
+                        if (expanded == 0) {
+                            /* set flag */
+                            expanded = 1;
+                            //console.log(arr);
+                            rowID = this.id;
+                            var j = 0;
+                            var str;
+                            for(j; j < rows.length; j++) {
+                               str = "post-"+j;
+                               if (str === rowID)
+                                    break;
+                            }
+                            var post = posts[j];
+
+                            $scope.owner = post.Username;
+
+                            $scope.phone = post.PhoneNumber;
+                            $scope.desc = post.U_Description;
+                            $scope.pid = post.Pid;
+                            $scope.location = post.P_Location;
+                            address = post.P_Location;
+                            modal.style.display = "block";
+                            $scope.$apply();
+                            myMap(myUser.U_Location);
                         }
-                        var post = posts[j];
-
-                        $scope.owner = post.Username;
-
-                        $scope.phone = post.PhoneNumber;
-                        $scope.desc = post.U_Description;
-                        $scope.pid = post.Pid;
-                        $scope.location = post.P_Location;
-                        address = post.P_Location;
-                        modal.style.display = "block";
-                        $scope.$apply();
-                        myMap(myUser.U_Location);
                     };
                 }
                 //var btn = document.getElementById("post-1");
@@ -388,12 +398,16 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
 
                 // When the user clicks on <span> (x), close the modal
                 span.onclick = function() {
+                    /* set flag */
+                    expanded = 0;
                     modal.style.display = "none";
                 }
 
                 // When the user clicks anywhere outside of the modal, close it
                 window.onclick = function(event) {
                     if (event.target == modal) {
+                        /* set flag */
+                        expanded = 0;
                         modal.style.display = "none";
                     }
                 }
