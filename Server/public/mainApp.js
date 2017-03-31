@@ -485,54 +485,57 @@ function myMap(loc) {
 	var myAddress = address;
 	console.log("My Address: " + myAddress);
 
-    var request = {
-      origin      : loc, // a city, full address, landmark etc
-      destination : myAddress,
-      travelMode  : google.maps.DirectionsTravelMode.DRIVING
-    };
+    /* make sure the loc and address are not null */
+    if (loc != undefined && myAddress != undefined) {
 
-    var directionsService = new google.maps.DirectionsService();
-    directionsService.route(request, function(response, status) {
-      if ( status == google.maps.DirectionsStatus.OK ) {
-        console.log( response.routes[0].legs[0].distance.value ); // the distance in metres
-      }
-      else {
-        // oops, there's no route between these two locations
-        // every time this happens, a kitten dies
-        // so please, ensure your address is formatted properly
-      }
-    });
+        var request = {
+          origin      : loc, // a city, full address, landmark etc
+          destination : myAddress,
+          travelMode  : google.maps.DirectionsTravelMode.DRIVING
+        };
 
-	/*console.log(navigator.geolocation.getCurrentPosition(function(position) {
-         var pos = {
-           lat: position.coords.latitude,
-           lng: position.coords.longitude
-         };
-         console.log(pos);
+        var directionsService = new google.maps.DirectionsService();
+        directionsService.route(request, function(response, status) {
+          if ( status == google.maps.DirectionsStatus.OK ) {
+            console.log( response.routes[0].legs[0].distance.value ); // the distance in metres
+          }
+          else {
+            // oops, there's no route between these two locations
+            // every time this happens, a kitten dies
+            // so please, ensure your address is formatted properly
+          }
+        });
 
-    }));*/
+    	/*console.log(navigator.geolocation.getCurrentPosition(function(position) {
+             var pos = {
+               lat: position.coords.latitude,
+               lng: position.coords.longitude
+             };
+             console.log(pos);
 
-   var map = new google.maps.Map(document.getElementById('map'), {
-       mapTypeId: google.maps.MapTypeId.TERRAIN,
-       zoom: 10
-   });
+        }));*/
 
-   var geocoder = new google.maps.Geocoder();
+       var map = new google.maps.Map(document.getElementById('map'), {
+           mapTypeId: google.maps.MapTypeId.TERRAIN,
+           zoom: 10
+       });
 
-   geocoder.geocode({
-      'address': myAddress
-   },
-   function(results, status) {
-      if(status == google.maps.GeocoderStatus.OK) {
-         new google.maps.Marker({
-            position: results[0].geometry.location,
-            map: map
-         });
-         map.setCenter(results[0].geometry.location);
-         getCoordinates(myAddress);
-      }
-   });
+       var geocoder = new google.maps.Geocoder();
 
+       geocoder.geocode({
+          'address': myAddress
+       },
+       function(results, status) {
+          if(status == google.maps.GeocoderStatus.OK) {
+             new google.maps.Marker({
+                position: results[0].geometry.location,
+                map: map
+             });
+             map.setCenter(results[0].geometry.location);
+             getCoordinates(myAddress);
+          }
+       });
+}
 }
 
 function getCoordinates(location) {
