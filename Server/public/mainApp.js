@@ -273,7 +273,7 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
                 td[0].innerHTML = posts[i].P_Description;
                 td[1].innerHTML = posts[i].Username;
                 td[2].innerHTML = posts[i].P_Location;
-                var date = post.CreationTime.substring(0,10);
+                var date = post[i].CreationTime.substring(0,10);
                 var day = date.substring(8,date.length);
                 var month = date.substring(5,7);
                 var year = date.substring(0,4);
