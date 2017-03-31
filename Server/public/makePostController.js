@@ -1,3 +1,5 @@
+var app = angular.module("makePostApp", []);
+
 var mylong;
 var mylat;
 app.controller("makePostController", [ '$scope', '$http', function($scope, $http) {
