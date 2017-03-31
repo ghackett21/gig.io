@@ -755,7 +755,28 @@ $scope.sortByLowestBid = function() {
             })
     };
 
+}
+
+    // Called when the "Place bid" button is clicked
+    $scope.closePostButton = function() {
+        closePost(null);
+    }
+
+    function closePost(userId) {
+            $scope.bid.PostId = $scope.pid;
+            $scope.bid.UserId = userId;
+
+            // Bid
+            $http.post('/ClosePost', $scope.bid).then(function(response) {
+               console.log("Close Post");
+            }).catch(function(response) {
+                console.log("error in Close Post");
+            })
+
+    };
+
 }]);
+
 
 function myMap(loc) {
     console.log("Loc: " + loc);
