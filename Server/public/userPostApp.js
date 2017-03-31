@@ -137,11 +137,14 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
                             myMap(myUser.U_Location);
 
                             console.log("Getting bid rows");
-
-                             // Get the button that opens the modal
                             var bidRows = document.getElementById("bidTable").rows;
-
                             console.log("bidRows.length=" + bidRows.length);
+
+                            for (var j = 0; j < bidRows.length; bidRows++) {
+                                bidRows.onClick = function() {
+                                    console.log("Bid " + j + " selected!");
+                                }
+                            }
 
                         }).catch(function(response) {
                             console.log("error getting bids");
