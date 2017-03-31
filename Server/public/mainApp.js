@@ -78,6 +78,7 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
 
                     /* check that a row is not already expanded */
                     if (expanded == 0) {
+                        /* set flag */
                         expanded = 1;
                         rowID = this.id;
                         var j = 0;
@@ -147,6 +148,7 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
             // When the user clicks on <span> (x), close the modal
             span.onclick = function() {
                 modal.style.display = "none";
+                /* set flag */
                 expanded = 0;
             }
 
@@ -154,6 +156,7 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
             window.onclick = function(event) {
                 if (event.target == modal) {
                     modal.style.display = "none";
+                    /* set flag */
                     expanded = 0;
                 }
             }
@@ -223,6 +226,7 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
                 td[3].innerHTML = date;
             }
 
+            /*
             // Get the modal
             var modal = document.getElementById('myModal');
 
@@ -232,6 +236,7 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
             for (var i = 0; i < rows.length; i++) {
                 //console.log(postData);
                 rows[i].onclick = function() {
+                    if (expanded == 0) {
                     //console.log(arr);
                     rowID = this.id;
                     var j = 0;
@@ -261,9 +266,6 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
             var span = document.getElementsByClassName("close")[0];
 
             // When the user clicks the button, open the modal
-            /*btn.onclick = function() {
-                modal.style.display = "block";
-            }*/
 
             // When the user clicks on <span> (x), close the modal
             span.onclick = function() {
@@ -296,7 +298,7 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
                 console.log("failure");
                 //window.location.href = 'http://localhost:8081/login.html';
             }
-            //load response
+            //load response */
         })
 	};
 
