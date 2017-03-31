@@ -448,18 +448,10 @@ $scope.sortByLowestBid = function() {
                                 td[0].innerHTML = date; //bids[i].BidTime;
                                 td[1].innerHTML = bids[i].Username;
                                 td[2].innerHTML = "$" + bids[i].Amount;
-                                template.parentNode.appendChild(clone);
-                            }
-
-                            /* set bid onlick() */
-                            var bidRows = document.getElementById("bidTable").rows;
-
-                            console.log("bidRows.length=" + bidRows.length);
-
-                            for (var j = 0; j < bidRows.length; j++) {
-                                bidRows[i].onclick() = function() {
+                                clone.onClick == function() {
                                     console.log("bid " + i + " clicked!");
                                 }
+                                template.parentNode.appendChild(clone);
                             }
 
                             myMap(myUser.U_Location);
