@@ -12,6 +12,7 @@ var expanded = 0;
 app.controller("userPostController", [ '$scope', '$http', function($scope, $http) {
 	$scope.user;
     $scope.test = "test";
+     $scope.bid;
 
 //test stuff for server auth
 	$scope.logout = function() {
