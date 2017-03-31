@@ -69,7 +69,7 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
             var modal = document.getElementById('myModal');
 
             // Get the button that opens the modal
-            var rows = document.getElementsById("postTable").rows;
+            var rows = document.getElementById("postTable").rows;
 
             for (var i = 0; i < rows.length; i++) {
                 //console.log(postData);
@@ -230,7 +230,7 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
             var modal = document.getElementById('myModal');
 
             // Get the button that opens the modal
-            var rows = document.getElementsById("postTable").rows;
+            var rows = document.getElementById("postTable").rows;
 
             for (var i = 0; i < rows.length; i++) {
                 //console.log(postData);
@@ -354,7 +354,7 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
                 var modal = document.getElementById('myModal');
 
                 // Get the button that opens the modal
-                var rows = document.getElementsById("postTable").rows;
+                var rows = document.getElementById("postTable").rows;
 
                 for (var i = 0; i < rows.length; i++) {
                     //console.log(postData);
