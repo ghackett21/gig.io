@@ -14,7 +14,7 @@ module.exports = function(postId, callback) {
 		}
 		else {
 			/* delete associated bids from bid table */
-			var deleteBids = "DELETE FROM Bids WHERE Pid="  + postID;
+			var deleteBids = "DELETE FROM Bids WHERE Pid="  + postId;
 			connection.query(deleteBids, function(err, rows) {
 				if (err) {
 					console.log("DeletePost: database error when deleting bids.", err);
