@@ -454,6 +454,8 @@ $scope.sortByLowestBid = function() {
                             /* set bid onlick() */
                             var bidRows = document.getElementById("bidTable").rows;
 
+                            console.log("bidRows.length=" + bidRows.length);
+
                             for (var j = 0; j < bidRows.length; j++) {
                                 bidRows[i].onclick() = function() {
                                     console.log("bid " + i + " clicked!");
