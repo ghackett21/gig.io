@@ -5,8 +5,8 @@ var distance;
 
 app.controller("postController", function($scope) {
 
-$scope.img = "http://howtodrawdat.com/wp-content/uploads/2014/03/1stpic-lucky-charms-leprechaun.png";
-
+//$scope.img = "http://howtodrawdat.com/wp-content/uploads/2014/03/1stpic-lucky-charms-leprechaun.png";
+/*
 $scope.postsData  = [
         {
             username: "sfellers",
@@ -55,6 +55,7 @@ $scope.usersData  = [
 			profile_img: "http://howtodrawdat.com/wp-content/uploads/2014/03/1stpic-lucky-charms-leprechaun.png"
         }
     ];
+    */
 
 $scope.getUserPic = function(username) {
 	//console.log("username is :" + username);
@@ -140,7 +141,7 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
             for (var i = 0; i < rows.length; i++) {
                 //console.log(postData);
                 rows[i].onclick = function() {
-                    console.log(arr);
+                    //console.log(arr);
                     rowID = this.id;
                     var j = 0;
                     var str;
