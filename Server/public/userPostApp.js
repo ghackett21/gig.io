@@ -145,7 +145,6 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
                                     console.log("Bid " + j + " selected!");
                                 }
                             }
-                            $scope.$apply();
 
                         }).catch(function(response) {
                             console.log("error getting bids");
