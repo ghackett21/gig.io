@@ -842,8 +842,6 @@ $scope.sortByLowestBid = function() {
             }).catch(function(response) {
                 console.log("error bidding");
             })
-
-            location.reload(true);
     };
 
 }]);
