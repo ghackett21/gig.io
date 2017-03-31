@@ -37,9 +37,11 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
 		$http.post('/getUserPosts').then(function(response) {
 			//$scope.user = null;
 			console.log(response);
-			$scope.count = response.data.result.length;
+			console.log(response.data.Result.length);
+			$scope.count = response.data.Result.length;
+			console.log(response.data.Result.length);
 			$scope.index = 0;
-			arr = response.data.result;
+			arr = response.data.Result;
 			var postData = [];
 			var template = document.querySelector('#tmplt');
 			for (var i = 0 ; i < arr.length; i++) {
@@ -48,6 +50,11 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
 				postData.push(arr[i]);
 				var clone = template.content.cloneNode(true);
 				var td = clone.querySelectorAll('td');
+
+				console.log(post.P_Description);
+				console.log(post.Username);
+				console.log(post.P_Location);
+
 				td[0].innerHTML = post.P_Description;
 				td[1].innerHTML = post.Username;
 				td[2].innerHTML = post.P_Location;
