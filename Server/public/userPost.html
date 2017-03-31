@@ -69,6 +69,27 @@
                     <p>Location: {{location}}</p>
                     <div id="map" style="width:400px;height:400px;background:yellow"></div>
                 </td>
+                <td valign="top">
+                  <p>Bid history:</p>
+                  <table class="bid-table">
+                  <tr>
+                    <th>Time</th>
+                    <th>User</th>
+                    <th>Amount</th>
+                  </tr>
+                  <template id="bidTemplate">
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  </template>
+                </table>
+                <br><p>Enter bid:</p>
+                <p>
+                  <button ng-click="placeBid(); $event.stopPropagation();">Place bid</button>
+                </p>
+                </td>
                 </tr>
             </table>
         </div>
