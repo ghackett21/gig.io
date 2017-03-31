@@ -6,6 +6,7 @@ var distance;
 var arr;
 var address;
 var myUser;
+var expanded = 0;
 
 app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
 	$scope.user;
@@ -74,59 +75,63 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
                 //console.log(postData);
                 rows[i].onclick = function() {
                     //console.log(arr);
-                    rowID = this.id;
-                    var j = 0;
-                    var str;
-                    for(j; j < rows.length; j++) {
-                       str = "post-"+j;
-                       if (str === rowID)
-                            break;
-                    }
-                    var post = arr[j];
-                    $scope.owner = post.Username;
-                    $scope.phone = post.PhoneNumber;
-                    $scope.desc = post.U_Description;
-					$scope.pid = post.Pid;
-                    $scope.location = post.P_Location;
-                    address = post.P_Location;
-                    modal.style.display = "block";
-                    $scope.$apply();
-					//TODO - undo
-                    //myMap(myUser.U_Location);
 
-                    // Load bid history for current post
-                    var bidData = new Object();
-                    bidData.PostId = post.Pid;
-                    $http.post("/GetBids", bidData).then(function(response) {
-
-                        var bids = response.data.Result;
-                        var bidData = []
-                        var template = document.querySelector('#bidTemplate');
-                        while(template.parentNode.hasChildNodes()) {
-                            if (template.parentNode.lastChild == template)
+                    /* check that a row is not already expanded */
+                    if (expanded == 0) {
+                        expanded = 1;
+                        rowID = this.id;
+                        var j = 0;
+                        var str;
+                        for(j; j < rows.length; j++) {
+                           str = "post-"+j;
+                           if (str === rowID)
                                 break;
-                            template.parentNode.removeChild(template.parentNode.lastChild);
                         }
-                        for (var i = 0; i < bids.length; i++) {
+                        var post = arr[j];
+                        $scope.owner = post.Username;
+                        $scope.phone = post.PhoneNumber;
+                        $scope.desc = post.U_Description;
+    					$scope.pid = post.Pid;
+                        $scope.location = post.P_Location;
+                        address = post.P_Location;
+                        modal.style.display = "block";
+                        $scope.$apply();
+    					//TODO - undo
+                        //myMap(myUser.U_Location);
 
-                            // Format date
-                            var date = bids[i].BidTime.substring(5, 7) + "/" +
-                                       bids[i].BidTime.substring(8, 10) + "/" +
-                                       bids[i].BidTime.substring(0, 4) + ", " +
-                                       bids[i].BidTime.substring(11, 16);
+                        // Load bid history for current post
+                        var bidData = new Object();
+                        bidData.PostId = post.Pid;
+                        $http.post("/GetBids", bidData).then(function(response) {
 
-                            var clone = template.content.cloneNode(true);
-                            var td = clone.querySelectorAll('td');
-                            td[0].innerHTML = date; //bids[i].BidTime;
-                            td[1].innerHTML = bids[i].Username;
-                            td[2].innerHTML = "$" + bids[i].Amount;
-                            template.parentNode.appendChild(clone);
-                        }
+                            var bids = response.data.Result;
+                            var bidData = []
+                            var template = document.querySelector('#bidTemplate');
+                            while(template.parentNode.hasChildNodes()) {
+                                if (template.parentNode.lastChild == template)
+                                    break;
+                                template.parentNode.removeChild(template.parentNode.lastChild);
+                            }
+                            for (var i = 0; i < bids.length; i++) {
 
-                    }).catch(function(response) {
-                        console.log("error getting bids");
-                    })
-        
+                                // Format date
+                                var date = bids[i].BidTime.substring(5, 7) + "/" +
+                                           bids[i].BidTime.substring(8, 10) + "/" +
+                                           bids[i].BidTime.substring(0, 4) + ", " +
+                                           bids[i].BidTime.substring(11, 16);
+
+                                var clone = template.content.cloneNode(true);
+                                var td = clone.querySelectorAll('td');
+                                td[0].innerHTML = date; //bids[i].BidTime;
+                                td[1].innerHTML = bids[i].Username;
+                                td[2].innerHTML = "$" + bids[i].Amount;
+                                template.parentNode.appendChild(clone);
+                            }
+
+                        }).catch(function(response) {
+                            console.log("error getting bids");
+                        })
+                    }
                 };
             }
             //var btn = document.getElementById("post-1");
@@ -142,12 +147,14 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
             // When the user clicks on <span> (x), close the modal
             span.onclick = function() {
                 modal.style.display = "none";
+                expanded = 0;
             }
 
             // When the user clicks anywhere outside of the modal, close it
             window.onclick = function(event) {
                 if (event.target == modal) {
                     modal.style.display = "none";
+                    expanded = 0;
                 }
             }
 			console.log(response.status);
