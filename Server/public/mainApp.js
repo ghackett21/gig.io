@@ -390,7 +390,7 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
                     var modal = document.getElementById('myModal');
 
                     // Get the button that opens the modal
-                    var rows = document.getElementsByTagName("tr");
+                    var rows = document.getElementById("postTable").rows;
 
                     for (var i = 0; i < rows.length; i++) {
                         //console.log(postData);
@@ -415,7 +415,40 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
                             address = post.P_Location;
                             modal.style.display = "block";
                             $scope.$apply();
-                            myMap(myUser.U_Location);
+
+                            // Load bid history for current post
+                            var bidData = new Object();
+                            bidData.PostId = post.Pid;
+                            $http.post("/GetBids", bidData).then(function(response) {
+
+                                var bids = response.data.Result;
+                                var bidData = []
+                                var template = document.querySelector('#bidTemplate');
+                                while(template.parentNode.hasChildNodes()) {
+                                    if (template.parentNode.lastChild == template)
+                                        break;
+                                    template.parentNode.removeChild(template.parentNode.lastChild);
+                                }
+                                for (var i = 0; i < bids.length; i++) {
+
+                                    // Format date
+                                    var date = bids[i].BidTime.substring(5, 7) + "/" +
+                                               bids[i].BidTime.substring(8, 10) + "/" +
+                                               bids[i].BidTime.substring(0, 4) + ", " +
+                                               bids[i].BidTime.substring(11, 16);
+
+                                    var clone = template.content.cloneNode(true);
+                                    var td = clone.querySelectorAll('td');
+                                    td[0].innerHTML = date; //bids[i].BidTime;
+                                    td[1].innerHTML = bids[i].Username;
+                                    td[2].innerHTML = "$" + bids[i].Amount;
+                                    template.parentNode.appendChild(clone);
+                                }
+                                myMap(myUser.U_Location);
+
+                            }).catch(function(response) {
+                                console.log("error getting bids");
+                            })
                         };
                     }
                     //var btn = document.getElementById("post-1");
