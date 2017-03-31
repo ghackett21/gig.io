@@ -132,6 +132,9 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
                                 td[0].innerHTML = date; //bids[i].BidTime;
                                 td[1].innerHTML = bids[i].Username;
                                 td[2].innerHTML = "$" + bids[i].Amount;
+                                clone.onClick = function() {
+                                    console.log("bid " + i + " clicked!");
+                                }
                                 template.parentNode.appendChild(clone);
                             }
                             myMap(myUser.U_Location);
