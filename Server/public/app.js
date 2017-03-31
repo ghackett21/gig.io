@@ -213,8 +213,8 @@ app.controller("makePostController", [ '$scope', '$http', function($scope, $http
 		console.log("scope.post.lat="+$scope.post.lat+"    scope.post.lng="+$scope.post.lng);
 		$http.post('/CreatePost', $scope.post).then(function(response) {
 			//getCoordinates(myloc);
-		console.log("My longitude = "+mylong);
-		console.log("My latitude = "+mylat);
+			console.log("My longitude = "+mylong);
+			console.log("My latitude = "+mylat);
 			$scope.post = null;
 			//$scope.status = "Post successfully created!";
 			console.log(response);
