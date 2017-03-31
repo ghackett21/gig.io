@@ -88,7 +88,7 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
                     /* check that a row is not already expanded */
                     if (expanded == 0) {
                         /* set flag */
-                        expanded = 1;
+                        //expanded = 1;
                         rowID = this.id;
                         var j = 0;
                         var str;
