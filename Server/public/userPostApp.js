@@ -755,7 +755,6 @@ $scope.sortByLowestBid = function() {
             })
     };
 
-}
 
     // Called when the "Place bid" button is clicked
     $scope.closePostButton = function() {
