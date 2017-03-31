@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link href="assets/css/profile_style.css" rel="stylesheet" type="text/css">
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
+  <script src="profileApp.js"></script>
+  <script src="data.js"></script>
+</head>
+<body ng-app="myProfileApp" ng-controller="profileController">
+<div ng-include="'navbar.html'"></div>
+<input type="submit" value="Edit Profile">
+'
+<div style="padding-left:16px" >
+  <h2 align=center>Create an account to get started!</h2>
+  <p align=center>Please provide the following information so we can set up your account.</p>
+<br>
+	<h3 id="status" align=center>{{status}}</h3>
+
+
+<form name="registration">
+      
+        <label for="username">Username:</label>
+        <input padding-left="5px" ng-model="user.username" id="username" type="text"  class="validate" required>
+      <br>
+        <label for="email">Email:</label>
+        <input ng-model="user.email" id="email" type="email"  class="validate" required>
+      <br>  
+        <label for="password">Password:	</label>
+        <input ng-model="user.password" id="password" type="password"  class="validate" required>
+      <br>
+        <label for="retyped password">Confirm Password:</label>
+        <input ng-model="user.password1" id="retyped password" type="password"  class="validate" required>
+      <br>  
+        <label for="phone">Phone Number:</label>
+        <input ng-model="user.phone" id="phone" type="tel"  class="validate" required>
+        <br>
+        <input ng-click="register()" type="submit" value="Submit">
+    </form><br>
+    
+    </div>
+  <script src="navbar.js"></script>
+    </body>
+</html>

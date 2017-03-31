@@ -55,7 +55,7 @@ module.exports = function() {
 								if (bidRows.length == 0) {
 									console.log("Delete Post: " + postRows[postKey].Pid);
 									/* delete post */
-									//deletePostHelpers(postRows[postKey].Pid, null);
+									deletePostHelper(postRows[postKey].Pid, null);
 								}
 								else {
 									var mostRecentDate = postDate;
@@ -76,7 +76,7 @@ module.exports = function() {
 									if (mostRecentDate < currentDate) {
 										console.log("Pid: " + postRows[postKey].Pid + ", Inactive for 30 days or more: true");
 										/* delete post */
-										//deletePostHelpers(postRows[postKey].Pid, null);
+										deletePostHelper(postRows[postKey].Pid, null);
 									}
 									else {
 										console.log("Pid: " + postRows[postKey].Pid + ", Inactive for 30 days or more: false");
