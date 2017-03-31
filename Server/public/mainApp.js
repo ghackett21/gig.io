@@ -834,6 +834,7 @@ $scope.sortByLowestBid = function() {
                     td[1].innerHTML = bids[bids.length - 1].Username;
                     td[2].innerHTML = "$" + bids[bids.length - 1].Amount;
                     template.parentNode.appendChild(clone);
+                    location.reload(true);
 
                 }).catch(function(response) {
                     console.log("error getting bids");
