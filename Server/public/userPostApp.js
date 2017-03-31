@@ -141,7 +141,7 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
                             console.log("bidRows.length=" + bidRows.length);
 
                             for (var j = 0; j < bidRows.length; bidRows++) {
-                                bidRows.onClick = function() {
+                                bidRows[j].onClick = function() {
                                     console.log("Bid " + j + " selected!");
                                 }
                             }
