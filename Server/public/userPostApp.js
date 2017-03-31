@@ -448,7 +448,7 @@ $scope.sortByLowestBid = function() {
                                 td[0].innerHTML = date; //bids[i].BidTime;
                                 td[1].innerHTML = bids[i].Username;
                                 td[2].innerHTML = "$" + bids[i].Amount;
-                                clone.onClick == function() {
+                                clone.onClick = function() {
                                     console.log("bid " + i + " clicked!");
                                 }
                                 template.parentNode.appendChild(clone);
