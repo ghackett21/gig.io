@@ -126,8 +126,8 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
                                 td[1].innerHTML = bids[i].Username;
                                 td[2].innerHTML = "$" + bids[i].Amount;
                                 template.parentNode.appendChild(clone);
-                                myMap(myUser.U_Location);
                             }
+                            myMap(myUser.U_Location);
 
                         }).catch(function(response) {
                             console.log("error getting bids");
