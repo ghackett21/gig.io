@@ -12,8 +12,6 @@ var expanded = 0;
 app.controller("userPostController", [ '$scope', '$http', function($scope, $http) {
 	$scope.user;
     $scope.test = "test";
-    $scope.bid.postId = null;
-    $scope.bid.userId = null;
 
 //test stuff for server auth
 	$scope.logout = function() {
@@ -760,11 +758,10 @@ $scope.sortByLowestBid = function() {
 
     // Called when the "Place bid" button is clicked
     $scope.closePostButton = function() {
-        $scope.bid.PostId = $scope.pid;
-        $scope.bid.UserId = null;
+        var bid = {null, PostId = $scope.pid};
 
         /* close post */
-        $http.post('/ClosePost', $scope.bid).then(function(response) {
+        $http.post('/ClosePost', bid).then(function(response) {
            console.log("Close Post");
         }).catch(function(response) {
             console.log("error in Close Post");
