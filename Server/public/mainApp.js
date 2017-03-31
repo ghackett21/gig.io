@@ -98,7 +98,7 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
                         modal.style.display = "block";
                         $scope.$apply();
     					//TODO - undo
-                        //myMap(myUser.U_Location);
+                        myMap(myUser.U_Location);
 
                         // Load bid history for current post
                         var bidData = new Object();
