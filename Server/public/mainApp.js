@@ -745,7 +745,6 @@ function getMonth(str) {
     return str;
 }
 
-<<<<<<< HEAD
 function calculateDistance(origin, destination) {
     console.log(destination);
     var service = new google.maps.DistanceMatrixService();
@@ -798,5 +797,3 @@ function calculateDistance(origin, destination) {
   function deg2rad(deg) {
     return deg * (Math.PI/180)
   }*/
-=======
->>>>>>> b9a4cb1a5d5db23af65c0dc4997506366765f4dc

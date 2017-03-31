@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="assets/css/main_style.css" rel="stylesheet" type="text/css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
+    <script src="userPostApp.js"></script>
+    <script src="data.js"></script>
+</head>
+<body ng-app="myPostApp" ng-controller="userPostController">
+
+<div ng-include="'navbar.html'"></div>
+
+<br>
+<br>
+
+<h1>My Posts</h1>
+<br>
+<br>
+
+<table>
+    <tr>
+        <td>
+            <button ng-click="sortByAge()">Sort By Newest</button>
+        </td>
+        <td>
+            <button ng-click="sortByDistance()">Sort By Distance</button>
+        </td>
+        <td>
+            <button ng-click="sortByNumOfBids()">Sort By Number of Bids</button>
+        </td>
+    </tr>
+</table>
+
+<table id="postTable">
+    <tr>
+        <th>Job Title</th>
+        <th>Owner</th>
+        <th>Location</th>
+        <th>Date Posted</th>
+    </tr>
+    <template id="tmplt">
+        <tr class="clickable">
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </template>
+</table>
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close">&times;</span>
+            <h2>Job {{pid}}</h2>
+        </div>
+        <div class="modal-body">
+            <table class="modal-table">
+                <td>
+                    <p>Owner: {{owner}}</p>
+                    <p>Contact Info: {{phone}}</p>
+                    <p>Description: {{desc}}</p>
+                    <p>Location: {{location}}</p>
+                    <div id="map" style="width:400px;height:400px;background:yellow"></div>
+                </td>
+                </tr>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <br>
+        </div>
+    </div>
+</div>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIqZ1SHXEe7CUj8Gv9MvVQLWrI-3k4isQ&callback=myMap"></script>
+<script src="navbar.js"></script>
+</body>
+</html>
