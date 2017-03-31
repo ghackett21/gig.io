@@ -25,10 +25,10 @@ module.exports = function(req, res) {
 		callback(-1);
 	}
 	else if (req.body.UserId == undefined) {
-		closeBid(null, req.body.PostId, req.body.Amount, callback);
+		closePost(null, req.body.PostId, req.body.Amount, callback);
 	}
 	else {
-      closeBid(req.body.UserId, req.body.PostId, req.body.Amount, callback);
+      closePost(req.body.UserId, req.body.PostId, req.body.Amount, callback);
 	}
 }
 
