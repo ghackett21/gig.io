@@ -604,6 +604,7 @@ function myMap(loc) {
 }
 
 function getCoordinates(location) {
+    console.log("location: " + location);
     var geocoder = new google.maps.Geocoder();
     geocoder.geocode({
         'address' : location
