@@ -479,7 +479,7 @@ $scope.sortByLowestBid = function() {
                             // Load bid history for current post
                             var bidData = new Object();
                             bidData.PostId = post.Pid;
-                            loadBids(bidDate);
+                            loadBids(bidData);
                         };
                     }
                     //var btn = document.getElementById("post-1");
