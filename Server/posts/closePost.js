@@ -25,14 +25,14 @@ module.exports = function(req, res) {
 		callback(-1);
 	}
 	else if (req.body.UserId == undefined) {
-		closeBid(null, req.body.PostId, req.body.Amount, callback);
+		closePost(null, req.body.PostId, req.body.Amount, callback);
 	}
 	else {
-      closeBid(req.body.UserId, req.body.PostId, req.body.Amount, callback);
+      closePost(req.body.UserId, req.body.PostId, req.body.Amount, callback);
 	}
 }
 
-function closePost(userId, postId, amount) {
+function closePost(userId, postId, amount, callback) {
 	/* check if there is winner */
 	if (userId == null) {
 		/* no winner - delete post */
@@ -41,6 +41,21 @@ function closePost(userId, postId, amount) {
 	}
 	else {
 		console.log("Close post " + postId + " with winning bid by user " + userId);
+
+            var mailOptions = {
+				from: 'gigdotio@gmail.com', // sender address
+				to: req.user.Email, // list of receivers
+				subject: 'Post has been closed', // Subject line
+				text: "This is a notification to alert you that your post has been closed."
+			};
+
+	transporter.sendMail(mailOptions, function(error, info){
+		if(error){
+		    return console.log(error);
+		}
+		console.log('Message sent: ' + info.response);
+	});
+
 
 	    /* change post status to pending */
 	    var updatePostStatus = "UPDATE Posting SET STATUS=" + 1 + " WHERE Pid=" + postId;

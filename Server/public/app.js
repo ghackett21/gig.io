@@ -180,42 +180,42 @@ app.controller("registrationController", [ '$scope', '$http', function($scope, $
 var mylong;
 var mylat;
 app.controller("makePostController", [ '$scope', '$http', function($scope, $http) {
-	$scope.user;
+	$scope.post;
 	$scope.status = "";
 	
 	$scope.makePost = function() {
-		console.log("title = " + $scope.user.title);
-		console.log("description = " + $scope.user.description);
-		console.log("location = " + $scope.user.location);
-		console.log("picture = " + $scope.user.picture);
+		console.log("title = " + $scope.post.title);
+		console.log("description = " + $scope.post.description);
+		console.log("location = " + $scope.post.location);
+		console.log("imageLink = " + $scope.post.imageLink);
 		
-		if($scope.user == undefined){
+		if($scope.post == undefined){
 			return;
 		}
-		if($scope.user == undefined || $scope.user.title == undefined || $scope.user.description == undefined || $scope.user.location == undefined){
+		if($scope.post == undefined || $scope.post.title == undefined || $scope.post.description == undefined || $scope.post.location == undefined){
 			$scope.status = "Make Sure to fill in all required fields.";
 			return;
 		}
-		/*if($scope.user.picture.match((http(s?):)|([/|.|\w|\s])*\.(?:jpg|gif|png) == null){
-			$scope.status = "Please enter a valid picture URL";
+		/*if($scope.post.imageLink.match((http(s?):)|([/|.|\w|\s])*\.(?:jpg|gif|png) == null){
+			$scope.status = "Please enter a valid imageLink URL";
 			return;
 		}*/
 
 		//NEED TO CONVERT LOCATION TO COORDINATES AND SEND TO DATABASE AS WELL
-		var myloc = $scope.user.location;
+		var myloc = $scope.post.location;
 		console.log("My loc:  = " + myloc);
 		for(var i=0;i<10;i++){
 		getCoordinates(myloc);}
 		console.log("My longitude = "+mylong);
 		console.log("My latitude = "+mylat);
-		$scope.user.lat=mylat;
-		$scope.user.lng=mylong;
-		console.log("scope.user.lat="+$scope.user.lat+"    scope.user.lng="+$scope.user.lng);
-		$http.post('/RegisterButton', $scope.user).then(function(response) {
-			getCoordinates(myloc);
-		console.log("My longitude = "+mylong);
-		console.log("My latitude = "+mylat);
-			$scope.user = null;
+		$scope.post.lat=mylat;
+		$scope.post.long=mylong;
+		console.log("scope.post.lat="+$scope.post.lat+"    scope.post.lng="+$scope.post.lng);
+		$http.post('/CreatePost', $scope.post).then(function(response) {
+			//getCoordinates(myloc);
+			console.log("My longitude = "+mylong);
+			console.log("My latitude = "+mylat);
+			$scope.post = null;
 			//$scope.status = "Post successfully created!";
 			console.log(response);
 			if(response.data.State == 0){

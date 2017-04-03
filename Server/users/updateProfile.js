@@ -20,22 +20,22 @@ module.exports = function(req, res) {
 	}
 
 	/* check for missing args */
-	if (req.body.userId == undefined || req.body.Username == undefined || req.body.password == undefined || req.body.Email == undefined || req.body.Description == undefined || req.body.ProfileImage == undefined || req.body.location == undefined || req.body.PhoneNumber == undefined) {
+	if (req.body.userId == undefined || req.body.Email == undefined || req.body.Description == undefined || req.body.ProfileImage == undefined || req.body.PhoneNumber == undefined) {
 		console.log("Update Profile: undefined args");
 		callback(-1);
 	}
 	else {
-		updateProfile(req.body.userId, req.body.Username, req.body.password, req.body.Email, req.body.Description, req.body.ProfileImage, req.body.location, req.body.PhoneNumber, callback);
+		updateProfile(req.body.userId, req.body.Email, req.body.Description, req.body.ProfileImage, req.body.PhoneNumber, callback);
 	}
 }
 
 /**
  * Updates user info in database
  */
-function updateProfile(userID, username, password, email, description, profileImage, location, phoneNumber, callback) {
-	console.log("UpdateProfile: ", userId, username, password, email, description, location, phonenNumber);
+function updateProfile(userID, username, email, description, profileImage, location, phoneNumber, callback) {
+	console.log("UpdateProfile: ", userId, email, description, location, phonenNumber);
 
-	var update = "UPDATE Users SET Username='" + username + "', Password='" + password + "', EmailAddress='" + email + "', Description='" + description + "', Location='" + location + "', PhoneNumber='" + phoneNumber + "' WHERE Uid=" + userId;
+	var update = "UPDATE Users SET EmailAddress='" + email + "', Description='" + description + "', PhoneNumber='" + phoneNumber + "' WHERE Uid=" + userId;
 
 	connection.query(update, function(err, rows) {
 		if (err) {

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link href="assets/css/profile_style.css" rel="stylesheet" type="text/css">
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
+  <script src="updateProfileApp.js"></script>
+  <script src="data.js"></script>
+</head>
+<body ng-app="myUpdateProfileApp" ng-controller="updateProfileController">
+<div ng-include="'navbar.html'"></div>
+
+<div style="padding-left:16px" >
+  <h2 align=center>Update your profile information</h2>
+<br>
+	<h3 id="status" align=center>{{status}}</h3>
+
+
+<form name="updateProfile">
+      
+        <label for="Update Email">Update Email:</label>
+        <input padding-left="5px" ng-model="user.username" id="username" type="text"  class="validate" required>
+      <br>
+        <label for="Update Description">Update Description:</label>
+        <input ng-model="user.email" id="email" type="email"  class="validate" required>
+      <br>  
+        <label for="Update Link">Update Image Link:	</label>
+        <input ng-model="user.password" id="password" type="password"  class="validate" required>
+      <br>
+        <label for="Update Phone Number">Update Phone Number:</label>
+        <input ng-model="user.password1" id="retyped password" type="password"  class="validate" required>
+        <br>
+        <input ng-click="register()" type="submit" value="Submit">
+    </form><br>
+    
+    </div>
+  <script src="navbar.js"></script>
+    </body>
+</html>

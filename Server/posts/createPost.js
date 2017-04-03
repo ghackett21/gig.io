@@ -1,4 +1,5 @@
 var connection = require('./../helpers/connection');
+var getDate = require('./../helpers/getDate');
 
 /**
  * Creates a new post given the userId of the creator, the location, and the description/title
@@ -7,7 +8,6 @@ var connection = require('./../helpers/connection');
  */
 module.exports = function(req, res) {
 	console.log("Create Post");
-
 	/* register callback to handle response */
 	var callback = function(result) {
 		if (result < 0) {
@@ -18,29 +18,32 @@ module.exports = function(req, res) {
 			res.json({'Response' : 'createPost successful', 'PostId': result, 'State': 0});
 		}
 	}
-
+	
 	/* check for missing args */
 	if (req.body.title == undefined || req.body.location == undefined || req.body.description == undefined) {
 		console.log("CreatePost: undefined args, requires Uid, location, and description");
 		callback(-1);
 	}
 	else {
-		imageLink = "";
+		var imageLink = "";
 		if (req.body.imageLink != undefined) {
 			imageLink = req.body.imageLink;
 		}
-		createPost(req.user.Uid, req.body.title, req.body.location, req.body.lat, req.body.long, req.body.description, imageLink, callback);
+	console.log("%s\n%s\n%s\n%s\n%s\n%s\n%s\n",  req.user.Uid, req.body.title, req.body.location, req.body.lat, req.body.lng, req.body.description, imageLink);
+		createPost(req.user.Uid, req.body.title, req.body.location, req.body.lat, req.body.lng, req.body.description, imageLink, callback);
 	}
 }
 
 /**
  * inserts new post into the database 
  */
-function createPost(userId, title, location, lat, long, description, image, callback) {
+
+function createPost(userId, title, location, lat, lng, description, image, callback) {
 	console.log("CreatePost: ", userId, location, description);
 
-	var creationTime = GetDate();
-	var insert = "INSERT INTO Posting (Uid, P_Title, P_Location, P_Lat, P_Long, CreationTime, Status, P_Description, P_Image) VALUES ('" + userId + "', '" + title + "', '" + location + "', " + lat + ", " + long + ", '" + creationTime + "', 1, '" + description + "', '" + image + "')";  
+	var creationTime = getDate();
+	var insert = "INSERT INTO Posting (Uid, P_Title, P_Location, P_Lat, P_Long, CreationTime, Status, P_Description, P_Image) VALUES ('" + userId + "', '" + title + "', '" + location + "', " + lat + ", " + lng + ", '" + creationTime + "', 0, '" + description + "', '" + image + "')";  
+
 
 	connection.query(insert, function (err, rows) {
 		if (err) {
