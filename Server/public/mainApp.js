@@ -846,7 +846,7 @@ $scope.sortByLowestBid = function() {
                 td[0].innerHTML = date; //bids[i].BidTime;
                 td[1].innerHTML = bids[i].Username;
                 td[2].innerHTML = "$" + bids[i].Amount;
-                td[3].innerHTML = "Rating:" + bids[bids.length - 1].AVG_BidRate;
+                td[3].innerHTML = "Rating:" + bids[i].AVG_BidRate;
                 template.parentNode.appendChild(clone);
             }
             myMap(myUser.U_Location);
