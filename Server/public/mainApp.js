@@ -510,6 +510,7 @@ app.controller("makePostController", [ '$scope', '$http', function($scope, $http
         if($scope.post == undefined){
             return;
         }
+        
         if($scope.post == undefined || $scope.post.title == undefined || $scope.post.description == undefined || $scope.post.location == undefined){
             $scope.status = "Make Sure to fill in all required fields.";
             return;
@@ -548,6 +549,8 @@ app.controller("makePostController", [ '$scope', '$http', function($scope, $http
             }
         }
     });
+
+    }
 }]);
 
 function myMap(loc) {
