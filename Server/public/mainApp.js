@@ -40,102 +40,9 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
 			$scope.index = 0;
 			arr = response.data.result;
 			var postData = [];
-			var template = document.querySelector('#tmplt');
-			for (var i = 0 ; i < arr.length; i++) {
-				$scope.index = i;
-				var post = arr[i];
-				postData.push(arr[i]);
-				var clone = template.content.cloneNode(true);
-				var td = clone.querySelectorAll('td');
-				td[0].innerHTML = post.P_Title;
-				td[1].innerHTML = post.Username;
-				td[2].innerHTML = post.P_Location;
+			
+            loadPosts();
 
-                console.log();
-				var date = post.CreationTime.substring(0,10);
-				var day = date.substring(8,date.length);
-				var month = date.substring(5,7);
-	    		var year = date.substring(0,4);
-
-				date = month + "/" + day + "/" + year;
-
-				td[3].innerHTML = date;
-				var tr = clone.querySelectorAll('tr');
-				tr[0].id = "post-"+i;
-				template.parentNode.appendChild(clone);
-			}
-
-
-            // Get the modal
-            var modal = document.getElementById('myModal');
-
-            // Get the button that opens the modal
-            var rows = document.getElementById("postTable").rows;
-
-            for (var i = 0; i < rows.length; i++) {
-                //console.log(postData);
-                rows[i].onclick = function() {
-                    //console.log(arr);
-
-                    /* check that a row is not already expanded */
-                    if (expanded == 0) {
-                        /* set flag */
-                        expanded = 1;
-                        rowID = this.id;
-                        var j = 0;
-                        var str;
-                        for(j; j < rows.length; j++) {
-                           str = "post-"+j;
-                           if (str === rowID)
-                                break;
-                        }
-                        var post = arr[j];
-                        $scope.owner = post.Username;
-                        $scope.phone = post.PhoneNumber;
-                        $scope.desc = post.P_Description;
-    					$scope.title = post.P_Title;
-                        $scope.location = post.P_Location;
-                        address = post.P_Location;
-                        modal.style.display = "block";
-                        $scope.$apply();
-    					//TODO - undo
-
-                        // Load bid history for current post
-                        var bidData = new Object();
-                        bidData.PostId = post.Pid;
-                        $http.post("/GetBids", bidData).then(function(response) {
-
-                            var bids = response.data.Result;
-                            var bidData = []
-                            var template = document.querySelector('#bidTemplate');
-                            while(template.parentNode.hasChildNodes()) {
-                                if (template.parentNode.lastChild == template)
-                                    break;
-                                template.parentNode.removeChild(template.parentNode.lastChild);
-                            }
-                            for (var i = 0; i < bids.length; i++) {
-
-                                // Format date
-                                var date = bids[i].BidTime.substring(5, 7) + "/" +
-                                           bids[i].BidTime.substring(8, 10) + "/" +
-                                           bids[i].BidTime.substring(0, 4) + ", " +
-                                           bids[i].BidTime.substring(11, 16);
-
-                                var clone = template.content.cloneNode(true);
-                                var td = clone.querySelectorAll('td');
-                                td[0].innerHTML = date; //bids[i].BidTime;
-                                td[1].innerHTML = bids[i].Username;
-                                td[2].innerHTML = "$" + bids[i].Amount;
-                                template.parentNode.appendChild(clone);
-                            }
-                            myMap(myUser.U_Location);
-
-                        }).catch(function(response) {
-                            console.log("error getting bids");
-                        })
-                    }
-                };
-            }
             //var btn = document.getElementById("post-1");
 
             // Get the <span> element that closes the modal
@@ -850,6 +757,103 @@ $scope.sortByLowestBid = function() {
                 console.log("error bidding");
             })
     };
+
+    function loadPosts() {
+        var template = document.querySelector('#tmplt');
+        for (var i = 0 ; i < arr.length; i++) {
+            $scope.index = i;
+            var post = arr[i];
+            postData.push(arr[i]);
+            var clone = template.content.cloneNode(true);
+            var td = clone.querySelectorAll('td');
+            td[0].innerHTML = post.P_Title;
+            td[1].innerHTML = post.Username;
+            td[2].innerHTML = post.P_Location;
+
+            console.log();
+            var date = post.CreationTime.substring(0,10);
+            var day = date.substring(8,date.length);
+            var month = date.substring(5,7);
+            var year = date.substring(0,4);
+
+            date = month + "/" + day + "/" + year;
+
+            td[3].innerHTML = date;
+            var tr = clone.querySelectorAll('tr');
+            tr[0].id = "post-"+i;
+            template.parentNode.appendChild(clone);
+        }
+
+        // Get the modal
+        var modal = document.getElementById('myModal');
+        // Get the button that opens the modal
+        var rows = document.getElementById("postTable").rows;
+
+        for (var i = 0; i < rows.length; i++) {
+            //console.log(postData);
+            rows[i].onclick = function() {
+                //console.log(arr);
+
+                /* check that a row is not already expanded */
+                if (expanded == 0) {
+                    /* set flag */
+                    expanded = 1;
+                    rowID = this.id;
+                    var j = 0;
+                    var str;
+                    for(j; j < rows.length; j++) {
+                       str = "post-"+j;
+                       if (str === rowID)
+                            break;
+                    }
+                    var post = arr[j];
+                    $scope.owner = post.Username;
+                    $scope.phone = post.PhoneNumber;
+                    $scope.desc = post.P_Description;
+                    $scope.title = post.P_Title;
+                    $scope.location = post.P_Location;
+                    address = post.P_Location;
+                    modal.style.display = "block";
+                    $scope.$apply();
+                    //TODO - undo
+
+                    // Load bid history for current post
+                    var bidData = new Object();
+                    bidData.PostId = post.Pid;
+                    $http.post("/GetBids", bidData).then(function(response) {
+
+                        var bids = response.data.Result;
+                        var bidData = []
+                        var template = document.querySelector('#bidTemplate');
+                        while(template.parentNode.hasChildNodes()) {
+                            if (template.parentNode.lastChild == template)
+                                break;
+                            template.parentNode.removeChild(template.parentNode.lastChild);
+                        }
+                        for (var i = 0; i < bids.length; i++) {
+
+                            // Format date
+                            var date = bids[i].BidTime.substring(5, 7) + "/" +
+                                       bids[i].BidTime.substring(8, 10) + "/" +
+                                       bids[i].BidTime.substring(0, 4) + ", " +
+                                       bids[i].BidTime.substring(11, 16);
+
+                            var clone = template.content.cloneNode(true);
+                            var td = clone.querySelectorAll('td');
+                            td[0].innerHTML = date; //bids[i].BidTime;
+                            td[1].innerHTML = bids[i].Username;
+                            td[2].innerHTML = "$" + bids[i].Amount;
+                            template.parentNode.appendChild(clone);
+                        }
+                        myMap(myUser.U_Location);
+
+                    }).catch(function(response) {
+                        console.log("error getting bids");
+                    })
+                }
+            };
+        }
+    }
 
 }]);
 
