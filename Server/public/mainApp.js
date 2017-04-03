@@ -93,7 +93,7 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
                         $scope.owner = post.Username;
                         $scope.phone = post.PhoneNumber;
                         $scope.desc = post.P_Description;
-    					$scope.jobTitle = post.P_title;
+    					$scope.title = post.P_Title;
                         $scope.location = post.P_Location;
                         address = post.P_Location;
                         modal.style.display = "block";
@@ -254,7 +254,7 @@ $scope.sortByLowestBid = function() {
 
                         $scope.phone = post.PhoneNumber;
                         $scope.desc = post.U_Description;
-                        $scope.pid = post.Pid;
+                        $scope.title = post.P_Title;
                         $scope.location = post.P_Location;
                         address = post.P_Location;
                         modal.style.display = "block";
