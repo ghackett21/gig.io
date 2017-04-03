@@ -358,14 +358,14 @@ $scope.sortByLowestBid = function() {
                 return;
             }
 
-            $scope.bid.PostId = $scope.pid;
+            $scope.bid.PostId = $scope.Pid;
             $scope.bid.UserId = myUser.Uid;
 
             // Bid
             $http.post('/Bid', $scope.bid).then(function(response) {
                 // Update bids displayed
                 var bidData = new Object();
-                bidData.PostId = $scope.pid;
+                bidData.PostId = $scope.Pid;
                 $http.post('/GetBids', bidData).then(function(response) {
                 
                     var bids = response.data.Result;
@@ -421,6 +421,8 @@ $scope.sortByLowestBid = function() {
                     $scope.phone = post.PhoneNumber;
                     $scope.desc = post.P_Description;
                     $scope.title = post.P_Title;
+                    $scope.Pid = post.Pid;
+
                     $scope.location = post.P_Location;
                     address = post.P_Location;
                     modal.style.display = "block";
@@ -554,6 +556,7 @@ function myMap(loc) {
 }
 
 function getCoordinates(location) {
+    console.log("location: " + location);
     var geocoder = new google.maps.Geocoder();
     geocoder.geocode({
         'address' : location
