@@ -21,13 +21,6 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
 		});
 	};
 
-	$scope.testAuth = function() {
-		$http.post('/protected').then(function(response) {
-			console.log("response = %j", response);
-			//window.location = response.data.redirect;
-		});
-	};
-
 	window.onload = function() {
         $http.post('/GetUser').then(function(response) {
                         //console.log(response.data.Result[0]);
@@ -65,75 +58,10 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
 				template.parentNode.appendChild(clone);
 			}
 
+            setupPosts(postData);
 
-            // Get the modal
-            var modal = document.getElementById('myModal');
-
-            // Get the button that opens the modal
-            var rows = document.getElementById("postTable").rows;
-
-            for (var i = 0; i < rows.length; i++) {
-                //console.log(postData);
-                rows[i].onclick = function() {
-                    //console.log(arr);
-
-                    /* check that a row is not already expanded */
-                    if (expanded == 0) {
-                        /* set flag */
-                        expanded = 1;
-                        rowID = this.id;
-                        var j = 0;
-                        var str;
-                        for(j; j < rows.length; j++) {
-                           str = "post-"+j;
-                           if (str === rowID)
-                                break;
-                        }
-                        var post = arr[j];
-                        $scope.owner = post.Username;
-                        $scope.phone = post.PhoneNumber;
-                        $scope.desc = post.P_Description;
-    					$scope.title = post.P_Title;
-                        $scope.location = post.P_Location;
-                        address = post.P_Location;
-                        modal.style.display = "block";
-                        $scope.$apply();
-    					//TODO - undo
-
-                        // Load bid history for current post
-                        var bidData = new Object();
-                        bidData.PostId = post.Pid;
-                        loadBids(bidData);
-                    }
-                };
-            }
-            //var btn = document.getElementById("post-1");
-
-            // Get the <span> element that closes the modal
-            var span = document.getElementsByClassName("close")[0];
-
-            // When the user clicks the button, open the modal
-            /*btn.onclick = function() {
-                modal.style.display = "block";
-            }*/
-
-            // When the user clicks on <span> (x), close the modal
-            span.onclick = function() {
-                modal.style.display = "none";
-                /* set flag */
-                expanded = 0;
-            }
-
-            // When the user clicks anywhere outside of the modal, close it
-            window.onclick = function(event) {
-                if (event.target == modal) {
-                    modal.style.display = "none";
-                    /* set flag */
-                    expanded = 0;
-                }
-            }
-			console.log(response.status);
-			console.log(response);
+            console.log(response.status);
+            console.log(response);	           
 			if(response.status == 200){
 				console.log("success");
 				//window.location.href = 'http://localhost:8081/index.html';
@@ -198,68 +126,7 @@ $scope.sortByLowestBid = function() {
                 td[3].innerHTML = date;
             }
 
-            // Get the modal
-            var modal = document.getElementById('myModal');
-
-            // Get the button that opens the modal
-            var rows = document.getElementById("postTable").rows;
-
-            for (var i = 0; i < rows.length; i++) {
-                //console.log(postData);
-                rows[i].onclick = function() {
-                    if (expanded == 0) {
-                        /* set flag */
-                        expanded = 1;
-                        //console.log(arr);
-                        rowID = this.id;
-                        var j = 0;
-                        var str;
-                        for(j; j < rows.length; j++) {
-                           str = "post-"+j;
-                           if (str === rowID)
-                                break;
-                        }
-                        var post = posts[j];
-
-                        $scope.owner = post.Username;
-
-                        $scope.phone = post.PhoneNumber;
-                        $scope.desc = post.P_Description;
-                        $scope.title = post.P_Title;
-                        $scope.location = post.P_Location;
-                        address = post.P_Location;
-                        modal.style.display = "block";
-                        $scope.$apply();
-
-                        // Load bid history for current post
-                        var bidData = new Object();
-                        bidData.PostId = post.Pid;
-                        loadBids(bidData);
-                    }
-                };
-            }
-            //var btn = document.getElementById("post-1");
-
-            // Get the <span> element that closes the modal
-            var span = document.getElementsByClassName("close")[0];
-
-            // When the user clicks the button, open the modal
-
-            // When the user clicks on <span> (x), close the modal
-            span.onclick = function() {
-                /* set flag */
-                expanded = 0;
-                modal.style.display = "none";
-            }
-
-            // When the user clicks anywhere outside of the modal, close it
-            window.onclick = function(event) {
-                if (event.target == modal) {
-                    /* set flag */
-                    expanded = 0;
-                    modal.style.display = "none";
-                }
-            }
+            setupPosts(posts);
 
             console.log(response.status);
             console.log(response);
@@ -326,68 +193,7 @@ $scope.sortByLowestBid = function() {
                 td[3].innerHTML = date;
             }
 
-            // Get the modal
-            var modal = document.getElementById('myModal');
-
-            // Get the button that opens the modal
-            var rows = document.getElementById("postTable").rows;
-
-            for (var i = 0; i < rows.length; i++) {
-                //console.log(postData);
-                rows[i].onclick = function() {
-                    if (expanded == 0) {
-                        /* set flag */
-                        expanded = 1;
-                        //console.log(arr);
-                        rowID = this.id;
-                        var j = 0;
-                        var str;
-                        for(j; j < rows.length; j++) {
-                           str = "post-"+j;
-                           if (str === rowID)
-                                break;
-                        }
-                        var post = posts[j];
-
-                        $scope.owner = post.Username;
-
-                        $scope.phone = post.PhoneNumber;
-                        $scope.desc = post.P_Description;
-                        $scope.title = post.P_Title;
-                        $scope.location = post.P_Location;
-                        address = post.P_Location;
-                        modal.style.display = "block";
-                        $scope.$apply();
-
-                        // Load bid history for current post
-                        var bidData = new Object();
-                        bidData.PostId = post.Pid;
-                        loadBids(bidData);
-                    }
-                };
-            }
-            //var btn = document.getElementById("post-1");
-
-            // Get the <span> element that closes the modal
-            var span = document.getElementsByClassName("close")[0];
-
-            // When the user clicks the button, open the modal
-
-            // When the user clicks on <span> (x), close the modal
-            span.onclick = function() {
-                /* set flag */
-                expanded = 0;
-                modal.style.display = "none";
-            }
-
-            // When the user clicks anywhere outside of the modal, close it
-            window.onclick = function(event) {
-                if (event.target == modal) {
-                    /* set flag */
-                    expanded = 0;
-                    modal.style.display = "none";
-                }
-            }
+            setupPosts(posts);
 
             console.log(response.status);
             console.log(response);
@@ -446,65 +252,9 @@ $scope.sortByLowestBid = function() {
                         td[2].innerHTML = posts[i].P_Location;
                     }
 
-                    // Get the modal
-                    var modal = document.getElementById('myModal');
+                    setupPosts(posts);
 
-                    // Get the button that opens the modal
-                    var rows = document.getElementById("postTable").rows;
-
-                    for (var i = 0; i < rows.length; i++) {
-                        //console.log(postData);
-                        rows[i].onclick = function() {
-                            //console.log(arr);
-                            rowID = this.id;
-                            var j = 0;
-                            var str;
-                            for(j; j < rows.length; j++) {
-                               str = "post-"+j;
-                               if (str === rowID)
-                                    break;
-                            }
-                            var post = posts[j];
-
-                            $scope.owner = post.Username;
-
-                            $scope.phone = post.PhoneNumber;
-                            $scope.desc = post.P_Description;
-                            $scope.title = post.P_Title;
-                            $scope.location = post.P_Location;
-                            address = post.P_Location;
-                            modal.style.display = "block";
-                            $scope.$apply();
-
-                            // Load bid history for current post
-                            var bidData = new Object();
-                            bidData.PostId = post.Pid;
-                            loadBids(bidData);
-                        };
-                    }
-                    //var btn = document.getElementById("post-1");
-
-                    // Get the <span> element that closes the modal
-                    var span = document.getElementsByClassName("close")[0];
-
-                    // When the user clicks the button, open the modal
-                    /*btn.onclick = function() {
-                        modal.style.display = "block";
-                    }*/
-
-                    // When the user clicks on <span> (x), close the modal
-                    span.onclick = function() {
-                        modal.style.display = "none";
-                    }
-
-                    // When the user clicks anywhere outside of the modal, close it
-                    window.onclick = function(event) {
-                        if (event.target == modal) {
-                            modal.style.display = "none";
-                        }
-                    }
-
-                    //console.log(response.status);
+                    console.log(response.status);
                     console.log(response);
                     if(response.status == 200){
                         console.log("success");
@@ -569,73 +319,9 @@ $scope.sortByLowestBid = function() {
                     td[3].innerHTML = date;
                 }
 
-                // Get the modal
-                var modal = document.getElementById('myModal');
+                setupPosts(posts);
 
-                // Get the button that opens the modal
-                var rows = document.getElementById("postTable").rows;
-
-                for (var i = 0; i < rows.length; i++) {
-                    //console.log(postData);
-                    rows[i].onclick = function() {
-                        if (expanded == 0) {
-                            /* set flag */
-                            expanded = 1;
-                            //console.log(arr);
-                            rowID = this.id;
-                            var j = 0;
-                            var str;
-                            for(j; j < rows.length; j++) {
-                               str = "post-"+j;
-                               if (str === rowID)
-                                    break;
-                            }
-                            var post = posts[j];
-
-                            $scope.owner = post.Username;
-
-                            $scope.phone = post.PhoneNumber;
-                            $scope.desc = post.P_Description;
-                            $scope.title = post.P_Title;
-                            $scope.location = post.P_Location;
-                            address = post.P_Location;
-                            modal.style.display = "block";
-                            $scope.$apply();
-
-                            // Load bid history for current post
-                            var bidData = new Object();
-                            bidData.PostId = post.Pid;
-                            loadBids(bidData);
-                        }
-                    };
-                }
-                //var btn = document.getElementById("post-1");
-
-                // Get the <span> element that closes the modal
-                var span = document.getElementsByClassName("close")[0];
-
-                // When the user clicks the button, open the modal
-                /*btn.onclick = function() {
-                    modal.style.display = "block";
-                }*/
-
-                // When the user clicks on <span> (x), close the modal
-                span.onclick = function() {
-                    /* set flag */
-                    expanded = 0;
-                    modal.style.display = "none";
-                }
-
-                // When the user clicks anywhere outside of the modal, close it
-                window.onclick = function(event) {
-                    if (event.target == modal) {
-                        /* set flag */
-                        expanded = 0;
-                        modal.style.display = "none";
-                    }
-                }
-
-                //console.log(response.status);
+                console.log(response.status);
                 console.log(response);
                 if(response.status == 200){
                     console.log("success");
@@ -707,7 +393,69 @@ $scope.sortByLowestBid = function() {
             })
     };
 
+    function setupPosts(posts) {
+        // Get the modal and the table rows
+        var modal = document.getElementById('myModal');
+        var rows = document.getElementById("postTable").rows;
+
+        /* set the onclick action for each row/post */
+        for (var i = 0; i < rows.length; i++) {
+            rows[i].onclick = function() {
+                /* only perform onclick action if there is no post expanded currently */
+                if (expanded == 0) {
+                    /* set flag */
+                    expanded = 1;
+                   
+                    rowID = this.id;
+                    var j = 0;
+                    var str;
+                    for(j; j < rows.length; j++) {
+                       str = "post-"+j;
+                       if (str === rowID)
+                            break;
+                    }
+                    var post = posts[j];
+
+                    /* set display content */
+                    $scope.owner = post.Username;
+                    $scope.phone = post.PhoneNumber;
+                    $scope.desc = post.P_Description;
+                    $scope.title = post.P_Title;
+                    $scope.location = post.P_Location;
+                    address = post.P_Location;
+                    modal.style.display = "block";
+                    $scope.$apply();
+
+                    // Load bid history for current post
+                    var bidData = new Object();
+                    bidData.PostId = post.Pid;
+                    loadBids(bidData);
+                }
+            };
+        }
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() {
+            /* set flag */
+            expanded = 0;
+            modal.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                /* set flag */
+                expanded = 0;
+                modal.style.display = "none";
+            }
+        }
+    }
+
     function loadBids(bidData) {
+        /* make request */
         $http.post("/GetBids", bidData).then(function(response) {
             var bids = response.data.Result;
             var bidData = []
@@ -717,6 +465,8 @@ $scope.sortByLowestBid = function() {
                     break;
                 template.parentNode.removeChild(template.parentNode.lastChild);
             }
+
+            /* clone template row and fill in bid info */
             for (var i = 0; i < bids.length; i++) {
 
                 // Format date
@@ -727,12 +477,15 @@ $scope.sortByLowestBid = function() {
 
                 var clone = template.content.cloneNode(true);
                 var td = clone.querySelectorAll('td');
-                td[0].innerHTML = date; //bids[i].BidTime;
+
+                /* fill in row information */
+                td[0].innerHTML = date; 
                 td[1].innerHTML = bids[i].Username;
                 td[2].innerHTML = "$" + bids[i].Amount;
                 td[3].innerHTML = bids[i].AVG_BidRate + "/5";
                 template.parentNode.appendChild(clone);
             }
+            /* call display map function */
             myMap(myUser.U_Location);
 
         }).catch(function(response) {
