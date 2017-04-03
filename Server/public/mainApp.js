@@ -21,13 +21,6 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
 		});
 	};
 
-	$scope.testAuth = function() {
-		$http.post('/protected').then(function(response) {
-			console.log("response = %j", response);
-			//window.location = response.data.redirect;
-		});
-	};
-
 	window.onload = function() {
         $http.post('/GetUser').then(function(response) {
                         //console.log(response.data.Result[0]);
