@@ -1,3 +1,5 @@
+var app = angular.module("myApp", []);
+
 app.controller("loginController", [ '$scope', '$http', function($scope, $http) {
     $scope.user;
     

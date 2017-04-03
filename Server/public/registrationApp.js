@@ -1,3 +1,4 @@
+var app = angular.module("myApp", []);
 
 app.controller("registrationController", [ '$scope', '$http', function($scope, $http) {
     $scope.user;
