@@ -455,6 +455,7 @@ $scope.sortByLowestBid = function() {
     }
 
     function loadBids(bidData) {
+        /* make request */
         $http.post("/GetBids", bidData).then(function(response) {
             var bids = response.data.Result;
             var bidData = []
@@ -464,6 +465,8 @@ $scope.sortByLowestBid = function() {
                     break;
                 template.parentNode.removeChild(template.parentNode.lastChild);
             }
+
+            /* clone template row and fill in bid info */
             for (var i = 0; i < bids.length; i++) {
 
                 // Format date
@@ -474,12 +477,15 @@ $scope.sortByLowestBid = function() {
 
                 var clone = template.content.cloneNode(true);
                 var td = clone.querySelectorAll('td');
-                td[0].innerHTML = date; //bids[i].BidTime;
+
+                /* fill in row information */
+                td[0].innerHTML = date; 
                 td[1].innerHTML = bids[i].Username;
                 td[2].innerHTML = "$" + bids[i].Amount;
                 td[3].innerHTML = bids[i].AVG_BidRate + "/5";
                 template.parentNode.appendChild(clone);
             }
+            /* call display map function */
             myMap(myUser.U_Location);
 
         }).catch(function(response) {
