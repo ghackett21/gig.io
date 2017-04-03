@@ -92,7 +92,7 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
                         var post = arr[j];
                         $scope.owner = post.Username;
                         $scope.phone = post.PhoneNumber;
-                        $scope.desc = post.U_Description;
+                        $scope.desc = post.P_Description;
     					$scope.jobTitle = post.P_title;
                         $scope.location = post.P_Location;
                         address = post.P_Location;
