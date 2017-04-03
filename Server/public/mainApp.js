@@ -47,7 +47,7 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
 				postData.push(arr[i]);
 				var clone = template.content.cloneNode(true);
 				var td = clone.querySelectorAll('td');
-				td[0].innerHTML = post.P_Description;
+				td[0].innerHTML = post.P_Title;
 				td[1].innerHTML = post.Username;
 				td[2].innerHTML = post.P_Location;
 
@@ -93,7 +93,7 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
                         $scope.owner = post.Username;
                         $scope.phone = post.PhoneNumber;
                         $scope.desc = post.U_Description;
-    					$scope.pid = post.Pid;
+    					$scope.jobTitle = post.P_title;
                         $scope.location = post.P_Location;
                         address = post.P_Location;
                         modal.style.display = "block";
