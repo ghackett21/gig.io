@@ -68,26 +68,6 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
 			
             loadPosts();
 
-            // Get the <span> element that closes the modal
-            var span = document.getElementsByClassName("close")[0];
-
-            // When the user clicks on <span> (x), close the modal
-            span.onclick = function() {
-                modal.style.display = "none";
-                /* set flag */
-                expanded = 0;
-            }
-
-            // When the user clicks anywhere outside of the modal, close it
-            window.onclick = function(event) {
-                if (event.target == modal) {
-                    modal.style.display = "none";
-                    /* set flag */
-                    expanded = 0;
-                }
-            }
-			console.log(response.status);
-			console.log(response);
 			if(response.status == 200){
 				console.log("success");
 				//window.location.href = 'http://localhost:8081/index.html';
@@ -777,6 +757,28 @@ $scope.sortByLowestBid = function() {
                 }
             };
         }
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() {
+            modal.style.display = "none";
+            /* set flag */
+            expanded = 0;
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+                /* set flag */
+                expanded = 0;
+            }
+        }
+        console.log(response.status);
+        console.log(response);
+
     }
 
 }]);
