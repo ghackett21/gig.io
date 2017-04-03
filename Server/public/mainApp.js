@@ -66,7 +66,9 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
 			}
 
             setupPosts(postData);
-	
+
+            console.log(response.status);
+            console.log(response);	           
 			if(response.status == 200){
 				console.log("success");
 				//window.location.href = 'http://localhost:8081/index.html';
@@ -133,6 +135,8 @@ $scope.sortByLowestBid = function() {
 
             setupPosts(posts);
 
+            console.log(response.status);
+            console.log(response);
             if(response.status == 200){
                 console.log("success");
                 //window.location.href = 'http://localhost:8081/index.html';
@@ -198,6 +202,8 @@ $scope.sortByLowestBid = function() {
 
             setupPosts(posts);
 
+            console.log(response.status);
+            console.log(response);
             if(response.status == 200){
                 console.log("success");
                 //window.location.href = 'http://localhost:8081/index.html';
@@ -255,6 +261,8 @@ $scope.sortByLowestBid = function() {
 
                     setupPosts(posts);
 
+                    console.log(response.status);
+                    console.log(response);
                     if(response.status == 200){
                         console.log("success");
                         //window.location.href = 'http://localhost:8081/index.html';
@@ -320,6 +328,8 @@ $scope.sortByLowestBid = function() {
 
                 setupPosts(posts);
 
+                console.log(response.status);
+                console.log(response);
                 if(response.status == 200){
                     console.log("success");
                     //window.location.href = 'http://localhost:8081/index.html';
@@ -449,9 +459,6 @@ $scope.sortByLowestBid = function() {
                 modal.style.display = "none";
             }
         }
-
-        //console.log(response.status);
-        console.log(response);
     }
 
     function loadBids(bidData) {
