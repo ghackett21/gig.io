@@ -58,3 +58,7 @@ app.controller("makePostController", [ '$scope', '$http', function($scope, $http
 
     }
 }]);
+
+function myMap(Loc) {
+        /* do nothing */
+}
