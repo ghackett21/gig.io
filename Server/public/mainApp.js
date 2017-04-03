@@ -39,6 +39,7 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
 			$scope.count = response.data.result.length;
 			$scope.index = 0;
 			arr = response.data.result;
+			var postData = [];
 			
             loadPosts();
 
@@ -758,7 +759,6 @@ $scope.sortByLowestBid = function() {
     };
 
     function loadPosts() {
-        var postData = [];
         var template = document.querySelector('#tmplt');
         for (var i = 0 ; i < arr.length; i++) {
             $scope.index = i;
