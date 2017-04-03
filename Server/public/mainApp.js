@@ -538,16 +538,17 @@ app.controller("makePostController", [ '$scope', '$http', function($scope, $http
                 console.log(myResult.lat() + " , " + myResult.lng());
                 $scope.post.lat = myResult.lat();
                 $scope.post.long = myResult.lng();
+                console.log("$scope.post: " + $scope.post);
                 $http.post('/CreatePost', $scope.post).then(function(response) {
-                console.log("My longitude = "+mylong);
-                console.log("My latitude = "+mylat);
-                $scope.post = null;
-                console.log(response);
-                if(response.data.State == 0){
-                    $scope.status = "Post successfully created! Don't forget to check for bids.";
-                }
-            });
-        }
+                    $scope.post = null;
+                    console.log(response);
+                    if(response.data.State == 0){
+                        $scope.status = "Post successfully created! Don't forget to check for bids.";
+                    }
+                }).catch(function(response) {
+                    console.log("error creating post");
+                });
+           }
     });
 
     }
