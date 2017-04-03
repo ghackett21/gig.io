@@ -537,7 +537,7 @@ app.controller("makePostController", [ '$scope', '$http', function($scope, $http
                 var myResult = results[0].geometry.location;
                 console.log(myResult.lat() + " , " + myResult.lng());
                 $scope.post.lat = myResult.lat();
-                $scope.post.long = myResult.lng();
+                $scope.post.lng = myResult.lng();
                 console.log("$scope.post: " + $scope.post);
                 $http.post('/CreatePost', $scope.post).then(function(response) {
                     $scope.post = null;
