@@ -358,7 +358,7 @@ $scope.sortByLowestBid = function() {
                 return;
             }
 
-            $scope.bid.PostId = $scope.pid;
+            $scope.bid.PostId = $scope.Pid;
             $scope.bid.UserId = myUser.Uid;
 
             // Bid
