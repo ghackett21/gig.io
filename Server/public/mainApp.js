@@ -521,28 +521,33 @@ app.controller("makePostController", [ '$scope', '$http', function($scope, $http
 
         //NEED TO CONVERT LOCATION TO COORDINATES AND SEND TO DATABASE AS WELL
         var myloc = $scope.post.location;
-        console.log("My loc:  = " + myloc);
-        for(var i=0;i<10;i++){
-        getCoordinates(myloc);}
-        console.log("My longitude = "+mylong);
-        console.log("My latitude = "+mylat);
-        $scope.post.lat=mylat;
-        $scope.post.long=mylong;
-        console.log("scope.post.lat="+$scope.post.lat+"    scope.post.lng="+$scope.post.lng);
-        $http.post('/CreatePost', $scope.post).then(function(response) {
-            //getCoordinates(myloc);
-            console.log("My longitude = "+mylong);
-            console.log("My latitude = "+mylat);
-            $scope.post = null;
-            //$scope.status = "Post successfully created!";
-            console.log(response);
-            if(response.data.State == 0){
-                $scope.status = "Post successfully created! Don't forget to check for bids.";
-                //alert("");
-                //window.location = response.data.redirect;
-            }
-        });
+        getCoordinatesForMakePost(myloc);
+       
     };
+
+    function getCoordinatesForMakePost(location) {
+    console.log("location: " + location);
+    var geocoder = new google.maps.Geocoder();
+    geocoder.geocode({
+        'address' : location
+        },
+        function(results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                var myResult = results[0].geometry.location;
+                console.log(myResult.lat() + " , " + myResult.lng());
+                $scope.post.lat = myResult.lat();
+                $scope.post.long = myResult.lng();
+                $http.post('/CreatePost', $scope.post).then(function(response) {
+                console.log("My longitude = "+mylong);
+                console.log("My latitude = "+mylat);
+                $scope.post = null;
+                console.log(response);
+                if(response.data.State == 0){
+                    $scope.status = "Post successfully created! Don't forget to check for bids.";
+                }
+            });
+        }
+    });
 }]);
 
 function myMap(loc) {
