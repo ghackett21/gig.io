@@ -545,7 +545,7 @@ app.controller("makePostController", [ '$scope', '$http', function($scope, $http
                 if(response.data.State == 0){
                     $scope.status = "Post successfully created! Don't forget to check for bids.";
                 }
-            });
+            }
         }
     });
 }]);
