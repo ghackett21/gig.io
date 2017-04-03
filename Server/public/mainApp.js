@@ -38,33 +38,6 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
 			$scope.count = response.data.result.length;
 			$scope.index = 0;
 			arr = response.data.result;
-
-            var postData = [];
-            var template = document.querySelector('#tmplt');
-            for (var i = 0 ; i < arr.length; i++) {
-                $scope.index = i;
-                var post = arr[i];
-                postData.push(arr[i]);
-                var clone = template.content.cloneNode(true);
-                var td = clone.querySelectorAll('td');
-                td[0].innerHTML = post.P_Title;
-                td[1].innerHTML = post.Username;
-                td[2].innerHTML = post.P_Location;
-
-                console.log();
-                var date = post.CreationTime.substring(0,10);
-                var day = date.substring(8,date.length);
-                var month = date.substring(5,7);
-                var year = date.substring(0,4);
-
-                date = month + "/" + day + "/" + year;
-
-                td[3].innerHTML = date;
-                var tr = clone.querySelectorAll('tr');
-                tr[0].id = "post-"+i;
-                template.parentNode.appendChild(clone);
-            }
-
 			
             loadPosts();
 
@@ -691,22 +664,31 @@ $scope.sortByLowestBid = function() {
     };
 
     function loadPosts() {
+        var postData = [];
         var template = document.querySelector('#tmplt');
-            for (var i = 0; i < posts.length; i++) {
-                var currRow = document.getElementById("post-"+i);
-                var td = currRow.querySelectorAll('td');
-                td[0].innerHTML = posts[i].P_Description;
-                td[1].innerHTML = posts[i].Username;
-                td[2].innerHTML = posts[i].P_Location;
-                var date = posts[i].CreationTime.substring(0,10);
-                var day = date.substring(8,date.length);
-                var month = date.substring(5,7);
-                var year = date.substring(0,4);
+        for (var i = 0 ; i < arr.length; i++) {
+            $scope.index = i;
+            var post = arr[i];
+            postData.push(arr[i]);
+            var clone = template.content.cloneNode(true);
+            var td = clone.querySelectorAll('td');
+            td[0].innerHTML = post.P_Title;
+            td[1].innerHTML = post.Username;
+            td[2].innerHTML = post.P_Location;
 
-                date = month + "/" + day + "/" + year;
+            console.log();
+            var date = post.CreationTime.substring(0,10);
+            var day = date.substring(8,date.length);
+            var month = date.substring(5,7);
+            var year = date.substring(0,4);
 
-                td[3].innerHTML = date;
-            }
+            date = month + "/" + day + "/" + year;
+
+            td[3].innerHTML = date;
+            var tr = clone.querySelectorAll('tr');
+            tr[0].id = "post-"+i;
+            template.parentNode.appendChild(clone);
+        }
 
         // Get the modal
         var modal = document.getElementById('myModal');
