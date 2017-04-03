@@ -365,7 +365,7 @@ $scope.sortByLowestBid = function() {
             $http.post('/Bid', $scope.bid).then(function(response) {
                 // Update bids displayed
                 var bidData = new Object();
-                bidData.PostId = $scope.pid;
+                bidData.PostId = $scope.Pid;
                 $http.post('/GetBids', bidData).then(function(response) {
                 
                     var bids = response.data.Result;
