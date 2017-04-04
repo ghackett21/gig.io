@@ -1,7 +1,9 @@
+/** mainApp.js 
+ *  This file contains the controller for the index (main) page
+ */
+
 var app = angular.module("myApp", []);
 var distance;
-
-//var directionsService = new google.maps.DirectionsService();
 
 var arr;
 var address;
@@ -13,7 +15,7 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
 	$scope.user;
     $scope.test = "test";
 
-//test stuff for server auth
+    /* logout user on button press */
 	$scope.logout = function() {
 		$http.post('/logout').then(function(response) {
 			console.log("response = %j", response);
@@ -21,12 +23,15 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
 		});
 	};
 
+    /* load user and post data  when page loads */
 	window.onload = function() {
+        /* requst information about the currently logged-in user */
         $http.post('/GetUser').then(function(response) {
                         //console.log(response.data.Result[0]);
                         myUser = response.data.Result[0];
         })
 
+        /* request post data */
 		$http.post('/GetAllPosts').then(function(response) {
 			//$scope.user = null;
 			$scope.count = response.data.result.length;
@@ -34,17 +39,19 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
 			arr = response.data.result;
 			var postData = [];
 			var template = document.querySelector('#tmplt');
+            /* make new rows in the post table for each post */
 			for (var i = 0 ; i < arr.length; i++) {
 				$scope.index = i;
 				var post = arr[i];
 				postData.push(arr[i]);
 				var clone = template.content.cloneNode(true);
 				var td = clone.querySelectorAll('td');
+                /* set display text elements */
 				td[0].innerHTML = post.P_Title;
 				td[1].innerHTML = post.Username;
 				td[2].innerHTML = post.P_Location;
 
-                console.log();
+                /* transform date easier to read format */
 				var date = post.CreationTime.substring(0,10);
 				var day = date.substring(8,date.length);
 				var month = date.substring(5,7);
@@ -58,28 +65,24 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
 				template.parentNode.appendChild(clone);
 			}
 
+            /* set up each rows's onClick actions */
             setupPosts(postData);
 
             console.log(response.status);
             console.log(response);	           
 			if(response.status == 200){
 				console.log("success");
-				//window.location.href = 'http://localhost:8081/index.html';
 			}else if(response.status == 401){
 				console.log("failure");
-				//console.log(response.data);
-				//window.location.href = 'http://localhost:8081/login.html';
 			}
-			//load response
 		}).catch(function(response) {
+            /* catch error in reponse */
 			$scope.user = null;
 			console.log(response.status);
 			console.log(response);
 			if(response.status == 401){
 				console.log("failure");
-				//window.location.href = 'http://localhost:8081/login.html';
 			}
-			//load response
 		})
         
 	};
@@ -92,7 +95,7 @@ $scope.sortByLowestBid = function() {
         $http.post('/GetAllPosts').then(function(response) {
             posts = response.data.result;
 
-            //Sort by date
+            /* Sort posts by number of bids */
             do {
                 swapped = false;
                 for (var i=0; i < posts.length-1; i++) {
@@ -100,7 +103,6 @@ $scope.sortByLowestBid = function() {
                     bidVal2 = posts[i+1].NumberOfBids;
 
                     if (bidVal1 < bidVal2) {
-                        //console.log("I'm In!");
                         var temp = posts[i];
                         posts[i] = posts[i+1];
                         posts[i+1] = temp;
@@ -126,28 +128,22 @@ $scope.sortByLowestBid = function() {
                 td[3].innerHTML = date;
             }
 
+             /* set up each rows's onClick actions */
             setupPosts(posts);
 
             console.log(response.status);
             console.log(response);
             if(response.status == 200){
                 console.log("success");
-                //window.location.href = 'http://localhost:8081/index.html';
             }else if(response.status == 401){
                 console.log("failure");
-                //console.log(response.data);
-                //window.location.href = 'http://localhost:8081/login.html';
             }
-            //load response
         }).catch(function(response) {
-            //$scope.user = null;
             console.log(response.status);
             console.log(response);
             if(response.status == 401){
                 console.log("failure");
-                //window.location.href = 'http://localhost:8081/login.html';
             }
-            //load response
         })
 	};
 
@@ -159,7 +155,7 @@ $scope.sortByLowestBid = function() {
         $http.post('/GetAllPosts').then(function(response) {
             posts = response.data.result;
 
-            //Sort by date
+            /* Sort posts by date */
             do {
                 swapped = false;
                 for (var i=0; i < posts.length-1; i++) {
@@ -193,28 +189,22 @@ $scope.sortByLowestBid = function() {
                 td[3].innerHTML = date;
             }
 
+             /* set up each rows's onClick actions */
             setupPosts(posts);
 
             console.log(response.status);
             console.log(response);
             if(response.status == 200){
                 console.log("success");
-                //window.location.href = 'http://localhost:8081/index.html';
             }else if(response.status == 401){
                 console.log("failure");
-                //console.log(response.data);
-                //window.location.href = 'http://localhost:8081/login.html';
             }
-            //load response
         }).catch(function(response) {
-            //$scope.user = null;
             console.log(response.status);
             console.log(response);
             if(response.status == 401){
                 console.log("failure");
-                //window.location.href = 'http://localhost:8081/login.html';
             }
-            //load response 
         })
 	};
 
@@ -226,6 +216,7 @@ $scope.sortByLowestBid = function() {
                 $http.post('/GetAllPosts').then(function(response) {
                     posts = response.data.result;
 
+                    /* sort posts by distance to user's location */
                     do {
                         swapped = false;
                         for (var i=0; i < posts.length-1; i++) {
@@ -234,7 +225,6 @@ $scope.sortByLowestBid = function() {
                             dist2 = getDistanceFromLatLonInKm(posts[i+1].P_Lat, posts[i+1].P_Long, myUser.U_Lat, myUser.U_Long);
 
                             if (dist1 < dist2) {
-                                //console.log("I'm In!");
                                 var temp = posts[i];
                                 posts[i] = posts[i+1];
                                 posts[i+1] = temp;
@@ -252,28 +242,22 @@ $scope.sortByLowestBid = function() {
                         td[2].innerHTML = posts[i].P_Location;
                     }
 
+                    /* set up each rows's onClick actions */
                     setupPosts(posts);
 
                     console.log(response.status);
                     console.log(response);
                     if(response.status == 200){
                         console.log("success");
-                        //window.location.href = 'http://localhost:8081/index.html';
                     }else if(response.status == 401){
                         console.log("failure");
-                        //console.log(response.data);
-                        //window.location.href = 'http://localhost:8081/login.html';
                     }
-                    //load response
                 }).catch(function(response) {
-                    //$scope.user = null;
                     console.log(response.status);
                     console.log(response);
                     if(response.status == 401){
                         console.log("failure");
-                        //window.location.href = 'http://localhost:8081/login.html';
                     }
-                    //load response
                 })
         };
 
@@ -285,7 +269,7 @@ $scope.sortByLowestBid = function() {
             $http.post('/GetAllPosts').then(function(response) {
                 posts = response.data.result;
 
-                //Sort by date
+                /* Sort by number of bids */
                 do {
                     swapped = false;
                     for (var i=0; i < posts.length-1; i++) {
@@ -293,7 +277,6 @@ $scope.sortByLowestBid = function() {
                         nbids2 = new Date(posts[i+1].NumberOfBids);
 
                         if (nbids1 < nbids2) {
-                            //console.log("I'm In!");
                             var temp = posts[i];
                             posts[i] = posts[i+1];
                             posts[i+1] = temp;
@@ -319,32 +302,26 @@ $scope.sortByLowestBid = function() {
                     td[3].innerHTML = date;
                 }
 
+                /* set up each rows's onClick actions */
                 setupPosts(posts);
 
                 console.log(response.status);
                 console.log(response);
                 if(response.status == 200){
                     console.log("success");
-                    //window.location.href = 'http://localhost:8081/index.html';
                 }else if(response.status == 401){
                     console.log("failure");
-                    //console.log(response.data);
-                    //window.location.href = 'http://localhost:8081/login.html';
                 }
-                //load response
             }).catch(function(response) {
-                //$scope.user = null;
                 console.log(response.status);
                 console.log(response);
                 if(response.status == 401){
                     console.log("failure");
-                    //window.location.href = 'http://localhost:8081/login.html';
                 }
-                //load response
             })
     };
 
-    // Called when the "Place bid" button is clicked
+    /* Called when the "Place bid" button is clicked */
 	$scope.placeBid = function() {
 
             // Check that user isn't poster
@@ -393,6 +370,7 @@ $scope.sortByLowestBid = function() {
             })
     };
 
+    /* sets up all posts onClick actions (display info, load bids, and map) */
     function setupPosts(posts) {
         // Get the modal and the table rows
         var modal = document.getElementById('myModal');
@@ -456,6 +434,7 @@ $scope.sortByLowestBid = function() {
         }
     }
 
+    /* load bids for a post */
     function loadBids(bidData) {
         /* make request */
         $http.post("/GetBids", bidData).then(function(response) {

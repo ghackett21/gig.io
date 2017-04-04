@@ -1,3 +1,8 @@
+/**
+ * makePostApp.js
+ * This file is the controller for the make post page
+ */
+
 var app = angular.module("myApp", []);
 
 var mylong;
@@ -16,6 +21,7 @@ app.controller("makePostController", [ '$scope', '$http', function($scope, $http
             return;
         }
 
+        /* ensure all fields have been filled out before submitting */
         if($scope.post == undefined || $scope.post.title == undefined || $scope.post.description == undefined || $scope.post.location == undefined){
             $scope.status = "Make Sure to fill in all required fields.";
             return;
@@ -33,6 +39,7 @@ app.controller("makePostController", [ '$scope', '$http', function($scope, $http
 
     function getCoordinatesForMakePost(location) {
     console.log("location: " + location);
+    /* get coordinates of location */
     var geocoder = new google.maps.Geocoder();
     geocoder.geocode({
         'address' : location
@@ -44,6 +51,8 @@ app.controller("makePostController", [ '$scope', '$http', function($scope, $http
                 $scope.post.lat = myResult.lat();
                 $scope.post.lng = myResult.lng();
                 console.log("$scope.post: " + $scope.post);
+
+                /* make createPost request */
                 $http.post('/CreatePost', $scope.post).then(function(response) {
                     $scope.post = null;
                     console.log(response);
