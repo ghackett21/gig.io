@@ -47,7 +47,7 @@ app.controller("registrationController", [ '$scope', '$http', function($scope, $
                 $scope.user.lat = myResult.lat();
                 $scope.user.lng = myResult.lng();
                 console.log("$scope.user: " + $scope.user);
-                 $http.post('/RegisterButton', $scope.user).then(function(response) {
+                $http.post('/RegisterButton', $scope.user).then(function(response) {
                     $scope.user = null;
                     console.log(response);
                     if(response.data.State == 0){
@@ -57,10 +57,11 @@ app.controller("registrationController", [ '$scope', '$http', function($scope, $
                     console.log("error registering");
                 });
            }
-       }
+       
     });
 
     }
+
 }]);
 
 function myMap(Loc) {
