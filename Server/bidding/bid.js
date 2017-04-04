@@ -13,10 +13,10 @@ module.exports = function(req, res) {
 	/* callback to handle response */
   	var callback = function(result) {
   		if (result < 0) {
-  			res.json({"Response": "Bid failed", "State": result });
+  			res.json({"Response": "Bid failed", "Result":"", "State": result });
   		}
   		else {
-  			res.json({"Response": "Bid successful", "State": 0 });
+  			res.json({"Response": "Bid successful", "Result":result, "State": 0 });
   		}
   	}
 
