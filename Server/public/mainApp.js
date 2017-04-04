@@ -338,36 +338,7 @@ $scope.sortByLowestBid = function() {
             $scope.bid.PostId = $scope.Pid;
             $scope.bid.UserId = myUser.Uid;
 
-            // Bid
-            $http.post('/Bid', $scope.bid).then(function(response) {
-                // Update bids displayed
-                var bidData = new Object();
-                bidData.PostId = $scope.Pid;
-                $http.post('/GetBids', bidData).then(function(response) {
-                
-                    var bids = response.data.Result;
-
-                    var date = bids[bids.length - 1].BidTime.substring(5, 7) + "/" +
-                               bids[bids.length - 1].BidTime.substring(8, 10) + "/" +
-                               bids[bids.length - 1].BidTime.substring(0, 4) + ", " +
-                               bids[bids.length - 1].BidTime.substring(11, 16);
-
-                    var template = document.querySelector('#bidTemplate');
-                    var clone = template.content.cloneNode(true);
-                    var td = clone.querySelectorAll('td');
-                    td[0].innerHTML = date;
-                    td[1].innerHTML = bids[bids.length - 1].Username;
-                    td[2].innerHTML = "$" + bids[bids.length - 1].Amount;
-                    td[3].innerHTML = "Rating:" + bids[bids.length - 1].AVG_BidRate;
-                    template.parentNode.appendChild(clone);
-
-                }).catch(function(response) {
-                    console.log("error getting bids");
-                })
-                
-            }).catch(function(response) {
-                console.log("error bidding");
-            })
+            loadBids($scope.bid);
     };
 
     /* sets up all posts onClick actions (display info, load bids, and map) */
