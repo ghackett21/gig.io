@@ -340,11 +340,36 @@ $scope.sortByLowestBid = function() {
 
             // Bid
             $http.post('/Bid', $scope.bid).then(function(response) {
-                // Update bids displayed
-                var bidData = new Object();
-                bidData.PostId = $scope.Pid;
-                
-                loadBids(bidData);
+                var bids = response.data.Result;
+                if (bids.length > 0) {
+                    var bidData = []
+                    var template = document.querySelector('#bidTemplate');
+                    while(template.parentNode.hasChildNodes()) {
+                        if (template.parentNode.lastChild == template)
+                            break;
+                        template.parentNode.removeChild(template.parentNode.lastChild);
+                    }
+
+                    /* clone template row and fill in bid info */
+                    for (var i = 0; i < bids.length; i++) {
+
+                        // Format date
+                        var date = bids[i].BidTime.substring(5, 7) + "/" +
+                                   bids[i].BidTime.substring(8, 10) + "/" +
+                                   bids[i].BidTime.substring(0, 4) + ", " +
+                                   bids[i].BidTime.substring(11, 16);
+
+                        var clone = template.content.cloneNode(true);
+                        var td = clone.querySelectorAll('td');
+
+                        /* fill in row information */
+                        td[0].innerHTML = date; 
+                        td[1].innerHTML = bids[i].Username;
+                        td[2].innerHTML = "$" + bids[i].Amount;
+                        td[3].innerHTML = bids[i].AVG_BidRate + "/5";
+                        template.parentNode.appendChild(clone);
+                    }
+                }
                 
             }).catch(function(response) {
                 console.log("error bidding");
