@@ -29,8 +29,8 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
 
         /* request post data */
         $http.post('/getUserPosts').then(function(response) {
-            //$scope.user = null;
-            $scope.count = response.data.result.length;
+            console.log("response: " + response)         
+            $scope.count = response.data.Result.length;
             $scope.index = 0;
             arr = response.data.result;
             var postData = [];
