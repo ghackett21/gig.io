@@ -502,15 +502,6 @@ function myMap(loc) {
           }
         });
 
-    	/*console.log(navigator.geolocation.getCurrentPosition(function(position) {
-             var pos = {
-               lat: position.coords.latitude,
-               lng: position.coords.longitude
-             };
-             console.log(pos);
-
-        }));*/
-
        var map = new google.maps.Map(document.getElementById('map'), {
            mapTypeId: google.maps.MapTypeId.TERRAIN,
            zoom: 10
@@ -580,10 +571,7 @@ function calculateDistance(origin, destination) {
         console.log("No route found");
       } else {
         var distance = response.rows[0].elements[0].distance.value;
-        //console.log(typeof distance);
-        //console.log("Distance: " + distance);
         loc_distance = distance;
-        //return distance;
       }
     }
   }
