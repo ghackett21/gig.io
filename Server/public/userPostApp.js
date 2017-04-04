@@ -28,7 +28,7 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
         })
 
         /* request post data */
-        $http.post('/GetUserPosts').then(function(response) {
+        $http.post('/GetAllPosts').then(function(response) {
             //$scope.user = null;
             $scope.count = response.data.result.length;
             $scope.index = 0;
@@ -88,7 +88,7 @@ $scope.sortByLowestBid = function() {
         var bidVal2;
         var temp;
         var swapped;
-        $http.post('/GetUserPosts').then(function(response) {
+        $http.post('/GetAllPosts').then(function(response) {
             posts = response.data.result;
 
             /* Sort posts by number of bids */
@@ -148,7 +148,7 @@ $scope.sortByLowestBid = function() {
         var time2;
         var temp;
         var swapped;
-        $http.post('/GetUserPosts').then(function(response) {
+        $http.post('/GetAllPosts').then(function(response) {
             posts = response.data.result;
 
             /* Sort posts by date */
@@ -209,7 +209,7 @@ $scope.sortByLowestBid = function() {
                 var time2;
                 var temp;
                 var swapped;
-                $http.post('/GetUserPosts').then(function(response) {
+                $http.post('/GetAllPosts').then(function(response) {
                     posts = response.data.result;
 
                     /* sort posts by distance to user's location */
@@ -262,7 +262,7 @@ $scope.sortByLowestBid = function() {
             var time2;
             var temp;
             var swapped;
-            $http.post('/GetUserPosts').then(function(response) {
+            $http.post('/GetAllPosts').then(function(response) {
                 posts = response.data.result;
 
                 /* Sort by number of bids */
