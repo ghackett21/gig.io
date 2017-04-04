@@ -53,7 +53,7 @@ app.controller("registrationController", [ '$scope', '$http', function($scope, $
                     if(response.data.State == 0){
                         $scope.status = "Registration Successful! Proceed to Login";
                     }
-                });.catch(function(response) {
+                }).catch(function(response) {
                     console.log("error registering");
                 });
            }
