@@ -1,5 +1,6 @@
 var connection = require('./../helpers/connection');
 var getDate = require('./../helpers/getDate');
+var getBidsHelper = require('./../bidding/getBidsHelper');
 
 /** 
  * Place a bid on a post
@@ -120,7 +121,7 @@ function insertBid(userId, postId, amount, callback) {
 										return callback(-2);
 									}
 									else {
-										return callback(0);
+										getBidsHelper(postId, callback);
 									}
 								});
 							}
