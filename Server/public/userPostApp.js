@@ -1,6 +1,8 @@
 var app = angular.module("myPostApp", []);
 var distance;
 
+//var directionsService = new google.maps.DirectionsService();
+
 var arr;
 var address;
 var myUser;
@@ -19,139 +21,195 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
 		});
 	};
 
-	/* load user and post data  when page loads */
-    window.onload = function() {
-        /* requst information about the currently logged-in user */
+	$scope.testAuth = function() {
+		$http.post('/protected').then(function(response) {
+			console.log("response = %j", response);
+			//window.location = response.data.redirect;
+		});
+	};
+
+	window.onload = function() {
         $http.post('/GetUser').then(function(response) {
                         //console.log(response.data.Result[0]);
                         myUser = response.data.Result[0];
         })
 
-        /* request post data */
-        $http.post('/GetAllPosts').then(function(response) {
-            //$scope.user = null;
-            $scope.count = response.data.result.length;
-            $scope.index = 0;
-            arr = response.data.result;
-            var postData = [];
-            var template = document.querySelector('#tmplt');
-            /* make new rows in the post table for each post */
-            for (var i = 0 ; i < arr.length; i++) {
-                $scope.index = i;
-                var post = arr[i];
-                postData.push(arr[i]);
-                var clone = template.content.cloneNode(true);
-                var td = clone.querySelectorAll('td');
-                /* set display text elements */
-                td[0].innerHTML = post.P_Title;
-                td[1].innerHTML = post.Username;
-                td[2].innerHTML = post.P_Location;
+		$http.post('/getUserPosts').then(function(response) {
+			//$scope.user = null;
+			console.log(response);
+			console.log(response.data.Result.length);
+			$scope.count = response.data.Result.length;
+			console.log(response.data.Result.length);
+			$scope.index = 0;
+			arr = response.data.Result;
+			var postData = [];
+			var template = document.querySelector('#tmplt');
+			for (var i = 0 ; i < arr.length; i++) {
+				$scope.index = i;
+				var post = arr[i];
+				postData.push(arr[i]);
+				var clone = template.content.cloneNode(true);
+				var td = clone.querySelectorAll('td');
 
-                /* transform date easier to read format */
-                var date = post.CreationTime.substring(0,10);
-                var day = date.substring(8,date.length);
-                var month = date.substring(5,7);
-                var year = date.substring(0,4);
+				console.log(post.P_Description);
+				console.log(post.Username);
+				console.log(post.P_Location);
 
-                date = month + "/" + day + "/" + year;
+				td[0].innerHTML = post.P_Description;
+				td[1].innerHTML = post.Username;
+				td[2].innerHTML = post.P_Location;
 
-                td[3].innerHTML = date;
-                var tr = clone.querySelectorAll('tr');
-                tr[0].id = "post-"+i;
-                template.parentNode.appendChild(clone);
-            }
+                console.log();
+				var date = post.CreationTime.substring(0,10);
+				var day = date.substring(8,date.length);
+				var month = date.substring(5,7);
+	    		var year = date.substring(0,4);
 
-            /* set up each rows's onClick actions */
-            setupPosts(postData);
+				date = month + "/" + day + "/" + year;
 
-            console.log(response.status);
-            console.log(response);             
-            if(response.status == 200){
-                console.log("success");
-            }else if(response.status == 401){
-                console.log("failure");
-            }
-        }).catch(function(response) {
-            /* catch error in reponse */
-            $scope.user = null;
-            console.log(response.status);
-            console.log(response);
-            if(response.status == 401){
-                console.log("failure");
-            }
-        })
-        
-    };
+				td[3].innerHTML = date;
+				var tr = clone.querySelectorAll('tr');
+				tr[0].id = "post-"+i;
+				template.parentNode.appendChild(clone);
+			}
 
-$scope.sortByLowestBid = function() {
-        var bidVal1;
-        var bidVal2;
-        var temp;
-        var swapped;
-        $http.post('/GetAllPosts').then(function(response) {
-            posts = response.data.result;
 
-            /* Sort posts by number of bids */
-            do {
-                swapped = false;
-                for (var i=0; i < posts.length-1; i++) {
-                    bidVal1 = posts[i].NumberOfBids;
-                    bidVal2 = posts[i+1].NumberOfBids;
+            // Get the modal
+            var modal = document.getElementById('myModal');
 
-                    if (bidVal1 < bidVal2) {
-                        var temp = posts[i];
-                        posts[i] = posts[i+1];
-                        posts[i+1] = temp;
-                        swapped = true;
+            // Get the button that opens the modal
+            var rows = document.getElementById("postTable").rows;
+
+            for (var i = 0; i < rows.length; i++) {
+                //console.log(postData);
+                rows[i].onclick = function() {
+                    console.log("post " + i + " selected!");
+
+                    /* check that a row is not already expanded */
+                    if (expanded == 0) {
+                        /* set flag */
+                        //expanded = 1;
+                        rowID = this.id;
+                        var j = 0;
+                        var str;
+                        for(j; j < rows.length; j++) {
+                           str = "post-"+j;
+                           if (str === rowID)
+                                break;
+                        }
+                        var post = arr[j];
+                        $scope.owner = post.Username;
+                        $scope.phone = post.PhoneNumber;
+                        $scope.desc = post.U_Description;
+    					$scope.pid = post.Pid;
+                        $scope.location = post.P_Location;
+                        address = post.P_Location;
+                        modal.style.display = "block";
+                        $scope.$apply();
+                         // Load bid history for current post
+                        var bidData = new Object();
+                        bidData.PostId = post.Pid;
+                        $http.post("/GetBids", bidData).then(function(response) {
+
+                            var bids = response.data.Result;
+                            var bidData = []
+                            var template = document.querySelector('#bidTemplate');
+                            while(template.parentNode.hasChildNodes()) {
+                                if (template.parentNode.lastChild == template)
+                                    break;
+                                template.parentNode.removeChild(template.parentNode.lastChild);
+                            }
+                            for (var i = 0; i < bids.length; i++) {
+
+                                // Format date
+                                var date = bids[i].BidTime.substring(5, 7) + "/" +
+                                           bids[i].BidTime.substring(8, 10) + "/" +
+                                           bids[i].BidTime.substring(0, 4) + ", " +
+                                           bids[i].BidTime.substring(11, 16);
+
+                                var clone = template.content.cloneNode(true);
+                                var td = clone.querySelectorAll('td');
+                                td[0].innerHTML = date; //bids[i].BidTime;
+                                td[1].innerHTML = bids[i].Username;
+                                td[2].innerHTML = "$" + bids[i].Amount;
+                                template.parentNode.appendChild(clone);
+                            }
+                            myMap(myUser.U_Location);
+
+                            console.log("Getting bid rows");
+                            var bidRows = document.getElementById("bidTable").rows;
+                            console.log("bidRows.length=" + bidRows.length);
+
+                            for (var j = 0; j < bidRows.length; j++) {
+                                bidRows[j].onClick = function() {
+                                    console.log("Bid " + j + " selected!");
+                                }
+                            }
+
+                        }).catch(function(response) {
+                            console.log("error getting bids");
+                        })
                     }
+                };
+            }
+            //var btn = document.getElementById("post-1");
+
+            // Get the <span> element that closes the modal
+            var span = document.getElementsByClassName("close")[0];
+
+            // When the user clicks the button, open the modal
+            /*btn.onclick = function() {
+                modal.style.display = "block";
+            }*/
+
+            // When the user clicks on <span> (x), close the modal
+            span.onclick = function() {
+                modal.style.display = "none";
+                /* set flag */
+                expanded = 0;
+            }
+
+            // When the user clicks anywhere outside of the modal, close it
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                    /* set flag */
+                    expanded = 0;
                 }
-            } while (swapped);
-
-            var template = document.querySelector('#tmplt');
-            for (var i = 0; i < posts.length; i++) {
-                var currRow = document.getElementById("post-"+i);
-                var td = currRow.querySelectorAll('td');
-                td[0].innerHTML = posts[i].P_Title;
-                td[1].innerHTML = posts[i].Username;
-                td[2].innerHTML = posts[i].P_Location;
-                var date = posts[i].CreationTime.substring(0,10);
-                var day = date.substring(8,date.length);
-                var month = date.substring(5,7);
-                var year = date.substring(0,4);
-
-                date = month + "/" + day + "/" + year;
-
-                td[3].innerHTML = date;
             }
+			console.log(response.status);
+			console.log(response);
+			if(response.status == 200){
+				console.log("success");
+				//window.location.href = 'http://localhost:8081/index.html';
+			}else if(response.status == 401){
+				console.log("failure");
+				//console.log(response.data);
+				//window.location.href = 'http://localhost:8081/login.html';
+			}
+			//load response
+		}).catch(function(response) {
+			$scope.user = null;
+			console.log(response.status);
+			console.log(response);
+			if(response.status == 401){
+				console.log("failure");
+				//window.location.href = 'http://localhost:8081/login.html';
+			}
+			//load response
+		})
 
-             /* set up each rows's onClick actions */
-            setupPosts(posts);
+	};
 
-            console.log(response.status);
-            console.log(response);
-            if(response.status == 200){
-                console.log("success");
-            }else if(response.status == 401){
-                console.log("failure");
-            }
-        }).catch(function(response) {
-            console.log(response.status);
-            console.log(response);
-            if(response.status == 401){
-                console.log("failure");
-            }
-        })
-    };
-
-    $scope.sortByAge = function() {
-        var time1;
+	$scope.sortByAge = function() {
+	    var time1;
         var time2;
         var temp;
         var swapped;
-        $http.post('/GetAllPosts').then(function(response) {
-            posts = response.data.result;
+        $http.post('/getUserPosts').then(function(response) {
+            posts = response.data.Result;
 
-            /* Sort posts by date */
+            //Sort by date
             do {
                 swapped = false;
                 for (var i=0; i < posts.length-1; i++) {
@@ -172,7 +230,7 @@ $scope.sortByLowestBid = function() {
             for (var i = 0; i < posts.length; i++) {
                 var currRow = document.getElementById("post-"+i);
                 var td = currRow.querySelectorAll('td');
-                td[0].innerHTML = posts[i].P_Title;
+                td[0].innerHTML = posts[i].P_Description;
                 td[1].innerHTML = posts[i].Username;
                 td[2].innerHTML = posts[i].P_Location;
                 var date = posts[i].CreationTime.substring(0,10);
@@ -185,34 +243,289 @@ $scope.sortByLowestBid = function() {
                 td[3].innerHTML = date;
             }
 
-             /* set up each rows's onClick actions */
-            setupPosts(posts);
+            // Get the modal
+            var modal = document.getElementById('myModal');
+
+            // Get the button that opens the modal
+            var rows = document.getElementById("postTable").rows;
+
+            for (var i = 0; i < rows.length; i++) {
+                //console.log(postData);
+                rows[i].onclick = function() {
+                    if (expanded == 0) {
+                        /* set flag */
+                        expanded = 1;
+                        //console.log(arr);
+                        rowID = this.id;
+                        var j = 0;
+                        var str;
+                        for(j; j < rows.length; j++) {
+                           str = "post-"+j;
+                           if (str === rowID)
+                                break;
+                        }
+                        var post = posts[j];
+
+                        $scope.owner = post.Username;
+
+                        $scope.phone = post.PhoneNumber;
+                        $scope.desc = post.U_Description;
+                        $scope.pid = post.Pid;
+                        $scope.location = post.P_Location;
+                        address = post.P_Location;
+                        modal.style.display = "block";
+                        $scope.$apply();
+                         // Load bid history for current post
+                        var bidData = new Object();
+                        bidData.PostId = post.Pid;
+                        $http.post("/GetBids", bidData).then(function(response) {
+
+                            var bids = response.data.Result;
+                            var bidData = []
+                            var template = document.querySelector('#bidTemplate');
+                            while(template.parentNode.hasChildNodes()) {
+                                if (template.parentNode.lastChild == template)
+                                    break;
+                                template.parentNode.removeChild(template.parentNode.lastChild);
+                            }
+                            for (var i = 0; i < bids.length; i++) {
+
+                                // Format date
+                                var date = bids[i].BidTime.substring(5, 7) + "/" +
+                                           bids[i].BidTime.substring(8, 10) + "/" +
+                                           bids[i].BidTime.substring(0, 4) + ", " +
+                                           bids[i].BidTime.substring(11, 16);
+
+                                var clone = template.content.cloneNode(true);
+                                var td = clone.querySelectorAll('td');
+                                td[0].innerHTML = date; //bids[i].BidTime;
+                                td[1].innerHTML = bids[i].Username;
+                                td[2].innerHTML = "$" + bids[i].Amount;
+                                template.parentNode.appendChild(clone);
+                            }
+                            myMap(myUser.U_Location);
+
+                        }).catch(function(response) {
+                            console.log("error getting bids");
+                        })
+                    }
+                };
+            }
+            //var btn = document.getElementById("post-1");
+
+            // Get the <span> element that closes the modal
+            var span = document.getElementsByClassName("close")[0];
+
+            // When the user clicks the button, open the modal
+
+            // When the user clicks on <span> (x), close the modal
+            span.onclick = function() {
+                /* set flag */
+                expanded = 0;
+                modal.style.display = "none";
+            }
+
+            // When the user clicks anywhere outside of the modal, close it
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    /* set flag */
+                    expanded = 0;
+                    modal.style.display = "none";
+                }
+            }
 
             console.log(response.status);
             console.log(response);
             if(response.status == 200){
                 console.log("success");
+                //window.location.href = 'http://localhost:8081/index.html';
             }else if(response.status == 401){
                 console.log("failure");
+                //console.log(response.data);
+                //window.location.href = 'http://localhost:8081/login.html';
             }
+            //load response
         }).catch(function(response) {
+            //$scope.user = null;
             console.log(response.status);
             console.log(response);
             if(response.status == 401){
                 console.log("failure");
+                //window.location.href = 'http://localhost:8081/login.html';
             }
+            //load response
         })
-    };
+	};
 
-    $scope.sortByDistance = function() {
-                var time1;
+$scope.sortByLowestBid = function() {
+	    var bidVal1;
+        var bidVal2;
+        var temp;
+        var swapped;
+        $http.post('/getUserPosts').then(function(response) {
+            posts = response.data.Result;
+
+            //Sort by date
+            do {
+                swapped = false;
+                for (var i=0; i < posts.length-1; i++) {
+                    bidVal1 = posts[i].NumberOfBids;
+                    bidVal2 = posts[i+1].NumberOfBids;
+
+                    if (bidVal1 < bidVal2) {
+                        //console.log("I'm In!");
+                        var temp = posts[i];
+                        posts[i] = posts[i+1];
+                        posts[i+1] = temp;
+                        swapped = true;
+                    }
+                }
+            } while (swapped);
+
+            var template = document.querySelector('#tmplt');
+            for (var i = 0; i < posts.length; i++) {
+                var currRow = document.getElementById("post-"+i);
+                var td = currRow.querySelectorAll('td');
+                td[0].innerHTML = posts[i].P_Description;
+                td[1].innerHTML = posts[i].Username;
+                td[2].innerHTML = posts[i].P_Location;
+                var date = posts[i].CreationTime.substring(0,10);
+                var day = date.substring(8,date.length);
+                var month = date.substring(5,7);
+                var year = date.substring(0,4);
+
+                date = month + "/" + day + "/" + year;
+
+                td[3].innerHTML = date;
+            }
+
+            // Get the modal
+            var modal = document.getElementById('myModal');
+
+            // Get the button that opens the modal
+            var rows = document.getElementById("postTable").rows;
+
+            for (var i = 0; i < rows.length; i++) {
+                //console.log(postData);
+                rows[i].onclick = function() {
+                    if (expanded == 0) {
+                        /* set flag */
+                        expanded = 1;
+                        //console.log(arr);
+                        rowID = this.id;
+                        var j = 0;
+                        var str;
+                        for(j; j < rows.length; j++) {
+                           str = "post-"+j;
+                           if (str === rowID)
+                                break;
+                        }
+                        var post = posts[j];
+
+                        $scope.owner = post.Username;
+
+                        $scope.phone = post.PhoneNumber;
+                        $scope.desc = post.U_Description;
+                        $scope.pid = post.Pid;
+                        $scope.location = post.P_Location;
+                        address = post.P_Location;
+                        modal.style.display = "block";
+                        $scope.$apply();
+
+                        // Load bid history for current post
+                        var bidData = new Object();
+                        bidData.PostId = post.Pid;
+                        $http.post("/GetBids", bidData).then(function(response) {
+
+                            var bids = response.data.Result;
+                            var bidData = []
+                            var template = document.querySelector('#bidTemplate');
+                            while(template.parentNode.hasChildNodes()) {
+                                if (template.parentNode.lastChild == template)
+                                    break;
+                                template.parentNode.removeChild(template.parentNode.lastChild);
+                            }
+                            for (var i = 0; i < bids.length; i++) {
+
+                                // Format date
+                                var date = bids[i].BidTime.substring(5, 7) + "/" +
+                                           bids[i].BidTime.substring(8, 10) + "/" +
+                                           bids[i].BidTime.substring(0, 4) + ", " +
+                                           bids[i].BidTime.substring(11, 16);
+
+                                var clone = template.content.cloneNode(true);
+                                var td = clone.querySelectorAll('td');
+                                td[0].innerHTML = date; //bids[i].BidTime;
+                                td[1].innerHTML = bids[i].Username;
+                                td[2].innerHTML = "$" + bids[i].Amount;
+                                clone.onClick = function() {
+                                    console.log("bid " + i + " clicked!");
+                                }
+                                template.parentNode.appendChild(clone);
+                            }
+
+                            myMap(myUser.U_Location);
+
+                        }).catch(function(response) {
+                            console.log("error getting bids");
+                        })
+                    }
+                };
+            }
+            //var btn = document.getElementById("post-1");
+
+            // Get the <span> element that closes the modal
+            var span = document.getElementsByClassName("close")[0];
+
+            // When the user clicks the button, open the modal
+
+            // When the user clicks on <span> (x), close the modal
+            span.onclick = function() {
+                /* set flag */
+                expanded = 0;
+                modal.style.display = "none";
+            }
+
+            // When the user clicks anywhere outside of the modal, close it
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    /* set flag */
+                    expanded = 0;
+                    modal.style.display = "none";
+                }
+            }
+
+            console.log(response.status);
+            console.log(response);
+            if(response.status == 200){
+                console.log("success");
+                //window.location.href = 'http://localhost:8081/index.html';
+            }else if(response.status == 401){
+                console.log("failure");
+                //console.log(response.data);
+                //window.location.href = 'http://localhost:8081/login.html';
+            }
+            //load response
+        }).catch(function(response) {
+            //$scope.user = null;
+            console.log(response.status);
+            console.log(response);
+            if(response.status == 401){
+                console.log("failure");
+                //window.location.href = 'http://localhost:8081/login.html';
+            }
+            //load response
+        })
+	};
+
+	$scope.sortByDistance = function() {
+        	    var time1;
                 var time2;
                 var temp;
                 var swapped;
-                $http.post('/GetAllPosts').then(function(response) {
-                    posts = response.data.result;
+                $http.post('/getUserPosts').then(function(response) {
+                    posts = response.data.Result;
 
-                    /* sort posts by distance to user's location */
                     do {
                         swapped = false;
                         for (var i=0; i < posts.length-1; i++) {
@@ -221,6 +534,7 @@ $scope.sortByLowestBid = function() {
                             dist2 = getDistanceFromLatLonInKm(posts[i+1].P_Lat, posts[i+1].P_Long, myUser.U_Lat, myUser.U_Long);
 
                             if (dist1 < dist2) {
+                                //console.log("I'm In!");
                                 var temp = posts[i];
                                 posts[i] = posts[i+1];
                                 posts[i+1] = temp;
@@ -233,39 +547,97 @@ $scope.sortByLowestBid = function() {
                     for (var i = 0; i < posts.length; i++) {
                         var currRow = document.getElementById("post-"+i);
                         var td = currRow.querySelectorAll('td');
-                        td[0].innerHTML = posts[i].P_Title;
+                        td[0].innerHTML = posts[i].P_Description;
                         td[1].innerHTML = posts[i].Username;
                         td[2].innerHTML = posts[i].P_Location;
                     }
 
-                    /* set up each rows's onClick actions */
-                    setupPosts(posts);
+                    // Get the modal
+                    var modal = document.getElementById('myModal');
 
-                    console.log(response.status);
+                    // Get the button that opens the modal
+                    var rows = document.getElementsByTagName("tr");
+
+                    for (var i = 0; i < rows.length; i++) {
+                        //console.log(postData);
+                        rows[i].onclick = function() {
+                            //console.log(arr);
+                            rowID = this.id;
+                            var j = 0;
+                            var str;
+                            for(j; j < rows.length; j++) {
+                               str = "post-"+j;
+                               if (str === rowID)
+                                    break;
+                            }
+                            var post = posts[j];
+
+                            $scope.owner = post.Username;
+
+                            $scope.phone = post.PhoneNumber;
+                            $scope.desc = post.U_Description;
+                            $scope.pid = post.Pid;
+                            $scope.location = post.P_Location;
+                            address = post.P_Location;
+                            modal.style.display = "block";
+                            $scope.$apply();
+                            myMap(myUser.U_Location);
+                        };
+                    }
+                    //var btn = document.getElementById("post-1");
+
+                    // Get the <span> element that closes the modal
+                    var span = document.getElementsByClassName("close")[0];
+
+                    // When the user clicks the button, open the modal
+                    /*btn.onclick = function() {
+                        modal.style.display = "block";
+                    }*/
+
+                    // When the user clicks on <span> (x), close the modal
+                    span.onclick = function() {
+                        modal.style.display = "none";
+                    }
+
+                    // When the user clicks anywhere outside of the modal, close it
+                    window.onclick = function(event) {
+                        if (event.target == modal) {
+                            modal.style.display = "none";
+                        }
+                    }
+
+                    //console.log(response.status);
                     console.log(response);
                     if(response.status == 200){
                         console.log("success");
+                        //window.location.href = 'http://localhost:8081/index.html';
                     }else if(response.status == 401){
                         console.log("failure");
+                        //console.log(response.data);
+                        //window.location.href = 'http://localhost:8081/login.html';
                     }
+                    //load response
                 }).catch(function(response) {
+                    //$scope.user = null;
                     console.log(response.status);
                     console.log(response);
                     if(response.status == 401){
                         console.log("failure");
+                        //window.location.href = 'http://localhost:8081/login.html';
                     }
+                    //load response
                 })
         };
 
-    $scope.sortByNumOfBids = function() {
-            var time1;
+	$scope.sortByNumOfBids = function() {
+    	    var time1;
             var time2;
             var temp;
             var swapped;
-            $http.post('/GetAllPosts').then(function(response) {
-                posts = response.data.result;
+            $http.post('/getUserPosts').then(function(response) {
+                posts = response.data.Result;
 
-                /* Sort by number of bids */
+                //Sort by date
                 do {
                     swapped = false;
                     for (var i=0; i < posts.length-1; i++) {
@@ -273,6 +645,7 @@ $scope.sortByLowestBid = function() {
                         nbids2 = new Date(posts[i+1].NumberOfBids);
 
                         if (nbids1 < nbids2) {
+                            //console.log("I'm In!");
                             var temp = posts[i];
                             posts[i] = posts[i+1];
                             posts[i+1] = temp;
@@ -285,7 +658,7 @@ $scope.sortByLowestBid = function() {
                 for (var i = 0; i < posts.length; i++) {
                     var currRow = document.getElementById("post-"+i);
                     var td = currRow.querySelectorAll('td');
-                    td[0].innerHTML = posts[i].P_Title;
+                    td[0].innerHTML = posts[i].P_Description;
                     td[1].innerHTML = posts[i].Username;
                     td[2].innerHTML = posts[i].P_Location;
                     var date = posts[i].CreationTime.substring(0,10);
@@ -298,158 +671,89 @@ $scope.sortByLowestBid = function() {
                     td[3].innerHTML = date;
                 }
 
-                /* set up each rows's onClick actions */
-                setupPosts(posts);
+                // Get the modal
+                var modal = document.getElementById('myModal');
 
-                console.log(response.status);
+                // Get the button that opens the modal
+                var rows = document.getElementById("postTable").rows;
+
+                for (var i = 0; i < rows.length; i++) {
+                    //console.log(postData);
+                    rows[i].onclick = function() {
+                        if (expanded == 0) {
+                            /* set flag */
+                            expanded = 1;
+                            //console.log(arr);
+                            rowID = this.id;
+                            var j = 0;
+                            var str;
+                            for(j; j < rows.length; j++) {
+                               str = "post-"+j;
+                               if (str === rowID)
+                                    break;
+                            }
+                            var post = posts[j];
+
+                            $scope.owner = post.Username;
+
+                            $scope.phone = post.PhoneNumber;
+                            $scope.desc = post.U_Description;
+                            $scope.pid = post.Pid;
+                            $scope.location = post.P_Location;
+                            address = post.P_Location;
+                            modal.style.display = "block";
+                            $scope.$apply();
+                        }
+                    };
+                }
+                //var btn = document.getElementById("post-1");
+
+                // Get the <span> element that closes the modal
+                var span = document.getElementsByClassName("close")[0];
+
+                // When the user clicks the button, open the modal
+                /*btn.onclick = function() {
+                    modal.style.display = "block";
+                }*/
+
+                // When the user clicks on <span> (x), close the modal
+                span.onclick = function() {
+                    /* set flag */
+                    expanded = 0;
+                    modal.style.display = "none";
+                }
+
+                // When the user clicks anywhere outside of the modal, close it
+                window.onclick = function(event) {
+                    if (event.target == modal) {
+                        /* set flag */
+                        expanded = 0;
+                        modal.style.display = "none";
+                    }
+                }
+
+                //console.log(response.status);
                 console.log(response);
                 if(response.status == 200){
                     console.log("success");
+                    //window.location.href = 'http://localhost:8081/index.html';
                 }else if(response.status == 401){
                     console.log("failure");
+                    //console.log(response.data);
+                    //window.location.href = 'http://localhost:8081/login.html';
                 }
+                //load response
             }).catch(function(response) {
+                //$scope.user = null;
                 console.log(response.status);
                 console.log(response);
                 if(response.status == 401){
                     console.log("failure");
+                    //window.location.href = 'http://localhost:8081/login.html';
                 }
+                //load response
             })
     };
-
-    /* Called when the "Place bid" button is clicked */
-    $scope.placeBid = function() {
-
-            // Check that user isn't poster
-            if ($scope.owner == myUser.Username) {
-                alert("You can't bid on your own post!");
-                return;
-            }
-
-            if ($scope.bid.Amount == "") {
-                alert("No bid amount entered!");
-                return;
-            }
-
-            $scope.bid.PostId = $scope.Pid;
-            $scope.bid.UserId = myUser.Uid;
-
-            // Bid
-            $http.post('/Bid', $scope.bid).then(function(response) {
-                // Update bids displayed
-                var bidData = new Object();
-                bidData.PostId = $scope.Pid;
-                
-                loadBids(bidData);
-                
-            }).catch(function(response) {
-                console.log("error bidding");
-            })
-    };
-
-    /* sets up all posts onClick actions (display info, load bids, and map) */
-    function setupPosts(posts) {
-        // Get the modal and the table rows
-        var modal = document.getElementById('myModal');
-        var rows = document.getElementById("postTable").rows;
-
-        /* set the onclick action for each row/post */
-        for (var i = 0; i < rows.length; i++) {
-            rows[i].onclick = function() {
-                /* only perform onclick action if there is no post expanded currently */
-                if (expanded == 0) {
-                    /* set flag */
-                    expanded = 1;
-                   
-                    rowID = this.id;
-                    var j = 0;
-                    var str;
-                    for(j; j < rows.length; j++) {
-                       str = "post-"+j;
-                       if (str === rowID)
-                            break;
-                    }
-                    var post = posts[j];
-
-                    /* set display content */
-                    $scope.owner = post.Username;
-                    $scope.phone = post.PhoneNumber;
-                    $scope.desc = post.P_Description;
-                    $scope.title = post.P_Title;
-                    $scope.Pid = post.Pid;
-
-                    $scope.location = post.P_Location;
-                    address = post.P_Location;
-                    modal.style.display = "block";
-                    $scope.$apply();
-
-                    // Load bid history for current post
-                    var bidData = new Object();
-                    bidData.PostId = post.Pid;
-                    loadBids(bidData);
-                }
-            };
-        }
-
-        // Get the <span> element that closes the modal
-        var span = document.getElementsByClassName("close")[0];
-
-        // When the user clicks on <span> (x), close the modal
-        span.onclick = function() {
-            /* set flag */
-            expanded = 0;
-            modal.style.display = "none";
-        }
-
-        // When the user clicks anywhere outside of the modal, close it
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                /* set flag */
-                expanded = 0;
-                modal.style.display = "none";
-            }
-        }
-    }
-
-    /* load bids for a post */
-    function loadBids(bidData) {
-        /* make request */
-        $http.post("/GetBids", bidData).then(function(response) {
-            var bids = response.data.Result;
-            var bidData = []
-            var template = document.querySelector('#bidTemplate');
-            while(template.parentNode.hasChildNodes()) {
-                if (template.parentNode.lastChild == template)
-                    break;
-                template.parentNode.removeChild(template.parentNode.lastChild);
-            }
-
-            /* clone template row and fill in bid info */
-            for (var i = 0; i < bids.length; i++) {
-
-                // Format date
-                var date = bids[i].BidTime.substring(5, 7) + "/" +
-                           bids[i].BidTime.substring(8, 10) + "/" +
-                           bids[i].BidTime.substring(0, 4) + ", " +
-                           bids[i].BidTime.substring(11, 16);
-
-                var clone = template.content.cloneNode(true);
-                var td = clone.querySelectorAll('td');
-
-                /* fill in row information */
-                td[0].innerHTML = date; 
-                td[1].innerHTML = bids[i].Username;
-                td[2].innerHTML = "$" + bids[i].Amount;
-                td[3].innerHTML = bids[i].AVG_BidRate + "/5";
-                template.parentNode.appendChild(clone);
-            }
-            /* call display map function */
-            myMap(myUser.U_Location);
-
-        }).catch(function(response) {
-            console.log("error getting bids");
-        })
-    }
 
 
     // Called when the "Place bid" button is clicked
