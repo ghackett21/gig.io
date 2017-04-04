@@ -48,7 +48,7 @@ function bid(userId, postId, amount, callback) {
 			}
 			else {
 				/* get any current bid by same user on the same post */
-				var selectExistingBid = "SELECT Bidid, Amount FROM Bids WHERE userId=" + userId " AND postId=" + postId;
+				var selectExistingBid = "SELECT Bidid, Amount FROM Bids WHERE userId=" + userId + " AND postId=" + postId;
 
 				connection.query(selectExistingBid, function(err, rows){ 
 					if (err) {
