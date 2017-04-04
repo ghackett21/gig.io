@@ -22,7 +22,7 @@ module.exports = function(req, res) {
 	}
 
 	/* check for missing args */
-	if (req.body.username == undefined || req.body.password == undefined) {
+	if (req.body.username == undefined || req.body.password == undefined || req.body.location == undefined || req.body.lat == undefined || req.body.lng == undefined) {
 		console.log("Register: undefined args");
 		callback(-1);
 	}
@@ -37,7 +37,7 @@ module.exports = function(req, res) {
  */
 function register(user, callback) {
 	
-	console.log("Register: ", user.username, user.password, user.email);
+	console.log("Register: ", user.username, user.password, user.email, user.location, user.lat, user.lng);
 	
 	/* check for existing user with username */
 	var select = "SELECT * FROM Users WHERE username LIKE " + connection.escape(user.username);
@@ -57,7 +57,7 @@ function register(user, callback) {
 				var hash = bcrypt.hashSync(user.password, 10);
 				console.log("HASH = " + hash);
 				/* if username is not already used */
-				var insert = "INSERT INTO Users (Username, Password, EmailAddress, PhoneNumber, NumberOfStrikes, NUM_BidRate, NUM_PostRate, AVG_BidRate, AVG_PostRate, DateJoined) VALUES (" + connection.escape(user.username) + ", '" + hash + "'," + connection.escape(user.email) + "," + connection.escape(user.phone) + " , 0, 0, 0, 0, 0, '" + getDate() + "' )";
+				var insert = "INSERT INTO Users (Username, Password, EmailAddress, PhoneNumber, NumberOfStrikes, NUM_BidRate, NUM_PostRate, AVG_BidRate, AVG_PostRate, DateJoined, U_Location, U_Lat, U_Long) VALUES (" + connection.escape(user.username) + ", '" + hash + "'," + connection.escape(user.email) + "," + connection.escape(user.phone) + " , 0, 0, 0, 0, 0, '" + getDate() + "' '" + connection.escape(user.location), + "' " + user.lat, + " " + user.lng + ")";
 
 				connection.query(insert, function(err, rows) {
 					if (err) {
