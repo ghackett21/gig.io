@@ -52,14 +52,11 @@ function bid(userId, postId, amount, callback) {
 
 				connection.query(selectExistingBid, function(err, rows){ 
 					if (err) {
-						console.log("Bid: error getting existing bid!");
-						return callback(-2);
+						console.log("Bid: no existing bid");
+						insertBid(userId, postId, amount, callback);
 					}
 					else {
-						if (rows.length == 0) {
-							insertBid(userId, postId, amount, callback);
-						}
-						else if (rows[0].Amount < amount) {
+						if (rows[0].Amount < amount) {
 							console.log("Cannot bid more than already bid on same post!");
 							return callback(-4);
 						}
