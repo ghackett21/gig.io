@@ -30,7 +30,7 @@ app.controller("registrationController", [ '$scope', '$http', function($scope, $
             return;
         }
         else {
-                getCoordinatesForRegiste($scope.user.location);
+                getCoordinatesForRegister($scope.user.location);
         }
     };
 
