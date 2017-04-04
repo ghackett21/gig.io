@@ -11,10 +11,10 @@ var connection = require('./../helpers/connection');
  	/* callback to handle response */
  	var callback = function(result) {
  		if (result < 0) {
- 			res.json({"Response": "GetUserPosts failed", "Result": "", "State": result});
+ 			res.json({"Response": "GetUserPosts failed", "result": "", "State": result});
  		}
  		else {
- 			res.json({"Response": "GetUserPosts successful", "Result": result, "State": 0});
+ 			res.json({"Response": "GetUserPosts successful", "result": result, "State": 0});
  		}
  	}
 

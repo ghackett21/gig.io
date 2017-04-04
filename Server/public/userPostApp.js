@@ -30,9 +30,9 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
         /* request post data */
         $http.post('/getUserPosts').then(function(response) {
             console.log("response: " + response)         
-            $scope.count = response.data.Result.length;
+            $scope.count = response.data.result.length;
             $scope.index = 0;
-            arr = response.data.result;
+            arr = response.data.esult;
             var postData = [];
             var template = document.querySelector('#tmplt');
             /* make new rows in the post table for each post */
