@@ -78,7 +78,7 @@ function bid(userId, postId, amount, callback) {
 	});
 }
 
-function inserBid(userId, postId, amount, callback) {
+function insertBid(userId, postId, amount, callback) {
 	var bidTime = getDate();
 	var insert = "INSERT INTO Bids (Uid, Pid, BidTime, Amount) VALUES (" + userId + ", " + postId + ", '" + bidTime + "', " + amount + ")";
 
