@@ -125,6 +125,9 @@ function insertBid(userId, postId, amount, callback) {
 									}
 								});
 							}
+							else {
+								getBidsHelper(postId, callback);
+							}
 						}
 					});
 				}
