@@ -2,7 +2,7 @@ var connection = require('./../helpers/connection');
 
 /**
  * Get user info
- * Accepts: userId
+ * Accepts: userId (optional)
  * Returns user info (not password)
  */
 module.exports = function(req, res) {
@@ -19,8 +19,12 @@ module.exports = function(req, res) {
  	}
 
  	/* check for undefined args */
- 
- 	getUser(req.user.Uid, callback);
+ 	if (user.body.userId  == undefined) {
+ 		getUser(req.user.Uid, callback);
+ 	} 
+ 	else {
+ 		getUser(req.body.userId, callback);
+ 	}
  }
 
  function getUser(userId, callback) {

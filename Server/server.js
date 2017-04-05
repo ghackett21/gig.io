@@ -44,6 +44,7 @@ var getUserRatings = require('./ratings/getUserRatings');
 
 /* report endpoints */
 var getUserReports = require('./reports/getUserReports');
+var createReport = require('./reports/createReport');
 
 
 passport.serializeUser(function(user, done) {
@@ -264,6 +265,9 @@ app.post("/GetUserReposts", function(req, res) {
 	getUserReposts(req, res);
 });
 
+app.post("/CreateReport", function(req, res) {
+	createReport(req, res);
+});
 
 app.post("/sendMail", function(req, res) {
 
