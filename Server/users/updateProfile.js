@@ -26,7 +26,7 @@ module.exports = function(req, res) {
 /**
  * Updates user info in database
  */
-function updateEmail(userID, email, description, profileImage, phoneNumber, callback) {
+function updateEmail(userId, email, description, profileImage, phoneNumber, callback) {
 	console.log("UpdateProfile: ", userId, email, description, location, phonenNumber);
 
 	if (email != undefined) {
