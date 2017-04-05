@@ -42,6 +42,9 @@ var bid = require('./bidding/bid');
 var createRating = require('./ratings/createRating');
 var getUserRatings = require('./ratings/getUserRatings');
 
+/* report endpoints */
+var getUserReports = require('./reports/getUserReports');
+
 
 passport.serializeUser(function(user, done) {
   console.log("serializing user : " + user);
@@ -254,7 +257,11 @@ app.post('GetUserRatings', function(req, res) {
 })
 
 app.post("/CreateRating", function(req, res) {
- createRating(req, res);
+ 	createRating(req, res);
+});
+
+app.post("/GetUserReposts", function(req, res) {
+	getUserReposts(req, res);
 });
 
 
