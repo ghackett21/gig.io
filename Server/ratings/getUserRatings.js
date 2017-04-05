@@ -1,8 +1,8 @@
 var connection = require('./../helpers/connection')
 
 /**
- * Returns the ratings for the currently logged in user
- * Accepts: nothing
+ * Returns the ratings for the given user or the currently logged in user if no userId is specified
+ * Accepts: userId (optional)
  * Returns: average ratings for both bidding and posting
  */
 module.exports = function(req, res) {
@@ -17,13 +17,19 @@ module.exports = function(req, res) {
   		}
  	}
 
- 	getUserRatings(req.user.Uid, callback);
+ 	if (req.body.userId == undefined) {
+ 		getUserRatings(req.user.Uid, callback);
+ 	}
+ 	else {
+ 		getUserRatings(req.body.userId, callback);
+ 	}
 }
 
 function getUserRatings(userId, callback) {
 	console.log("GetUserRatings userId " + userId);
 	
-	var select = "SELECT FROM AVG_PostRate, AVG_BidRate FROM Users WHERE Uid LIKE " + userId;
+	/* NEEDS TO RETURN INDIVIDUAL RATINGS - NOT AVERAGE RATINGS */
+	var select = "SELECT * FROM RATINGS WHERE Uid LIKE " + userId;
 
 	connection.query(select, function(err, rows) { 
 		if (err) {
@@ -31,7 +37,7 @@ function getUserRatings(userId, callback) {
 			return callback(-2);
 		}
 		else {
-			return callback(rows[0]);
+			return callback(rows);
 		}
 	});
 }
