@@ -47,7 +47,7 @@ function updateEmail(userId, email, description, profileImage, phoneNumber, call
 	}
 }
 
-function updateDsecription(userId, dsecription, profileImage, phoneNumber, callback) {
+function updateDescription(userId, dsecription, profileImage, phoneNumber, callback) {
 	console.log("Update user description");
 
 	if (description != undefined) {
@@ -95,7 +95,7 @@ function updatePhone(userId, phoneNumber, callback) {
 	if (phoneNumber != undefined) {
 		var update_phone = "Update Users SET PhoneNumber=" + connection.escape(phoneNumber) + " WHERE Uid=" + userId;
 
-		connection.query(update_image, function(err, rows) { 
+		connection.query(update_phone, function(err, rows) { 
 			if (err) {
 				console.log("Update user phone number: database error " + err);
 				return callback(-2);
