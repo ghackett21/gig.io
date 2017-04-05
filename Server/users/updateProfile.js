@@ -19,32 +19,93 @@ module.exports = function(req, res) {
 		}
 	}
 
-	/* check for missing args */
-	if (req.body.userId == undefined || req.body.Email == undefined || req.body.Description == undefined || req.body.ProfileImage == undefined || req.body.PhoneNumber == undefined) {
-		console.log("Update Profile: undefined args");
-		callback(-1);
-	}
-	else {
-		updateProfile(req.body.userId, req.body.Email, req.body.Description, req.body.ProfileImage, req.body.PhoneNumber, callback);
-	}
+	
+	updateEmail(req.body.userId, req.body.Email, req.body.Description, req.body.ProfileImage, req.body.PhoneNumber, callback);
 }
 
 /**
  * Updates user info in database
  */
-function updateProfile(userID, username, email, description, profileImage, location, phoneNumber, callback) {
+function updateEmail(userID, email, description, profileImage, phoneNumber, callback) {
 	console.log("UpdateProfile: ", userId, email, description, location, phonenNumber);
 
-	var update = "UPDATE Users SET EmailAddress='" + email + "', Description='" + description + "', PhoneNumber='" + phoneNumber + "' WHERE Uid=" + userId;
+	if (email != undefined) {
+		var update_email = "Update Users SET EmailAddress=" + connection.escape(email) + " WHERE Uid=" + userId;
 
-	connection.query(update, function(err, rows) {
-		if (err) {
-			console.log("UpdateProfile: database error:" + err);
+		connection.query(update_email, function(err, rows) { 
+				if (err) {
+					console.log("UpdateProfile email: database error: " + err);
+					return callback(-2);
+				}
+				else {
+					updateDescription(userId, description, profileImage, phoneNumber, callback);
+				}
+		});
+	}
+	else {
+		updateDescription(userId, description, profileImage, phoneNumber, callback);
+	}
+}
 
-			return callback(-2);
-		}
-		else {
-			return callback(0);
-		}
-	});
+function updateDsecription(userId, dsecription, profileImage, phoneNumber, callback) {
+	console.log("Update user description");
+
+	if (description != undefined) {
+		var update_description = "Update Users SET U_Description=" + connection.escape(description) + " WHERE Uid=" + userId;
+
+		connection.query(update_description, function(err, rows) { 
+			if (err) {
+				console.log("Update user description: database error " + err);
+				return callback(-2);
+			}
+			else {
+				updateImage(userId, profileImage, phoneNumber, callback);
+			}
+		});
+	}
+	else {
+		updateImage(userId, profileImage, phoneNumber, callback);
+	}
+}
+
+function updateImage(userId, profileImage, phoneNumber, callback) {
+	console.log("Update user image");
+
+	if (profileImage != undefined) {
+		var update_iamge = "Update Users SET U_Image=" + connection.escape(profileImage) + " WHERE Uid=" + userId;
+
+		connection.query(update_image, function(err, rows) { 
+			if (err) {
+				console.log("Update user image: database error " + err);
+				return callback(-2);
+			}
+			else {
+				updatePhone(userId, phoneNumber, callback)
+			}
+		});
+	}
+	else {
+		updatePhone(userId, phoneNumber, callback)
+	}
+}
+
+function updatePhone(userId, phoneNumber, callback) {
+	console.log("Update user phone number");
+
+	if (phoneNumber != undefined) {
+		var update_phone = "Update Users SET PhoneNumber=" + connection.escape(phoneNumber) + " WHERE Uid=" + userId;
+
+		connection.query(update_image, function(err, rows) { 
+			if (err) {
+				console.log("Update user phone number: database error " + err);
+				return callback(-2);
+			}
+			else {
+					return callback(0);
+			}
+		});
+	}
+	else {
+		return callback(0);
+	}
 }
