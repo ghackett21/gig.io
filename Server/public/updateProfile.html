@@ -18,18 +18,18 @@
 <form name="updateProfile">
       
         <label for="Update Email">Update Email:</label>
-        <input padding-left="5px" ng-model="user.username" id="username" type="text"  class="validate" required>
+        <input padding-left="5px" ng-model="user.email" id="email" type="text"  class="validate" required>
       <br>
         <label for="Update Description">Update Description:</label>
-        <input ng-model="user.email" id="email" type="email"  class="validate" required>
+        <input ng-model="user.description" id="description" type="email"  class="validate" required>
       <br>  
         <label for="Update Link">Update Image Link:	</label>
-        <input ng-model="user.password" id="password" type="password"  class="validate" required>
+        <input ng-model="user.image" id="iamge" type="text"  class="validate" required>
       <br>
         <label for="Update Phone Number">Update Phone Number:</label>
-        <input ng-model="user.password1" id="retyped password" type="password"  class="validate" required>
+        <input ng-model="user.phone" id="phone" type="tel" class="validate" required>
         <br>
-        <input ng-click="register()" type="submit" value="Submit">
+        <input ng-click="updateProfile()" type="submit" value="Submit">
     </form><br>
     
     </div>
