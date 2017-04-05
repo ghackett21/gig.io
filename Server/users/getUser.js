@@ -19,7 +19,7 @@ module.exports = function(req, res) {
  	}
 
  	/* check for undefined args */
- 	if (user.body.userId  == undefined) {
+ 	if (req.body.userId  == undefined) {
  		getUser(req.user.Uid, callback);
  	} 
  	else {
