@@ -17,7 +17,12 @@ module.exports = function(req, res) {
   		}
  	}
 
- 	getUserRatings(req.user.Uid, callback);
+ 	if (req.body.userId == undefined) {
+ 		getUserRatings(req.user.Uid, callback);
+ 	}
+ 	else {
+ 		getUserRatings(req.body.userId, callback);
+ 	}
 }
 
 function getUserRatings(userId, callback) {
