@@ -121,6 +121,7 @@ function insertBid(userId, postId, amount, callback) {
 										return callback(-2);
 									}
 									else {
+										console.log("Getting BIDS NOW");
 										getBidsHelper(postId, callback);
 									}
 								});
