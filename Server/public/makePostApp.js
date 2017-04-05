@@ -63,7 +63,7 @@ app.controller("makePostController", [ '$scope', '$http', function($scope, $http
                     console.log("error creating post");
                 });
            }
-        }
+        
     });
 
     }
