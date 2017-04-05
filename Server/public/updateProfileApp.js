@@ -3,7 +3,7 @@ var app = angular.module("myUpdateProfileApp", []);
 app.controller("updateProfileController", [ '$scope', '$http', function($scope, $http) {
     $scope.user;
 
-    $scope.register = function() {
+    $scope.updateProfile = function() {
         console.log("email = " + $scope.user.email);
         console.log("description = " + $scope.user.description);
         console.log("image link = " + $scope.user.image);
