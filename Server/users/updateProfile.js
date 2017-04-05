@@ -20,7 +20,7 @@ module.exports = function(req, res) {
 	}
 
 	
-	updateEmail(req.body.userId, req.body.Email, req.body.Description, req.body.ProfileImage, req.body.PhoneNumber, callback);
+	updateEmail(req.user.userId, req.body.Email, req.body.Description, req.body.ProfileImage, req.body.PhoneNumber, callback);
 }
 
 /**
