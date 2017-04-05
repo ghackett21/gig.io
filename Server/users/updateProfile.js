@@ -47,7 +47,7 @@ function updateEmail(userId, email, description, profileImage, phoneNumber, call
 	}
 }
 
-function updateDescription(userId, dsecription, profileImage, phoneNumber, callback) {
+function updateDescription(userId, description, profileImage, phoneNumber, callback) {
 	console.log("Update user description");
 
 	if (description != undefined) {
