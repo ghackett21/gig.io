@@ -15,7 +15,7 @@ app.controller("updateProfileController", [ '$scope', '$http', function($scope, 
             $scope.user = null;
             console.log(response);
             if(response.data.State == 0){
-                $scope.status = "Update Successful! Proceed to Login";
+                $scope.status = "Update Successful!";
             }
         }).catch(function(response) {
                     console.log("error updating profile");
