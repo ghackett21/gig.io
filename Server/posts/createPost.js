@@ -1,5 +1,6 @@
 var connection = require('./../helpers/connection');
 var getDate = require('./../helpers/getDate');
+
 /**
  * Creates a new post given the userId of the creator, the location, and the description/title
  * Accepts: UserId, Location, Description
@@ -7,7 +8,6 @@ var getDate = require('./../helpers/getDate');
  */
 module.exports = function(req, res) {
 	console.log("Create Post");
-	console.log("post = %s\n title = %s", JSON.stringify(req.body), req.body.title );
 	/* register callback to handle response */
 	var callback = function(result) {
 		if (result < 0) {
@@ -29,18 +29,21 @@ module.exports = function(req, res) {
 		if (req.body.imageLink != undefined) {
 			imageLink = req.body.imageLink;
 		}
-		createPost(req.user.Uid, req.body.title, req.body.location, req.body.lat, req.body.long, req.body.description, imageLink, callback);
+	console.log("%s\n%s\n%s\n%s\n%s\n%s\n%s\n",  req.user.Uid, req.body.title, req.body.location, req.body.lat, req.body.lng, req.body.description, imageLink);
+		createPost(req.user.Uid, req.body.title, req.body.location, req.body.lat, req.body.lng, req.body.description, imageLink, callback);
 	}
 }
 
 /**
  * inserts new post into the database 
  */
-function createPost(userId, title, location, lat, long, description, image, callback) {
-	console.log("CreatePost: ", userId, title, location, description, lat, long, image);
+
+function createPost(userId, title, location, lat, lng, description, image, callback) {
+	console.log("CreatePost: ", userId, location, description);
 
 	var creationTime = getDate();
-	var insert = "INSERT INTO Posting (Uid, P_Title, P_Location, P_Lat, P_Long, CreationTime, Status, P_Description, P_Image) VALUES ('" + userId + "', '" + title + "', '" + location + "', " + lat + ", " + long + ", '" + creationTime + "', 0, '" + description + "', '" + image + "')";  
+	var insert = "INSERT INTO Posting (Uid, P_Title, P_Location, P_Lat, P_Long, CreationTime, Status, P_Description, P_Image) VALUES ('" + userId + "', '" + title + "', '" + location + "', " + lat + ", " + lng + ", '" + creationTime + "', 0, '" + description + "', '" + image + "')";  
+
 
 	connection.query(insert, function (err, rows) {
 		if (err) {

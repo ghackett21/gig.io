@@ -42,6 +42,10 @@ var bid = require('./bidding/bid');
 var createRating = require('./ratings/createRating');
 var getUserRatings = require('./ratings/getUserRatings');
 
+/* report endpoints */
+var getUserReports = require('./reports/getUserReports');
+var createReport = require('./reports/createReport');
+
 
 passport.serializeUser(function(user, done) {
   console.log("serializing user : " + user);
@@ -131,9 +135,18 @@ app.get('/makepost.html', ensureAuthenticated, function(req, res) {
     res.sendFile(__dirname + '/public/makepost.html');
 });
 
+app.get('/userPost.html', ensureAuthenticated, function(req, res) {
+    res.sendFile(__dirname + '/public/userPost.html');
+});
+
 app.get('/profile.html', ensureAuthenticated, function(req, res) {
 	console.log("dir = " + __dirname);
     res.sendFile(__dirname + '/public/profile.html');
+});
+
+app.get('/updateProfile.html', ensureAuthenticated, function(req, res) {
+	console.log("dir = " + __dirname);
+    res.sendFile(__dirname + '/public/updateProfile.html');
 });
 
 app.get('/bid.html', ensureAuthenticated, function(req, res) {
@@ -245,9 +258,16 @@ app.post('GetUserRatings', function(req, res) {
 })
 
 app.post("/CreateRating", function(req, res) {
- createRating(req, res);
+ 	createRating(req, res);
 });
 
+app.post("/GetUserReposts", function(req, res) {
+	getUserReposts(req, res);
+});
+
+app.post("/CreateReport", function(req, res) {
+	createReport(req, res);
+});
 
 app.post("/sendMail", function(req, res) {
 
