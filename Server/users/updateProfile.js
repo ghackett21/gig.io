@@ -20,7 +20,28 @@ module.exports = function(req, res) {
 	}
 
 	
-	updateEmail(req.user.Uid, req.body.email, req.body.description, req.body.image, req.body.phone, callback);
+	updateLocation(req.user.Uid, req.body.email, req.body.description, req.body.image, req.body.phone, req.body.location, req.body.lat, req.body.lng, callback);
+}
+
+function updateLocation(userId, email, description, profileImage, phoneNumber, location, lat, long, callback) {
+	console.log("Update user phone number");
+
+	if (location != undefined && lat != undefined && long != undefined) {
+		var update_location = "Update Users SET U_Location=" + connection.escape(location) + ", U_Lat=" + lat + ", U_Long=" + long + " WHERE Uid=" + userId;
+
+		connection.query(update_location, function(err, rows) { 
+			if (err) {
+				console.log("Update user loaction: database error " + err);
+				return callback(-2);
+			}
+			else {
+					updateEmail(userId, email, description, profileImage, phoneNumber, callback);
+			}
+		});
+	}
+	else {
+		updateEmail(userId, email, description, profileImage, phoneNumber, callback);
+	}	
 }
 
 /**

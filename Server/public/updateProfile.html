@@ -29,10 +29,14 @@
         <label for="Update Phone Number">Update Phone Number:</label>
         <input ng-model="user.phone" id="phone" type="tel" class="validate">
       <br>
+        <label for="Update Address">Update Address:</label>
+        <input ng-model="user.location" id="address" type="text" class="validate">
+      <br>
         <input ng-click="update()" type="submit" value="Submit">
     </form><br>
     
     </div>
   <script src="navbar.js"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIqZ1SHXEe7CUj8Gv9MvVQLWrI-3k4isQ&callback=myMap"></script>
     </body>
 </html>
