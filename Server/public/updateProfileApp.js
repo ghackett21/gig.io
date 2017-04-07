@@ -45,6 +45,7 @@ app.controller("updateProfileController", [ '$scope', '$http', function($scope, 
             console.log("$scope.user: " + $scope.user);
 
             if ($scope.user.lat == undefined || $scope.user.lng == undefined) {
+                console.log("Invalid Location!");
                 /* display warning here */
             }
             else {
