@@ -373,11 +373,11 @@ $scope.sortByLowestBid = function() {
                             console.log("Bid string case 1");
                             amountString += ".00";
                         } 
-                        else if (index_of_decimal == amountString.length - 4) {
+                        else if (index_of_decimal == amountString.length - 1) {
                             console.log("Bid string case 2");
                             amountString += "00";
                         }
-                        else if (index_of_decimal == amountString.length - 3) {
+                        else if (index_of_decimal == amountString.length - 2) {
                             console.log("Bid string case 3");
                             amountString += "0";
                         }
