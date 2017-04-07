@@ -10,6 +10,7 @@ var expanded = 0;
 app.controller("userPostController", [ '$scope', '$http', function($scope, $http) {
 	$scope.user;
     $scope.test = "test";
+    $scope.bidInfo;
 
 //test stuff for server auth
 	$scope.logout = function() {
@@ -386,6 +387,7 @@ $scope.sortByLowestBid = function() {
         /* make request */
         $http.post("/GetBids", bidData).then(function(response) {
             var bids = response.data.Result;
+             $scope.bidInfo = bids;
             var bidData = []
             var template = document.querySelector('#bidTemplate');
             while(template.parentNode.hasChildNodes()) {
@@ -397,6 +399,7 @@ $scope.sortByLowestBid = function() {
             /* clone template row and fill in bid info */
             for (var i = 0; i < bids.length; i++) {
 
+
                 // Format date
                 var date = bids[i].BidTime.substring(5, 7) + "/" +
                            bids[i].BidTime.substring(8, 10) + "/" +
@@ -405,6 +408,7 @@ $scope.sortByLowestBid = function() {
 
                 var clone = template.content.cloneNode(true);
                 var td = clone.querySelectorAll('td');
+
 
                 var amountString = "$" + bids[i].Amount;
 
@@ -423,6 +427,7 @@ $scope.sortByLowestBid = function() {
                 td[1].innerHTML = bids[i].Username;
                 td[2].innerHTML = amountString
                 td[3].innerHTML = bids[i].AVG_BidRate + "/5";
+                td[4].id = bids[i].Bidid;
                 template.parentNode.appendChild(clone);
             }
             /* call display map function */
@@ -446,6 +451,11 @@ $scope.sortByLowestBid = function() {
             console.log("error in Close Post");
         })
     }
+
+    $scope.acceptBid = function(this) {
+        var bidid = this.parentElement.id;
+        console.log("bidid = " + bidid);
+    } 
 }]);
 
 
