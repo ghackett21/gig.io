@@ -67,3 +67,7 @@ app.controller("updateProfileController", [ '$scope', '$http', function($scope, 
 	};
 
 }]);
+
+function myMap(Loc) {
+    /* do nothing */
+}
