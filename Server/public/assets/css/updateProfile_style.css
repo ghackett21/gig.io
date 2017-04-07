@@ -167,8 +167,8 @@ input, select {
 input[type=submit] {
     display: block;
     width: 25%;
-    background-color: #76b852;
-    color: white;
+    background-color: white;
+    color: black;
     padding: 14px 20px;
     margin: 5px auto;
     border: none;
