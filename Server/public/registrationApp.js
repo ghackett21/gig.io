@@ -40,8 +40,8 @@ app.controller("registrationController", [ '$scope', '$http', function($scope, $
             return;
         }
         else {
-                /* get coordinates of location and make register request */
-                getCoordinatesForRegister($scope.user.location);
+            /* get coordinates of location and make register request */
+            getCoordinatesForRegister($scope.user.location);
         }
     };
 
