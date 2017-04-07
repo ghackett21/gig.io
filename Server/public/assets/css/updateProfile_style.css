@@ -181,15 +181,6 @@ input[type=submit]:hover {
     background-color: #569832;
 }
 
-div {
-    width: 60%;
-    border-radius: 5px;
-    background-color: #f2f2f2;
-    padding: 20px;
-    margin:0 auto;
-  
-}
-
 label {
     width: 30%;
     text-align: right;
