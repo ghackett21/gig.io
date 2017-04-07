@@ -438,7 +438,7 @@ $scope.sortByLowestBid = function() {
             }
             /* call display map function */
             myMap(myUser.U_Location);
-
+        });
         //}).catch(function(response) {
         //    console.log("error getting bids");
         //})
