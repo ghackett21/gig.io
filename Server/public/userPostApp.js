@@ -317,36 +317,6 @@ $scope.sortByLowestBid = function() {
             })
     };
 
-    /* Called when the "Place bid" button is clicked */
-    $scope.placeBid = function() {
-
-            // Check that user isn't poster
-            if ($scope.owner == myUser.Username) {
-                alert("You can't bid on your own post!");
-                return;
-            }
-
-            if ($scope.bid.Amount == "") {
-                alert("No bid amount entered!");
-                return;
-            }
-
-            $scope.bid.PostId = $scope.Pid;
-            $scope.bid.UserId = myUser.Uid;
-
-            // Bid
-            $http.post('/Bid', $scope.bid).then(function(response) {
-                // Update bids displayed
-                var bidData = new Object();
-                bidData.PostId = $scope.Pid;
-                
-                loadBids(bidData);
-                
-            }).catch(function(response) {
-                console.log("error bidding");
-            })
-    };
-
     /* sets up all posts onClick actions (display info, load bids, and map) */
     function setupPosts(posts) {
         // Get the modal and the table rows
@@ -436,10 +406,22 @@ $scope.sortByLowestBid = function() {
                 var clone = template.content.cloneNode(true);
                 var td = clone.querySelectorAll('td');
 
+                var amountString = "$" + bids[i].Amount;
+
+                var index_of_decimal = amountString.indexOf(".");
+                if (index_of_decimal == -1) {
+                    console.log("Bid string case 1");
+                    amountString += ".00";
+                } 
+                else if (index_of_decimal == amountString.length - 2) {
+                    console.log("Bid string case 2");
+                    amountString += "0";
+                }
+
                 /* fill in row information */
                 td[0].innerHTML = date; 
                 td[1].innerHTML = bids[i].Username;
-                td[2].innerHTML = "$" + bids[i].Amount;
+                td[2].innerHTML = amountString
                 td[3].innerHTML = bids[i].AVG_BidRate + "/5";
                 template.parentNode.appendChild(clone);
             }
