@@ -20,11 +20,11 @@ module.exports = function(req, res) {
 	}
 
 	
-	updateLocation(req.user.Uid, req.body.email, req.body.description, req.body.image, req.body.phone, req.body.location, req.body.lat, req.body.lng, callback);
+	updateLocation(req.user.Uid, req.body.email, req.body.description, req.body.image, req.body.phone, req.body.location, req.body.lat, req.body.lng, req.body.username, callback);
 }
 
-function updateLocation(userId, email, description, profileImage, phoneNumber, location, lat, long, callback) {
-	console.log("Update user phone number");
+function updateLocation(userId, email, description, profileImage, phoneNumber, location, lat, long, username, callback) {
+	console.log("Update userlocation and coordinates");
 
 	if (location != undefined && lat != undefined && long != undefined) {
 		var update_location = "Update Users SET U_Location=" + connection.escape(location) + ", U_Lat=" + lat + ", U_Long=" + long + " WHERE Uid=" + userId;
@@ -35,20 +35,38 @@ function updateLocation(userId, email, description, profileImage, phoneNumber, l
 				return callback(-2);
 			}
 			else {
-					updateEmail(userId, email, description, profileImage, phoneNumber, callback);
+					updateUsername(userId, email, description, profileImage, phoneNumber, username, callback);
 			}
 		});
 	}
 	else {
-		updateEmail(userId, email, description, profileImage, phoneNumber, callback);
+		updateUsername(userId, email, description, profileImage, phoneNumber, username, callback);
 	}	
 }
 
-/**
- * Updates user info in database
- */
+function updateUsername(userId, email, description, profileImage, phoneNumber, username, callback) {
+	console.log("Update username");
+
+	if (username != undefined) {
+		var update_username = "Update Users SET Username=" + connection.escape(username) + " WHERE Uid=" + userId;
+
+		connection.query(update_username, function(err, rows) { 
+				if (err) {
+					console.log("UpdateProfile username: database error: " + err);
+					return callback(-2);
+				}
+				else {
+					updateEmail(userId, email, description, profileImage, phoneNumber, callback);
+				}
+		});
+	}
+	else {
+		updateEmail(userId, email, description, profileImage, phoneNumber, callback);
+	}
+}
+
 function updateEmail(userId, email, description, profileImage, phoneNumber, callback) {
-	console.log("UpdateProfile: ", userId, email, description, phoneNumber);
+	console.log("Update email");
 
 	if (email != undefined) {
 		var update_email = "Update Users SET EmailAddress=" + connection.escape(email) + " WHERE Uid=" + userId;

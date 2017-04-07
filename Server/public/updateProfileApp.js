@@ -10,6 +10,7 @@ app.controller("updateProfileController", [ '$scope', '$http', function($scope, 
         console.log("image link = " + $scope.user.image);
         console.log("phone number = " + $scope.user.phone);
         console.log("location = " + $scope.user.location);
+        console.log("username = " + $scope.user.username);
 
         if ($scope.user.location == undefined) {
             /* make register request */
