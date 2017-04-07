@@ -43,26 +43,30 @@ app.controller("makePostController", [ '$scope', '$http', function($scope, $http
     var geocoder = new google.maps.Geocoder();
     geocoder.geocode({
         'address' : location
-        },
-        function(results, status) {
-            if (status == google.maps.GeocoderStatus.OK) {
-                var myResult = results[0].geometry.location;
-                console.log(myResult.lat() + " , " + myResult.lng());
-                $scope.post.lat = myResult.lat();
-                $scope.post.lng = myResult.lng();
-                console.log("$scope.post: " + $scope.post);
+    },
+    function(results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+            var myResult = results[0].geometry.location;
+            console.log(myResult.lat() + " , " + myResult.lng());
+            $scope.post.lat = myResult.lat();
+            $scope.post.lng = myResult.lng();
+            console.log("$scope.post: " + $scope.post);
 
-                /* make createPost request */
-                $http.post('/CreatePost', $scope.post).then(function(response) {
-                    $scope.post = null;
-                    console.log(response);
-                    if(response.data.State == 0){
-                        $scope.status = "Post successfully created! Don't forget to check for bids.";
-                    }
-                }).catch(function(response) {
-                    console.log("error creating post");
-                });
-           }
+            /* make createPost request */
+            $http.post('/CreatePost', $scope.post).then(function(response) {
+                $scope.post = null;
+                console.log(response);
+                if(response.data.State == 0){
+                    $scope.status = "Post successfully created! Don't forget to check for bids.";
+                }
+            }).catch(function(response) {
+                console.log("error creating post");
+            });
+       }
+       else {
+             /* display message */
+            alert("Please enter valid address!");
+        }
         
     });
 

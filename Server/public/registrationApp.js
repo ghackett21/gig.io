@@ -71,7 +71,10 @@ app.controller("registrationController", [ '$scope', '$http', function($scope, $
                 console.log("error registering");
             });
         }
-       
+        else {
+             /* display message */
+            alert("Please enter valid address!");
+        }
     });
 
     }
