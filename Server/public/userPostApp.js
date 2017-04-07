@@ -452,8 +452,8 @@ $scope.sortByLowestBid = function() {
         })
     }
 
-    $scope.acceptBid = function(this) {
-        var bidid = this.parentElement.id;
+    $scope.acceptBid = function() {
+        var bidid = $(this).parentElement.id;
         console.log("bidid = " + bidid);
     } 
 }]);
