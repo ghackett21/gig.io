@@ -12,6 +12,12 @@ app.controller("updateProfileController", [ '$scope', '$http', function($scope, 
         console.log("location = " + $scope.user.location);
         console.log("username = " + $scope.user.username);
 
+         if($scope.user.email != undefined && $scope.user.email.match(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/) == null){
+            /* make sure email is valud */
+            alert("Please enter a valid email address");
+            return;
+        }
+
         if ($scope.user.location == undefined) {
             /* make register request */
             $http.post('/UpdateProfile', $scope.user).then(function(response) {
