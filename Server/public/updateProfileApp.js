@@ -55,7 +55,10 @@ app.controller("updateProfileController", [ '$scope', '$http', function($scope, 
                         console.log("error updating profile");
             });
         }
-       
+        else {
+            /* display message */
+            alert("Please enter valid address!");
+        }
     });
 
     }

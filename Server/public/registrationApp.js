@@ -71,7 +71,11 @@ app.controller("registrationController", [ '$scope', '$http', function($scope, $
                 console.log("error registering");
             });
         }
-       
+        else {
+            /* display message */
+            
+
+        }
     });
 
     }
