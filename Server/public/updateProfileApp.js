@@ -2,7 +2,7 @@ var app = angular.module("myUpdateProfileApp", []);
 
 app.controller("updateProfileController", [ '$scope', '$http', function($scope, $http) {
     $scope.user;
-     $scope.status = "";
+    $scope.status = "";
 
     $scope.update = function() {
         console.log("email = " + $scope.user.email);
@@ -11,7 +11,7 @@ app.controller("updateProfileController", [ '$scope', '$http', function($scope, 
         console.log("phone number = " + $scope.user.phone);
         console.log("location = " + $scope.user.location);
 
-        if (user.location == undefined) {
+        if ($scope.user.location == undefined) {
             /* make register request */
             $http.post('/UpdateProfile', $scope.user).then(function(response) {
                 $scope.user = null;
