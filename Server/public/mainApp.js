@@ -343,6 +343,7 @@ $scope.sortByLowestBid = function() {
                  if (response.data.State == -4) {
                     alert("New bids must be lower than previous bids!");
                 }
+
                 var bids = response.data.Result;
                 if (bids.length > 0) {
                     var bidData = []
@@ -364,6 +365,20 @@ $scope.sortByLowestBid = function() {
 
                         var clone = template.content.cloneNode(true);
                         var td = clone.querySelectorAll('td');
+
+                        var amountString = "$" + bids[i].Amount;
+
+                        var index_of_decimal = amountString.indexOf(".");
+                        if (index_of_decimal == -1) {
+                            amountString += ".00";
+                        } 
+                        else if (index_of_decimal == amountString.length - 4) {
+                            amountString += "00";
+                        }
+                        else if (index_of_decimal == amountString.length - 3) {
+                            amountString += "0";
+                        }
+
 
                         /* fill in row information */
                         td[0].innerHTML = date; 
