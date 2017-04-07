@@ -42,6 +42,7 @@ function updateLocation(userId, email, description, profileImage, phoneNumber, l
 	else {
 		updateEmail(userId, email, description, profileImage, phoneNumber, callback);
 	}	
+}
 
 /**
  * Updates user info in database
