@@ -373,6 +373,9 @@ $scope.sortByLowestBid = function() {
                 
             }).catch(function(response) {
                 console.log("error bidding");
+                if (response.State == -4) {
+                    alert("New bids must be lower than previous bids!");
+                }
             })
     };
 
