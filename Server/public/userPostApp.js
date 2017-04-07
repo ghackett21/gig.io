@@ -428,7 +428,7 @@ $scope.sortByLowestBid = function() {
                 td[2].innerHTML = amountString
                 td[3].innerHTML = bids[i].AVG_BidRate + "/5";
                 td[4].id = bids[i].Bidid;
-                var children = td[4].body.children;
+                var children = td[4].children;
                 for (j = 0; j < children.length; j++) {
                     if (children[j].tagName == "BUTTON") {
                         children[j].onClick = acceptBid();
