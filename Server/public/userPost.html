@@ -40,9 +40,11 @@
         <th>Owner</th>
         <th>Location</th>
         <th>Date Posted</th>
+        <th>Status</th>
     </tr>
     <template id="tmplt">
         <tr class="clickable">
+            <td></td>
             <td></td>
             <td></td>
             <td></td>
@@ -67,6 +69,7 @@
                     <p>Contact Info: {{phone}}</p>
                     <p>Description: {{desc}}</p>
                     <p>Location: {{location}}</p>
+                    <p>Status: {{status}}</p>
                     <div id="map" style="width:400px;height:400px;background:yellow"></div>
                 </td>
                 <td valign="top">
