@@ -431,7 +431,7 @@ $scope.sortByLowestBid = function() {
                 var children = td[4].children;
                 for (j = 0; j < children.length; j++) {
                     if (children[j].tagName == "BUTTON") {
-                        children[j].onClick = acceptBid();
+                        children[j].onClick = acceptBid(bids[i].Bidid);
                     }
                 }
                 template.parentNode.appendChild(clone);
@@ -458,9 +458,8 @@ $scope.sortByLowestBid = function() {
         })
     }
 
-    function acceptBid(this) {
+    function acceptBid(bidid) {
         console.log("Accept clicked");
-        var bidid = this.parentElement.id;
         console.log("bidid = " + bidid);
     } 
 }]);
