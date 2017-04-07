@@ -44,16 +44,21 @@ app.controller("updateProfileController", [ '$scope', '$http', function($scope, 
             $scope.user.lng = myResult.lng();
             console.log("$scope.user: " + $scope.user);
 
-            /* make register request */
-            $http.post('/UpdateProfile', $scope.user).then(function(response) {
-                $scope.user = null;
-                console.log(response);
-                if(response.data.State == 0){
-                    $scope.status = "Update Successful!";
-                }
-            }).catch(function(response) {
-                        console.log("error updating profile");
-            });
+            if ($scope.user.lat == undefined || $scope.user.lng == undefined) {
+                /* display warning here */
+            }
+            else {
+                /* make register request */
+                $http.post('/UpdateProfile', $scope.user).then(function(response) {
+                    $scope.user = null;
+                    console.log(response);
+                    if(response.data.State == 0){
+                        $scope.status = "Update Successful!";
+                    }
+                }).catch(function(response) {
+                            console.log("error updating profile");
+                });
+            }
         }
        
     });
