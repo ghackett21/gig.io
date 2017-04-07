@@ -383,7 +383,7 @@ $scope.sortByLowestBid = function() {
                         /* fill in row information */
                         td[0].innerHTML = date; 
                         td[1].innerHTML = bids[i].Username;
-                        td[2].innerHTML = "$" + bids[i].Amount;
+                        td[2].innerHTML = amountString;
                         td[3].innerHTML = bids[i].AVG_BidRate + "/5";
                         template.parentNode.appendChild(clone);
                     }
@@ -483,7 +483,7 @@ $scope.sortByLowestBid = function() {
                 var clone = template.content.cloneNode(true);
                 var td = clone.querySelectorAll('td');
 
-                
+
                 var amountString = "$" + bids[i].Amount;
 
                 var index_of_decimal = amountString.indexOf(".");
@@ -500,7 +500,7 @@ $scope.sortByLowestBid = function() {
                 /* fill in row information */
                 td[0].innerHTML = date; 
                 td[1].innerHTML = bids[i].Username;
-                td[2].innerHTML = "$" + bids[i].Amount;
+                td[2].innerHTML = amountString;
                 td[3].innerHTML = bids[i].AVG_BidRate + "/5";
                 template.parentNode.appendChild(clone);
             }
