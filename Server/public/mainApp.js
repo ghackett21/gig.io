@@ -340,6 +340,10 @@ $scope.sortByLowestBid = function() {
 
             // Bid
             $http.post('/Bid', $scope.bid).then(function(response) {
+                 if (response.data.State == -4) {
+                    alert("New bids must be lower than previous bids!");
+                }
+
                 var bids = response.data.Result;
                 if (bids.length > 0) {
                     var bidData = []
@@ -362,10 +366,23 @@ $scope.sortByLowestBid = function() {
                         var clone = template.content.cloneNode(true);
                         var td = clone.querySelectorAll('td');
 
+                        var amountString = "$" + bids[i].Amount;
+
+                        var index_of_decimal = amountString.indexOf(".");
+                        if (index_of_decimal == -1) {
+                            console.log("Bid string case 1");
+                            amountString += ".00";
+                        } 
+                        else if (index_of_decimal == amountString.length - 2) {
+                            console.log("Bid string case 2");
+                            amountString += "0";
+                        }
+
+
                         /* fill in row information */
                         td[0].innerHTML = date; 
                         td[1].innerHTML = bids[i].Username;
-                        td[2].innerHTML = "$" + bids[i].Amount;
+                        td[2].innerHTML = amountString;
                         td[3].innerHTML = bids[i].AVG_BidRate + "/5";
                         template.parentNode.appendChild(clone);
                     }
@@ -465,10 +482,23 @@ $scope.sortByLowestBid = function() {
                 var clone = template.content.cloneNode(true);
                 var td = clone.querySelectorAll('td');
 
+
+                var amountString = "$" + bids[i].Amount;
+
+                var index_of_decimal = amountString.indexOf(".");
+                 if (index_of_decimal == -1) {
+                    console.log("Bid string case 1");
+                    amountString += ".00";
+                } 
+                else if (index_of_decimal == amountString.length - 2) {
+                    console.log("Bid string case 2");
+                    amountString += "0";
+                }
+
                 /* fill in row information */
                 td[0].innerHTML = date; 
                 td[1].innerHTML = bids[i].Username;
-                td[2].innerHTML = "$" + bids[i].Amount;
+                td[2].innerHTML = amountString;
                 td[3].innerHTML = bids[i].AVG_BidRate + "/5";
                 template.parentNode.appendChild(clone);
             }
