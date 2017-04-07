@@ -460,7 +460,7 @@ $scope.sortByLowestBid = function() {
 
     function acceptBid() {
         console.log("Accept clicked");
-        var bidid = $(this).parentElement.id;
+        var bidid = this.parentElement.id;
         console.log("bidid = " + bidid);
     } 
 }]);
