@@ -48,16 +48,6 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
                 td[1].innerHTML = post.Username;
                 td[2].innerHTML = post.P_Location;
 
-                var statusString = "";
-                if (post.Status == 0) {
-                    statusString = "Open";
-                }
-                else if (post.Status == 1) {
-                    statusString = "Pending";
-                }
-
-                td[3].innerHTML = statusString;
-
                 /* transform date easier to read format */
                 var date = post.CreationTime.substring(0,10);
                 var day = date.substring(8,date.length);
@@ -67,7 +57,18 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
                 date = month + "/" + day + "/" + year;
 
                 td[3].innerHTML = date;
-                var tr = clone.querySelectorAll('tr');
+
+                var statusString = "";
+                if (post.Status == 0) {
+                    statusString = "Open";
+                }
+                else if (post.Status == 1) {
+                    statusString = "Pending";
+                }
+
+                td[4].innerHTML = statusString;
+
+                var tr = clone.querySelectorAll('tr');               
                 tr[0].id = "post-"+i;
                 template.parentNode.appendChild(clone);
             }
@@ -126,16 +127,6 @@ $scope.sortByLowestBid = function() {
                 td[1].innerHTML = posts[i].Username;
                 td[2].innerHTML = posts[i].P_Location;
 
-                var statusString = "";
-                if (post.Status == 0) {
-                    statusString = "Open";
-                }
-                else if (post.Status == 1) {
-                    statusString = "Pending";
-                }
-
-                td[3].innerHTML = statusString;
-
                 var date = posts[i].CreationTime.substring(0,10);
                 var day = date.substring(8,date.length);
                 var month = date.substring(5,7);
@@ -144,6 +135,16 @@ $scope.sortByLowestBid = function() {
                 date = month + "/" + day + "/" + year;
 
                 td[3].innerHTML = date;
+
+                var statusString = "";
+                if (post.Status == 0) {
+                    statusString = "Open";
+                }
+                else if (post.Status == 1) {
+                    statusString = "Pending";
+                }
+
+                td[4].innerHTML = statusString;
             }
 
              /* set up each rows's onClick actions */
@@ -198,16 +199,6 @@ $scope.sortByLowestBid = function() {
                 td[1].innerHTML = posts[i].Username;
                 td[2].innerHTML = posts[i].P_Location;
 
-                var statusString = "";
-                if (post.Status == 0) {
-                    statusString = "Open";
-                }
-                else if (post.Status == 1) {
-                    statusString = "Pending";
-                }
-
-                td[3].innerHTML = statusString;
-
                 var date = posts[i].CreationTime.substring(0,10);
                 var day = date.substring(8,date.length);
                 var month = date.substring(5,7);
@@ -216,6 +207,16 @@ $scope.sortByLowestBid = function() {
                 date = month + "/" + day + "/" + year;
 
                 td[3].innerHTML = date;
+
+                var statusString = "";
+                if (post.Status == 0) {
+                    statusString = "Open";
+                }
+                else if (post.Status == 1) {
+                    statusString = "Pending";
+                }
+
+                td[4].innerHTML = statusString;
             }
 
              /* set up each rows's onClick actions */
@@ -332,15 +333,6 @@ $scope.sortByLowestBid = function() {
                     td[1].innerHTML = posts[i].Username;
                     td[2].innerHTML = posts[i].P_Location;
 
-                    var statusString = "";
-                    if (post.Status == 0) {
-                        statusString = "Open";
-                    }
-                    else if (post.Status == 1) {
-                        statusString = "Pending";
-                    }
-
-                    td[3].innerHTML = statusString;
                     var date = posts[i].CreationTime.substring(0,10);
                     var day = date.substring(8,date.length);
                     var month = date.substring(5,7);
@@ -349,6 +341,16 @@ $scope.sortByLowestBid = function() {
                     date = month + "/" + day + "/" + year;
 
                     td[3].innerHTML = date;
+
+                    var statusString = "";
+                    if (post.Status == 0) {
+                        statusString = "Open";
+                    }
+                    else if (post.Status == 1) {
+                        statusString = "Pending";
+                    }
+
+                    td[4].innerHTML = statusString;
                 }
 
                 /* set up each rows's onClick actions */
