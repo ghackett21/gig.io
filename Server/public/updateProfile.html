@@ -5,11 +5,12 @@
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
   <script src="updateProfileApp.js"></script>
   <script src="data.js"></script>
-  <div ng-include="'navbar.html'"></div>
 </head>
 <body ng-app="myUpdateProfileApp" ng-controller="updateProfileController">
 
-<div style="padding-left:16px" >
+<div ng-include="'navbar.html'"></div>
+
+<div id="Title" style="padding-left:16px" >
   <h2 align=center>Update your profile information</h2>
 <br>
 	<h3 id="status" align=center>{{status}}</h3>

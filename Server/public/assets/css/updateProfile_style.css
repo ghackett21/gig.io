@@ -1,5 +1,7 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:300);
 
+
+
 h1 {
   font-size: 130px;
   text-align: center;
@@ -69,7 +71,7 @@ h1 {
 }
 
 .clickable {
-	cursor: pointer;
+    cursor: pointer;
 }
 
 /* The Modal (background) */
@@ -167,8 +169,8 @@ input, select {
 input[type=submit] {
     display: block;
     width: 25%;
-    background-color: white;
-    color: black;
+    background-color: #76b852;
+    color: white;
     padding: 14px 20px;
     margin: 5px auto;
     border: none;
@@ -179,6 +181,15 @@ input[type=submit] {
 
 input[type=submit]:hover {
     background-color: #569832;
+}
+
+#Title {
+    width: 60%;
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 20px;
+    margin:0 auto;
+  
 }
 
 label {
