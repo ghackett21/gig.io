@@ -457,14 +457,13 @@ $scope.sortByLowestBid = function() {
             console.log("error in Close Post");
         })
     }
-
-    $scope.acceptBid = function() {
-        console.log("Accept clicked");
-        var bidid = $(this).parentElement.id;
-        console.log("bidid = " + bidid);
-    } 
 }]);
 
+acceptBid {
+    console.log("Accept clicked");
+    var bidid = $(this).parentElement.id;
+    console.log("bidid = " + bidid);
+} 
 
 function myMap(loc) {
     console.log("Loc: " + loc);
