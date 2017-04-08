@@ -403,10 +403,11 @@ $scope.sortByLowestBid = function() {
                     $scope.title = post.P_Title;
                     $scope.Pid = post.Pid;
 
-                    console.log("image: " + post.P_Image)
-                    if (post.P_Image != undefined) {
-                        console.log("changed post image");
+                    if (post.P_Image != "") {
                        document.getElementById("post_image").src = post.P_Image;
+                    }
+                    else {
+                        document.getElementById("post_image").src = "assets/img/girl.png";
                     }
 
                     var statusString = "";
