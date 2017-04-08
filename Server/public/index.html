@@ -68,7 +68,6 @@
           <p>Description: {{desc}}</p>
           <p>Location: {{location}}</p>
           <div id="map" style="width:400px;height:400px;background:yellow"></div>
-          <img class="img-circle" src="assets/img/girl.png" alt="ProfilePic" style="width:300px;height:300px;">
         </td>
         <td valign="top">
           <p>Bid history:</p>
@@ -93,6 +92,9 @@
           <i>$</i><input type="number" ng-model="bid.Amount" placeholder="Bid amount"/>
           <button ng-click="placeBid(); $event.stopPropagation();">Place bid</button>
         </p>
+        </td>
+        <td>
+          <img class="img-circle" src="assets/img/girl.png" alt="ProfilePic" style="width:300px;height:300px;">
         </td>
       </tr>
       </table>
