@@ -490,15 +490,6 @@ $scope.sortByLowestBid = function() {
                 td[2].innerHTML = amountString
                 td[3].innerHTML = bids[i].AVG_BidRate + "/5";
                 td[4].id = bids[i].Bidid;
-                var children = td[4].children;
-                for (j = 0; j < children.length; j++) {
-                    if (children[j].tagName == "BUTTON") {
-                        console.log("assign acceptBid: " + j + ", tagname: " + children[j].tagName);
-                        children[j].onClick = function() {
-                            console.log("function 3");
-                            console.log("Bidid: " + bids[i].Bidid);
-                        }
-                    }
                 }
                 template.parentNode.appendChild(clone);
             }
@@ -522,19 +513,11 @@ $scope.sortByLowestBid = function() {
             console.log("error in Close Post");
         })
     }
-
-    function acceptBid(bidid) {
-        console.log("Accept clicked");
-        console.log("bidid = " + bidid);
-    } 
-
-    function acceptBid() {
-        console.log("function 1");
-    }
 }]);
 
-function acceptBid() {
+function acceptBid(this) {
     console.log("function 2");
+    var bidid = this.parentNode.id;
     console.log("Bidid: " + bidid);
     }
 
