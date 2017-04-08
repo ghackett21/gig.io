@@ -404,7 +404,13 @@ $scope.sortByLowestBid = function() {
                     $scope.Pid = post.Pid;
 
                     if (post.P_Image != "") {
-                       document.getElementById("post_image").src = post.P_Image;
+                        try {
+                           document.getElementById("post_image").src = post.P_Image;
+                        }
+                        catch (e) {
+                            console.log("ERROR setting image source!" + e);
+                            document.getElementById("post_image").src = "assets/img/girl.png";
+                        }
                     }
                     else {
                         document.getElementById("post_image").src = "assets/img/girl.png";
