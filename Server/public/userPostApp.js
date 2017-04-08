@@ -384,7 +384,7 @@ $scope.sortByLowestBid = function() {
                 /* only perform onclick action if there is no post expanded currently */
                 if (expanded == 0) {
                     /* set flag */
-                    //expanded = 1;
+                    expanded = 1;
                    
                     rowID = this.id;
                     var j = 0;
