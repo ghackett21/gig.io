@@ -384,7 +384,7 @@ $scope.sortByLowestBid = function() {
                 /* only perform onclick action if there is no post expanded currently */
                 if (expanded == 0) {
                     /* set flag */
-                    expanded = 1;
+                    //expanded = 1;
                    
                     rowID = this.id;
                     var j = 0;
@@ -402,6 +402,14 @@ $scope.sortByLowestBid = function() {
                     $scope.desc = post.P_Description;
                     $scope.title = post.P_Title;
                     $scope.Pid = post.Pid;
+
+                    if (post.P_Image != "") {
+                       document.getElementById("post_image").src = post.P_Image;
+                    }
+                    else {
+                        document.getElementById("post_image").src = "assets/img/girl.png";
+                    }
+
                     var statusString = "";
                     if (post.Status == 0) {
                         statusString = "Open";
@@ -490,13 +498,6 @@ $scope.sortByLowestBid = function() {
                 td[2].innerHTML = amountString
                 td[3].innerHTML = bids[i].AVG_BidRate + "/5";
                 td[4].id = bids[i].Bidid;
-                var children = td[4].children;
-                for (j = 0; j < children.length; j++) {
-                    if (children[j].tagName == "BUTTON") {
-                        console.log("assign acceptBid: " + j + ", tagname: " + children[j].tagName);
-                        children[j].onClick = acceptBid(bids[i].Bidid);
-                    }
-                }
                 template.parentNode.appendChild(clone);
             }
             /* call display map function */
@@ -520,10 +521,11 @@ $scope.sortByLowestBid = function() {
         })
     }
 
-    function acceptBid(bidid) {
-        console.log("Accept clicked");
-        console.log("bidid = " + bidid);
-    } 
+    $scope.acceptBid = function(el) {
+        console.log("function 2");
+        var bidid = $scope(el).parentNode.attr("id");
+        console.log("Bidid: " + bidid);
+    }
 }]);
 
 function myMap(loc) {

@@ -83,13 +83,13 @@
                     <th>Accept</th>
                   </tr>
                   <template id="bidTemplate">
-                  <tr class ="clickable">
+                  <tr>
                     <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
                     <td id = "temp">
-                        <button ng-click="acceptBid(-1); $event.stopPropagation();">Accept</button>
+                        <button onClick="acceptBid(this);">Accept</button>
                     </td>
                   </tr>
                   </template>
@@ -98,6 +98,9 @@
                 <p>
                   <button ng-click="closePostButton(); $event.stopPropagation();">Close Post</button>
                 </p>
+                </td>
+                <td>
+                    <img id = "post_image" class="img-circle" src="assets/img/girl.png" alt="ProfilePic" style="width:300px;height:300px;">
                 </td>
                 </tr>
             </table>

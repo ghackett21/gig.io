@@ -424,6 +424,13 @@ $scope.sortByLowestBid = function() {
                     $scope.title = post.P_Title;
                     $scope.Pid = post.Pid;
 
+                    if (post.P_Image != "") {
+                       document.getElementById("post_image").src = post.P_Image;
+                    }
+                    else {
+                        document.getElementById("post_image").src = "assets/img/girl.png";
+                    }
+
                     $scope.location = post.P_Location;
                     address = post.P_Location;
                     modal.style.display = "block";
