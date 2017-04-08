@@ -415,10 +415,7 @@ $scope.sortByLowestBid = function() {
                     address = post.P_Location;
                     modal.style.display = "block";
                     if (posting.P_Image != undefined) {
-                       $scope.image_source = post.P_Image;
-                    }
-                    else {
-                        $scope.image_source = "assets/img/girl.png";
+                       document.getElementById("post_image").src = post.P_Image;
                     }
                     $scope.$apply();
 
