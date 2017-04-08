@@ -425,7 +425,7 @@ $scope.sortByLowestBid = function() {
                     $scope.Pid = post.Pid;
 
                     console.log("image: " + post.P_Image)
-                    if (posting.P_Image != undefined) {
+                    if (post.P_Image != undefined) {
                         console.log("changed post image");
                        document.getElementById("post_image").src = post.P_Image;
                     }
