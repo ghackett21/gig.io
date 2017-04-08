@@ -402,6 +402,13 @@ $scope.sortByLowestBid = function() {
                     $scope.desc = post.P_Description;
                     $scope.title = post.P_Title;
                     $scope.Pid = post.Pid;
+
+                    console.log("image: " + post.P_Image)
+                    if (posting.P_Image != undefined) {
+                        console.log("changed post image");
+                       document.getElementById("post_image").src = post.P_Image;
+                    }
+                    
                     var statusString = "";
                     if (post.Status == 0) {
                         statusString = "Open";
@@ -414,11 +421,6 @@ $scope.sortByLowestBid = function() {
                     $scope.location = post.P_Location;
                     address = post.P_Location;
                     modal.style.display = "block";
-                    console.log("image: " + post.P_Image)
-                    if (posting.P_Image != undefined) {
-                        console.log("changed post image");
-                       document.getElementById("post_image").src = post.P_Image;
-                    }
                     $scope.$apply();
 
                     // Load bid history for current post
