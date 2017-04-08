@@ -530,8 +530,9 @@ $scope.sortByLowestBid = function() {
     }
 }]);
 
-function acceptBid() {
+function acceptBid(bidid) {
     console.log("function 2");
+    console.log("Bidid: " + bidid);
     }
 
 function myMap(loc) {
