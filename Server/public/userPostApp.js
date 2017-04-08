@@ -494,7 +494,7 @@ $scope.sortByLowestBid = function() {
                 for (j = 0; j < children.length; j++) {
                     if (children[j].tagName == "BUTTON") {
                         console.log("assign acceptBid: " + j + ", tagname: " + children[j].tagName);
-                        children[j].onclick = acceptBid(bids[i].Bidid);
+                        children[j].onClick = acceptBid(bids[i].Bidid);
                     }
                 }
                 template.parentNode.appendChild(clone);
