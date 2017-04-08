@@ -493,6 +493,7 @@ $scope.sortByLowestBid = function() {
                 var children = td[4].children;
                 for (j = 0; j < children.length; j++) {
                     if (children[j].tagName == "BUTTON") {
+                        console.log("assign acceptBid: " + j + ", tagname: " + children[j].tagName);
                         children[j].onclick = acceptBid(bids[i].Bidid);
                     }
                 }
