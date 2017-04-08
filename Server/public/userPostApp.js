@@ -524,7 +524,15 @@ $scope.sortByLowestBid = function() {
         console.log("Accept clicked");
         console.log("bidid = " + bidid);
     } 
+
+    function acceptBid() {
+        console.log("function 1");
+    }
 }]);
+
+function acceptBid() {
+    console.log("function 2");
+    }
 
 function myMap(loc) {
     console.log("Loc: " + loc);
