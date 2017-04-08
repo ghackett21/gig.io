@@ -512,13 +512,13 @@ $scope.sortByLowestBid = function() {
             console.log("error in Close Post");
         })
     }
-}]);
 
-function acceptBid(el) {
-    console.log("function 2");
-    var bidid = $(el).parentNode.attr("id");
-    console.log("Bidid: " + bidid);
-}
+    function acceptBid(el) {
+        console.log("function 2");
+        var bidid = $scope(el).parentNode.attr("id");
+        console.log("Bidid: " + bidid);
+    }
+}]);
 
 function myMap(loc) {
     console.log("Loc: " + loc);
