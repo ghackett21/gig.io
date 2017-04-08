@@ -490,7 +490,6 @@ $scope.sortByLowestBid = function() {
                 td[2].innerHTML = amountString
                 td[3].innerHTML = bids[i].AVG_BidRate + "/5";
                 td[4].id = bids[i].Bidid;
-                }
                 template.parentNode.appendChild(clone);
             }
             /* call display map function */
@@ -519,7 +518,7 @@ function acceptBid(this) {
     console.log("function 2");
     var bidid = this.parentNode.id;
     console.log("Bidid: " + bidid);
-    }
+}
 
 function myMap(loc) {
     console.log("Loc: " + loc);
