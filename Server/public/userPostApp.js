@@ -414,6 +414,7 @@ $scope.sortByLowestBid = function() {
                     $scope.location = post.P_Location;
                     address = post.P_Location;
                     modal.style.display = "block";
+                    console.log("image: " + post.P_Image)
                     if (posting.P_Image != undefined) {
                         console.log("changed post image");
                        document.getElementById("post_image").src = post.P_Image;
