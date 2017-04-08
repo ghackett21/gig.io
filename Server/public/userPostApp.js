@@ -414,6 +414,12 @@ $scope.sortByLowestBid = function() {
                     $scope.location = post.P_Location;
                     address = post.P_Location;
                     modal.style.display = "block";
+                    if (posting.P_Image != undefined) {
+                       $scope.image_source = post.P_Image;
+                    }
+                    else {
+                        $scope.image_source = "assets/img/girl.png";
+                    }
                     $scope.$apply();
 
                     // Load bid history for current post
