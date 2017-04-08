@@ -493,17 +493,17 @@ $scope.sortByLowestBid = function() {
                 var children = td[4].children;
                 for (j = 0; j < children.length; j++) {
                     if (children[j].tagName == "BUTTON") {
-                        children[j].onclick = acceptBid(bids[i].Bidid);
+                        console.log("assign acceptBid: " + j + ", tagname: " + children[j].tagName);
+                        children[j].onClick = acceptBid(bids[i].Bidid);
                     }
                 }
                 template.parentNode.appendChild(clone);
             }
             /* call display map function */
             myMap(myUser.U_Location);
+        }).catch(function(response) {
+            console.log("error getting bids");
         });
-        //}).catch(function(response) {
-        //    console.log("error getting bids");
-        //})
     }
 
 
