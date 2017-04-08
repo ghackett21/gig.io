@@ -514,9 +514,9 @@ $scope.sortByLowestBid = function() {
     }
 }]);
 
-function acceptBid(this) {
+function acceptBid(el) {
     console.log("function 2");
-    var bidid = this.parentNode.id;
+    var bidid = $(el).parentNode.attr("id");
     console.log("Bidid: " + bidid);
 }
 
