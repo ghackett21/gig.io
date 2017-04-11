@@ -526,7 +526,6 @@ $scope.sortByLowestBid = function() {
         })
     }
 
-    /*
     $scope.acceptBid = function acceptBid() {
         console.log("function 2");
         //console.log("el: " + el);
@@ -534,11 +533,10 @@ $scope.sortByLowestBid = function() {
         //var bid = {Bidid:el.parentElement.id, PostId:global_postId};
         //console.log("Close Post: " + bid.PostId + ", bid: " + bid.Bidid);
     } 
-    */
 
 }]);
 
-
+/*
 function acceptBid(el) {
     console.log("function 2");
     console.log("el: " + el);
@@ -546,6 +544,7 @@ function acceptBid(el) {
     var bid = {Bidid:el.parentElement.id, PostId:global_postId};
     console.log("Close Post: " + bid.PostId + ", bid: " + bid.Bidid);
 }
+*/
 
 
 function myMap(loc) {
