@@ -520,17 +520,12 @@ $scope.sortByLowestBid = function() {
             console.log("error in Close Post");
         })
     }
-
-    $scope.acceptBid = function() {
-        console.log("function 1");
-        //var bidid = $scope(el).parentNode.attr("id");
-        //console.log("Bidid: " + bidid);
-    }
 }]);
 
 function acceptBid(el) {
     console.log("function 2");
     console.log("el: " + el);
+    console.log("bidid: " + el.parentElement.id);
 }
 
 function myMap(loc) {
