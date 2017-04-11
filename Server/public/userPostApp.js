@@ -8,7 +8,7 @@ var loc_distance;
 var expanded = 0;
 var global_postId = -1;
 
-app.controller("userPostController", [ '$scope', '$http', function($scope, $http, $compile) {
+app.controller("userPostController", [ '$scope', '$http', '$compile', function($scope, $http, $compile) {
 	$scope.user;
     $scope.test = "test";
     $scope.bidInfo;
