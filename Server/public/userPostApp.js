@@ -502,15 +502,14 @@ $scope.sortByLowestBid = function() {
                 td[2].innerHTML = amountString
                 td[3].innerHTML = bids[i].AVG_BidRate + "/5";
                 td[4].id = bids[i].Bidid;
-                var compiledElement = $compile(clone)($scope);
                 template.parent().appendChild(compiledElement);
 
             }
             /* call display map function */
             myMap(myUser.U_Location);
-        })//.catch(function(response) {
-        //    console.log("error getting bids");
-        //});
+        }).catch(function(response) {
+            console.log("error getting bids");
+        });
     }
 
 
@@ -525,19 +524,9 @@ $scope.sortByLowestBid = function() {
         }).catch(function(response) {
             console.log("error in Close Post");
         })
-    }
-
-    $scope.acceptBid = function acceptBid() {
-        console.log("function 2");
-        //console.log("el: " + el);
-        //console.log("bidid: " + el.parentElement.id);
-        //var bid = {Bidid:el.parentElement.id, PostId:global_postId};
-        //console.log("Close Post: " + bid.PostId + ", bid: " + bid.Bidid);
     } 
-
 }]);
 
-/*
 function acceptBid(el) {
     console.log("function 2");
     console.log("el: " + el);
@@ -545,7 +534,6 @@ function acceptBid(el) {
     var bid = {Bidid:el.parentElement.id, PostId:global_postId};
     console.log("Close Post: " + bid.PostId + ", bid: " + bid.Bidid);
 }
-*/
 
 
 function myMap(loc) {
