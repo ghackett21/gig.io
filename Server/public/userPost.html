@@ -74,7 +74,7 @@
                 </td>
                 <td valign="top">
                   <p>Bid history:</p>
-                  <table id = "bidTable" class="bid-table">
+                  <table id = "bidTable" class="bid-table", ng-click ="acceptBid();">
                   <tr>
                     <th>Time</th>
                     <th>User</th>
@@ -89,7 +89,7 @@
                     <td></td>
                     <td></td>
                     <td id = "temp">
-                        <button ng-click="acceptBid();">Accept</button>
+                        <button>Accept</button>
                     </td>
                   </tr>
                   </template>
