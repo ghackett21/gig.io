@@ -429,6 +429,7 @@ $scope.sortByLowestBid = function() {
                     var bidData = new Object();
                     bidData.PostId = post.Pid;
                     loadBids(bidData);
+                    $scope.$apply();
                 }
             };
         }
@@ -503,7 +504,6 @@ $scope.sortByLowestBid = function() {
                 td[4].id = bids[i].Bidid;
                 template.parentNode.appendChild(clone);
             }
-            $scope.$apply();
             /* call display map function */
             myMap(myUser.U_Location);
         }).catch(function(response) {
