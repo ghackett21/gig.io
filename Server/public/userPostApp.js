@@ -504,6 +504,7 @@ $scope.sortByLowestBid = function() {
                 td[4].id = bids[i].Bidid;
                 template.parentNode.appendChild(clone);
             }
+            $scope.$apply();
             /* call display map function */
             myMap(myUser.U_Location);
         }).catch(function(response) {
@@ -525,16 +526,26 @@ $scope.sortByLowestBid = function() {
         })
     }
 
+    $scope.acceptBid = function(el) {
+        console.log("function 2");
+        console.log("el: " + el);
+        console.log("bidid: " + el.parentElement.id);
+        /* call closePost */
+        var bid = {Bidid:el.parentElement.id, PostId:global_postId};
+        console.log("Close Post: " + bid.PostId + ", bid: " + bid.Bidid);
+    }
+
 }]);
 
+/*
 function acceptBid(el) {
     console.log("function 2");
     console.log("el: " + el);
     console.log("bidid: " + el.parentElement.id);
-    /* call closePost */
     var bid = {Bidid:el.parentElement.id, PostId:global_postId};
     console.log("Close Post: " + bid.PostId + ", bid: " + bid.Bidid);
 }
+*/
 
 function myMap(loc) {
     console.log("Loc: " + loc);
