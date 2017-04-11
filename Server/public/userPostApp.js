@@ -514,8 +514,8 @@ $scope.sortByLowestBid = function() {
 
         /* close post */
         $http.post('/ClosePost', bid).then(function(response) {
-           console.log("Close Post");
-           location.reload(true);
+           console.log("Close Post: " + bid.PostId + ", amount: " + bid.Amount);
+           //location.reload(true);
         }).catch(function(response) {
             console.log("error in Close Post");
         })
