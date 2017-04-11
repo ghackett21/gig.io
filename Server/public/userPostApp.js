@@ -521,10 +521,10 @@ $scope.sortByLowestBid = function() {
         })
     }
 
-    $scope.acceptBid = function() {
+    $scope.acceptBid = function(el) {
         console.log("function 2");
-        //var bidid = $scope(el).parentNode.attr("id");
-        //console.log("Bidid: " + bidid);
+        var bidid = $scope(el).parentNode.attr("id");
+        console.log("Bidid: " + bidid);
     }
 }]);
 
