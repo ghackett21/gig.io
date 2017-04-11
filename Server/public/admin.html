@@ -1,59 +1,68 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <link href="assets/css/main_style.css" rel="stylesheet" type="text/css">
+  <title>AdminCP</title>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
   <script src="mainApp.js"></script>
   <script src="data.js"></script>
-</head>
-<body ng-app="myApp" ng-controller="mainController">
 
+    <!-- styles -->
+    <link href="Theme/assets/css/bootstrap.css" rel="stylesheet">
+    <link href="Theme/assets/css/main.css" rel="stylesheet">
+    <!-- DATA TABLE CSS -->
+    <link href="Theme/assets/css/table.css" rel="stylesheet">
+
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+  	<!-- DataTables Initialization -->
+    <script type="text/javascript" src="Theme/assets/js/datatables/jquery.dataTables.js"></script>
+  			<script type="text/javascript" charset="utf-8">
+			$(document).ready(function() {
+				$('#dt1').dataTable();
+			} );
+	</script>
+
+</head>
+<body ng-app="myApp" ng-controller="adminController">
 <div ng-include="'navbar.html'"></div>
 
 <br>
 <br>
 
-<h1>Welcome to Gig.io</h1>
+<h1>AdminCP</h1>
 <br>
 <br>
 
-<table>
-  <tr>
-    <td>
-      <button ng-click="sortByAge()">Sort By Newest</button>
-    </td>
-    <td>
-      <button ng-click="sortByLowestBid()">Sort By Lowest Bid</button>
-    </td>
-    <td>
-      <button ng-click="sortByDistance()">Sort By Distance</button>
-    </td>
-    <td>
-      <button ng-click="sortByNumOfBids()">Sort By Number of Bids</button>
-    </td>
-  </tr>
-</table>
+    <div class="container">
 
-<table id="postTable">
-  <tr class="clickable">
-    <th>Job Title</th>
-    <th>Owner</th>
-    <th ng-click="sortByDistance()">Location</th>
-	<th ng-click="sortByLowestBid()">Current Bid</th>
-	<th ng-click="sortByNumOfBids()" >Number of Bids</th>
-    <th ng-click="sortByAge()">Date Posted</th>
-  </tr>
-  <template id="tmplt">
-	  <tr class="clickable">
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-  </tr>
-  </template>
+      <!-- CONTENT -->
+	<div class="row">
+		<div class="col-sm-12 col-lg-12">
+
+<h4><strong>Users Table</strong></h4>
+
+<table class="display" id="dt1">
+	<thead>
+    	<tr>
+        	<th>Username</th>
+            <th>Location</th>
+            <th>Description</th>
+            <th>Rating</th>
+            <th>Reports</th>
+        </tr>
+    </thead>
+    <tbody ng-repeat="users in userList">
+          <tr class="odd grade{{users.NumberOfStrikes}}">
+            <td>{{users.Username}}</td>
+            <td>{{users.U_Location}}</td>
+            <td>{{users.Uid}}</td>
+            <td class="center"> {{users.AVG_PostRate}}</td>
+            <td class="center">{{users.NumberOfStrikes}}</td>
+          </tr>
+	</tbody>
 </table>
+</div>
+</div>
+</div>
 
 <!-- The Modal -->
 <div id="myModal" class="modal">
