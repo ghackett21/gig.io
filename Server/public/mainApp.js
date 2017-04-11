@@ -50,6 +50,8 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
 				td[0].innerHTML = post.P_Title;
 				td[1].innerHTML = post.Username;
 				td[2].innerHTML = post.P_Location;
+				td[3].innerHTML = post.LowestBid;
+				td[4].innerHTML = post.NumberOfBids;
 
                 /* transform date easier to read format */
 				var date = post.CreationTime.substring(0,10);
@@ -59,7 +61,7 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
 
 				date = month + "/" + day + "/" + year;
 
-				td[3].innerHTML = date;
+				td[5].innerHTML = date;
 				var tr = clone.querySelectorAll('tr');
 				tr[0].id = "post-"+i;
 				template.parentNode.appendChild(clone);
@@ -636,3 +638,171 @@ function calculateDistance(origin, destination) {
   function deg2rad(deg) {
     return deg * (Math.PI/180)
   }
+
+app.controller("adminController", [ '$scope', '$http', function($scope, $http) {
+	$scope.user;
+	$scope.userList;
+
+    /* logout user on button press */
+	$scope.logout = function() {
+		$http.post('/logout').then(function(response) {
+			window.location = response.data.redirect;
+		});
+	};
+
+    /* load user and post data  when page loads */
+	window.onload = function() {
+        /* requst information about the currently logged-in user */
+        $http.post('/GetUser').then(function(response) {
+            //console.log(response.data.Result[0]);
+        	$scope.user = response.data.Result[0];
+        })
+
+        /* request post data */
+		$http.post('/GetAllUsers').then(function(response) {
+			console.log("GET ALL USERS")
+            console.log(response);	   
+			$scope.userList = response.data.result;
+			console.log("User[0] = %j", $scope.userList[0]);
+			if(response.status == 200){
+				console.log("success");
+			}else if(response.status == 401){
+				console.log("failure");
+			}
+		}).catch(function(response) {
+            /* catch error in reponse */
+			$scope.user = null;
+			console.log(response.status);
+			console.log(response);
+			if(response.status == 401){
+				console.log("failure");
+			}
+		})
+        
+	};
+
+    /* sets up all posts onClick actions (display info, load bids, and map) */
+    function setupPosts(posts) {
+        // Get the modal and the table rows
+        var modal = document.getElementById('myModal');
+        var rows = document.getElementById("postTable").rows;
+
+        /* set the onclick action for each row/post */
+        for (var i = 0; i < rows.length; i++) {
+            rows[i].onclick = function() {
+                /* only perform onclick action if there is no post expanded currently */
+                if (expanded == 0) {
+                    /* set flag */
+                    expanded = 1;
+                   
+                    rowID = this.id;
+                    var j = 0;
+                    var str;
+                    for(j; j < rows.length; j++) {
+                       str = "post-"+j;
+                       if (str === rowID)
+                            break;
+                    }
+                    var post = posts[j];
+
+                    /* set display content */
+                    $scope.owner = post.Username;
+                    $scope.phone = post.PhoneNumber;
+                    $scope.desc = post.P_Description;
+                    $scope.title = post.P_Title;
+                    $scope.Pid = post.Pid;
+
+                    if (post.P_Image != "") {
+                       document.getElementById("post_image").src = post.P_Image;
+                    }
+                    else {
+                        document.getElementById("post_image").src = "assets/img/girl.png";
+                    }
+
+                    $scope.location = post.P_Location;
+                    address = post.P_Location;
+                    modal.style.display = "block";
+                    $scope.$apply();
+
+                    // Load bid history for current post
+                    var bidData = new Object();
+                    bidData.PostId = post.Pid;
+                    loadBids(bidData);
+                }
+            };
+        }
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() {
+            /* set flag */
+            expanded = 0;
+            modal.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                /* set flag */
+                expanded = 0;
+                modal.style.display = "none";
+            }
+        }
+    }
+
+    /* load bids for a post */
+    function loadBids(bidData) {
+        /* make request */
+        $http.post("/GetBids", bidData).then(function(response) {
+            var bids = response.data.Result;
+            var bidData = []
+            var template = document.querySelector('#bidTemplate');
+            while(template.parentNode.hasChildNodes()) {
+                if (template.parentNode.lastChild == template)
+                    break;
+                template.parentNode.removeChild(template.parentNode.lastChild);
+            }
+
+            /* clone template row and fill in bid info */
+            for (var i = 0; i < bids.length; i++) {
+
+                // Format date
+                var date = bids[i].BidTime.substring(5, 7) + "/" +
+                           bids[i].BidTime.substring(8, 10) + "/" +
+                           bids[i].BidTime.substring(0, 4) + ", " +
+                           bids[i].BidTime.substring(11, 16);
+
+                var clone = template.content.cloneNode(true);
+                var td = clone.querySelectorAll('td');
+
+
+                var amountString = "$" + bids[i].Amount;
+
+                var index_of_decimal = amountString.indexOf(".");
+                 if (index_of_decimal == -1) {
+                    console.log("Bid string case 1");
+                    amountString += ".00";
+                } 
+                else if (index_of_decimal == amountString.length - 2) {
+                    console.log("Bid string case 2");
+                    amountString += "0";
+                }
+
+                /* fill in row information */
+                td[0].innerHTML = date; 
+                td[1].innerHTML = bids[i].Username;
+                td[2].innerHTML = amountString;
+                td[3].innerHTML = bids[i].AVG_BidRate + "/5";
+                template.parentNode.appendChild(clone);
+            }
+            /* call display map function */
+            myMap(myUser.U_Location);
+
+        }).catch(function(response) {
+            console.log("error getting bids");
+        })
+    }
+
+}]);
