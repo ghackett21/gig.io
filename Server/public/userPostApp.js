@@ -521,12 +521,16 @@ $scope.sortByLowestBid = function() {
         })
     }
 
-    $scope.acceptBid = function(el) {
-        console.log("function 2");
+    $scope.acceptBid = function() {
+        console.log("function 1");
         //var bidid = $scope(el).parentNode.attr("id");
         //console.log("Bidid: " + bidid);
     }
 }]);
+
+function acceptbid(this) {
+    console.log("function 2");
+}
 
 function myMap(loc) {
     console.log("Loc: " + loc);
