@@ -20,27 +20,27 @@ module.exports = function(req, res) {
 	}
 
 	/* check for missing args */
-	if (req.body.PostId == undefined || req.body.Amount == undefined) {
-      console.log("Close Post: undfined args: requires UserId (optional), PostId, and Amount");
+	if (req.body.PostId == undefined) {
+      console.log("Close Post: undfined args: requires BidId (optional) and PostId");
 		callback(-1);
 	}
-	else if (req.body.UserId == undefined) {
+	else if (req.body.BidId == undefined) {
 		closePost(null, req.body.PostId, req.body.Amount, callback);
 	}
 	else {
-      closePost(req.body.UserId, req.body.PostId, req.body.Amount, callback);
+      closePost(req.body.BidId, req.body.PostId, req.body.Amount, callback);
 	}
 }
 
-function closePost(userId, postId, amount, callback) {
+function closePost(bidId, postId, amount, callback) {
 	/* check if there is winner */
-	if (userId == null) {
+	if (bidId == null) {
 		/* no winner - delete post */
 		console.log("Close post " + postId + " with no winner.");
 		deletePostHelper(postId, callback);
 	}
 	else {
-		console.log("Close post " + postId + " with winning bid by user " + userId);
+		console.log("Close post " + postId + " with winning bid " + bidId);
 
             var mailOptions = {
 				from: 'gigdotio@gmail.com', // sender address

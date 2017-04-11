@@ -510,7 +510,7 @@ $scope.sortByLowestBid = function() {
 
     // Called when the "Place bid" button is clicked
     $scope.closePostButton = function() {
-        var bid = {userid:null, PostId:$scope.Pid, Amount:0};
+        var bid = {Bidid:null, PostId:$scope.Pid};
 
         /* close post */
         $http.post('/ClosePost', bid).then(function(response) {
@@ -520,13 +520,16 @@ $scope.sortByLowestBid = function() {
             console.log("error in Close Post");
         })
     }
-}]);
 
-function acceptBid(el) {
-    console.log("function 2");
-    console.log("el: " + el);
-    console.log("bidid: " + el.parentElement.id);
-}
+    function acceptBid(el) {
+        console.log("function 2");
+        console.log("el: " + el);
+        console.log("bidid: " + el.parentElement.id);
+        /* call closePost */
+        var bid = {Bidid:el.parentElement.id, PostId:$scope.Pid};
+        console.log("Close Post: " + bid.PostId + ", bid: " + bid.Bidid);
+    }
+}]);
 
 function myMap(loc) {
     console.log("Loc: " + loc);
