@@ -528,7 +528,7 @@ $scope.sortByLowestBid = function() {
     }
 }]);
 
-function acceptbid(this) {
+function acceptbid() {
     console.log("function 2");
 }
 
