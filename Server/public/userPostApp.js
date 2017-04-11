@@ -502,11 +502,8 @@ $scope.sortByLowestBid = function() {
                 td[2].innerHTML = amountString
                 td[3].innerHTML = bids[i].AVG_BidRate + "/5";
                 td[4].id = bids[i].Bidid;
-                var acceptButton =  "<button ng-click='acceptBid();'>Accept</button>";
-                var linkFn = $compile(acceptButton);
-                var content = linkFn(scope);
-                td[4].append(content);
-                template.parentNode.appendChild(clone);
+                var compiledElement = $compile(clone)($scope);
+                template.parent().appendChild(compiledElement);
 
             }
             /* call display map function */
