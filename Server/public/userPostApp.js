@@ -8,7 +8,7 @@ var loc_distance;
 var expanded = 0;
 var global_postId = -1;
 
-app.controller("userPostController", [ '$scope', '$http', function($scope, $http) {
+app.controller("userPostController", [ '$scope', '$http', function($scope, $http, $compile) {
 	$scope.user;
     $scope.test = "test";
     $scope.bidInfo;
@@ -503,6 +503,8 @@ $scope.sortByLowestBid = function() {
                 td[3].innerHTML = bids[i].AVG_BidRate + "/5";
                 td[4].id = bids[i].Bidid;
                 template.parentNode.appendChild(clone);
+                compile(template.parentNode)($scope);
+
             }
             /* call display map function */
             myMap(myUser.U_Location);
@@ -525,14 +527,14 @@ $scope.sortByLowestBid = function() {
         })
     }
 
-    /*
+    
     $scope.acceptBid = function acceptBid() {
         console.log("function 2");
         //console.log("el: " + el);
         //console.log("bidid: " + el.parentElement.id);
         //var bid = {Bidid:el.parentElement.id, PostId:global_postId};
         //console.log("Close Post: " + bid.PostId + ", bid: " + bid.Bidid);
-    } */
+    } 
 
 }]);
 
