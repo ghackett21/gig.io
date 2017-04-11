@@ -525,13 +525,13 @@ $scope.sortByLowestBid = function() {
         })
     }
 
-    function acceptBid(el) {
+    function acceptBid() {
         console.log("function 2");
-        console.log("el: " + el);
-        console.log("bidid: " + el.parentElement.id);
+        //console.log("el: " + el);
+        //console.log("bidid: " + el.parentElement.id);
         /* call closePost */
-        var bid = {Bidid:el.parentElement.id, PostId:global_postId};
-        console.log("Close Post: " + bid.PostId + ", bid: " + bid.Bidid);
+        //var bid = {Bidid:el.parentElement.id, PostId:global_postId};
+        //console.log("Close Post: " + bid.PostId + ", bid: " + bid.Bidid);
     }
 
 }]);
