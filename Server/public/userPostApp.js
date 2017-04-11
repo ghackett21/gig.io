@@ -521,15 +521,16 @@ $scope.sortByLowestBid = function() {
         })
     }
 
-    function acceptBid(el) {
-        console.log("function 2");
-        console.log("el: " + el);
-        console.log("bidid: " + el.parentElement.id);
-        /* call closePost */
-        var bid = {Bidid:el.parentElement.id, PostId:$scope.Pid};
-        console.log("Close Post: " + bid.PostId + ", bid: " + bid.Bidid);
-    }
 }]);
+
+function acceptBid(el) {
+    console.log("function 2");
+    console.log("el: " + el);
+    console.log("bidid: " + el.parentElement.id);
+    /* call closePost */
+    var bid = {Bidid:el.parentElement.id, PostId:$scope.Pid};
+    console.log("Close Post: " + bid.PostId + ", bid: " + bid.Bidid);
+}
 
 function myMap(loc) {
     console.log("Loc: " + loc);
