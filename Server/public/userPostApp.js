@@ -424,7 +424,6 @@ $scope.sortByLowestBid = function() {
                     $scope.location = post.P_Location;
                     address = post.P_Location;
                     modal.style.display = "block";
-                    $scope.$apply();
 
                     // Load bid history for current post
                     var bidData = new Object();
@@ -504,6 +503,7 @@ $scope.sortByLowestBid = function() {
                 td[4].id = bids[i].Bidid;
                 template.parentNode.appendChild(clone);
             }
+            $scope.$apply();
             /* call display map function */
             myMap(myUser.U_Location);
         }).catch(function(response) {
