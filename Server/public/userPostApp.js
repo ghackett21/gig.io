@@ -502,7 +502,7 @@ $scope.sortByLowestBid = function() {
                 td[2].innerHTML = amountString
                 td[3].innerHTML = bids[i].AVG_BidRate + "/5";
                 td[4].id = bids[i].Bidid;
-                template.parent().appendChild(compiledElement);
+                template.parent().appendChild(clone);
 
             }
             /* call display map function */
