@@ -525,7 +525,7 @@ $scope.sortByLowestBid = function() {
         })
     }
 
-    function acceptBid() {
+    $scope.acceptBid = function() {
         console.log("function 2");
         //console.log("el: " + el);
         //console.log("bidid: " + el.parentElement.id);
