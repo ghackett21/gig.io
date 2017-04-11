@@ -510,12 +510,12 @@ $scope.sortByLowestBid = function() {
 
     // Called when the "Place bid" button is clicked
     $scope.closePostButton = function() {
-        var bid = {userid:null, PostId:$scope.pid, Amount:0};
+        var bid = {userid:null, PostId:$scope.Pid, Amount:0};
 
         /* close post */
         $http.post('/ClosePost', bid).then(function(response) {
-           console.log("Close Post");
            location.reload(true);
+           console.log("Close Post: " + bid.PostId + ", amount: " + bid.Amount);
         }).catch(function(response) {
             console.log("error in Close Post");
         })
