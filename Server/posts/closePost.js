@@ -66,7 +66,7 @@ function closePost(bidId, postId, callback) {
 
 	    connection.query(updatePostStatus, function(err, rows) {
 	      if (err) {
-	        console.log("Close Post: database error!");
+	        console.log("Close Post: database error!" + err);
 	        return callback(-2);
 	      }
 	      else {
