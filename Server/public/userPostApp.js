@@ -379,6 +379,7 @@ $scope.sortByLowestBid = function() {
     function setupPosts(posts) {
         // Get the modal and the table rows
         var openModal = document.getElementById('openModal');
+        var pendingModal = document.getElementById('pendingModal');
         var rows = document.getElementById("postTable").rows;
 
         /* set the onclick action for each row/post */
@@ -414,6 +415,7 @@ $scope.sortByLowestBid = function() {
                         document.getElementById("post_image").src = "assets/img/girl.png";
                     }
 
+                    
                     var statusString = "";
                     if (post.Status == 0) {
                         statusString = "Open";
@@ -421,17 +423,31 @@ $scope.sortByLowestBid = function() {
                     else if (post.Status == 1) {
                         statusString = "Pending";
                     }
+                    
                     $scope.status = statusString
 
                     $scope.location = post.P_Location;
                     address = post.P_Location;
-                    openModal.style.display = "block";
 
-                    // Load bid history for current post
-                    var bidData = new Object();
-                    bidData.PostId = post.Pid;
-                    loadBids(bidData);
-                    $scope.$apply();
+
+                    /*use the correct modal based on post status */
+                    if (post.Status == 0) {
+                        openModal.style.display = "block";
+
+                        // Load bid history for current post
+                        var bidData = new Object();
+                        bidData.PostId = post.Pid;
+                        loadBids(bidData);
+                        $scope.$apply();
+                    }
+                    else {
+                        pendingModel.style.display = "block";
+                        // Load bid history for current post
+                        var bidData = new Object();
+                        bidData.PostId = post.Pid;
+                        loadBids(bidData);
+                        $scope.$apply();
+                    }
                 }
             };
         }
@@ -443,7 +459,7 @@ $scope.sortByLowestBid = function() {
         span.onclick = function() {
             /* set flag */
             expanded = 0;
-            modal.style.display = "none";
+            openModal.style.display = "none";
             global_postId = -1;
         }
 
@@ -452,7 +468,7 @@ $scope.sortByLowestBid = function() {
             if (event.target == modal) {
                 /* set flag */
                 expanded = 0;
-                modal.style.display = "none";
+                openModal.style.display = "none";
                 global_postId = -1;
             }
         }

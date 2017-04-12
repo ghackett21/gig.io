@@ -80,6 +80,64 @@
                     <th>User</th>
                     <th>Amount</th>
                     <th>Rating</th>
+                    <th>Completed</th>
+                  </tr>
+                  <template id="bidTemplate">
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td id = "temp">
+                        <button onClick="acceptBid(this);">Completed</button>
+                    </td>
+                  </tr>
+                  </template>
+                </table>
+                <br>
+                <p>
+                  <button ng-click="closePostButton(); $event.stopPropagation();">Close Post</button>
+                </p>
+                </td>
+                <td>
+                    <img id = "post_image" class="img-circle" src="assets/img/girl.png" alt="ProfilePic" style="width:300px;height:300px;">
+                </td>
+                </tr>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <br>
+        </div>
+    </div>
+</div>
+
+<!-- The Modal -->
+<div id="pendingModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close">&times;</span>
+            <h2>{{title}}</h2>
+        </div>
+        <div class="modal-body">
+            <table class="modal-table">
+                <td>
+                    <p>Owner: {{owner}}</p>
+                    <p>Contact Info: {{phone}}</p>
+                    <p>Description: {{desc}}</p>
+                    <p>Location: {{location}}</p>
+                    <p>Status: {{status}}</p>
+                    <div id="map" style="width:400px;height:400px;background:yellow"></div>
+                </td>
+                <td valign="top">
+                  <p>Bid history:</p>
+                  <table id = "bidTable" class="bid-table">
+                  <tr>
+                    <th>Time</th>
+                    <th>User</th>
+                    <th>Amount</th>
+                    <th>Rating</th>
                     <th>Accept</th>
                   </tr>
                   <template id="bidTemplate">
@@ -110,6 +168,7 @@
         </div>
     </div>
 </div>
+
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIqZ1SHXEe7CUj8Gv9MvVQLWrI-3k4isQ&callback=myMap"></script>
 <script src="navbar.js"></script>
 </body>
