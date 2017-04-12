@@ -6,11 +6,14 @@ var address;
 var myUser;
 var loc_distance;
 var expanded = 0;
+var global_postId = -1;
+var global_http = null;
 
-app.controller("userPostController", [ '$scope', '$http', function($scope, $http) {
+app.controller("userPostController", [ '$scope', '$http', '$compile', function($scope, $http, $compile) {
 	$scope.user;
     $scope.test = "test";
     $scope.bidInfo;
+    global_http = $http;
 
 //test stuff for server auth
 	$scope.logout = function() {
@@ -402,6 +405,7 @@ $scope.sortByLowestBid = function() {
                     $scope.desc = post.P_Description;
                     $scope.title = post.P_Title;
                     $scope.Pid = post.Pid;
+                    global_postId = post.Pid;
 
                     if (post.P_Image != "") {
                        document.getElementById("post_image").src = post.P_Image;
@@ -422,12 +426,12 @@ $scope.sortByLowestBid = function() {
                     $scope.location = post.P_Location;
                     address = post.P_Location;
                     modal.style.display = "block";
-                    $scope.$apply();
 
                     // Load bid history for current post
                     var bidData = new Object();
                     bidData.PostId = post.Pid;
                     loadBids(bidData);
+                    $scope.$apply();
                 }
             };
         }
@@ -440,6 +444,7 @@ $scope.sortByLowestBid = function() {
             /* set flag */
             expanded = 0;
             modal.style.display = "none";
+            global_postId = -1;
         }
 
         // When the user clicks anywhere outside of the modal, close it
@@ -448,6 +453,7 @@ $scope.sortByLowestBid = function() {
                 /* set flag */
                 expanded = 0;
                 modal.style.display = "none";
+                global_postId = -1;
             }
         }
     }
@@ -499,6 +505,7 @@ $scope.sortByLowestBid = function() {
                 td[3].innerHTML = bids[i].AVG_BidRate + "/5";
                 td[4].id = bids[i].Bidid;
                 template.parentNode.appendChild(clone);
+
             }
             /* call display map function */
             myMap(myUser.U_Location);
@@ -510,7 +517,7 @@ $scope.sortByLowestBid = function() {
 
     // Called when the "Place bid" button is clicked
     $scope.closePostButton = function() {
-        var bid = {userid:null, PostId:$scope.Pid, Amount:0};
+        var bid = {Bidid:null, PostId:$scope.Pid};
 
         /* close post */
         $http.post('/ClosePost', bid).then(function(response) {
@@ -519,14 +526,24 @@ $scope.sortByLowestBid = function() {
         }).catch(function(response) {
             console.log("error in Close Post");
         })
-    }
-
-    $scope.acceptBid = function(el) {
-        console.log("function 2");
-        var bidid = $scope(el).parentNode.attr("id");
-        console.log("Bidid: " + bidid);
-    }
+    } 
 }]);
+
+function acceptBid(el) {
+    console.log("function 2");
+    console.log("el: " + el);
+    console.log("bidid: " + el.parentElement.id);
+    var bid = {Bidid:el.parentElement.id, PostId:global_postId};
+    console.log("Close Post: " + bid.PostId + ", bid: " + bid.Bidid);
+
+    /* close post */
+    global_http.post('/ClosePost', bid).then(function(response) {
+       location.reload(true);
+    })//.catch(function(response) {
+       // console.log("error in Close Post");
+    //})
+}
+
 
 function myMap(loc) {
     console.log("Loc: " + loc);
