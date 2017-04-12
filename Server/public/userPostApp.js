@@ -490,7 +490,15 @@ $scope.sortByLowestBid = function() {
             var bids = response.data.Result;
              $scope.bidInfo = bids;
             var bidData = []
-            var template = document.querySelector('#bidTemplate');
+            var template = null;
+
+            if (status == 0) {
+               template = document.querySelector('#openBidTemplate');
+            }
+            else if status == 1) {
+                template = document.querySelector('#pendingBidTemplate');
+            }
+
             while(template.parentNode.hasChildNodes()) {
                 if (template.parentNode.lastChild == template)
                     break;
@@ -513,6 +521,7 @@ $scope.sortByLowestBid = function() {
 
                 var amountString = "$" + bids[i].Amount;
 
+                /* ensure two decimal places are dispalyed for bid amount text */
                 var index_of_decimal = amountString.indexOf(".");
                 if (index_of_decimal == -1) {
                     console.log("Bid string case 1");
@@ -591,20 +600,12 @@ function myMap(loc, status) {
             console.log( response.routes[0].legs[0].distance.value ); // the distance in metres
           }
           else {
+            console.log("error with direction service");
             // oops, there's no route between these two locations
             // every time this happens, a kitten dies
             // so please, ensure your address is formatted properly
           }
         });
-
-    	/*console.log(navigator.geolocation.getCurrentPosition(function(position) {
-             var pos = {
-               lat: position.coords.latitude,
-               lng: position.coords.longitude
-             };
-             console.log(pos);
-
-        }));*/
 
         if (status == 0) {
             var map = new google.maps.Map(document.getElementById('open_map'), {
