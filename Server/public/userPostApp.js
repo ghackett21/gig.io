@@ -539,7 +539,6 @@ function acceptBid(el) {
     /* close post */
     global_http.post('/ClosePost', bid).then(function(response) {
        location.reload(true);
-       console.log("Close Post: " + bid.PostId + ", amount: " + bid.Amount);
     })//.catch(function(response) {
        // console.log("error in Close Post");
     //})

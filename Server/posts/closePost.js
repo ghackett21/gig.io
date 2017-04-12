@@ -19,20 +19,22 @@ module.exports = function(req, res) {
 		}
 	}
 
+	console.log("close post: Bidid: " + req.body.Bidid + ", PostId: " + req.body.PostId);
+
 	/* check for missing args */
 	if (req.body.PostId == undefined) {
       console.log("Close Post: undfined args: requires BidId (optional) and PostId");
 		callback(-1);
 	}
 	else if (req.body.BidId == undefined) {
-		closePost(null, req.body.PostId, req.body.Amount, callback);
+		closePost(null, req.body.PostId, callback);
 	}
 	else {
-      closePost(req.body.BidId, req.body.PostId, req.body.Amount, callback);
+      closePost(req.body.BidId, req.body.PostId, callback);
 	}
 }
 
-function closePost(bidId, postId, amount, callback) {
+function closePost(bidId, postId, callback) {
 	/* check if there is winner */
 	if (bidId == null) {
 		/* no winner - delete post */
