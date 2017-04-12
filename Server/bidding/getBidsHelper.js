@@ -4,7 +4,7 @@ module.exports = function (postId, callback) {
 	console.log("GetBids: " + postId);
 
 	/* first get post status */
-	var selectPost = "SELECT Status, Winning_Bid FROM Posting WHERE Pid LIKE " postId;
+	var selectPost = "SELECT Status, Winning_Bid FROM Posting WHERE Pid LIKE " + postId;
 
 	connection.query(selectPost, function(err, rows) {
 		if (err) {
