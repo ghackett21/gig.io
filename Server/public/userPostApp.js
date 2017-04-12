@@ -474,7 +474,7 @@ $scope.sortByLowestBid = function() {
             }
             else if (event.target == pendingModal) {
                 expanded = 0;
-                pendingModel.style.display = "none";
+                pendingModal.style.display = "none";
             }
         }
     }
