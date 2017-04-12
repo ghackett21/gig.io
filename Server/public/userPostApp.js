@@ -453,15 +453,19 @@ $scope.sortByLowestBid = function() {
         }
 
         // Get the <span> element that closes the modal
-        var span = document.getElementsByClassName("close")[0];
+        var span = document.getElementsByClassName("close");
 
         // When the user clicks on <span> (x), close the modal
-        span.onclick = function() {
+        span[0].onclick = function() {
             /* set flag */
             expanded = 0;
             openModal.style.display = "none";
-            pendingModal.style.display = "none";
             global_postId = -1;
+        }
+
+        span[1].onclick = function() {
+            expanded = 0;
+            pendingModal.style.display = "none";
         }
 
         // When the user clicks anywhere outside of the modal, close it
