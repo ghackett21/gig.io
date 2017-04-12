@@ -133,14 +133,33 @@ $scope.sortByLowestBid = function() {
                 td[0].innerHTML = posts[i].P_Title;
                 td[1].innerHTML = posts[i].Username;
                 td[2].innerHTML = posts[i].P_Location;
-                var date = posts[i].CreationTime.substring(0,10);
+
+               /* format amount text */
+                var amountString = "$" + post[i].LowestBid;
+                var index_of_decimal = amountString.indexOf(".");
+                if (index_of_decimal == -1) {
+                    console.log("Bid string case 1");
+                    amountString += ".00";
+                } 
+                else if (index_of_decimal == amountString.length - 2) {
+                    console.log("Bid string case 2");
+                    amountString += "0";
+                }
+
+                td[3].innerHTML = amountString;
+                td[4].innerHTML = post[i].NumberOfBids;
+
+                /* transform date easier to read format */
+                var date = post[i].CreationTime.substring(0,10);
                 var day = date.substring(8,date.length);
                 var month = date.substring(5,7);
                 var year = date.substring(0,4);
 
                 date = month + "/" + day + "/" + year;
 
-                td[3].innerHTML = date;
+                td[5].innerHTML = date;
+                var tr = clone.querySelectorAll('tr');
+                tr[0].id = "post-"+i;
             }
 
              /* set up each rows's onClick actions */
@@ -194,14 +213,32 @@ $scope.sortByLowestBid = function() {
                 td[0].innerHTML = posts[i].P_Title;
                 td[1].innerHTML = posts[i].Username;
                 td[2].innerHTML = posts[i].P_Location;
-                var date = posts[i].CreationTime.substring(0,10);
+                /* format amount text */
+                var amountString = "$" + post[i].LowestBid;
+                var index_of_decimal = amountString.indexOf(".");
+                if (index_of_decimal == -1) {
+                    console.log("Bid string case 1");
+                    amountString += ".00";
+                } 
+                else if (index_of_decimal == amountString.length - 2) {
+                    console.log("Bid string case 2");
+                    amountString += "0";
+                }
+
+                td[3].innerHTML = amountString;
+                td[4].innerHTML = post[i].NumberOfBids;
+
+                /* transform date easier to read format */
+                var date = post[i].CreationTime.substring(0,10);
                 var day = date.substring(8,date.length);
                 var month = date.substring(5,7);
                 var year = date.substring(0,4);
 
                 date = month + "/" + day + "/" + year;
 
-                td[3].innerHTML = date;
+                td[5].innerHTML = date;
+                var tr = clone.querySelectorAll('tr');
+                tr[0].id = "post-"+i;
             }
 
              /* set up each rows's onClick actions */
@@ -307,14 +344,32 @@ $scope.sortByLowestBid = function() {
                     td[0].innerHTML = posts[i].P_Title;
                     td[1].innerHTML = posts[i].Username;
                     td[2].innerHTML = posts[i].P_Location;
-                    var date = posts[i].CreationTime.substring(0,10);
+                    /* format amount text */
+                    var amountString = "$" + post[i].LowestBid;
+                    var index_of_decimal = amountString.indexOf(".");
+                    if (index_of_decimal == -1) {
+                        console.log("Bid string case 1");
+                        amountString += ".00";
+                    } 
+                    else if (index_of_decimal == amountString.length - 2) {
+                        console.log("Bid string case 2");
+                        amountString += "0";
+                    }
+
+                    td[3].innerHTML = amountString;
+                    td[4].innerHTML = post[i].NumberOfBids;
+
+                    /* transform date easier to read format */
+                    var date = post[i].CreationTime.substring(0,10);
                     var day = date.substring(8,date.length);
                     var month = date.substring(5,7);
                     var year = date.substring(0,4);
 
                     date = month + "/" + day + "/" + year;
 
-                    td[3].innerHTML = date;
+                    td[5].innerHTML = date;
+                    var tr = clone.querySelectorAll('tr');
+                    tr[0].id = "post-"+i;
                 }
 
                 /* set up each rows's onClick actions */
