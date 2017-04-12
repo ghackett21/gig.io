@@ -26,7 +26,7 @@ module.exports = function(req, res) {
       console.log("Close Post: undfined args: requires BidId (optional) and PostId");
 		callback(-1);
 	}
-	else if (req.body.BidId == undefined) {
+	else if (req.body.Bidid == undefined) {
 		closePost(null, req.body.PostId, callback);
 	}
 	else {
