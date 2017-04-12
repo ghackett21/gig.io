@@ -30,7 +30,7 @@ module.exports = function(req, res) {
 		closePost(null, req.body.PostId, callback);
 	}
 	else {
-      closePost(req.body.BidId, req.body.PostId, callback);
+      closePost(req.body.Bidid, req.body.PostId, callback);
 	}
 }
 
