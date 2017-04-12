@@ -7,11 +7,13 @@ var myUser;
 var loc_distance;
 var expanded = 0;
 var global_postId = -1;
+var global_http = null;
 
 app.controller("userPostController", [ '$scope', '$http', '$compile', function($scope, $http, $compile) {
 	$scope.user;
     $scope.test = "test";
     $scope.bidInfo;
+    global_http = $http;
 
 //test stuff for server auth
 	$scope.logout = function() {
@@ -533,6 +535,14 @@ function acceptBid(el) {
     console.log("bidid: " + el.parentElement.id);
     var bid = {Bidid:el.parentElement.id, PostId:global_postId};
     console.log("Close Post: " + bid.PostId + ", bid: " + bid.Bidid);
+
+    /* close post */
+    global_http.post('/ClosePost', bid).then(function(response) {
+       location.reload(true);
+       console.log("Close Post: " + bid.PostId + ", amount: " + bid.Amount);
+    })//.catch(function(response) {
+       // console.log("error in Close Post");
+    //})
 }
 
 
