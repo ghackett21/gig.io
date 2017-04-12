@@ -50,7 +50,20 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
 				td[0].innerHTML = post.P_Title;
 				td[1].innerHTML = post.Username;
 				td[2].innerHTML = post.P_Location;
-				td[3].innerHTML = post.LowestBid;
+
+                /* format amount text */
+                var amountString = "$" + post.LowestBid;
+                var index_of_decimal = amountString.indexOf(".");
+                if (index_of_decimal == -1) {
+                    console.log("Bid string case 1");
+                    amountString += ".00";
+                } 
+                else if (index_of_decimal == amountString.length - 2) {
+                    console.log("Bid string case 2");
+                    amountString += "0";
+                }
+
+				td[3].innerHTML = amountString;
 				td[4].innerHTML = post.NumberOfBids;
 
                 /* transform date easier to read format */
