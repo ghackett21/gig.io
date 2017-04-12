@@ -510,6 +510,16 @@ $scope.sortByLowestBid = function() {
         })
     }
 
+    $scope.viewUserProfile = function() {
+        console.log("In viewUserProfile");
+        console.log(this.owner);
+        $http.post("/GetUser", this.owner).then(function(response) {
+            console.log(response);
+        }).catch(function(response) {
+            console.log("error getting user");
+        })
+    }
+
 }]);
 
 function myMap(loc) {
@@ -629,3 +639,4 @@ function calculateDistance(origin, destination) {
   function deg2rad(deg) {
     return deg * (Math.PI/180)
   }
+
