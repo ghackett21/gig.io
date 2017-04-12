@@ -3,15 +3,44 @@ var connection = require('./../helpers/connection');
 module.exports = function (postId, callback) {
 	console.log("GetBids: " + postId);
 
-	var select = "SELECT Bids.Bidid, Bids.Uid, Bids.Pid, Bids.BidTime, Bids.Amount, Users.Username, Users.AVG_BidRate FROM Bids Inner Join Users On Bids.Uid=Users.Uid WHERE Bids.Pid Like '" + postId + "'";
+	/* first get post status */
+	var selectPost = "SELECT Status, Winning_Bidid FROM Posting WHERE Pid LIKE " + postId;
 
-	connection.query(select, function(err, rows) {
+	connection.query(selectPost, function(err, rows) {
 		if (err) {
-			console.log("GetBids: database error", err);
+			console.log("Get bids helper: error getting post info!");
 			return callback(-2);
 		}
 		else {
-			return callback(rows);
+			if (rows[0].Status == 0) {
+				/* if the post is open, return all bids */
+				var selectBids = "SELECT Bids.Bidid, Bids.Uid, Bids.Pid, Bids.BidTime, Bids.Amount, Users.Username, Users.AVG_BidRate FROM Bids Inner Join Users On Bids.Uid=Users.Uid WHERE Bids.Pid Like '" + postId + "'";
+
+				connection.query(selectBids, function(err, rows) {
+					if (err) {
+						console.log("GetBids Helper: database error", err);
+						return callback(-2);
+					}
+					else {
+						return callback(rows);
+					}
+				}); 
+			}
+			else if (rows[0].Status == 1) {
+				console.log("Winning bidid: " + rows[0].Winning_Bidid);
+				/* if the post is pending, only return info of the winning bid */
+				var selectBids = "SELECT Bids.Bidid, Bids.Uid, Bids.Pid, Bids.BidTime, Bids.Amount, Users.Username, Users.AVG_BidRate FROM Bids Inner Join Users On Bids.Uid=Users.Uid WHERE Bids.Bidid Like '" + rows[0].Winning_Bidid + "'";
+
+				connection.query(selectBids, function(err, rows) {
+					if (err) {
+						console.log("GetBids Helper: database error", err);
+						return callback(-2);
+					}
+					else {
+						return callback(rows);
+					}
+				}); 
+			}
 		}
-	}); 
+	})
 }

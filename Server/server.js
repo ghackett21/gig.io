@@ -24,6 +24,7 @@ var login = require('./users/login');
 var register = require('./users/register');
 var updateProfile = require('./users/updateProfile');
 var getUser = require('./users/getUser');
+var getAllUsers = require('./users/getAllUsers');
 
 /* posts */
 var getAllPosts = require('./posts/getAllPosts');
@@ -219,6 +220,10 @@ function ensureAuthenticated(req, res, next) {
 
 app.post('/GetUser', function(req, res) {
  	getUser(req, res);
+});
+
+app.post('/GetAllUsers', function(req, res) {
+ 	getAllUsers(req, res);
 });
 
 app.post('/UpdateProfile', function(req, res) {

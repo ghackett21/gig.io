@@ -6,10 +6,14 @@ var address;
 var myUser;
 var loc_distance;
 var expanded = 0;
+var global_postId = -1;
+var global_http = null;
 
-app.controller("userPostController", [ '$scope', '$http', function($scope, $http) {
+app.controller("userPostController", [ '$scope', '$http', '$compile', function($scope, $http, $compile) {
 	$scope.user;
     $scope.test = "test";
+    $scope.bidInfo;
+    global_http = $http;
 
 //test stuff for server auth
 	$scope.logout = function() {
@@ -56,7 +60,18 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
                 date = month + "/" + day + "/" + year;
 
                 td[3].innerHTML = date;
-                var tr = clone.querySelectorAll('tr');
+
+                var statusString = "";
+                if (post.Status == 0) {
+                    statusString = "Open";
+                }
+                else if (post.Status == 1) {
+                    statusString = "Pending";
+                }
+
+                td[4].innerHTML = statusString;
+
+                var tr = clone.querySelectorAll('tr');               
                 tr[0].id = "post-"+i;
                 template.parentNode.appendChild(clone);
             }
@@ -114,6 +129,7 @@ $scope.sortByLowestBid = function() {
                 td[0].innerHTML = posts[i].P_Title;
                 td[1].innerHTML = posts[i].Username;
                 td[2].innerHTML = posts[i].P_Location;
+
                 var date = posts[i].CreationTime.substring(0,10);
                 var day = date.substring(8,date.length);
                 var month = date.substring(5,7);
@@ -122,6 +138,16 @@ $scope.sortByLowestBid = function() {
                 date = month + "/" + day + "/" + year;
 
                 td[3].innerHTML = date;
+
+                var statusString = "";
+                if (post.Status == 0) {
+                    statusString = "Open";
+                }
+                else if (post.Status == 1) {
+                    statusString = "Pending";
+                }
+
+                td[4].innerHTML = statusString;
             }
 
              /* set up each rows's onClick actions */
@@ -175,6 +201,7 @@ $scope.sortByLowestBid = function() {
                 td[0].innerHTML = posts[i].P_Title;
                 td[1].innerHTML = posts[i].Username;
                 td[2].innerHTML = posts[i].P_Location;
+
                 var date = posts[i].CreationTime.substring(0,10);
                 var day = date.substring(8,date.length);
                 var month = date.substring(5,7);
@@ -183,6 +210,16 @@ $scope.sortByLowestBid = function() {
                 date = month + "/" + day + "/" + year;
 
                 td[3].innerHTML = date;
+
+                var statusString = "";
+                if (post.Status == 0) {
+                    statusString = "Open";
+                }
+                else if (post.Status == 1) {
+                    statusString = "Pending";
+                }
+
+                td[4].innerHTML = statusString;
             }
 
              /* set up each rows's onClick actions */
@@ -236,6 +273,16 @@ $scope.sortByLowestBid = function() {
                         td[0].innerHTML = posts[i].P_Title;
                         td[1].innerHTML = posts[i].Username;
                         td[2].innerHTML = posts[i].P_Location;
+
+                        var statusString = "";
+                        if (post.Status == 0) {
+                            statusString = "Open";
+                        }
+                        else if (post.Status == 1) {
+                            statusString = "Pending";
+                        }
+
+                        td[3].innerHTML = statusString;
                     }
 
                     /* set up each rows's onClick actions */
@@ -288,6 +335,7 @@ $scope.sortByLowestBid = function() {
                     td[0].innerHTML = posts[i].P_Title;
                     td[1].innerHTML = posts[i].Username;
                     td[2].innerHTML = posts[i].P_Location;
+
                     var date = posts[i].CreationTime.substring(0,10);
                     var day = date.substring(8,date.length);
                     var month = date.substring(5,7);
@@ -296,6 +344,16 @@ $scope.sortByLowestBid = function() {
                     date = month + "/" + day + "/" + year;
 
                     td[3].innerHTML = date;
+
+                    var statusString = "";
+                    if (post.Status == 0) {
+                        statusString = "Open";
+                    }
+                    else if (post.Status == 1) {
+                        statusString = "Pending";
+                    }
+
+                    td[4].innerHTML = statusString;
                 }
 
                 /* set up each rows's onClick actions */
@@ -320,7 +378,8 @@ $scope.sortByLowestBid = function() {
     /* sets up all posts onClick actions (display info, load bids, and map) */
     function setupPosts(posts) {
         // Get the modal and the table rows
-        var modal = document.getElementById('myModal');
+        var openModal = document.getElementById('openModal');
+        var pendingModal = document.getElementById('pendingModal');
         var rows = document.getElementById("postTable").rows;
 
         /* set the onclick action for each row/post */
@@ -329,7 +388,7 @@ $scope.sortByLowestBid = function() {
                 /* only perform onclick action if there is no post expanded currently */
                 if (expanded == 0) {
                     /* set flag */
-                    expanded = 1;
+                    //expanded = 1;
                    
                     rowID = this.id;
                     var j = 0;
@@ -347,47 +406,99 @@ $scope.sortByLowestBid = function() {
                     $scope.desc = post.P_Description;
                     $scope.title = post.P_Title;
                     $scope.Pid = post.Pid;
+                    global_postId = post.Pid;
+
+                    if (post.P_Image != "") {
+                       document.getElementById("post_image").src = post.P_Image;
+                    }
+                    else {
+                        document.getElementById("post_image").src = "assets/img/girl.png";
+                    }
+
+                    
+                    var statusString = "";
+                    if (post.Status == 0) {
+                        statusString = "Open";
+                    }
+                    else if (post.Status == 1) {
+                        statusString = "Pending";
+                    }
+                    
+                    $scope.status = statusString
 
                     $scope.location = post.P_Location;
                     address = post.P_Location;
-                    modal.style.display = "block";
-                    $scope.$apply();
 
-                    // Load bid history for current post
-                    var bidData = new Object();
-                    bidData.PostId = post.Pid;
-                    loadBids(bidData);
+
+                    /*use the correct modal based on post status */
+                    if (post.Status == 0) {
+                        openModal.style.display = "block";
+
+                        // Load bid history for current post
+                        var bidData = new Object();
+                        bidData.PostId = post.Pid;
+                        loadBids(bidData, 0);
+                        $scope.$apply();
+                    }
+                    else {
+                        pendingModal.style.display = "block";
+                        // Load bid history for current post
+                        var bidData = new Object();
+                        bidData.PostId = post.Pid;
+                        loadBids(bidData, 1);
+                        $scope.$apply();
+                    }
                 }
             };
         }
 
         // Get the <span> element that closes the modal
-        var span = document.getElementsByClassName("close")[0];
+        var span = document.getElementsByClassName("close");
 
         // When the user clicks on <span> (x), close the modal
-        span.onclick = function() {
+        span[0].onclick = function() {
             /* set flag */
             expanded = 0;
-            modal.style.display = "none";
+            openModal.style.display = "none";
+            global_postId = -1;
+        }
+
+        span[1].onclick = function() {
+            expanded = 0;
+            pendingModal.style.display = "none";
         }
 
         // When the user clicks anywhere outside of the modal, close it
         window.onclick = function(event) {
-            if (event.target == modal) {
+            if (event.target == openModal) {
                 /* set flag */
                 expanded = 0;
-                modal.style.display = "none";
+                openModal.style.display = "none";
+                global_postId = -1;
+            }
+            else if (event.target == pendingModal) {
+                expanded = 0;
+                pendingModal.style.display = "none";
             }
         }
     }
 
     /* load bids for a post */
-    function loadBids(bidData) {
+    function loadBids(bidData, status) {
         /* make request */
         $http.post("/GetBids", bidData).then(function(response) {
             var bids = response.data.Result;
+             $scope.bidInfo = bids;
             var bidData = []
-            var template = document.querySelector('#bidTemplate');
+            var template = null;
+
+            if (status == 0) {
+               template = document.querySelector('#openBidTemplate');
+            }
+            else if (status == 1) {
+                template = document.querySelector('#pendingBidTemplate');
+            }
+
             while(template.parentNode.hasChildNodes()) {
                 if (template.parentNode.lastChild == template)
                     break;
@@ -396,6 +507,7 @@ $scope.sortByLowestBid = function() {
 
             /* clone template row and fill in bid info */
             for (var i = 0; i < bids.length; i++) {
+
 
                 // Format date
                 var date = bids[i].BidTime.substring(5, 7) + "/" +
@@ -406,8 +518,10 @@ $scope.sortByLowestBid = function() {
                 var clone = template.content.cloneNode(true);
                 var td = clone.querySelectorAll('td');
 
+
                 var amountString = "$" + bids[i].Amount;
 
+                /* ensure two decimal places are dispalyed for bid amount text */
                 var index_of_decimal = amountString.indexOf(".");
                 if (index_of_decimal == -1) {
                     console.log("Bid string case 1");
@@ -423,33 +537,50 @@ $scope.sortByLowestBid = function() {
                 td[1].innerHTML = bids[i].Username;
                 td[2].innerHTML = amountString
                 td[3].innerHTML = bids[i].AVG_BidRate + "/5";
+                td[4].id = bids[i].Bidid;
                 template.parentNode.appendChild(clone);
-            }
-            /* call display map function */
-            myMap(myUser.U_Location);
 
+            }
+
+            /* call display map function */
+            myMap(myUser.U_Location, status);
         }).catch(function(response) {
             console.log("error getting bids");
-        })
+        });
     }
 
 
     // Called when the "Place bid" button is clicked
     $scope.closePostButton = function() {
-        var bid = {userid:null, PostId:$scope.pid, Amount:0};
+        var bid = {Bidid:null, PostId:$scope.Pid};
 
         /* close post */
         $http.post('/ClosePost', bid).then(function(response) {
-           console.log("Close Post");
            location.reload(true);
+           console.log("Close Post: " + bid.PostId + ", amount: " + bid.Amount);
         }).catch(function(response) {
             console.log("error in Close Post");
         })
-    }
+    } 
 }]);
 
+function acceptBid(el) {
+    console.log("function 2");
+    console.log("el: " + el);
+    console.log("bidid: " + el.parentElement.id);
+    var bid = {Bidid:el.parentElement.id, PostId:global_postId};
+    console.log("Close Post: " + bid.PostId + ", bid: " + bid.Bidid);
 
-function myMap(loc) {
+    /* close post */
+    global_http.post('/ClosePost', bid).then(function(response) {
+       location.reload(true);
+    })//.catch(function(response) {
+       // console.log("error in Close Post");
+    //})
+}
+
+
+function myMap(loc, status) {
     console.log("Loc: " + loc);
 	var myAddress = address;
 	console.log("My Address: " + myAddress);
@@ -469,25 +600,25 @@ function myMap(loc) {
             console.log( response.routes[0].legs[0].distance.value ); // the distance in metres
           }
           else {
+            console.log("error with direction service");
             // oops, there's no route between these two locations
             // every time this happens, a kitten dies
             // so please, ensure your address is formatted properly
           }
         });
 
-    	/*console.log(navigator.geolocation.getCurrentPosition(function(position) {
-             var pos = {
-               lat: position.coords.latitude,
-               lng: position.coords.longitude
-             };
-             console.log(pos);
-
-        }));*/
-
-       var map = new google.maps.Map(document.getElementById('map'), {
-           mapTypeId: google.maps.MapTypeId.TERRAIN,
-           zoom: 10
-       });
+        if (status == 0) {
+            var map = new google.maps.Map(document.getElementById('open_map'), {
+               mapTypeId: google.maps.MapTypeId.TERRAIN,
+               zoom: 10
+            });
+        }
+        else if (status == 1) {
+             var map = new google.maps.Map(document.getElementById('pending_map'), {
+               mapTypeId: google.maps.MapTypeId.TERRAIN,
+               zoom: 10
+            });
+        }
 
        var geocoder = new google.maps.Geocoder();
 

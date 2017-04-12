@@ -35,14 +35,18 @@
 </table>
 
 <table id="postTable">
-  <tr>
+  <tr class="clickable">
     <th>Job Title</th>
     <th>Owner</th>
-    <th>Location</th>
-    <th>Date Posted</th>
+    <th ng-click="sortByDistance()">Location</th>
+	<th ng-click="sortByLowestBid()">Current Bid</th>
+	<th ng-click="sortByNumOfBids()" >Number of Bids</th>
+    <th ng-click="sortByAge()">Date Posted</th>
   </tr>
   <template id="tmplt">
 	  <tr class="clickable">
+    <td></td>
+    <td></td>
     <td></td>
     <td></td>
     <td></td>
@@ -92,6 +96,9 @@
           <i>$</i><input type="number" ng-model="bid.Amount" placeholder="Bid amount"/>
           <button ng-click="placeBid(); $event.stopPropagation();">Place bid</button>
         </p>
+        </td>
+        <td>
+          <img id = "post_image" class="img-circle" src="assets/img/girl.png" alt="ProfilePic" style="width:300px;height:300px;">
         </td>
       </tr>
       </table>
