@@ -378,7 +378,8 @@ $scope.sortByLowestBid = function() {
     /* sets up all posts onClick actions (display info, load bids, and map) */
     function setupPosts(posts) {
         // Get the modal and the table rows
-        var modal = document.getElementById('myModal');
+        var openModal = document.getElementById('openModal');
+        var pendingModal = document.getElementById('pendingModal');
         var rows = document.getElementById("postTable").rows;
 
         /* set the onclick action for each row/post */
@@ -414,6 +415,7 @@ $scope.sortByLowestBid = function() {
                         document.getElementById("post_image").src = "assets/img/girl.png";
                     }
 
+                    
                     var statusString = "";
                     if (post.Status == 0) {
                         statusString = "Open";
@@ -421,51 +423,82 @@ $scope.sortByLowestBid = function() {
                     else if (post.Status == 1) {
                         statusString = "Pending";
                     }
+                    
                     $scope.status = statusString
 
                     $scope.location = post.P_Location;
                     address = post.P_Location;
-                    modal.style.display = "block";
 
-                    // Load bid history for current post
-                    var bidData = new Object();
-                    bidData.PostId = post.Pid;
-                    loadBids(bidData);
-                    $scope.$apply();
+
+                    /*use the correct modal based on post status */
+                    if (post.Status == 0) {
+                        openModal.style.display = "block";
+
+                        // Load bid history for current post
+                        var bidData = new Object();
+                        bidData.PostId = post.Pid;
+                        loadBids(bidData, 0);
+                        $scope.$apply();
+                    }
+                    else {
+                        pendingModal.style.display = "block";
+                        // Load bid history for current post
+                        var bidData = new Object();
+                        bidData.PostId = post.Pid;
+                        loadBids(bidData, 1);
+                        $scope.$apply();
+                    }
                 }
             };
         }
 
         // Get the <span> element that closes the modal
-        var span = document.getElementsByClassName("close")[0];
+        var span = document.getElementsByClassName("close");
 
         // When the user clicks on <span> (x), close the modal
-        span.onclick = function() {
+        span[0].onclick = function() {
             /* set flag */
             expanded = 0;
-            modal.style.display = "none";
+            openModal.style.display = "none";
             global_postId = -1;
+        }
+
+        span[1].onclick = function() {
+            expanded = 0;
+            pendingModal.style.display = "none";
         }
 
         // When the user clicks anywhere outside of the modal, close it
         window.onclick = function(event) {
-            if (event.target == modal) {
+            if (event.target == openModal) {
                 /* set flag */
                 expanded = 0;
-                modal.style.display = "none";
+                openModal.style.display = "none";
                 global_postId = -1;
+            }
+            else if (event.target == pendingModal) {
+                expanded = 0;
+                pendingModal.style.display = "none";
             }
         }
     }
 
     /* load bids for a post */
-    function loadBids(bidData) {
+    function loadBids(bidData, status) {
         /* make request */
         $http.post("/GetBids", bidData).then(function(response) {
             var bids = response.data.Result;
              $scope.bidInfo = bids;
             var bidData = []
-            var template = document.querySelector('#bidTemplate');
+            var template = null;
+
+            if (status == 0) {
+               template = document.querySelector('#openBidTemplate');
+            }
+            else if (status == 1) {
+                template = document.querySelector('#pendingBidTemplate');
+            }
+
             while(template.parentNode.hasChildNodes()) {
                 if (template.parentNode.lastChild == template)
                     break;
@@ -488,6 +521,7 @@ $scope.sortByLowestBid = function() {
 
                 var amountString = "$" + bids[i].Amount;
 
+                /* ensure two decimal places are dispalyed for bid amount text */
                 var index_of_decimal = amountString.indexOf(".");
                 if (index_of_decimal == -1) {
                     console.log("Bid string case 1");
@@ -507,8 +541,9 @@ $scope.sortByLowestBid = function() {
                 template.parentNode.appendChild(clone);
 
             }
+
             /* call display map function */
-            myMap(myUser.U_Location);
+            myMap(myUser.U_Location, status);
         }).catch(function(response) {
             console.log("error getting bids");
         });
@@ -545,7 +580,7 @@ function acceptBid(el) {
 }
 
 
-function myMap(loc) {
+function myMap(loc, status) {
     console.log("Loc: " + loc);
 	var myAddress = address;
 	console.log("My Address: " + myAddress);
@@ -565,25 +600,25 @@ function myMap(loc) {
             console.log( response.routes[0].legs[0].distance.value ); // the distance in metres
           }
           else {
+            console.log("error with direction service");
             // oops, there's no route between these two locations
             // every time this happens, a kitten dies
             // so please, ensure your address is formatted properly
           }
         });
 
-    	/*console.log(navigator.geolocation.getCurrentPosition(function(position) {
-             var pos = {
-               lat: position.coords.latitude,
-               lng: position.coords.longitude
-             };
-             console.log(pos);
-
-        }));*/
-
-       var map = new google.maps.Map(document.getElementById('map'), {
-           mapTypeId: google.maps.MapTypeId.TERRAIN,
-           zoom: 10
-       });
+        if (status == 0) {
+            var map = new google.maps.Map(document.getElementById('open_map'), {
+               mapTypeId: google.maps.MapTypeId.TERRAIN,
+               zoom: 10
+            });
+        }
+        else if (status == 1) {
+             var map = new google.maps.Map(document.getElementById('pending_map'), {
+               mapTypeId: google.maps.MapTypeId.TERRAIN,
+               zoom: 10
+            });
+        }
 
        var geocoder = new google.maps.Geocoder();
 

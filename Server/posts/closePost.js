@@ -62,11 +62,11 @@ function closePost(bidId, postId, callback) {
 
 
 	    /* change post status to pending */
-	    var updatePostStatus = "UPDATE Posting SET STATUS=" + 1 + " WHERE Pid=" + postId;
+	    var updatePostStatus = "UPDATE Posting SET STATUS=" + 1 + ", Winning_Bidid=" + bidId + " WHERE Pid=" + postId;
 
 	    connection.query(updatePostStatus, function(err, rows) {
 	      if (err) {
-	        console.log("Close Post: database error!");
+	        console.log("Close Post: database error!" + err);
 	        return callback(-2);
 	      }
 	      else {
