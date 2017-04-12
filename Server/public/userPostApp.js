@@ -460,16 +460,21 @@ $scope.sortByLowestBid = function() {
             /* set flag */
             expanded = 0;
             openModal.style.display = "none";
+            pendingModal.style.display = "none";
             global_postId = -1;
         }
 
         // When the user clicks anywhere outside of the modal, close it
         window.onclick = function(event) {
-            if (event.target == modal) {
+            if (event.target == openModal) {
                 /* set flag */
                 expanded = 0;
                 openModal.style.display = "none";
                 global_postId = -1;
+            }
+            else if (event.target == pendingModal) {
+                expanded = 0;
+                pendingModel.style.display = "none";
             }
         }
     }
