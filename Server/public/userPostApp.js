@@ -437,7 +437,7 @@ $scope.sortByLowestBid = function() {
                         // Load bid history for current post
                         var bidData = new Object();
                         bidData.PostId = post.Pid;
-                        loadBids(bidData);
+                        loadBids(bidData, 0);
                         $scope.$apply();
                     }
                     else {
@@ -445,7 +445,7 @@ $scope.sortByLowestBid = function() {
                         // Load bid history for current post
                         var bidData = new Object();
                         bidData.PostId = post.Pid;
-                        loadBids(bidData);
+                        loadBids(bidData, 1);
                         $scope.$apply();
                     }
                 }
@@ -484,7 +484,7 @@ $scope.sortByLowestBid = function() {
     }
 
     /* load bids for a post */
-    function loadBids(bidData) {
+    function loadBids(bidData, status) {
         /* make request */
         $http.post("/GetBids", bidData).then(function(response) {
             var bids = response.data.Result;
@@ -532,8 +532,9 @@ $scope.sortByLowestBid = function() {
                 template.parentNode.appendChild(clone);
 
             }
+
             /* call display map function */
-            myMap(myUser.U_Location);
+            myMap(myUser.U_Location, status);
         }).catch(function(response) {
             console.log("error getting bids");
         });
@@ -570,7 +571,7 @@ function acceptBid(el) {
 }
 
 
-function myMap(loc) {
+function myMap(loc, status) {
     console.log("Loc: " + loc);
 	var myAddress = address;
 	console.log("My Address: " + myAddress);
@@ -605,10 +606,18 @@ function myMap(loc) {
 
         }));*/
 
-       var map = new google.maps.Map(document.getElementById('map'), {
-           mapTypeId: google.maps.MapTypeId.TERRAIN,
-           zoom: 10
-       });
+        if (status == 0) {
+            var map = new google.maps.Map(document.getElementById('open_map'), {
+               mapTypeId: google.maps.MapTypeId.TERRAIN,
+               zoom: 10
+            });
+        }
+        else if (status == 1) {
+             var map = new google.maps.Map(document.getElementById('pending_map'), {
+               mapTypeId: google.maps.MapTypeId.TERRAIN,
+               zoom: 10
+            });
+        }
 
        var geocoder = new google.maps.Geocoder();
 
