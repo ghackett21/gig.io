@@ -43,21 +43,22 @@ function closePost(bidId, postId, callback) {
 	}
 	else {
 		console.log("Close post " + postId + " with winning bid " + bidId);
-			/*
-            var mailOptions = {
-				from: 'gigdotio@gmail.com', // sender address
-				to: req.user.Email, // list of receivers
-				subject: 'Post has been closed', // Subject line
-				text: "This is a notification to alert you that your post has been closed."
-			};
-			*/
+		/*
+        var mailOptions = {
+			from: 'gigdotio@gmail.com', // sender address
+			to: req.user.Email, // list of receivers
+			subject: 'Post has been closed', // Subject line
+			text: "This is a notification to alert you that your post has been closed."
+		};
 
-	transporter.sendMail(mailOptions, function(error, info){
-		if(error){
-		    return console.log(error);
-		}
-		console.log('Message sent: ' + info.response);
-	});
+
+		transporter.sendMail(mailOptions, function(error, info){
+			if(error){
+			    return console.log(error);
+			}
+			console.log('Message sent: ' + info.response);
+		});
+		*/
 
 
 	    /* change post status to pending */
