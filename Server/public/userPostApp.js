@@ -441,7 +441,7 @@ $scope.sortByLowestBid = function() {
                         $scope.$apply();
                     }
                     else {
-                        pendingModel.style.display = "block";
+                        pendingModal.style.display = "block";
                         // Load bid history for current post
                         var bidData = new Object();
                         bidData.PostId = post.Pid;
