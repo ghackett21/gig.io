@@ -378,7 +378,7 @@ $scope.sortByLowestBid = function() {
     /* sets up all posts onClick actions (display info, load bids, and map) */
     function setupPosts(posts) {
         // Get the modal and the table rows
-        var modal = document.getElementById('myModal');
+        var openModal = document.getElementById('openModal');
         var rows = document.getElementById("postTable").rows;
 
         /* set the onclick action for each row/post */
@@ -425,7 +425,7 @@ $scope.sortByLowestBid = function() {
 
                     $scope.location = post.P_Location;
                     address = post.P_Location;
-                    modal.style.display = "block";
+                    openModal.style.display = "block";
 
                     // Load bid history for current post
                     var bidData = new Object();
