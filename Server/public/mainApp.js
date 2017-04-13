@@ -555,7 +555,7 @@ $scope.sortByLowestBid = function() {
             localStorage.setItem("bid_rating", response.data.Result[0].AVG_BidRate);
             localStorage.setItem("phone", response.data.Result[0].PhoneNumber);
             localStorage.setItem("email", response.data.Result[0].EmailAddress);
-            localStorage.setItem("profileImage", reponse.data.Result[0].U_Image);
+            localStorage.setItem("profileImage", response.data.Result[0].U_Image);
             window.open("userProfile.html", "_top");
         }).catch(function(response) {
             console.log("error getting user");
