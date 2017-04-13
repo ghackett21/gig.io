@@ -537,7 +537,9 @@ $scope.sortByLowestBid = function() {
                 td[1].innerHTML = bids[i].Username;
                 td[2].innerHTML = amountString
                 td[3].innerHTML = bids[i].AVG_BidRate + "/5";
-                td[4].id = bids[i].Bidid;
+                if (status == 0) {
+                    td[4].id = bids[i].Bidid;
+                }
                 template.parentNode.appendChild(clone);
 
             }

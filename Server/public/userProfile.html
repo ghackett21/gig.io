@@ -9,11 +9,12 @@
 <body ng-app="userProfileApp" ng-controller="profileController">
 <div ng-include="'navbar.html'"></div>
 <!--<input type="button" onclick="location.href='updateProfile.html'" value="Edit Profile">-->
+<a href="updateProfile.html" class="btn btn-default">Report User</a>
 <br>
 <br>
 <br>
 <template id="tmplt">
-    <center><img class="img-circle" src="assets/img/girl.png" alt="ProfilePic" style="width:420px;height:420px;"></center>
+    <center><img id = "profile_image" class="img-circle" src="assets/img/girl.png" alt="ProfilePic" style="width:420px;height:420px;"></center>
     <br>
     <center><h1></h1></center>
     <br>

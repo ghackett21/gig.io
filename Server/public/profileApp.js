@@ -34,6 +34,14 @@ app.controller("profileController", [ '$scope', '$http', function($scope, $http)
                 AddImage();
             }*/
             template.parentNode.appendChild(clone);
+
+            /* display profile image */
+            if (user.U_Image != "") {
+               document.getElementById("profile_image").src = user.U_Image;
+            }
+            else {
+                document.getElementById("profile_image").src = "assets/img/girl.png";
+            }
         })
     };
 }]);
