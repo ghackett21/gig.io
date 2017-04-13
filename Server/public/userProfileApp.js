@@ -26,5 +26,11 @@ app.controller("profileController", [ '$scope', '$http', function($scope, $http)
         h3[3].innerHTML = localStorage.getItem("phone");
         h3[4].innerHTML = localStorage.getItem("email");
         template.parentNode.appendChild(clone);
+        if (post.P_Image != "") {
+           document.getElementById("profile_image").src = localStorage.getItem(profileImage);
+        }
+        else {
+            document.getElementById("profile_image").src = "assets/img/girl.png";
+        }
     };
 }]);
