@@ -138,7 +138,6 @@
                     <th>User</th>
                     <th>Amount</th>
                     <th>Rating</th>
-                    <th>Completed</th>
                   </tr>
                   <template id="pendingBidTemplate">
                   <tr>
@@ -146,15 +145,12 @@
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td id = "temp">
-                        <button onClick="acceptBid(this);">Completed</button>
-                    </td>
                   </tr>
                   </template>
                 </table>
                 <br>
                 <p>
-                  <button ng-click="closePostButton(); $event.stopPropagation();">Close Post</button>
+                  <button ng-click="closePostButton(); $event.stopPropagation();">Completed</button>
                 </p>
                 </td>
                 <td>
