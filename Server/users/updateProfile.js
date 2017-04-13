@@ -111,7 +111,7 @@ function updateImage(userId, profileImage, phoneNumber, callback) {
 	console.log("Update user image");
 
 	if (profileImage != undefined) {
-		var update_iamge = "Update Users SET U_Image=" + connection.escape(profileImage) + " WHERE Uid=" + userId;
+		var update_image = "Update Users SET U_Image=" + connection.escape(profileImage) + " WHERE Uid=" + userId;
 
 		connection.query(update_image, function(err, rows) { 
 			if (err) {
