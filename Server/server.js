@@ -154,6 +154,10 @@ app.get('/bid.html', ensureAuthenticated, function(req, res) {
     res.sendFile(__dirname + '/public/bid.html');
 });
 
+app.get('/userProfile.html', ensureAuthenticated, function(req, res) {
+    res.sendFile(__dirname + '/public/userProfile.html');
+});
+
 app.use(express.static(path.join(__dirname, '/public')));
 
 passport.use(new LocalStrategy(
