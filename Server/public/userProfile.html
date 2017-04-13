@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="assets/css/profile_style.css" rel="stylesheet" type="text/css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
+    <script src="userProfileApp.js"></script>
+    <script src="data.js"></script>
+</head>
+<body ng-app="userProfileApp" ng-controller="profileController">
+<div ng-include="'navbar.html'"></div>
+<!--<input type="button" onclick="location.href='updateProfile.html'" value="Edit Profile">-->
+<a href="updateProfile.html" class="btn btn-default">Edit Profile</a>
+<br>
+<br>
+<h1>OTHER USER PROFILE</h1>
+<br>
+<template id="tmplt">
+    <center><img class="img-circle" src="assets/img/girl.png" alt="ProfilePic" style="width:420px;height:420px;"></center>
+    <br>
+    <center><h1></h1></center>
+    <br>
+    <br>
+    <center><h3></h3></center>
+    <br>
+    <center><h3></h3></center>
+    <br>
+    <center><h3></h3></center>
+    <br>
+    <center><h3></h3></center>
+    <br>
+    <center><h3></h3></center>
+    <br>
+</template>
+<script src="navbar.js"></script>
+</body>
+</html>

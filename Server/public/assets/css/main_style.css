@@ -143,3 +143,8 @@ h1 {
     height: 300px;
     display: block;
 }
+
+a.prof-link {
+    cursor: pointer;
+    color: royalblue;
+    }

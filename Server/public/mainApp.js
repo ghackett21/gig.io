@@ -10,9 +10,11 @@ var address;
 var myUser;
 var loc_distance;
 var expanded = 0;
+var currUid = 0;
 
 app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
 	$scope.user;
+    $scope.userToView;
     $scope.test = "test";
 
     /* logout user on button press */
@@ -438,6 +440,8 @@ $scope.sortByLowestBid = function() {
                     var post = posts[j];
 
                     /* set display content */
+                    console.log(post);
+                    currUid = post.Uid;
                     $scope.owner = post.Username;
                     $scope.phone = post.PhoneNumber;
                     $scope.desc = post.P_Description;
@@ -534,6 +538,26 @@ $scope.sortByLowestBid = function() {
 
         }).catch(function(response) {
             console.log("error getting bids");
+        })
+    }
+
+    $scope.viewUserProfile = function() {
+        console.log("In viewUserProfile");
+        console.log(currUid);
+        var userToView = {userId:currUid};
+        $http.post("/GetUser", userToView).then(function(response) {
+            console.log("Hello World");
+            console.log(response);
+            console.log(response.data.Result[0].Username);
+            localStorage.setItem("username", response.data.Result[0].Username);
+            localStorage.setItem("description", response.data.Result[0].U_Description);
+            localStorage.setItem("post_rating", response.data.Result[0].AVG_PostRate);
+            localStorage.setItem("bid_rating", response.data.Result[0].AVG_BidRate);
+            localStorage.setItem("phone", response.data.Result[0].PhoneNumber);
+            localStorage.setItem("email", response.data.Result[0].EmailAddress);
+            window.open("userProfile.html", "_top");
+        }).catch(function(response) {
+            console.log("error getting user");
         })
     }
 
