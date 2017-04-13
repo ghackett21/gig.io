@@ -36,8 +36,8 @@ app.controller("profileController", [ '$scope', '$http', function($scope, $http)
             template.parentNode.appendChild(clone);
 
             /* display profile image */
-            if (localStorage.getItem(profileImage) != "") {
-               document.getElementById("profile_image").src = localStorage.getItem(profileImage);
+            if (user.U_Image != "") {
+               document.getElementById("profile_image").src = user.U_Image;
             }
             else {
                 document.getElementById("profile_image").src = "assets/img/girl.png";
