@@ -71,3 +71,7 @@ input::-webkit-input-placeholder {
 	text-align: center;
 }
 
+prof {
+    cursor: pointer;
+}
+

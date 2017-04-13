@@ -121,10 +121,10 @@ $scope.sortByLowestBid = function() {
             do {
                 swapped = false;
                 for (var i=0; i < posts.length-1; i++) {
-                    bidVal1 = posts[i].NumberOfBids;
-                    bidVal2 = posts[i+1].NumberOfBids;
+                    bidVal1 = posts[i].LowestBid;
+                    bidVal2 = posts[i+1].LowestBid;
 
-                    if (bidVal1 < bidVal2) {
+                    if (bidVal1 > bidVal2) {
                         var temp = posts[i];
                         posts[i] = posts[i+1];
                         posts[i+1] = temp;
@@ -140,6 +140,11 @@ $scope.sortByLowestBid = function() {
                 td[0].innerHTML = posts[i].P_Title;
                 td[1].innerHTML = posts[i].Username;
                 td[2].innerHTML = posts[i].P_Location;
+                if (posts[i].NumberOfBids != 0)
+                    td[3].innerHTML = '$' + posts[i].LowestBid;
+                else
+                    td[3].innerHTML = "-";
+                td[4].innerHTML = posts[i].NumberOfBids;
                 var date = posts[i].CreationTime.substring(0,10);
                 var day = date.substring(8,date.length);
                 var month = date.substring(5,7);
@@ -147,7 +152,7 @@ $scope.sortByLowestBid = function() {
 
                 date = month + "/" + day + "/" + year;
 
-                td[3].innerHTML = date;
+                td[5].innerHTML = date;
             }
 
              /* set up each rows's onClick actions */
@@ -201,6 +206,11 @@ $scope.sortByLowestBid = function() {
                 td[0].innerHTML = posts[i].P_Title;
                 td[1].innerHTML = posts[i].Username;
                 td[2].innerHTML = posts[i].P_Location;
+                if (posts[i].NumberOfBids != 0)
+                    td[3].innerHTML = '$' + posts[i].LowestBid;
+                else
+                    td[3].innerHTML = "-";
+                td[4].innerHTML = posts[i].NumberOfBids;
                 var date = posts[i].CreationTime.substring(0,10);
                 var day = date.substring(8,date.length);
                 var month = date.substring(5,7);
@@ -208,7 +218,7 @@ $scope.sortByLowestBid = function() {
 
                 date = month + "/" + day + "/" + year;
 
-                td[3].innerHTML = date;
+                td[5].innerHTML = date;
             }
 
              /* set up each rows's onClick actions */
@@ -242,11 +252,11 @@ $scope.sortByLowestBid = function() {
                     do {
                         swapped = false;
                         for (var i=0; i < posts.length-1; i++) {
-                            dist1 = getDistanceFromLatLonInKm(posts[i].P_Lat, posts[i].P_Long, myUser.U_Lat, myUser.U_Long)
+                            dist1 = getDistanceFromLatLonInKm2(posts[i].P_Lat, posts[i].P_Long, myUser.U_Lat, myUser.U_Long);
 
-                            dist2 = getDistanceFromLatLonInKm(posts[i+1].P_Lat, posts[i+1].P_Long, myUser.U_Lat, myUser.U_Long);
+                            dist2 = getDistanceFromLatLonInKm2(posts[i+1].P_Lat, posts[i+1].P_Long, myUser.U_Lat, myUser.U_Long);
 
-                            if (dist1 < dist2) {
+                            if (dist1 > dist2) {
                                 var temp = posts[i];
                                 posts[i] = posts[i+1];
                                 posts[i+1] = temp;
@@ -262,6 +272,19 @@ $scope.sortByLowestBid = function() {
                         td[0].innerHTML = posts[i].P_Title;
                         td[1].innerHTML = posts[i].Username;
                         td[2].innerHTML = posts[i].P_Location;
+                        if (posts[i].NumberOfBids != 0)
+                            td[3].innerHTML = '$' + posts[i].LowestBid;
+                        else
+                            td[3].innerHTML = "-";
+                        td[4].innerHTML = posts[i].NumberOfBids;
+                        var date = posts[i].CreationTime.substring(0,10);
+                        var day = date.substring(8,date.length);
+                        var month = date.substring(5,7);
+                        var year = date.substring(0,4);
+
+                        date = month + "/" + day + "/" + year;
+
+                        td[5].innerHTML = date;
                     }
 
                     /* set up each rows's onClick actions */
@@ -314,6 +337,11 @@ $scope.sortByLowestBid = function() {
                     td[0].innerHTML = posts[i].P_Title;
                     td[1].innerHTML = posts[i].Username;
                     td[2].innerHTML = posts[i].P_Location;
+                    if (posts[i].NumberOfBids != 0)
+                        td[3].innerHTML = '$' + posts[i].LowestBid;
+                    else
+                        td[3].innerHTML = "-";
+                    td[4].innerHTML = posts[i].NumberOfBids;
                     var date = posts[i].CreationTime.substring(0,10);
                     var day = date.substring(8,date.length);
                     var month = date.substring(5,7);
@@ -321,7 +349,7 @@ $scope.sortByLowestBid = function() {
 
                     date = month + "/" + day + "/" + year;
 
-                    td[3].innerHTML = date;
+                    td[5].innerHTML = date;
                 }
 
                 /* set up each rows's onClick actions */
@@ -675,6 +703,16 @@ function calculateDistance(origin, destination) {
     var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
     var d = R * c; // Distance in km
     return d;
+  }
+
+  function getDistanceFromLatLonInKm2(lat1,long1,lat2,long2) {
+      dlong = (long2 - long1) * (Math.PI / 180.0);
+      dlat = (lat2 - lat1) * (Math.PI / 180.0);
+      a = Math.pow(Math.sin(dlat/2.0), 2) + Math.cos(lat1*(Math.PI / 180.0)) * Math.cos(lat2*(Math.PI / 180.0)) * Math.pow(Math.sin(dlong/2.0), 2);
+      c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+      d = 6367 * c;
+
+      return d;
   }
 
   function deg2rad(deg) {
