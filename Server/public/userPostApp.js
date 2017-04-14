@@ -36,7 +36,12 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
         $http.post('/GetUser').then(function(response) {
                         //console.log(response.data.Result[0]);
                         myUser = response.data.Result[0];
-        })
+        });
+        displayPosts();
+
+    }
+
+    function displayPosts() {
 
         if (currentMode == modeEnum.POSTED) {
             $scope.modeText = "View Won Posts";
@@ -600,6 +605,7 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
         else if (currentMode == modeEnum.Won) {
             currentMode = modeEnum.POSTED;
         }
+        displayPosts();
     }
 }]);
 
