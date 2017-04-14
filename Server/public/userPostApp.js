@@ -38,7 +38,8 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
                         myUser = response.data.Result[0];
         })
 
-        if (currentMode = modeEnum.POSTED) {
+        if (currentMode == modeEnum.POSTED) {
+            $scope.modeText = "View Won Posts";
             /* request post data */
             $http.post('/getUserPosts').then(function(response) {
                 fillRows(response);
@@ -53,6 +54,7 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
             });
         }
         else if (currentMode == modeEnum.WON) {
+            $scope.modeText = "View Created Posts";
             /* request post data */
             $http.post('/getWonPosts').then(function(response) {
                 fillRows(response);
@@ -590,6 +592,15 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
             console.log("error in Close Post");
         })
     } 
+
+    $scope.changeMode = function() {
+        if (currentMode == modeEnum.POSTED) {
+            currentMode = modeEnum.WON;
+        }
+        else if (currentMode == modeEnum.Won) {
+            currentMode = modeEnum.POSTED;
+        }
+    }
 }]);
 
 function acceptBid(el) {
