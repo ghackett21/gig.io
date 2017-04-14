@@ -21,15 +21,17 @@
 
 
 <div class = form>
-<div class=sorter id=mainselection align=left><select>
+<div class=sorter id=mainselection align=left>
+  <select ng-app='myApp' ng-controller="mainController" ng-model="selected" ng-change="sortType()">
   
     
-      <option ng-click="sortByAge()">Sort By Newest</option>
-      <option ng-click="sortByLowestBid()">Sort By Lowest Bid</option>
-      <option ng-click="sortByDistance()">Sort By Distance</option>
-      <option ng-click="sortByNumOfBids()">Sort By Number of Bids</option>
+      <option value="age">Sort By Newest</option>
+      <option value="low_bid">Sort By Lowest Bid</option>
+      <option value="dist">Sort By Distance</option>
+      <option value="num_bids">Sort By Number of Bids</option>
   
-</select></div>
+</select>
+</div>
 <table id="postTable" class =center>
   <tr class="clickable">
     <th>Job Title</th>
