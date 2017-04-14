@@ -106,11 +106,13 @@ h1 {
     cursor: pointer;
 }
 
+/*
 .modal-header {
     padding: 2px 16px;
     background-color: #FFFFFF;
     color: white;
 }
+*/
 
 .modal-body {padding: 2px 16px;}
 
