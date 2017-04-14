@@ -10,6 +10,7 @@ ul {
     position: fixed;
     top: 0;
     width: 100%;
+    z-index: 999;
 }
 
 li {
@@ -22,6 +23,7 @@ li a {
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
+    font-size: 19px;
 }
 
 li a:hover:not(.active) {
