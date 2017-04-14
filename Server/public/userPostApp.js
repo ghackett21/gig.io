@@ -15,7 +15,9 @@ var modeEnum = Object.freeze({
     WON: 1
 });
 
-app.controller("userPostController", [ '$scope', '$http', '$compile', function($scope, $http, $compile) {
+var currentMode = modeEnum.POSTED;
+
+app.controller("userPostController", [ '$scope', '$http', function($scope, $http) {
 	$scope.user;
     $scope.test = "test";
     $scope.bidInfo;
@@ -36,74 +38,93 @@ app.controller("userPostController", [ '$scope', '$http', '$compile', function($
                         myUser = response.data.Result[0];
         })
 
-        /* request post data */
-        $http.post('/getUserPosts').then(function(response) {
-            console.log("response: " + response)         
-            $scope.count = response.data.result.length;
-            $scope.index = 0;
-            arr = response.data.result;
-            var postData = [];
-            var template = document.querySelector('#tmplt');
-            /* make new rows in the post table for each post */
-            for (var i = 0 ; i < arr.length; i++) {
-                $scope.index = i;
-                var post = arr[i];
-                postData.push(arr[i]);
-                var clone = template.content.cloneNode(true);
-                var td = clone.querySelectorAll('td');
-                /* set display text elements */
-                td[0].innerHTML = post.P_Title;
-                td[1].innerHTML = post.Username;
-                td[2].innerHTML = post.P_Location;
-
-                /* transform date easier to read format */
-                var date = post.CreationTime.substring(0,10);
-                var day = date.substring(8,date.length);
-                var month = date.substring(5,7);
-                var year = date.substring(0,4);
-
-                date = month + "/" + day + "/" + year;
-
-                td[3].innerHTML = date;
-
-                var statusString = "";
-                if (post.Status == 0) {
-                    statusString = "Open";
+        if (currentMode = modeEnum.POSTED) {
+            /* request post data */
+            $http.post('/getUserPosts').then(function(response) {
+                fillRows(response);
+            }).catch(function(response) {
+                /* catch error in reponse */
+                $scope.user = null;
+                console.log(response.status);
+                console.log(response);
+                if(response.status == 401){
+                    console.log("failure");
                 }
-                else if (post.Status == 1) {
-                    statusString = "Pending";
+            });
+        }
+        else if (currentMode == modeEnum.WON) {
+            /* request post data */
+            $http.post('/getWonPosts').then(function(response) {
+                fillRows(response);
+            }).catch(function(response) {
+                /* catch error in reponse */
+                $scope.user = null;
+                console.log(response.status);
+                console.log(response);
+                if(response.status == 401){
+                    console.log("failure");
                 }
-
-                td[4].innerHTML = statusString;
-
-                var tr = clone.querySelectorAll('tr');               
-                tr[0].id = "post-"+i;
-                template.parentNode.appendChild(clone);
-            }
-
-            /* set up each rows's onClick actions */
-            setupPosts(postData);
-
-            console.log(response.status);
-            console.log(response);             
-            if(response.status == 200){
-                console.log("success");
-            }else if(response.status == 401){
-                console.log("failure");
-            }
-        }).catch(function(response) {
-            /* catch error in reponse */
-            $scope.user = null;
-            console.log(response.status);
-            console.log(response);
-            if(response.status == 401){
-                console.log("failure");
-            }
-        })
-        
+            });
+        }
     };
 
-$scope.sortByLowestBid = function() {
+    function fillRows(response) {
+        console.log("response: " + response)         
+        $scope.count = response.data.result.length;
+        $scope.index = 0;
+        arr = response.data.result;
+        var postData = [];
+        var template = document.querySelector('#tmplt');
+        /* make new rows in the post table for each post */
+        for (var i = 0 ; i < arr.length; i++) {
+            $scope.index = i;
+            var post = arr[i];
+            postData.push(arr[i]);
+            var clone = template.content.cloneNode(true);
+            var td = clone.querySelectorAll('td');
+            /* set display text elements */
+            td[0].innerHTML = post.P_Title;
+            td[1].innerHTML = post.Username;
+            td[2].innerHTML = post.P_Location;
+
+            /* transform date easier to read format */
+            var date = post.CreationTime.substring(0,10);
+            var day = date.substring(8,date.length);
+            var month = date.substring(5,7);
+            var year = date.substring(0,4);
+
+            date = month + "/" + day + "/" + year;
+
+            td[3].innerHTML = date;
+
+            var statusString = "";
+            if (post.Status == 0) {
+                statusString = "Open";
+            }
+            else if (post.Status == 1) {
+                statusString = "Pending";
+            }
+
+            td[4].innerHTML = statusString;
+
+            var tr = clone.querySelectorAll('tr');               
+            tr[0].id = "post-"+i;
+            template.parentNode.appendChild(clone);
+        }
+
+        /* set up each rows's onClick actions */
+        setupPosts(postData);
+
+        console.log(response.status);
+        console.log(response);             
+        if(response.status == 200){
+            console.log("success");
+        }else if(response.status == 401){
+            console.log("failure");
+        }
+    }
+
+    $scope.sortByLowestBid = function() {
         var bidVal1;
         var bidVal2;
         var temp;
