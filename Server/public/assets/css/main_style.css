@@ -66,6 +66,7 @@ h1 {
 }
 
 /* Modal Content */
+/*
 .modal-content {
     position: relative;
     background-color: #fefefe;
@@ -79,6 +80,7 @@ h1 {
     animation-name: animatetop;
     animation-duration: 0.4s
 }
+*/
 
 /* Add Animation */
 @-webkit-keyframes animatetop {
