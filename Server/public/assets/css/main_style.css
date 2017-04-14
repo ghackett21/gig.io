@@ -22,10 +22,10 @@ table {
     width: 90%;
 }
 
-  table.center {
+table.center {
     margin-left:auto; 
     margin-right:auto;
-  }
+}
 
 th, td {
     text-align: left;
@@ -106,20 +106,19 @@ h1 {
     cursor: pointer;
 }
 
-/*
+
 .modal-header {
     padding: 2px 16px;
     background-color: #FFFFFF;
     color: black;
 }
-*/
 
 .modal-body {padding: 2px 16px;}
 
 .modal-footer {
-    padding: 2px 16px;
+    /*padding: 2px 16px;*/
     background-color: #FFFFFF;
-    color: white;
+    color: black;
 }
 
 .modal-table {
