@@ -153,7 +153,6 @@ body {
    width: 100%; /* for IE 6 */
 }
 
-/*
 h2 { 
    position: absolute; 
    top: 200px; 
@@ -169,7 +168,6 @@ h2 span {
    background: rgba(0, 0, 0, 0.7);
    padding: 10px; 
 }
-*/
 
 
 .form {
