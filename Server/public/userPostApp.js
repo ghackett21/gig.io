@@ -9,13 +9,18 @@ var expanded = 0;
 var global_postId = -1;
 var global_http = null;
 
+/* mode enum */
+var modeEnum = Object.freeze({
+    POSTED: 0,
+    WON: 1
+});
+
 app.controller("userPostController", [ '$scope', '$http', '$compile', function($scope, $http, $compile) {
 	$scope.user;
     $scope.test = "test";
     $scope.bidInfo;
     global_http = $http;
 
-//test stuff for server auth
 	$scope.logout = function() {
 		$http.post('/logout').then(function(response) {
 			console.log("response = %j", response);
