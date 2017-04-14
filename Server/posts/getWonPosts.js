@@ -29,8 +29,6 @@ function getWonPosts(userId, callback) {
   			return callback(-2);
   		}
   		else {
-  			console.log("rows[]" + JSON.stringify(rows[2]));
-
   			return callback(rows);
   		}
   	});
