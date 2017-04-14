@@ -189,7 +189,7 @@ $scope.sortByLowestBid = function() {
        case 'dist':
          $scope.sortByDistance();
          break;
-       case 'num_bid':
+       case 'num_bids':
          $scope.sortByNumOfBids();
          break;
        default:
