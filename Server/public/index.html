@@ -9,32 +9,28 @@
 <body ng-app="myApp" ng-controller="mainController">
 
 <div ng-include="'navbar.html'"></div>
-
 <br>
 <br>
-
-<h1>Welcome to Gig.io</h1>
 <br>
 <br>
+<h1>Welcome to gig.io</h1>
 
-<table>
-  <tr>
-    <td>
-      <button ng-click="sortByAge()">Sort By Newest</button>
-    </td>
-    <td>
-      <button ng-click="sortByLowestBid()">Sort By Lowest Bid</button>
-    </td>
-    <td>
-      <button ng-click="sortByDistance()">Sort By Distance</button>
-    </td>
-    <td>
-      <button ng-click="sortByNumOfBids()">Sort By Number of Bids</button>
-    </td>
-  </tr>
-</table>
 
-<table id="postTable">
+<br>
+
+
+
+<div class = form>
+<div class=sorter id=mainselection align=left><select>
+  
+    
+      <option ng-click="sortByAge()">Sort By Newest</option>
+      <option ng-click="sortByLowestBid()">Sort By Lowest Bid</option>
+      <option ng-click="sortByDistance()">Sort By Distance</option>
+      <option ng-click="sortByNumOfBids()">Sort By Number of Bids</option>
+  
+</select></div>
+<table id="postTable" class =center>
   <tr class="clickable">
     <th>Job Title</th>
     <th>Owner</th>
@@ -54,7 +50,7 @@
   </tr>
   </template>
 </table>
-
+</div>
 <!-- The Modal -->
 <div id="myModal" class="modal">
 
