@@ -605,6 +605,15 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
         else if (currentMode == modeEnum.Won) {
             currentMode = modeEnum.POSTED;
         }
+        /* clear old rows */
+        var tableParent = document.querySelector('#tmplt').parentNode;
+        var postRows = tableParent.querySelectorAll('tr');
+        for (var i = 0; i < postRows.length; i++) {
+            if (postRows[i].id.includes("post")) {
+                tableParent.removeChild(postRows[i]);
+            }
+        }
+
         displayPosts();
     }
 }]);
