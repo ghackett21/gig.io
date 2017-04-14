@@ -602,7 +602,7 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
         if (currentMode == modeEnum.POSTED) {
             currentMode = modeEnum.WON;
         }
-        else if (currentMode == modeEnum.Won) {
+        else if (currentMode == modeEnum.WON) {
             currentMode = modeEnum.POSTED;
         }
         /* clear old rows */
