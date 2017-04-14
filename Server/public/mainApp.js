@@ -110,6 +110,7 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
 	};
 
 $scope.sortByLowestBid = function() {
+        console.log("I'm in!");
 	    var bidVal1;
         var bidVal2;
         var temp;
@@ -173,6 +174,28 @@ $scope.sortByLowestBid = function() {
             }
         })
 	};
+
+	$scope.sortType = function() {
+	 console.log("in sort type")
+     var sortKey = $scope.selected;
+     console.log(sortKey);
+     switch (sortKey) {
+       case 'age':
+         $scope.sortByAge();
+         break;
+       case 'low_bid':
+         $scope.sortByLowestBid();
+         break;
+       case 'dist':
+         $scope.sortByDistance();
+         break;
+       case 'num_bids':
+         $scope.sortByNumOfBids();
+         break;
+       default:
+     }
+     //$translate.use(langKey);
+   }
 
 	$scope.sortByAge = function() {
 	    var time1;
@@ -692,20 +715,6 @@ function calculateDistance(origin, destination) {
     }
   }
 
-  function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
-    var R = 6371; // Radius of the earth in km
-    var dLat = deg2rad(lat2-lat1);  // deg2rad below
-    var dLon = deg2rad(lon2-lon1);
-    var a =
-      Math.sin(dLat/2) * Math.sin(dLat/2) +
-      Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
-      Math.sin(dLon/2) * Math.sin(dLon/2)
-      ;
-    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-    var d = R * c; // Distance in km
-    return d;
-  }
-
   function getDistanceFromLatLonInKm2(lat1,long1,lat2,long2) {
       dlong = (long2 - long1) * (Math.PI / 180.0);
       dlat = (lat2 - lat1) * (Math.PI / 180.0);
@@ -714,10 +723,6 @@ function calculateDistance(origin, destination) {
       d = 6367 * c;
 
       return d;
-  }
-
-  function deg2rad(deg) {
-    return deg * (Math.PI/180)
   }
 
 app.controller("adminController", [ '$scope', '$http', function($scope, $http) {
