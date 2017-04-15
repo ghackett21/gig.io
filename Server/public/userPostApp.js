@@ -104,6 +104,8 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
 
             td[3].innerHTML = date;
 
+            console.log("post.Status: " + post.Status);
+
             var statusString = "";
             if (post.Status == 0) {
                 statusString = "Open";
