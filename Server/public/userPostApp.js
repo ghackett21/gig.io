@@ -107,7 +107,7 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
             console.log("post.Status: " + post.Status);
 
             var statusString = "";
-            if (currentMode = modeEnum.POSTED) {
+            if (currentMode == modeEnum.POSTED) {
 	            if (post.Status == 0) {
 	                statusString = "Open";
 	            }
