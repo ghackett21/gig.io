@@ -499,6 +499,7 @@ $scope.sortByLowestBid = function() {
                     $scope.phone = post.PhoneNumber;
                     $scope.desc = post.P_Description;
                     $scope.title = post.P_Title;
+                    console.log("postid: " + post.Pid);
                     $scope.Pid = post.Pid;
 
                     if (post.P_Image != "") {
