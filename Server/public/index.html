@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <link href="assets/css/main_style.css" rel="stylesheet" type="text/css">
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
-  <script src="mainApp.js"></script>
-  <script src="data.js"></script>
+    <link href="assets/css/main_style.css" rel="stylesheet" type="text/css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
+    <script src="mainApp.js"></script>
+    <script src="data.js"></script>
 </head>
 <body ng-app="myApp" ng-controller="mainController">
 
@@ -16,38 +16,39 @@
 <h1>Welcome to gig.io</h1>
 
 <div class = form>
-<div class=sorter id=mainselection align=left>
-  <select ng-app='myApp' ng-controller="mainController" ng-model="selected" ng-change="sortType()">
-  
-    
-      <option value="age">Sort By Newest</option>
-      <option value="low_bid">Sort By Lowest Bid</option>
-      <option value="dist">Sort By Distance</option>
-      <option value="num_bids">Sort By Number of Bids</option>
-  
-</select>
+  <div class=sorter id=mainselection align=left>
+      <select ng-app='myApp' ng-controller="mainController" ng-model="selected" ng-change="sortType()">
+          <option value="age">Sort By Newest</option>
+          <option value="low_bid">Sort By Lowest Bid</option>
+          <option value="dist">Sort By Distance</option>
+          <option value="num_bids">Sort By Number of Bids</option>
+      </select>
+  </div>
 </div>
-<table id="postTable" class =center>
-  <tr class="clickable">
-    <th>Job Title</th>
-    <th>Owner</th>
-    <th ng-click="sortByDistance()">Location</th>
-	<th ng-click="sortByLowestBid()">Current Bid</th>
-	<th ng-click="sortByNumOfBids()" >Number of Bidders</th>
-    <th ng-click="sortByAge()">Date Posted</th>
-  </tr>
-  <template id="tmplt">
-	  <tr class="clickable">
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-  </tr>
-  </template>
-</table>
+
+<div>
+    <table id="postTable" class =center>
+        <tr class="clickable">
+            <th>Job Title</th>
+            <th>Owner</th>
+            <th ng-click="sortByDistance()">Location</th>
+      	    <th ng-click="sortByLowestBid()">Current Bid</th>
+      	    <th ng-click="sortByNumOfBids()" >Number of Bidders</th>
+            <th ng-click="sortByAge()">Date Posted</th>
+        </tr>
+        <template id="tmplt">
+        	  <tr class="clickable">
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </template>
+    </table>
 </div>
+
 <!-- The Modal -->
 <div id="myModal" class="modal">
 
