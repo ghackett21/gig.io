@@ -49,57 +49,62 @@
 </table>
 </div>
 <!-- The Modal -->
-<div id="openModal" class="modal">
+<div id="myModal" class="modal">
 
-    <!-- Modal content -->
-    <div class="modal-content">
-        <div class="modal-header">
-            <span class="close">&times;</span>
-            <h2>{{title}}</h2>
-        </div>
-        <div class="modal-body">
-            <table class="modal-table">
-                <td>
-                    <p>Owner: {{owner}}</p>
-                    <p>Contact Info: {{phone}}</p>
-                    <p>Description: {{desc}}</p>
-                    <p>Location: {{location}}</p>
-                    <p>Status: {{status}}</p>
-                    <div id="open_map" style="width:400px;height:400px;background:yellow"></div>
-                </td>
-                <td valign="top">
-                  <p>Bid history:</p>
-                  <table id = "openBidTable" class="bid-table">
-                  <tr>
-                    <th>Time</th>
-                    <th>User</th>
-                    <th>Amount</th>
-                    <th>Rating</th>
-                    <th>Accept</th>
-                  </tr>
-                  <template id="openBidTemplate">
-                  <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                  </template>
-                </table>
-                <br>
-                <p>
-                  <button ng-click="placeBid(); $event.stopPropagation();">Close Post</button>
-                </p>
-                </td>
-                <td>
-                    <img id = "post_image" class="img-circle" src="assets/img/girl.png" alt="ProfilePic" style="width:300px;height:300px;">
-                </td>
-                </tr>
-            </table>
-        </div>
-        <div class="modal-footer">
-            <br>
-        </div>
+  <!-- Modal content -->
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="close">&times;</span>
+      <h2>{{title}}</h2>
     </div>
+    <div class="modal-body">
+      <table class="modal-table">
+        <td>
+          <p><b><a class='prof-link' style="font-size:24px" ng-click="viewUserProfile()" cursor="pointer">{{owner}}</a></b></p>
+          <p>Contact Info: {{phone}}</p>
+          <p>Description: {{desc}}</p>
+          <p>Location: {{location}}</p>
+          <div id="map" style="width:400px;height:400px;background:yellow"></div>
+        </td>
+        <td valign="top">
+          <p>Bid history:</p>
+          <table class="bid-table">
+          <tr>
+            <th>Time</th>
+            <th>User</th>
+            <th>Amount</th>
+            <th>Rating</th>
+          </tr>
+          <template id="bidTemplate">
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+          </template>
+          </table>
+          <br><p>Enter bid:</p>
+            <p>
+              <i>$</i><input type="number" ng-model="bid.Amount" placeholder="Bid amount"/>
+              <button ng-click="placeBid(); $event.stopPropagation();">Place bid</button>
+            </p>
+        </td>
+        <td>
+          <img id = "post_image" class="img-circle" src="assets/img/girl.png" alt="ProfilePic" style="width:300px;height:300px;">
+        </td>
+      </table>
+    </div>
+    <div class="modal-footer">
+    <!--<br>
+      <form>
+      <button formaction="bid.html" type="button" align="right-side">Enter Bid</button>
+      </form>
+    <br>-->
+    </div>
+  </div>
 </div>
-</div>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIqZ1SHXEe7CUj8Gv9MvVQLWrI-3k4isQ&callback=myMap"></script>
+<script src="navbar.js"></script>
+</body>
+</html>
