@@ -652,6 +652,19 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
         })
     } 
 
+    // Called when the "Completed" button is clicked
+    $scope.completedButton = function() {
+        var bid = {PostId:$scope.Pid};
+
+        /* close post */
+        $http.post('/CompletePost', bid).then(function(response) {
+           location.reload(true);
+           console.log("Close Post: " + bid.PostId + ", amount: " + bid.Amount);
+        }).catch(function(response) {
+            console.log("error in Close Post");
+        })
+    } 
+
     $scope.changeMode = function() {
         if (currentMode == modeEnum.POSTED) {
             currentMode = modeEnum.WON;
