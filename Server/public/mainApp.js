@@ -175,6 +175,7 @@ $scope.sortByLowestBid = function() {
         })
 	};
 
+    /*
 	$scope.sortType = function() {
 	 console.log("in sort type")
      var sortKey = $scope.selected;
@@ -196,6 +197,7 @@ $scope.sortByLowestBid = function() {
      }
      //$translate.use(langKey);
    }
+   */
 
 	$scope.sortByAge = function() {
 	    var time1;
