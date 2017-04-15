@@ -35,6 +35,7 @@ var createPost = require('./posts/createPost');
 var deleteInactivePosts = require('./posts/deleteInactivePosts');
 var closePost = require('./posts/closePost');
 var getWonPosts = require('./posts/getWonPosts');
+var completePost = require('./posts/completePosts');
 
 /* bidding */
 var getBids = require('./bidding/getBids');
@@ -281,6 +282,10 @@ app.post("/GetUserReposts", function(req, res) {
 
 app.post("/CreateReport", function(req, res) {
 	createReport(req, res);
+});
+
+app.post("/CompletePost", function(req, res) {
+	completePost(req, res);
 });
 
 app.post("/sendMail", function(req, res) {
