@@ -35,7 +35,7 @@ var createPost = require('./posts/createPost');
 var deleteInactivePosts = require('./posts/deleteInactivePosts');
 var closePost = require('./posts/closePost');
 var getWonPosts = require('./posts/getWonPosts');
-var completePost = require('./posts/completePosts');
+var completePost = require('./posts/completePost');
 
 /* bidding */
 var getBids = require('./bidding/getBids');
