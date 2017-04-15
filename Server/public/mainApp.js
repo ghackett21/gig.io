@@ -470,6 +470,7 @@ $scope.sortByLowestBid = function() {
 
     /* sets up all posts onClick actions (display info, load bids, and map) */
     function setupPosts(posts) {
+        console.log("IN SETUPPOSTS");
         // Get the modal and the table rows
         var modal = document.getElementById('myModal');
         var rows = document.getElementById("postTable").rows;
