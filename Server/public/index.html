@@ -26,26 +26,28 @@
   </div>
 </div>
 
-<table id="postTable" class =center>
-    <tr class="clickable">
-        <th>Job Title</th>
-        <th>Owner</th>
-        <th ng-click="sortByDistance()">Location</th>
-  	    <th ng-click="sortByLowestBid()">Current Bid</th>
-  	    <th ng-click="sortByNumOfBids()" >Number of Bidders</th>
-        <th ng-click="sortByAge()">Date Posted</th>
-    </tr>
-    <template id="tmplt">
-    	  <tr class="clickable">
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+<div>
+    <table id="postTable" class =center>
+        <tr class="clickable">
+            <th>Job Title</th>
+            <th>Owner</th>
+            <th ng-click="sortByDistance()">Location</th>
+      	    <th ng-click="sortByLowestBid()">Current Bid</th>
+      	    <th ng-click="sortByNumOfBids()" >Number of Bidders</th>
+            <th ng-click="sortByAge()">Date Posted</th>
         </tr>
-    </template>
-</table>
+        <template id="tmplt">
+        	  <tr class="clickable">
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </template>
+    </table>
+</div>
 
 <!-- The Modal -->
 <div id="myModal" class="modal">
