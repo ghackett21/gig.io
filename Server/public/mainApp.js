@@ -491,7 +491,6 @@ $scope.sortByLowestBid = function() {
                             break;
                     }
                     var post = posts[j];
-                    $scope.$apply();
 
                     /* set display content */
                     console.log(post);
@@ -513,6 +512,7 @@ $scope.sortByLowestBid = function() {
                     $scope.location = post.P_Location;
                     address = post.P_Location;
                     modal.style.display = "block";
+                    $scope.$apply();
 
                     // Load bid history for current post
                     var bidData = new Object();
