@@ -411,6 +411,8 @@ $scope.sortByLowestBid = function() {
             $scope.bid.PostId = $scope.Pid;
             $scope.bid.UserId = myUser.Uid;
 
+            console.log("bid: postid: " + $scope.bid.PostId + ", userId: " + $scope.bid.UserId + ", amount: " + $scope.bid.Amount);
+
             // Bid
             $http.post('/Bid', $scope.bid).then(function(response) {
                  if (response.data.State == -4) {
