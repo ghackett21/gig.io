@@ -582,7 +582,7 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
             if (status == 0) {
                template = document.querySelector('#openBidTemplate');
             }
-            else if (status == 1) {
+            else if (status == 1 || status == 2) {
                 template = document.querySelector('#pendingBidTemplate');
             }
 
