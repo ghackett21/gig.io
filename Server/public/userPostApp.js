@@ -653,7 +653,7 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
     } 
 
     // Called when the "Completed" button is clicked
-    $scope.completedButton = function() {
+    $scope.completeButton = function() {
     	 console.log("Completed Button function");
         var bid = {PostId:$scope.Pid};
 
