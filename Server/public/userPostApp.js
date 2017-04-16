@@ -104,12 +104,22 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
 
             td[3].innerHTML = date;
 
+            console.log("post.Status: " + post.Status);
+
             var statusString = "";
             if (post.Status == 0) {
                 statusString = "Open";
             }
             else if (post.Status == 1) {
+            	if (currentMode == modeEnum.POSTED) {
                 statusString = "Pending";
+            	}
+            	else {
+            		statusString = "Won";
+            	}
+            }
+            else if (post.Status == 2) {
+            	statusString= "Completed"
             }
 
             td[4].innerHTML = statusString;
@@ -174,11 +184,20 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
 
                 var statusString = "";
                 if (post.Status == 0) {
-                    statusString = "Open";
-                }
-                else if (post.Status == 1) {
-                    statusString = "Pending";
-                }
+                statusString = "Open";
+		        }
+		        else if (post.Status == 1) {
+		        	if (currentMode == modeEnum.POSTED) {
+		            statusString = "Pending";
+		        	}
+		        	else {
+		        		statusString = "Won";
+		        	}
+		        }
+		        else if (post.Status == 2) {
+		        	statusString= "Completed"
+		        }
+
 
                 td[4].innerHTML = statusString;
             }
@@ -246,11 +265,20 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
 
                 var statusString = "";
                 if (post.Status == 0) {
-                    statusString = "Open";
-                }
-                else if (post.Status == 1) {
-                    statusString = "Pending";
-                }
+                statusString = "Open";
+	            }
+	            else if (post.Status == 1) {
+	            	if (currentMode == modeEnum.POSTED) {
+	                statusString = "Pending";
+	            	}
+	            	else {
+	            		statusString = "Won";
+	            	}
+	            }
+	            else if (post.Status == 2) {
+	            	statusString= "Completed"
+            	}
+
 
                 td[4].innerHTML = statusString;
             }
@@ -309,11 +337,19 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
 
                         var statusString = "";
                         if (post.Status == 0) {
-                            statusString = "Open";
-                        }
-                        else if (post.Status == 1) {
-                            statusString = "Pending";
-                        }
+			                statusString = "Open";
+			            }
+			            else if (post.Status == 1) {
+			            	if (currentMode == modeEnum.POSTED) {
+			                statusString = "Pending";
+			            	}
+			            	else {
+			            		statusString = "Won";
+			            	}
+			            }
+			            else if (post.Status == 2) {
+			            	statusString= "Completed"
+			            }
 
                         td[3].innerHTML = statusString;
                     }
@@ -380,11 +416,20 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
 
                     var statusString = "";
                     if (post.Status == 0) {
-                        statusString = "Open";
-                    }
-                    else if (post.Status == 1) {
-                        statusString = "Pending";
-                    }
+		                statusString = "Open";
+		            }
+		            else if (post.Status == 1) {
+		            	if (currentMode == modeEnum.POSTED) {
+		                statusString = "Pending";
+		            	}
+		            	else {
+		            		statusString = "Won";
+		            	}
+		            }
+		            else if (post.Status == 2) {
+		            	statusString= "Completed"
+		            }
+
 
                     td[4].innerHTML = statusString;
                 }
@@ -451,11 +496,20 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
                     
                     var statusString = "";
                     if (post.Status == 0) {
-                        statusString = "Open";
-                    }
-                    else if (post.Status == 1) {
-                        statusString = "Pending";
-                    }
+               			statusString = "Open";
+		            }
+		            else if (post.Status == 1) {
+		            	if (currentMode == modeEnum.POSTED) {
+		                statusString = "Pending";
+		            	}
+		            	else {
+		            		statusString = "Won";
+		            	}
+		            }
+		            else if (post.Status == 2) {
+		            	statusString= "Completed"
+		            }
+
                     
                     $scope.status = statusString
 
@@ -591,6 +645,19 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
 
         /* close post */
         $http.post('/ClosePost', bid).then(function(response) {
+           location.reload(true);
+           console.log("Close Post: " + bid.PostId + ", amount: " + bid.Amount);
+        }).catch(function(response) {
+            console.log("error in Close Post");
+        })
+    } 
+
+    // Called when the "Completed" button is clicked
+    $scope.completedButton = function() {
+        var bid = {PostId:$scope.Pid};
+
+        /* close post */
+        $http.post('/CompletePost', bid).then(function(response) {
            location.reload(true);
            console.log("Close Post: " + bid.PostId + ", amount: " + bid.Amount);
         }).catch(function(response) {

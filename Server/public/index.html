@@ -15,14 +15,9 @@
 <br>
 <h1>Welcome to gig.io</h1>
 
-
-<br>
-
-
-
 <div class = form>
 <div class=sorter id=mainselection align=left>
-  <select ng-app='myApp' ng-controller="mainController" ng-model="selected" ng-change="sortType()">
+  <select ng-model="selected" ng-change="sortType()">
   
     
       <option value="age">Sort By Newest</option>
@@ -81,24 +76,23 @@
             <th>Rating</th>
           </tr>
           <template id="bidTemplate">
-          <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
           </template>
-        </table>
-        <br><p>Enter bid:</p>
-        <p>
-          <i>$</i><input type="number" ng-model="bid.Amount" placeholder="Bid amount"/>
-          <button ng-click="placeBid(); $event.stopPropagation();">Place bid</button>
-        </p>
+          </table>
+          <br><p>Enter bid:</p>
+            <p>
+              <i>$</i><input type="number" ng-model="bid.Amount" placeholder="Bid amount"/>
+              <button ng-click="placeBid(); $event.stopPropagation();">Place bid</button>
+            </p>
         </td>
         <td>
           <img id = "post_image" class="img-circle" src="assets/img/girl.png" alt="ProfilePic" style="width:300px;height:300px;">
         </td>
-      </tr>
       </table>
     </div>
     <div class="modal-footer">
@@ -107,7 +101,6 @@
       <button formaction="bid.html" type="button" align="right-side">Enter Bid</button>
       </form>
     <br>-->
-    <br>
     </div>
   </div>
 </div>
