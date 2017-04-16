@@ -561,6 +561,11 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
             pendingModal.style.display = "none";
         }
 
+        span[2].onclick = function() {
+            expanded = 0;
+            wonModal.style.display = "none";
+        }
+
         // When the user clicks anywhere outside of the modal, close it
         window.onclick = function(event) {
             if (event.target == openModal) {
@@ -570,6 +575,10 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
                 global_postId = -1;
             }
             else if (event.target == pendingModal) {
+                expanded = 0;
+                pendingModal.style.display = "none";
+            }
+            else if (event.target == wonModal) {
                 expanded = 0;
                 pendingModal.style.display = "none";
             }
@@ -750,10 +759,20 @@ function myMap(loc, status) {
             });
         }
         else if (status == 1 || status == 2) {
-             var map = new google.maps.Map(document.getElementById('pending_map'), {
-               mapTypeId: google.maps.MapTypeId.TERRAIN,
-               zoom: 10
-            });
+            if (currentMode == modeEnum.POSTED) {
+                var map = new google.maps.Map(document.getElementById('pending_map'), {
+                    mapTypeId: google.maps.MapTypeId.TERRAIN,
+                    zoom: 10
+
+                });
+            } 
+            else {
+                var map = new google.maps.Map(document.getElementById('won_map'), {
+                    mapTypeId: google.maps.MapTypeId.TERRAIN,
+                    zoom: 10
+
+                });
+            }
         }
 
        var geocoder = new google.maps.Geocoder();
