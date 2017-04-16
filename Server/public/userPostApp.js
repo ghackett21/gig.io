@@ -533,7 +533,7 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
                             pendingModal.style.display = "block";
                         }
                         else if (currentMode == modeEnum.WON) {
-                            wongModal.style.display = "block";
+                            wonModal.style.display = "block";
                         }
                         // Load bid history for current post
                         var bidData = new Object();
