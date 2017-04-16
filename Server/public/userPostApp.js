@@ -572,6 +572,7 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
 
     /* load bids for a post */
     function loadBids(bidData, status) {
+        console.log("load bids");
         /* make request */
         $http.post("/GetBids", bidData).then(function(response) {
             var bids = response.data.Result;
@@ -582,7 +583,7 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
             if (status == 0) {
                template = document.querySelector('#openBidTemplate');
             }
-            else if (status == 1) {
+            else if (status == 1 || status == 2) {
                 template = document.querySelector('#pendingBidTemplate');
             }
 
@@ -592,6 +593,7 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
                 template.parentNode.removeChild(template.parentNode.lastChild);
             }
 
+            console.log("before for loop in getbids");
             /* clone template row and fill in bid info */
             for (var i = 0; i < bids.length; i++) {
 
@@ -631,6 +633,7 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
 
             }
 
+            console.log("call myMap");
             /* call display map function */
             myMap(myUser.U_Location, status);
         }).catch(function(response) {
@@ -653,7 +656,8 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
     } 
 
     // Called when the "Completed" button is clicked
-    $scope.completedButton = function() {
+    $scope.completeButton = function() {
+    	 console.log("Completed Button function");
         var bid = {PostId:$scope.Pid};
 
         /* close post */
@@ -734,7 +738,7 @@ function myMap(loc, status) {
                zoom: 10
             });
         }
-        else if (status == 1) {
+        else if (status == 1 || status == 2) {
              var map = new google.maps.Map(document.getElementById('pending_map'), {
                mapTypeId: google.maps.MapTypeId.TERRAIN,
                zoom: 10
