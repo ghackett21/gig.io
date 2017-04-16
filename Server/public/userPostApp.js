@@ -303,154 +303,154 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
     };
 
     $scope.sortByDistance = function() {
-                var time1;
-                var time2;
-                var temp;
-                var swapped;
-                $http.post('/getUserPosts').then(function(response) {
-                    posts = response.data.result;
+        var time1;
+        var time2;
+        var temp;
+        var swapped;
+        $http.post('/getUserPosts').then(function(response) {
+            posts = response.data.result;
 
-                    /* sort posts by distance to user's location */
-                    do {
-                        swapped = false;
-                        for (var i=0; i < posts.length-1; i++) {
-                            dist1 = getDistanceFromLatLonInKm(posts[i].P_Lat, posts[i].P_Long, myUser.U_Lat, myUser.U_Long)
+            /* sort posts by distance to user's location */
+            do {
+                swapped = false;
+                for (var i=0; i < posts.length-1; i++) {
+                    dist1 = getDistanceFromLatLonInKm(posts[i].P_Lat, posts[i].P_Long, myUser.U_Lat, myUser.U_Long)
 
-                            dist2 = getDistanceFromLatLonInKm(posts[i+1].P_Lat, posts[i+1].P_Long, myUser.U_Lat, myUser.U_Long);
+                    dist2 = getDistanceFromLatLonInKm(posts[i+1].P_Lat, posts[i+1].P_Long, myUser.U_Lat, myUser.U_Long);
 
-                            if (dist1 < dist2) {
-                                var temp = posts[i];
-                                posts[i] = posts[i+1];
-                                posts[i+1] = temp;
-                                swapped = true;
-                            }
-                        }
-                    } while (swapped);
-
-                    var template = document.querySelector('#tmplt');
-                    for (var i = 0; i < posts.length; i++) {
-                        var currRow = document.getElementById("post-"+i);
-                        var td = currRow.querySelectorAll('td');
-                        td[0].innerHTML = posts[i].P_Title;
-                        td[1].innerHTML = posts[i].Username;
-                        td[2].innerHTML = posts[i].P_Location;
-
-                        var statusString = "";
-                        if (post.Status == 0) {
-			                statusString = "Open";
-			            }
-			            else if (post.Status == 1) {
-			            	if (currentMode == modeEnum.POSTED) {
-			                statusString = "Pending";
-			            	}
-			            	else {
-			            		statusString = "Won";
-			            	}
-			            }
-			            else if (post.Status == 2) {
-			            	statusString= "Completed"
-			            }
-
-                        td[3].innerHTML = statusString;
+                    if (dist1 < dist2) {
+                        var temp = posts[i];
+                        posts[i] = posts[i+1];
+                        posts[i+1] = temp;
+                        swapped = true;
                     }
+                }
+            } while (swapped);
 
-                    /* set up each rows's onClick actions */
-                    setupPosts(posts);
+            var template = document.querySelector('#tmplt');
+            for (var i = 0; i < posts.length; i++) {
+                var currRow = document.getElementById("post-"+i);
+                var td = currRow.querySelectorAll('td');
+                td[0].innerHTML = posts[i].P_Title;
+                td[1].innerHTML = posts[i].Username;
+                td[2].innerHTML = posts[i].P_Location;
 
-                    console.log(response.status);
-                    console.log(response);
-                    if(response.status == 200){
-                        console.log("success");
-                    }else if(response.status == 401){
-                        console.log("failure");
-                    }
-                }).catch(function(response) {
-                    console.log(response.status);
-                    console.log(response);
-                    if(response.status == 401){
-                        console.log("failure");
-                    }
-                })
-        };
+                var statusString = "";
+                if (post.Status == 0) {
+	                statusString = "Open";
+	            }
+	            else if (post.Status == 1) {
+	            	if (currentMode == modeEnum.POSTED) {
+	                statusString = "Pending";
+	            	}
+	            	else {
+	            		statusString = "Won";
+	            	}
+	            }
+	            else if (post.Status == 2) {
+	            	statusString= "Completed"
+	            }
+
+                td[3].innerHTML = statusString;
+            }
+
+            /* set up each rows's onClick actions */
+            setupPosts(posts);
+
+            console.log(response.status);
+            console.log(response);
+            if(response.status == 200){
+                console.log("success");
+            }else if(response.status == 401){
+                console.log("failure");
+            }
+        }).catch(function(response) {
+            console.log(response.status);
+            console.log(response);
+            if(response.status == 401){
+                console.log("failure");
+            }
+        })
+    };
 
     $scope.sortByNumOfBids = function() {
-            var time1;
-            var time2;
-            var temp;
-            var swapped;
-            $http.post('/getUserPosts').then(function(response) {
-                posts = response.data.result;
+        var time1;
+        var time2;
+        var temp;
+        var swapped;
+        $http.post('/getUserPosts').then(function(response) {
+            posts = response.data.result;
 
-                /* Sort by number of bids */
-                do {
-                    swapped = false;
-                    for (var i=0; i < posts.length-1; i++) {
-                        nbids1 = new Date(posts[i].NumberOfBids);
-                        nbids2 = new Date(posts[i+1].NumberOfBids);
+            /* Sort by number of bids */
+            do {
+                swapped = false;
+                for (var i=0; i < posts.length-1; i++) {
+                    nbids1 = new Date(posts[i].NumberOfBids);
+                    nbids2 = new Date(posts[i+1].NumberOfBids);
 
-                        if (nbids1 < nbids2) {
-                            var temp = posts[i];
-                            posts[i] = posts[i+1];
-                            posts[i+1] = temp;
-                            swapped = true;
-                        }
+                    if (nbids1 < nbids2) {
+                        var temp = posts[i];
+                        posts[i] = posts[i+1];
+                        posts[i+1] = temp;
+                        swapped = true;
                     }
-                } while (swapped);
-
-                var template = document.querySelector('#tmplt');
-                for (var i = 0; i < posts.length; i++) {
-                    var currRow = document.getElementById("post-"+i);
-                    var td = currRow.querySelectorAll('td');
-                    td[0].innerHTML = posts[i].P_Title;
-                    td[1].innerHTML = posts[i].Username;
-                    td[2].innerHTML = posts[i].P_Location;
-
-                    var date = posts[i].CreationTime.substring(0,10);
-                    var day = date.substring(8,date.length);
-                    var month = date.substring(5,7);
-                    var year = date.substring(0,4);
-
-                    date = month + "/" + day + "/" + year;
-
-                    td[3].innerHTML = date;
-
-                    var statusString = "";
-                    if (post.Status == 0) {
-		                statusString = "Open";
-		            }
-		            else if (post.Status == 1) {
-		            	if (currentMode == modeEnum.POSTED) {
-		                statusString = "Pending";
-		            	}
-		            	else {
-		            		statusString = "Won";
-		            	}
-		            }
-		            else if (post.Status == 2) {
-		            	statusString= "Completed"
-		            }
-
-
-                    td[4].innerHTML = statusString;
                 }
+            } while (swapped);
 
-                /* set up each rows's onClick actions */
-                setupPosts(posts);
+            var template = document.querySelector('#tmplt');
+            for (var i = 0; i < posts.length; i++) {
+                var currRow = document.getElementById("post-"+i);
+                var td = currRow.querySelectorAll('td');
+                td[0].innerHTML = posts[i].P_Title;
+                td[1].innerHTML = posts[i].Username;
+                td[2].innerHTML = posts[i].P_Location;
 
-                console.log(response.status);
-                console.log(response);
-                if(response.status == 200){
-                    console.log("success");
-                }else if(response.status == 401){
-                    console.log("failure");
-                }
-            }).catch(function(response) {
-                console.log(response.status);
-                console.log(response);
-                if(response.status == 401){
-                    console.log("failure");
-                }
-            })
+                var date = posts[i].CreationTime.substring(0,10);
+                var day = date.substring(8,date.length);
+                var month = date.substring(5,7);
+                var year = date.substring(0,4);
+
+                date = month + "/" + day + "/" + year;
+
+                td[3].innerHTML = date;
+
+                var statusString = "";
+                if (post.Status == 0) {
+	                statusString = "Open";
+	            }
+	            else if (post.Status == 1) {
+	            	if (currentMode == modeEnum.POSTED) {
+	                statusString = "Pending";
+	            	}
+	            	else {
+	            		statusString = "Won";
+	            	}
+	            }
+	            else if (post.Status == 2) {
+	            	statusString= "Completed"
+	            }
+
+
+                td[4].innerHTML = statusString;
+            }
+
+            /* set up each rows's onClick actions */
+            setupPosts(posts);
+
+            console.log(response.status);
+            console.log(response);
+            if(response.status == 200){
+                console.log("success");
+            }else if(response.status == 401){
+                console.log("failure");
+            }
+        }).catch(function(response) {
+            console.log(response.status);
+            console.log(response);
+            if(response.status == 401){
+                console.log("failure");
+            }
+        });
     };
 
     /* sets up all posts onClick actions (display info, load bids, and map) */
