@@ -458,6 +458,7 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
         // Get the modal and the table rows
         var openModal = document.getElementById('openModal');
         var pendingModal = document.getElementById('pendingModal');
+        var wonModal =document.getElementById('wonModal');
         var rows = document.getElementById("postTable").rows;
 
         /* set the onclick action for each row/post */
@@ -527,8 +528,13 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
                         loadBids(bidData, 0);
                         $scope.$apply();
                     }
-                    else {
-                        pendingModal.style.display = "block";
+                    else if (post.Status == 1) {
+                        if (currentMode == modeEnum.POSTED) {
+                            pendingModal.style.display = "block";
+                        }
+                        else if (currentMode == modeEnum.WON) {
+                            wongModal.style.display = "block";
+                        }
                         // Load bid history for current post
                         var bidData = new Object();
                         bidData.PostId = post.Pid;
@@ -583,8 +589,13 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
             if (status == 0) {
                template = document.querySelector('#openBidTemplate');
             }
-            else if (status == 1 || status == 2) {
-                template = document.querySelector('#pendingBidTemplate');
+            else if (status == 1) {
+                if (currentMode == modeEnum.POSTED) {
+                    template = document.querySelector('#pendingBidTemplate');
+                }
+                else {
+                    template = document.querySelector('#wonBidTemplate');
+                }
             }
 
             while(template.parentNode.hasChildNodes()) {
