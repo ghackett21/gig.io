@@ -735,7 +735,7 @@ function myMap(loc, status) {
                zoom: 10
             });
         }
-        else if (status == 1) {
+        else if (status == 1 || status == 2) {
              var map = new google.maps.Map(document.getElementById('pending_map'), {
                mapTypeId: google.maps.MapTypeId.TERRAIN,
                zoom: 10
