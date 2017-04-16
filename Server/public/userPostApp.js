@@ -572,6 +572,7 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
 
     /* load bids for a post */
     function loadBids(bidData, status) {
+        console.log("load bids");
         /* make request */
         $http.post("/GetBids", bidData).then(function(response) {
             var bids = response.data.Result;
