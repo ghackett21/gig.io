@@ -593,6 +593,7 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
                 template.parentNode.removeChild(template.parentNode.lastChild);
             }
 
+            console.log("before for loop in getbids");
             /* clone template row and fill in bid info */
             for (var i = 0; i < bids.length; i++) {
 
@@ -632,6 +633,7 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
 
             }
 
+            console.log("call myMap");
             /* call display map function */
             myMap(myUser.U_Location, status);
         }).catch(function(response) {
