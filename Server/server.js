@@ -62,6 +62,8 @@ passport.deserializeUser(function(user, done) {
 
 function findByUsername(username, fn) {
 	var select = "SELECT * FROM Users WHERE Username LIKE " + connection.escape(username);
+
+	/* query is not case sensitve */
 	connection.query(select, function(err, rows) {
 		if (err) {
 			/* an error occured */
@@ -70,8 +72,15 @@ function findByUsername(username, fn) {
 		}
 		else {
 			if (rows.length == 1) {
-				console.log("findbyuser sending rows[0]: %j", rows[0]);
-				return fn(null, rows[0]);
+				/* compare username - case sensitive */
+				if (username == rows[0].Username) {
+					console.log("findbyuser sending rows[0]: %j", rows[0]);
+					return fn(null, rows[0]);
+				}
+				else {
+					console.log("Username case mismatch");
+					return fn(null, null);
+				}
 			}
 			else {
 				console.log("why am i here");
@@ -170,7 +179,7 @@ passport.use(new LocalStrategy(
 				console.log("Incorrect Username");
 		        return done(null, false, { message: 'Incorrect username.' });
 		    }
-		console.log("password = %s, hash = %s, result = %b\n", password,  user.Password, bcrypt.compareSync(password, user.Password));
+			console.log("password = %s, hash = %s, result = %b\n", password,  user.Password, bcrypt.compareSync(password, user.Password));
 		    if(!bcrypt.compareSync(password, user.Password)){
 				console.log("Incorrect Password");
 		        return done(null, false, { message: 'Incorrect password.' });
