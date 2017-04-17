@@ -489,7 +489,7 @@ $scope.sortByLowestBid = function() {
                     for(j; j < rows.length; j++) {
                        str = "post-"+j;
                        if (str === rowID)
-                            break;
+                        break;
                     }
                     var post = posts[j];
 
@@ -503,11 +503,18 @@ $scope.sortByLowestBid = function() {
                     console.log("postid: " + post.Pid);
                     $scope.Pid = post.Pid;
 
+                    var postImage = document.getElementById('post_image');
+
+                    img.addEventListener('error', function(){
+                        console.log('loading img failed.');  
+                        postImage.src = "assets/img/girl.png";
+                    });
+
                     if (post.P_Image != "") {
-                       document.getElementById("post_image").src = post.P_Image;
+                       postImage .src = post.P_Image;
                     }
                     else {
-                        document.getElementById("post_image").src = "assets/img/girl.png";
+                        postImage .src = "assets/img/girl.png";
                     }
 
                     $scope.location = post.P_Location;
