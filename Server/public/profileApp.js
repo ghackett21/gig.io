@@ -35,12 +35,20 @@ app.controller("profileController", [ '$scope', '$http', function($scope, $http)
             }*/
             template.parentNode.appendChild(clone);
 
+
+            var profileImage = document.getElementById('profile_image');
+
+            profileImage.addEventListener('error', function(){
+                console.log('loading img failed.');  
+                profileImage.src = "assets/img/girl.png";
+            });
+
             /* display profile image */
             if (user.U_Image != "") {
-               document.getElementById("profile_image").src = user.U_Image;
+               profileImage.src = user.U_Image;
             }
             else {
-                document.getElementById("profile_image").src = "assets/img/girl.png";
+                profileImage.src = "assets/img/girl.png";
             }
         })
     };
