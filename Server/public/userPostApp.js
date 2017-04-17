@@ -623,7 +623,7 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
         /* make request */
         $http.post("/GetBids", bidData).then(function(response) {
             var bids = response.data.Result;
-             $scope.bidInfo = bids;
+            $scope.bidInfo = bids;
             var bidData = []
             var template = null;
 
