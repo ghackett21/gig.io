@@ -26,7 +26,7 @@ module.exports = function (postId, callback) {
 					}
 				}); 
 			}
-			else if (rows[0].Status == 1) {
+			else {
 				console.log("Winning bidid: " + rows[0].Winning_Bidid);
 				/* if the post is pending, only return info of the winning bid */
 				var selectBids = "SELECT Bids.Bidid, Bids.Uid, Bids.Pid, Bids.BidTime, Bids.Amount, Users.Username, Users.AVG_BidRate FROM Bids Inner Join Users On Bids.Uid=Users.Uid WHERE Bids.Bidid Like '" + rows[0].Winning_Bidid + "'";
