@@ -489,11 +489,18 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
                     $scope.Pid = post.Pid;
                     global_postId = post.Pid;
 
+                    var postImage = document.getElementById('post_image');
+
+                    postImage.addEventListener('error', function(){
+                        console.log('loading img failed.');  
+                        postImage.src = "assets/img/girl.png";
+                    });
+
                     if (post.P_Image != "") {
-                       document.getElementById("post_image").src = post.P_Image;
+                       postImage .src = post.P_Image;
                     }
                     else {
-                        document.getElementById("post_image").src = "assets/img/girl.png";
+                        postImage .src = "assets/img/girl.png";
                     }
 
                     

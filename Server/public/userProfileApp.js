@@ -26,11 +26,21 @@ app.controller("profileController", [ '$scope', '$http', function($scope, $http)
         h3[3].innerHTML = localStorage.getItem("phone");
         h3[4].innerHTML = localStorage.getItem("email");
         template.parentNode.appendChild(clone);
+
+
+        var profileImage = document.getElementById('profile_image');
+
+        profileImage.addEventListener('error', function(){
+            console.log('loading img failed.');  
+            profileImage.src = "assets/img/girl.png";
+        });
+
+        /* display profile image */
         if (localStorage.getItem("profileImage") != "null" && localStorage.getItem("profileImage") != "") {
-           document.getElementById("profile_image").src = localStorage.getItem("profileImage");
+           profileImage.src = user.U_Image;
         }
         else {
-            document.getElementById("profile_image").src = "assets/img/girl.png";
+            profileImage.src = "assets/img/girl.png";
         }
     };
 }]);
