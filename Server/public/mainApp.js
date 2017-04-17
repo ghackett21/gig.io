@@ -12,7 +12,7 @@ var loc_distance;
 var expanded = 0;
 var currUid = 0;
 
-app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
+app.controller("mainController", [ '$scope', '$http', function($scope, $http, $compile) {
 	$scope.user;
     $scope.userToView;
     $scope.test = "test";
@@ -454,8 +454,9 @@ $scope.sortByLowestBid = function() {
 
 
                     /* fill in row information */
+                    console.log("Fixing HTML");
                     td[0].innerHTML = date; 
-                    td[1].innerHTML = bids[i].Username;
+                    td[1].innerHTML = "<b><a class=\'prof-link ng-binding\' style=\"font-size:24px\" onclick=\"angular.element(this).scope().viewBidUserProfile(" + bids[i].Uid + ")\">" + bids[i].Username + "</a></b>";
                     td[2].innerHTML = amountString;
                     td[3].innerHTML = bids[i].AVG_BidRate + "/5";
                     template.parentNode.appendChild(clone);
@@ -581,8 +582,8 @@ $scope.sortByLowestBid = function() {
                 }
 
                 /* fill in row information */
-                td[0].innerHTML = date; 
-                td[1].innerHTML = bids[i].Username;
+                td[0].innerHTML = date;
+                td[1].innerHTML = "<b><a class=\'prof-link ng-binding\' style=\"font-size:24px\" onclick=\"angular.element(this).scope().viewBidUserProfile(" + bids[i].Uid + ")\">" + bids[i].Username + "</a></b>";
                 td[2].innerHTML = amountString;
                 td[3].innerHTML = bids[i].AVG_BidRate + "/5";
                 template.parentNode.appendChild(clone);
@@ -615,6 +616,27 @@ $scope.sortByLowestBid = function() {
             console.log("error getting user");
         })
     }
+
+    $scope.viewBidUserProfile = function(uid) {
+            console.log("In viewBidUserProfile");
+            console.log(uid);
+            var userToView = {userId:uid};
+            $http.post("/GetUser", userToView).then(function(response) {
+                console.log("Hello World");
+                console.log(response);
+                console.log(response.data.Result[0].Username);
+                localStorage.setItem("username", response.data.Result[0].Username);
+                localStorage.setItem("description", response.data.Result[0].U_Description);
+                localStorage.setItem("post_rating", response.data.Result[0].AVG_PostRate);
+                localStorage.setItem("bid_rating", response.data.Result[0].AVG_BidRate);
+                localStorage.setItem("phone", response.data.Result[0].PhoneNumber);
+                localStorage.setItem("email", response.data.Result[0].EmailAddress);
+                localStorage.setItem("profileImage", response.data.Result[0].U_Image);
+                window.open("userProfile.html", "_top");
+            }).catch(function(response) {
+                console.log("error getting user");
+            })
+        }
 
 }]);
 
