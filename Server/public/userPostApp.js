@@ -489,7 +489,34 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
                     $scope.Pid = post.Pid;
                     global_postId = post.Pid;
 
-                    var postImage = document.getElementById('post_image');
+
+                    var postImage = null;
+                    var statusString = "";
+                    if (post.Status == 0) {
+               			statusString = "Open";
+                        postImage = document.getElementById('open_image');
+		            }
+		            else if (post.Status == 1) {
+		            	if (currentMode == modeEnum.POSTED) {
+		                    statusString = "Pending";
+
+                            postImage = document.getElementById('pending_image');
+		            	}
+		            	else {
+		            		statusString = "Won";
+
+                            postImage = document.getElementById('won_image');
+		            	}
+		            }
+		            else if (post.Status == 2) {
+                        statusString= "Completed"
+                        if (currentMode == modeEnum.POSTED) {
+                            postImage = document.getElementById('completed_poster_image');
+                        }
+                        else {
+                            postImage = document.getElementById('completed_bidder_image');
+                        }
+		            }
 
                     postImage.addEventListener('error', function(){
                         console.log('loading img failed.');  
@@ -502,23 +529,6 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
                     else {
                         postImage .src = "assets/img/girl.png";
                     }
-
-                    
-                    var statusString = "";
-                    if (post.Status == 0) {
-               			statusString = "Open";
-		            }
-		            else if (post.Status == 1) {
-		            	if (currentMode == modeEnum.POSTED) {
-		                statusString = "Pending";
-		            	}
-		            	else {
-		            		statusString = "Won";
-		            	}
-		            }
-		            else if (post.Status == 2) {
-		            	statusString= "Completed"
-		            }
 
                     
                     $scope.status = statusString
