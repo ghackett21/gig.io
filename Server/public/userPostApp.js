@@ -580,6 +580,16 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
             wonModal.style.display = "none";
         }
 
+        span[3].onclick = function() {
+            expanded = 0;
+            completedPosterModal.style.display = "none";
+        }
+
+        span[4].onclick = function() {
+            expanded = 0;
+            completedBidderModal.style.display = "none";
+        }
+
         // When the user clicks anywhere outside of the modal, close it
         window.onclick = function(event) {
             if (event.target == openModal) {
@@ -593,6 +603,14 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
                 pendingModal.style.display = "none";
             }
             else if (event.target == wonModal) {
+                expanded = 0;
+                pendingModal.style.display = "none";
+            }
+            else if (event.target == completedPosterModal) {
+                expanded = 0;
+                pendingModal.style.display = "none";
+            }
+            else if (event.target == completedBidderModal) {
                 expanded = 0;
                 pendingModal.style.display = "none";
             }
