@@ -505,7 +505,7 @@ $scope.sortByLowestBid = function() {
 
                     var postImage = document.getElementById('post_image');
 
-                    img.addEventListener('error', function(){
+                    postImage.addEventListener('error', function(){
                         console.log('loading img failed.');  
                         postImage.src = "assets/img/girl.png";
                     });
