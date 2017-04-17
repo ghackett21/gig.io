@@ -219,6 +219,114 @@
     </div>
 </div>
 
+<!-- The Modal -->
+<div id="completedPosterModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close">&times;</span>
+            <h2>{{title}}</h2>
+        </div>
+        <div class="modal-body">
+            <table class="modal-table">
+                <td>
+                    <p>Owner: {{owner}}</p>
+                    <p>Contact Info: {{phone}}</p>
+                    <p>Description: {{desc}}</p>
+                    <p>Location: {{location}}</p>
+                    <p>Status: {{status}}</p>
+                    <div id="completed_posted_map" style="width:400px;height:400px;background:yellow"></div>
+                </td>
+                <td valign="top">
+                  <p>Winning Bid:</p>
+                  <table id = "completedPosterBidTable" class="bid-table">
+                  <tr>
+                    <th>Time</th>
+                    <th>User</th>
+                    <th>Amount</th>
+                    <th>Rating</th>
+                  </tr>
+                  <template id="compeltedPosterBidTemplate">
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  </template>
+                </table>
+                <br>
+                <p>
+                    <button ng-click="completeButton(); $event.stopPropagation();">Rate Bidder</button>
+                </p>
+                </td>
+                <td>
+                    <img id = "post_image" class="img-circle" src="assets/img/girl.png" alt="ProfilePic" style="width:300px;height:300px;">
+                </td>
+                </tr>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <br>
+        </div>
+    </div>
+</div>
+
+<!-- The Modal -->
+<div id="completedBidderModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close">&times;</span>
+            <h2>{{title}}</h2>
+        </div>
+        <div class="modal-body">
+            <table class="modal-table">
+                <td>
+                    <p>Owner: {{owner}}</p>
+                    <p>Contact Info: {{phone}}</p>
+                    <p>Description: {{desc}}</p>
+                    <p>Location: {{location}}</p>
+                    <p>Status: {{status}}</p>
+                    <div id="completed_bidder_map" style="width:400px;height:400px;background:yellow"></div>
+                </td>
+                <td valign="top">
+                  <p>Winning Bid:</p>
+                  <table id = "completedBidderBidTable" class="bid-table">
+                  <tr>
+                    <th>Time</th>
+                    <th>User</th>
+                    <th>Amount</th>
+                    <th>Rating</th>
+                  </tr>
+                  <template id="compeltedBidderBidTemplate">
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  </template>
+                </table>
+                <br>
+                <p>
+                    <button ng-click="completeButton(); $event.stopPropagation();">Rate Poster</button>
+                </p>
+                </td>
+                <td>
+                    <img id = "post_image" class="img-circle" src="assets/img/girl.png" alt="ProfilePic" style="width:300px;height:300px;">
+                </td>
+                </tr>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <br>
+        </div>
+    </div>
+</div>
+
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIqZ1SHXEe7CUj8Gv9MvVQLWrI-3k4isQ&callback=myMap"></script>
 <script src="navbar.js"></script>
 </body>

@@ -458,7 +458,9 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
         // Get the modal and the table rows
         var openModal = document.getElementById('openModal');
         var pendingModal = document.getElementById('pendingModal');
-        var wonModal =document.getElementById('wonModal');
+        var wonModal = document.getElementById('wonModal');
+        var completedPosterModal = document.getElementById('completedPosterModal');
+        var completedBidderModal = document.getElementById('completedBidderModal');
         var rows = document.getElementById("postTable").rows;
 
         /* set the onclick action for each row/post */
@@ -541,6 +543,18 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
                         loadBids(bidData, 1);
                         $scope.$apply();
                     }
+                    else if (post.Status == 2) {
+                        if (currentMode == modeEnum.POSTED) {
+                            completedPosterModal.style.display = "block";
+                        }
+                        else {
+                            completedBidderModal.style.display = "block";
+                        }
+                        var bidData = new Object();
+                        bidData.PostId = post.Pid;
+                        loadBids(bidData, 2);
+                        $scope.$apply();
+                    }
                 }
             };
         }
@@ -604,6 +618,14 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
                 }
                 else {
                     template = document.querySelector('#wonBidTemplate');
+                }
+            }
+            else if (status == 2) {
+                if (currentMode == modeEnum.POSTED) {
+                    template = document.querySelector('#completedPosterBidTemplate');
+                }
+                else {
+                    template = document.querySelector('#completedBidderBidTemplate');
                 }
             }
 
@@ -758,7 +780,7 @@ function myMap(loc, status) {
                zoom: 10
             });
         }
-        else if (status == 1 || status == 2) {
+        else if (status == 1) {
             if (currentMode == modeEnum.POSTED) {
                 var map = new google.maps.Map(document.getElementById('pending_map'), {
                     mapTypeId: google.maps.MapTypeId.TERRAIN,
@@ -768,6 +790,22 @@ function myMap(loc, status) {
             } 
             else {
                 var map = new google.maps.Map(document.getElementById('won_map'), {
+                    mapTypeId: google.maps.MapTypeId.TERRAIN,
+                    zoom: 10
+
+                });
+            }
+        }
+        else if (status == 2) {
+            if (currentMode == modeEnum.POSTED) {
+                var map = new google.maps.Map(document.getElementById('completed_poster_map'), {
+                    mapTypeId: google.maps.MapTypeId.TERRAIN,
+                    zoom: 10
+
+                });
+            } 
+            else {
+                var map = new google.maps.Map(document.getElementById('completed_bidder_map'), {
                     mapTypeId: google.maps.MapTypeId.TERRAIN,
                     zoom: 10
 
