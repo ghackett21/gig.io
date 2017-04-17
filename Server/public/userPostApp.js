@@ -608,11 +608,11 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
             }
             else if (event.target == completedPosterModal) {
                 expanded = 0;
-                pendingModal.style.display = "none";
+                completedPosterModal.style.display = "none";
             }
             else if (event.target == completedBidderModal) {
                 expanded = 0;
-                pendingModal.style.display = "none";
+                completedBidderModal.style.display = "none";
             }
         }
     }
