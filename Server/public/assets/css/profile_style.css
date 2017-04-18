@@ -15,7 +15,7 @@ li {
     float: left;
 }
 
-a {
+a.btn {
   display: inline-block;
   color:  #44cccc;
   text-align: center;
