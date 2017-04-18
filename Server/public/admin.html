@@ -15,11 +15,10 @@
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
   	<!-- DataTables Initialization -->
     <script type="text/javascript" src="Theme/assets/js/datatables/jquery.dataTables.js"></script>
-  			<script type="text/javascript" charset="utf-8">
-			$(document).ready(function() {
-				$('#dt1').dataTable();
-			} );
-	</script>
+<style>
+	body { padding-bottom:50px; }
+
+</style>
 
 </head>
 <body ng-app="myApp" ng-controller="adminController">
@@ -39,23 +38,25 @@
 		<div class="col-sm-12 col-lg-12">
 
 <h4><strong>Users Table</strong></h4>
-
+<br>
+<input type="text" class="form-control" placeholder="Search Here" ng-model="searchInput">
+<div class="scrollit">
 <table class="display" id="dt1">
 	<thead>
     	<tr>
+            <th>UID</th>
         	<th>Username</th>
             <th>Location</th>
-            <th>Description</th>
             <th>Rating</th>
             <th>Reports</th>
         </tr>
     </thead>
-    <tbody ng-repeat="users in userList">
-          <tr class="odd grade{{users.NumberOfStrikes}}">
+    <tbody ng-repeat="users in userList | filter:searchInput">
+		<tr class="odd gradeX">
+            <td>{{users.Uid}}</td>
             <td>{{users.Username}}</td>
             <td>{{users.U_Location}}</td>
-            <td>{{users.Uid}}</td>
-            <td class="center"> {{users.AVG_PostRate}}</td>
+            <td class="center">{{users.AVG_PostRate}}</td>
             <td class="center">{{users.NumberOfStrikes}}</td>
           </tr>
 	</tbody>
@@ -63,66 +64,10 @@
 </div>
 </div>
 </div>
-
-<!-- The Modal -->
-<div id="myModal" class="modal">
-
-  <!-- Modal content -->
-  <div class="modal-content">
-    <div class="modal-header">
-      <span class="close">&times;</span>
-      <h2>{{title}}</h2>
-    </div>
-    <div class="modal-body">
-      <table class="modal-table">
-        <td>
-          <p>Owner: {{owner}}</p>
-          <p>Contact Info: {{phone}}</p>
-          <p>Description: {{desc}}</p>
-          <p>Location: {{location}}</p>
-          <div id="map" style="width:400px;height:400px;background:yellow"></div>
-        </td>
-        <td valign="top">
-          <p>Bid history:</p>
-          <table class="bid-table">
-          <tr>
-            <th>Time</th>
-            <th>User</th>
-            <th>Amount</th>
-            <th>Rating</th>
-          </tr>
-          <template id="bidTemplate">
-          <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-          </template>
-        </table>
-        <br><p>Enter bid:</p>
-        <p>
-          <i>$</i><input type="number" ng-model="bid.Amount" placeholder="Bid amount"/>
-          <button ng-click="placeBid(); $event.stopPropagation();">Place bid</button>
-        </p>
-        </td>
-        <td>
-          <img id = "post_image" class="img-circle" src="assets/img/girl.png" alt="ProfilePic" style="width:300px;height:300px;">
-        </td>
-      </tr>
-      </table>
-    </div>
-    <div class="modal-footer">
-    <!--<br>
-      <form>
-      <button formaction="bid.html" type="button" align="right-side">Enter Bid</button>
-      </form>
-    <br>-->
-    <br>
-    </div>
-  </div>
 </div>
+
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIqZ1SHXEe7CUj8Gv9MvVQLWrI-3k4isQ&callback=myMap"></script>
 <script src="navbar.js"></script>
+    <script type="text/javascript" src="Theme/assets/js/admin.js"></script>
 </body>
 </html>

@@ -39,6 +39,7 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
 			arr = response.data.result;
 			var postData = [];
 			var template = document.querySelector('#tmplt');
+			console.log("template = " + template)
             /* make new rows in the post table for each post */
 			for (var i = 0 ; i < arr.length; i++) {
 				$scope.index = i;
@@ -639,9 +640,10 @@ function calculateDistance(origin, destination) {
     return deg * (Math.PI/180)
   }
 
-app.controller("adminController", [ '$scope', '$http', function($scope, $http) {
+app.controller("adminController", ['$scope', '$http', function($scope, $http) {
 	$scope.user;
 	$scope.userList;
+	$scope.searchBar = '';
 
     /* logout user on button press */
 	$scope.logout = function() {
@@ -649,21 +651,32 @@ app.controller("adminController", [ '$scope', '$http', function($scope, $http) {
 			window.location = response.data.redirect;
 		});
 	};
-
-    /* load user and post data  when page loads */
 	window.onload = function() {
         /* requst information about the currently logged-in user */
         $http.post('/GetUser').then(function(response) {
             //console.log(response.data.Result[0]);
         	$scope.user = response.data.Result[0];
         })
-
+    //<tbody ng-repeat="users in userList">
+   //       <tr class="odd grade{{users.NumberOfStrikes}}">
+    //        <td>{{users.Username}}</td>
+    //        <td>{{users.U_Location}}</td>
+    //        <td>{{users.Uid}}</td>
+    //        <td class="center"> {{users.AVG_PostRate}}</td>
+   //        <td class="center">{{users.NumberOfStrikes}}</td>
+    //      </tr>
+	//</tbody>
         /* request post data */
 		$http.post('/GetAllUsers').then(function(response) {
 			console.log("GET ALL USERS")
             console.log(response);	   
 			$scope.userList = response.data.result;
 			console.log("User[0] = %j", $scope.userList[0]);
+
+
+			//$('#dt1').dataTable();
+
+
 			if(response.status == 200){
 				console.log("success");
 			}else if(response.status == 401){
