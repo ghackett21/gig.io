@@ -5,9 +5,6 @@
 /* #76b852;
   #8DC26F;
 */
-#foo{
-    color: var(--main-color);
-}
 
 li a:hover:not(.active) {
     background-color: #111;
