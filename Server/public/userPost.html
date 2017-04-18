@@ -19,18 +19,16 @@
 <div class = form>
 <table>
     <tr>
-        <td>
-            <button ng-click="sortByAge()">Sort By Newest</button>
-        </td>
-        <td>
-            <button ng-click="sortByLowestBid()">Sort By Lowest Bid</button>
-        </td>
-        <td>
-            <button ng-click="sortByDistance()">Sort By Distance</button>
-        </td>
-        <td>
-            <button ng-click="sortByNumOfBids()">Sort By Number of Bids</button>
-        </td>
+       <div class=sorter id=mainselection align=left>
+  <select ng-app='myApp' ng-controller="mainController" ng-model="selected" ng-change="sortType()">
+  
+    
+      <option value="age">Sort By Newest</option>
+      <option value="low_bid">Sort By Lowest Bid</option>
+      <option value="dist">Sort By Distance</option>
+      <option value="num_bids">Sort By Number of Bids</option>
+  
+</select>
     </tr>
 </table>
 
