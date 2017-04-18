@@ -20,8 +20,8 @@ module.exports = function(req, res){
 	}
 
 	/* check for undefined args */
-	if (req.body.comment == undefined || req.body.userId == undefined || req.body.userIdRater == undefined || req.body.ratingValue == undefined) {
-		console.log("CreateRating: undefined args: requires ratingType, userId, userIdRater, and comment");
+	if (req.body.comment == undefined || req.body.userId == undefined || req.body.userIdRater == undefined || req.body.ratingValue == undefined || req.body.postId == undefined) {
+		console.log("CreateRating: undefined args: requires ratingType, userId, userIdRater, postId, and comment");
 		callback(-1);
 	}
 	else if (req.body.ratingType != "Bid" && req.body.ratingType != "Posting") {
@@ -35,11 +35,11 @@ module.exports = function(req, res){
 		return callback(-1);
 	}
 	else {
-		createRatingHelper(req.body.ratingType, req.body.userId, req.body.userIdRater, req.body.comment, req.body.ratingValue, callback);
+		createRatingHelper(req.body.ratingType, req.body.userId, req.body.userIdRater, req.body.comment, req.body.ratingValue, req.body.postId, callback);
 	}
 }
 
-function createRatingHelper(ratingType, userId, userIdRater, comment, ratingValue, callback) {
+function createRatingHelper(ratingType, userId, userIdRater, comment, ratingValue, postId, callback) {
 	console.log("CreateRating: ratingType: " + ratingType + ", userId: " + userId + ", userIdRater: " + userIdRater + ", comment: " + comment + ", ratingValue: " + ratingValue);
 
 	var insert = "INSERT INTO RATINGS (Uid, Comment, UidRater, DateOfRating, RatingType, RatingValue) VALUES (" + userId + ", '" + comment + "', " + userIdRater + ", '" + getDate() + "', '" + ratingType + "', " + ratingValue + ")";
@@ -66,6 +66,7 @@ function createRatingHelper(ratingType, userId, userIdRater, comment, ratingValu
 					return callback(-2);
 				}
 				else {
+					/* update user average ratings */
 					if (ratingType == "Post") {
 						num_ratings = rows[0].NUM_PostRate;
 						avg_rating = rows[0].AVG_PostRate
@@ -89,7 +90,67 @@ function createRatingHelper(ratingType, userId, userIdRater, comment, ratingValu
 							return callback(-2);
 						}
 						else {
-							return callback(0);
+							/* retrieve post rating state */
+							var selectRatingState = "SELECT RatingState, Uid, Winning_Uid FROM Posting WHERE PID=" + postId;
+
+							connection.query(selectRatingState, function(err, rows) {
+								if (err) {
+									console.log("CreateRating: error getting post info: " + err);
+									return callback(-2);
+								}
+								else {
+									var ratingState = rows[0].RatingState;
+
+									/* rating states:
+										0: no rating for post 
+										1: only post creator has filed rating
+										2: only winning bidder has filed rating
+										3: both post craetor and winning bidder have filed reivews for this post 
+									*/
+
+									if (ratingState == 3) {
+										console.log("Ratings for this post have already been submitted, cannot submit more than one rating per user per post.");
+										/* return -3 special state */
+										console.log(-3);
+									}
+
+									if (userId == rows[0].Uid) {
+										/* reviewer is post create */
+										if (ratingState == 0) {
+											ratingState = 1;
+										}
+										else if (ratingState == 2) {
+											ratingState = 3;
+										}
+									}
+									else if (userId == rows[0].Winning_Uid) {
+										if (ratingState == 0) {
+											ratingState = 2;
+										}
+										else if (ratingState == 1) {
+											ratingState = 3;
+										}
+									}
+									else {
+										console.log("Reviewer is neither post creator nor winning bidder!");
+										return callback(-2);
+									}
+
+									/* update rating state of post */
+									var updateRatingState = "UPDATE Posting SET RatingState=" + ratingState + " WHERE PID=" + postId;
+
+									connection.query(updateRatingState, function(err, rows) {
+										if (err) {
+											console.log("CreateRating: error update post ratingState: " + err);
+											return callback(-2);
+										}
+										else {
+											console.log("CreateRating successful!");
+											return callback(0);
+										}
+									});
+								}
+							});
 						}
 					});
 				}
