@@ -5,9 +5,6 @@
 /* #76b852;
   #8DC26F;
 */
-#foo{
-    color: var(--main-color);
-}
 
 li a:hover:not(.active) {
     background-color: #111;
@@ -20,6 +17,10 @@ li a:hover:not(.active) {
 table {
     border-collapse: collapse;
     width: 90%;
+}
+table.bid-table{
+border-collapse: collapse;
+width: 100%;
 }
 
 table.center {
@@ -136,6 +137,11 @@ a.prof-link {
     color: royalblue;
     }
 
+a.bidprof-link {
+    cursor: pointer;
+    color: orange;
+    }
+
 body {
     /*background-image: url("/assets/img/stockbg.jpg");*/
     background: var(--main-color); /* fallback for old browsers */
@@ -206,13 +212,23 @@ h2 span {
    box-shadow: 0px 0px 0px #330033;
    background: var(--main-color) url("http://i62.tinypic.com/15xvbd5.png") no-repeat scroll 319px center;
 }
+select{
+  color: white;
+}
 
-
-
-
+select option {
+  color: white;
+  background-color: var(--main-color);
+} 
+    
+    
 .sorter{
     padding-right: 120px;
     padding-left: 0%;
     padding-top: .5%;
     padding-bottom: .5%;
 }
+    
+    option{
+        color: white;
+    }
