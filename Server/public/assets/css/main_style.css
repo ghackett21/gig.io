@@ -136,6 +136,11 @@ a.prof-link {
     color: royalblue;
     }
 
+a.bidprof-link {
+    cursor: pointer;
+    color: orange;
+    }
+
 body {
     /*background-image: url("/assets/img/stockbg.jpg");*/
     background: var(--main-color); /* fallback for old browsers */
