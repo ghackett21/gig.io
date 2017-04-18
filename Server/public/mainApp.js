@@ -12,7 +12,7 @@ var loc_distance;
 var expanded = 0;
 var currUid = 0;
 
-app.controller("mainController", [ '$scope', '$http', function($scope, $http) {
+app.controller("mainController", [ '$scope', '$http', function($scope, $http, $compile) {
 	$scope.user;
     $scope.userToView;
     $scope.test = "test";
@@ -264,210 +264,213 @@ $scope.sortByLowestBid = function() {
 	};
 
 	$scope.sortByDistance = function() {
-        	    var time1;
-                var time2;
-                var temp;
-                var swapped;
-                $http.post('/GetAllPosts').then(function(response) {
-                    posts = response.data.result;
+	    var time1;
+        var time2;
+        var temp;
+        var swapped;
+        $http.post('/GetAllPosts').then(function(response) {
+            posts = response.data.result;
 
-                    /* sort posts by distance to user's location */
-                    do {
-                        swapped = false;
-                        for (var i=0; i < posts.length-1; i++) {
-                            dist1 = getDistanceFromLatLonInKm2(posts[i].P_Lat, posts[i].P_Long, myUser.U_Lat, myUser.U_Long);
+            /* sort posts by distance to user's location */
+            do {
+                swapped = false;
+                for (var i=0; i < posts.length-1; i++) {
+                    dist1 = getDistanceFromLatLonInKm2(posts[i].P_Lat, posts[i].P_Long, myUser.U_Lat, myUser.U_Long);
 
-                            dist2 = getDistanceFromLatLonInKm2(posts[i+1].P_Lat, posts[i+1].P_Long, myUser.U_Lat, myUser.U_Long);
+                    dist2 = getDistanceFromLatLonInKm2(posts[i+1].P_Lat, posts[i+1].P_Long, myUser.U_Lat, myUser.U_Long);
 
-                            if (dist1 > dist2) {
-                                var temp = posts[i];
-                                posts[i] = posts[i+1];
-                                posts[i+1] = temp;
-                                swapped = true;
-                            }
-                        }
-                    } while (swapped);
-
-                    var template = document.querySelector('#tmplt');
-                    for (var i = 0; i < posts.length; i++) {
-                        var currRow = document.getElementById("post-"+i);
-                        var td = currRow.querySelectorAll('td');
-                        td[0].innerHTML = posts[i].P_Title;
-                        td[1].innerHTML = posts[i].Username;
-                        td[2].innerHTML = posts[i].P_Location;
-                        if (posts[i].NumberOfBids != 0)
-                            td[3].innerHTML = '$' + posts[i].LowestBid;
-                        else
-                            td[3].innerHTML = "-";
-                        td[4].innerHTML = posts[i].NumberOfBids;
-                        var date = posts[i].CreationTime.substring(0,10);
-                        var day = date.substring(8,date.length);
-                        var month = date.substring(5,7);
-                        var year = date.substring(0,4);
-
-                        date = month + "/" + day + "/" + year;
-
-                        td[5].innerHTML = date;
+                    if (dist1 > dist2) {
+                        var temp = posts[i];
+                        posts[i] = posts[i+1];
+                        posts[i+1] = temp;
+                        swapped = true;
                     }
+                }
+            } while (swapped);
 
-                    /* set up each rows's onClick actions */
-                    setupPosts(posts);
+            var template = document.querySelector('#tmplt');
+            for (var i = 0; i < posts.length; i++) {
+                var currRow = document.getElementById("post-"+i);
+                var td = currRow.querySelectorAll('td');
+                td[0].innerHTML = posts[i].P_Title;
+                td[1].innerHTML = posts[i].Username;
+                td[2].innerHTML = posts[i].P_Location;
+                if (posts[i].NumberOfBids != 0)
+                    td[3].innerHTML = '$' + posts[i].LowestBid;
+                else
+                    td[3].innerHTML = "-";
+                td[4].innerHTML = posts[i].NumberOfBids;
+                var date = posts[i].CreationTime.substring(0,10);
+                var day = date.substring(8,date.length);
+                var month = date.substring(5,7);
+                var year = date.substring(0,4);
 
-                    console.log(response.status);
-                    console.log(response);
-                    if(response.status == 200){
-                        console.log("success");
-                    }else if(response.status == 401){
-                        console.log("failure");
-                    }
-                }).catch(function(response) {
-                    console.log(response.status);
-                    console.log(response);
-                    if(response.status == 401){
-                        console.log("failure");
-                    }
-                })
-        };
+                date = month + "/" + day + "/" + year;
+
+                td[5].innerHTML = date;
+            }
+
+            /* set up each rows's onClick actions */
+            setupPosts(posts);
+
+            console.log(response.status);
+            console.log(response);
+            if(response.status == 200){
+                console.log("success");
+            }else if(response.status == 401){
+                console.log("failure");
+            }
+        }).catch(function(response) {
+            console.log(response.status);
+            console.log(response);
+            if(response.status == 401){
+                console.log("failure");
+            }
+        })
+    };
 
 	$scope.sortByNumOfBids = function() {
-    	    var time1;
-            var time2;
-            var temp;
-            var swapped;
-            $http.post('/GetAllPosts').then(function(response) {
-                posts = response.data.result;
+	    var time1;
+        var time2;
+        var temp;
+        var swapped;
+        $http.post('/GetAllPosts').then(function(response) {
+            posts = response.data.result;
 
-                /* Sort by number of bids */
-                do {
-                    swapped = false;
-                    for (var i=0; i < posts.length-1; i++) {
-                        nbids1 = new Date(posts[i].NumberOfBids);
-                        nbids2 = new Date(posts[i+1].NumberOfBids);
+            /* Sort by number of bids */
+            do {
+                swapped = false;
+                for (var i=0; i < posts.length-1; i++) {
+                    nbids1 = new Date(posts[i].NumberOfBids);
+                    nbids2 = new Date(posts[i+1].NumberOfBids);
 
-                        if (nbids1 < nbids2) {
-                            var temp = posts[i];
-                            posts[i] = posts[i+1];
-                            posts[i+1] = temp;
-                            swapped = true;
-                        }
+                    if (nbids1 < nbids2) {
+                        var temp = posts[i];
+                        posts[i] = posts[i+1];
+                        posts[i+1] = temp;
+                        swapped = true;
                     }
-                } while (swapped);
-
-                var template = document.querySelector('#tmplt');
-                for (var i = 0; i < posts.length; i++) {
-                    var currRow = document.getElementById("post-"+i);
-                    var td = currRow.querySelectorAll('td');
-                    td[0].innerHTML = posts[i].P_Title;
-                    td[1].innerHTML = posts[i].Username;
-                    td[2].innerHTML = posts[i].P_Location;
-                    if (posts[i].NumberOfBids != 0)
-                        td[3].innerHTML = '$' + posts[i].LowestBid;
-                    else
-                        td[3].innerHTML = "-";
-                    td[4].innerHTML = posts[i].NumberOfBids;
-                    var date = posts[i].CreationTime.substring(0,10);
-                    var day = date.substring(8,date.length);
-                    var month = date.substring(5,7);
-                    var year = date.substring(0,4);
-
-                    date = month + "/" + day + "/" + year;
-
-                    td[5].innerHTML = date;
                 }
+            } while (swapped);
 
-                /* set up each rows's onClick actions */
-                setupPosts(posts);
+            var template = document.querySelector('#tmplt');
+            for (var i = 0; i < posts.length; i++) {
+                var currRow = document.getElementById("post-"+i);
+                var td = currRow.querySelectorAll('td');
+                td[0].innerHTML = posts[i].P_Title;
+                td[1].innerHTML = posts[i].Username;
+                td[2].innerHTML = posts[i].P_Location;
+                if (posts[i].NumberOfBids != 0)
+                    td[3].innerHTML = '$' + posts[i].LowestBid;
+                else
+                    td[3].innerHTML = "-";
+                td[4].innerHTML = posts[i].NumberOfBids;
+                var date = posts[i].CreationTime.substring(0,10);
+                var day = date.substring(8,date.length);
+                var month = date.substring(5,7);
+                var year = date.substring(0,4);
 
-                console.log(response.status);
-                console.log(response);
-                if(response.status == 200){
-                    console.log("success");
-                }else if(response.status == 401){
-                    console.log("failure");
-                }
-            }).catch(function(response) {
-                console.log(response.status);
-                console.log(response);
-                if(response.status == 401){
-                    console.log("failure");
-                }
-            })
+                date = month + "/" + day + "/" + year;
+
+                td[5].innerHTML = date;
+            }
+
+            /* set up each rows's onClick actions */
+            setupPosts(posts);
+
+            console.log(response.status);
+            console.log(response);
+            if(response.status == 200){
+                console.log("success");
+            }else if(response.status == 401){
+                console.log("failure");
+            }
+        }).catch(function(response) {
+            console.log(response.status);
+            console.log(response);
+            if(response.status == 401){
+                console.log("failure");
+            }
+        })
     };
 
     /* Called when the "Place bid" button is clicked */
 	$scope.placeBid = function() {
+        // Check that user isn't poster
+        if ($scope.owner == myUser.Username) {
+            alert("You can't bid on your own post!");
+            return;
+        }
 
-            // Check that user isn't poster
-            if ($scope.owner == myUser.Username) {
-                alert("You can't bid on your own post!");
-                return;
+        if ($scope.bid.Amount == "") {
+            alert("No bid amount entered!");
+            return;
+        }
+
+        $scope.bid.PostId = $scope.Pid;
+        $scope.bid.UserId = myUser.Uid;
+
+        console.log("bid: postid: " + $scope.bid.PostId + ", userId: " + $scope.bid.UserId + ", amount: " + $scope.bid.Amount);
+
+        // Bid
+        $http.post('/Bid', $scope.bid).then(function(response) {
+            if (response.data.State == -4) {
+                alert("New bids must be lower than previous bids!");
             }
 
-            if ($scope.bid.Amount == "") {
-                alert("No bid amount entered!");
-                return;
+            var bids = response.data.Result;
+            if (bids.length > 0) {
+                var bidData = []
+                var template = document.querySelector('#bidTemplate');
+                while(template.parentNode.hasChildNodes()) {
+                    if (template.parentNode.lastChild == template)
+                        break;
+                    template.parentNode.removeChild(template.parentNode.lastChild);
+                }
+
+                /* clone template row and fill in bid info */
+                for (var i = 0; i < bids.length; i++) {
+
+                    // Format date
+                    var date = bids[i].BidTime.substring(5, 7) + "/" +
+                               bids[i].BidTime.substring(8, 10) + "/" +
+                               bids[i].BidTime.substring(0, 4) + ", " +
+                               bids[i].BidTime.substring(11, 16);
+
+                    var clone = template.content.cloneNode(true);
+                    var td = clone.querySelectorAll('td');
+
+                    var amountString = "$" + bids[i].Amount;
+
+                    var index_of_decimal = amountString.indexOf(".");
+                    if (index_of_decimal == -1) {
+                        console.log("Bid string case 1");
+                        amountString += ".00";
+                    } 
+                    else if (index_of_decimal == amountString.length - 2) {
+                        console.log("Bid string case 2");
+                        amountString += "0";
+                    }
+
+
+                    /* fill in row information */
+                    console.log("Fixing HTML");
+                    td[0].innerHTML = date; 
+                    td[1].innerHTML = "<b><a class=\'prof-link ng-binding\' style=\"font-size:24px\" onclick=\"angular.element(this).scope().viewBidUserProfile(" + bids[i].Uid + ")\">" + bids[i].Username + "</a></b>";
+                    td[2].innerHTML = amountString;
+                    td[3].innerHTML = bids[i].AVG_BidRate + "/5";
+                    template.parentNode.appendChild(clone);
+                }
             }
-
-            $scope.bid.PostId = $scope.Pid;
-            $scope.bid.UserId = myUser.Uid;
-
-            // Bid
-            $http.post('/Bid', $scope.bid).then(function(response) {
-                 if (response.data.State == -4) {
-                    alert("New bids must be lower than previous bids!");
-                }
-
-                var bids = response.data.Result;
-                if (bids.length > 0) {
-                    var bidData = []
-                    var template = document.querySelector('#bidTemplate');
-                    while(template.parentNode.hasChildNodes()) {
-                        if (template.parentNode.lastChild == template)
-                            break;
-                        template.parentNode.removeChild(template.parentNode.lastChild);
-                    }
-
-                    /* clone template row and fill in bid info */
-                    for (var i = 0; i < bids.length; i++) {
-
-                        // Format date
-                        var date = bids[i].BidTime.substring(5, 7) + "/" +
-                                   bids[i].BidTime.substring(8, 10) + "/" +
-                                   bids[i].BidTime.substring(0, 4) + ", " +
-                                   bids[i].BidTime.substring(11, 16);
-
-                        var clone = template.content.cloneNode(true);
-                        var td = clone.querySelectorAll('td');
-
-                        var amountString = "$" + bids[i].Amount;
-
-                        var index_of_decimal = amountString.indexOf(".");
-                        if (index_of_decimal == -1) {
-                            console.log("Bid string case 1");
-                            amountString += ".00";
-                        } 
-                        else if (index_of_decimal == amountString.length - 2) {
-                            console.log("Bid string case 2");
-                            amountString += "0";
-                        }
-
-
-                        /* fill in row information */
-                        td[0].innerHTML = date; 
-                        td[1].innerHTML = bids[i].Username;
-                        td[2].innerHTML = amountString;
-                        td[3].innerHTML = bids[i].AVG_BidRate + "/5";
-                        template.parentNode.appendChild(clone);
-                    }
-                }
-                
-            }).catch(function(response) {
-                console.log("error bidding");
-            })
+            
+        }).catch(function(response) {
+            console.log("error bidding");
+        })
     };
 
     /* sets up all posts onClick actions (display info, load bids, and map) */
     function setupPosts(posts) {
+        console.log("IN SETUPPOSTS");
         // Get the modal and the table rows
         var modal = document.getElementById('myModal');
         var rows = document.getElementById("postTable").rows;
@@ -486,7 +489,7 @@ $scope.sortByLowestBid = function() {
                     for(j; j < rows.length; j++) {
                        str = "post-"+j;
                        if (str === rowID)
-                            break;
+                        break;
                     }
                     var post = posts[j];
 
@@ -497,13 +500,21 @@ $scope.sortByLowestBid = function() {
                     $scope.phone = post.PhoneNumber;
                     $scope.desc = post.P_Description;
                     $scope.title = post.P_Title;
+                    console.log("postid: " + post.Pid);
                     $scope.Pid = post.Pid;
 
+                    var postImage = document.getElementById('post_image');
+
+                    postImage.addEventListener('error', function(){
+                        console.log('loading img failed.');  
+                        postImage.src = "assets/img/girl.png";
+                    });
+
                     if (post.P_Image != "") {
-                       document.getElementById("post_image").src = post.P_Image;
+                       postImage .src = post.P_Image;
                     }
                     else {
-                        document.getElementById("post_image").src = "assets/img/girl.png";
+                        postImage .src = "assets/img/girl.png";
                     }
 
                     $scope.location = post.P_Location;
@@ -578,8 +589,8 @@ $scope.sortByLowestBid = function() {
                 }
 
                 /* fill in row information */
-                td[0].innerHTML = date; 
-                td[1].innerHTML = bids[i].Username;
+                td[0].innerHTML = date;
+                td[1].innerHTML = "<b><a class=\'prof-link ng-binding\' style=\"font-size:24px\" onclick=\"angular.element(this).scope().viewBidUserProfile(" + bids[i].Uid + ")\">" + bids[i].Username + "</a></b>";
                 td[2].innerHTML = amountString;
                 td[3].innerHTML = bids[i].AVG_BidRate + "/5";
                 template.parentNode.appendChild(clone);
@@ -612,6 +623,27 @@ $scope.sortByLowestBid = function() {
             console.log("error getting user");
         })
     }
+
+    $scope.viewBidUserProfile = function(uid) {
+            console.log("In viewBidUserProfile");
+            console.log(uid);
+            var userToView = {userId:uid};
+            $http.post("/GetUser", userToView).then(function(response) {
+                console.log("Hello World");
+                console.log(response);
+                console.log(response.data.Result[0].Username);
+                localStorage.setItem("username", response.data.Result[0].Username);
+                localStorage.setItem("description", response.data.Result[0].U_Description);
+                localStorage.setItem("post_rating", response.data.Result[0].AVG_PostRate);
+                localStorage.setItem("bid_rating", response.data.Result[0].AVG_BidRate);
+                localStorage.setItem("phone", response.data.Result[0].PhoneNumber);
+                localStorage.setItem("email", response.data.Result[0].EmailAddress);
+                localStorage.setItem("profileImage", response.data.Result[0].U_Image);
+                window.open("userProfile.html", "_top");
+            }).catch(function(response) {
+                console.log("error getting user");
+            })
+        }
 
 }]);
 

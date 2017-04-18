@@ -9,13 +9,20 @@ var expanded = 0;
 var global_postId = -1;
 var global_http = null;
 
-app.controller("userPostController", [ '$scope', '$http', '$compile', function($scope, $http, $compile) {
+/* mode enum */
+var modeEnum = Object.freeze({
+    POSTED: 0,
+    WON: 1
+});
+
+var currentMode = modeEnum.POSTED;
+
+app.controller("userPostController", [ '$scope', '$http', function($scope, $http) {
 	$scope.user;
     $scope.test = "test";
     $scope.bidInfo;
     global_http = $http;
 
-//test stuff for server auth
 	$scope.logout = function() {
 		$http.post('/logout').then(function(response) {
 			console.log("response = %j", response);
@@ -29,76 +36,112 @@ app.controller("userPostController", [ '$scope', '$http', '$compile', function($
         $http.post('/GetUser').then(function(response) {
                         //console.log(response.data.Result[0]);
                         myUser = response.data.Result[0];
-        })
+        });
+        displayPosts();
 
-        /* request post data */
-        $http.post('/getUserPosts').then(function(response) {
-            console.log("response: " + response)         
-            $scope.count = response.data.result.length;
-            $scope.index = 0;
-            arr = response.data.result;
-            var postData = [];
-            var template = document.querySelector('#tmplt');
-            /* make new rows in the post table for each post */
-            for (var i = 0 ; i < arr.length; i++) {
-                $scope.index = i;
-                var post = arr[i];
-                postData.push(arr[i]);
-                var clone = template.content.cloneNode(true);
-                var td = clone.querySelectorAll('td');
-                /* set display text elements */
-                td[0].innerHTML = post.P_Title;
-                td[1].innerHTML = post.Username;
-                td[2].innerHTML = post.P_Location;
+    }
 
-                /* transform date easier to read format */
-                var date = post.CreationTime.substring(0,10);
-                var day = date.substring(8,date.length);
-                var month = date.substring(5,7);
-                var year = date.substring(0,4);
+    function displayPosts() {
 
-                date = month + "/" + day + "/" + year;
-
-                td[3].innerHTML = date;
-
-                var statusString = "";
-                if (post.Status == 0) {
-                    statusString = "Open";
+        if (currentMode == modeEnum.POSTED) {
+            $scope.modeText = "View Won Posts";
+            /* request post data */
+            $http.post('/getUserPosts').then(function(response) {
+                fillRows(response);
+            }).catch(function(response) {
+                /* catch error in reponse */
+                $scope.user = null;
+                console.log(response.status);
+                console.log(response);
+                if(response.status == 401){
+                    console.log("failure");
                 }
-                else if (post.Status == 1) {
-                    statusString = "Pending";
+            });
+        }
+        else if (currentMode == modeEnum.WON) {
+            $scope.modeText = "View Created Posts";
+            /* request post data */
+            $http.post('/getWonPosts').then(function(response) {
+                fillRows(response);
+            }).catch(function(response) {
+                /* catch error in reponse */
+                $scope.user = null;
+                console.log(response.status);
+                console.log(response);
+                if(response.status == 401){
+                    console.log("failure");
                 }
-
-                td[4].innerHTML = statusString;
-
-                var tr = clone.querySelectorAll('tr');               
-                tr[0].id = "post-"+i;
-                template.parentNode.appendChild(clone);
-            }
-
-            /* set up each rows's onClick actions */
-            setupPosts(postData);
-
-            console.log(response.status);
-            console.log(response);             
-            if(response.status == 200){
-                console.log("success");
-            }else if(response.status == 401){
-                console.log("failure");
-            }
-        }).catch(function(response) {
-            /* catch error in reponse */
-            $scope.user = null;
-            console.log(response.status);
-            console.log(response);
-            if(response.status == 401){
-                console.log("failure");
-            }
-        })
-        
+            });
+        }
     };
 
-$scope.sortByLowestBid = function() {
+    function fillRows(response) {
+        console.log("response: " + response)         
+        $scope.count = response.data.result.length;
+        $scope.index = 0;
+        arr = response.data.result;
+        var postData = [];
+        var template = document.querySelector('#tmplt');
+        /* make new rows in the post table for each post */
+        for (var i = 0 ; i < arr.length; i++) {
+            $scope.index = i;
+            var post = arr[i];
+            postData.push(arr[i]);
+            var clone = template.content.cloneNode(true);
+            var td = clone.querySelectorAll('td');
+            /* set display text elements */
+            td[0].innerHTML = post.P_Title;
+            td[1].innerHTML = post.Username;
+            td[2].innerHTML = post.P_Location;
+
+            /* transform date easier to read format */
+            var date = post.CreationTime.substring(0,10);
+            var day = date.substring(8,date.length);
+            var month = date.substring(5,7);
+            var year = date.substring(0,4);
+
+            date = month + "/" + day + "/" + year;
+
+            td[3].innerHTML = date;
+
+            console.log("post.Status: " + post.Status);
+
+            var statusString = "";
+            if (post.Status == 0) {
+                statusString = "Open";
+            }
+            else if (post.Status == 1) {
+            	if (currentMode == modeEnum.POSTED) {
+                statusString = "Pending";
+            	}
+            	else {
+            		statusString = "Won";
+            	}
+            }
+            else if (post.Status == 2) {
+            	statusString= "Completed"
+            }
+
+            td[4].innerHTML = statusString;
+
+            var tr = clone.querySelectorAll('tr');               
+            tr[0].id = "post-"+i;
+            template.parentNode.appendChild(clone);
+        }
+
+        /* set up each rows's onClick actions */
+        setupPosts(postData);
+
+        console.log(response.status);
+        console.log(response);             
+        if(response.status == 200){
+            console.log("success");
+        }else if(response.status == 401){
+            console.log("failure");
+        }
+    }
+
+    $scope.sortByLowestBid = function() {
         var bidVal1;
         var bidVal2;
         var temp;
@@ -141,11 +184,20 @@ $scope.sortByLowestBid = function() {
 
                 var statusString = "";
                 if (post.Status == 0) {
-                    statusString = "Open";
-                }
-                else if (post.Status == 1) {
-                    statusString = "Pending";
-                }
+                statusString = "Open";
+		        }
+		        else if (post.Status == 1) {
+		        	if (currentMode == modeEnum.POSTED) {
+		            statusString = "Pending";
+		        	}
+		        	else {
+		        		statusString = "Won";
+		        	}
+		        }
+		        else if (post.Status == 2) {
+		        	statusString= "Completed"
+		        }
+
 
                 td[4].innerHTML = statusString;
             }
@@ -213,11 +265,20 @@ $scope.sortByLowestBid = function() {
 
                 var statusString = "";
                 if (post.Status == 0) {
-                    statusString = "Open";
-                }
-                else if (post.Status == 1) {
-                    statusString = "Pending";
-                }
+                statusString = "Open";
+	            }
+	            else if (post.Status == 1) {
+	            	if (currentMode == modeEnum.POSTED) {
+	                statusString = "Pending";
+	            	}
+	            	else {
+	            		statusString = "Won";
+	            	}
+	            }
+	            else if (post.Status == 2) {
+	            	statusString= "Completed"
+            	}
+
 
                 td[4].innerHTML = statusString;
             }
@@ -242,137 +303,154 @@ $scope.sortByLowestBid = function() {
     };
 
     $scope.sortByDistance = function() {
-                var time1;
-                var time2;
-                var temp;
-                var swapped;
-                $http.post('/getUserPosts').then(function(response) {
-                    posts = response.data.result;
+        var time1;
+        var time2;
+        var temp;
+        var swapped;
+        $http.post('/getUserPosts').then(function(response) {
+            posts = response.data.result;
 
-                    /* sort posts by distance to user's location */
-                    do {
-                        swapped = false;
-                        for (var i=0; i < posts.length-1; i++) {
-                            dist1 = getDistanceFromLatLonInKm(posts[i].P_Lat, posts[i].P_Long, myUser.U_Lat, myUser.U_Long)
+            /* sort posts by distance to user's location */
+            do {
+                swapped = false;
+                for (var i=0; i < posts.length-1; i++) {
+                    dist1 = getDistanceFromLatLonInKm(posts[i].P_Lat, posts[i].P_Long, myUser.U_Lat, myUser.U_Long)
 
-                            dist2 = getDistanceFromLatLonInKm(posts[i+1].P_Lat, posts[i+1].P_Long, myUser.U_Lat, myUser.U_Long);
+                    dist2 = getDistanceFromLatLonInKm(posts[i+1].P_Lat, posts[i+1].P_Long, myUser.U_Lat, myUser.U_Long);
 
-                            if (dist1 < dist2) {
-                                var temp = posts[i];
-                                posts[i] = posts[i+1];
-                                posts[i+1] = temp;
-                                swapped = true;
-                            }
-                        }
-                    } while (swapped);
-
-                    var template = document.querySelector('#tmplt');
-                    for (var i = 0; i < posts.length; i++) {
-                        var currRow = document.getElementById("post-"+i);
-                        var td = currRow.querySelectorAll('td');
-                        td[0].innerHTML = posts[i].P_Title;
-                        td[1].innerHTML = posts[i].Username;
-                        td[2].innerHTML = posts[i].P_Location;
-
-                        var statusString = "";
-                        if (post.Status == 0) {
-                            statusString = "Open";
-                        }
-                        else if (post.Status == 1) {
-                            statusString = "Pending";
-                        }
-
-                        td[3].innerHTML = statusString;
+                    if (dist1 < dist2) {
+                        var temp = posts[i];
+                        posts[i] = posts[i+1];
+                        posts[i+1] = temp;
+                        swapped = true;
                     }
+                }
+            } while (swapped);
 
-                    /* set up each rows's onClick actions */
-                    setupPosts(posts);
+            var template = document.querySelector('#tmplt');
+            for (var i = 0; i < posts.length; i++) {
+                var currRow = document.getElementById("post-"+i);
+                var td = currRow.querySelectorAll('td');
+                td[0].innerHTML = posts[i].P_Title;
+                td[1].innerHTML = posts[i].Username;
+                td[2].innerHTML = posts[i].P_Location;
 
-                    console.log(response.status);
-                    console.log(response);
-                    if(response.status == 200){
-                        console.log("success");
-                    }else if(response.status == 401){
-                        console.log("failure");
-                    }
-                }).catch(function(response) {
-                    console.log(response.status);
-                    console.log(response);
-                    if(response.status == 401){
-                        console.log("failure");
-                    }
-                })
-        };
+                var statusString = "";
+                if (post.Status == 0) {
+	                statusString = "Open";
+	            }
+	            else if (post.Status == 1) {
+	            	if (currentMode == modeEnum.POSTED) {
+	                statusString = "Pending";
+	            	}
+	            	else {
+	            		statusString = "Won";
+	            	}
+	            }
+	            else if (post.Status == 2) {
+	            	statusString= "Completed"
+	            }
+
+                td[3].innerHTML = statusString;
+            }
+
+            /* set up each rows's onClick actions */
+            setupPosts(posts);
+
+            console.log(response.status);
+            console.log(response);
+            if(response.status == 200){
+                console.log("success");
+            }else if(response.status == 401){
+                console.log("failure");
+            }
+        }).catch(function(response) {
+            console.log(response.status);
+            console.log(response);
+            if(response.status == 401){
+                console.log("failure");
+            }
+        })
+    };
 
     $scope.sortByNumOfBids = function() {
-            var time1;
-            var time2;
-            var temp;
-            var swapped;
-            $http.post('/getUserPosts').then(function(response) {
-                posts = response.data.result;
+        var time1;
+        var time2;
+        var temp;
+        var swapped;
+        $http.post('/getUserPosts').then(function(response) {
+            posts = response.data.result;
 
-                /* Sort by number of bids */
-                do {
-                    swapped = false;
-                    for (var i=0; i < posts.length-1; i++) {
-                        nbids1 = new Date(posts[i].NumberOfBids);
-                        nbids2 = new Date(posts[i+1].NumberOfBids);
+            /* Sort by number of bids */
+            do {
+                swapped = false;
+                for (var i=0; i < posts.length-1; i++) {
+                    nbids1 = new Date(posts[i].NumberOfBids);
+                    nbids2 = new Date(posts[i+1].NumberOfBids);
 
-                        if (nbids1 < nbids2) {
-                            var temp = posts[i];
-                            posts[i] = posts[i+1];
-                            posts[i+1] = temp;
-                            swapped = true;
-                        }
+                    if (nbids1 < nbids2) {
+                        var temp = posts[i];
+                        posts[i] = posts[i+1];
+                        posts[i+1] = temp;
+                        swapped = true;
                     }
-                } while (swapped);
-
-                var template = document.querySelector('#tmplt');
-                for (var i = 0; i < posts.length; i++) {
-                    var currRow = document.getElementById("post-"+i);
-                    var td = currRow.querySelectorAll('td');
-                    td[0].innerHTML = posts[i].P_Title;
-                    td[1].innerHTML = posts[i].Username;
-                    td[2].innerHTML = posts[i].P_Location;
-
-                    var date = posts[i].CreationTime.substring(0,10);
-                    var day = date.substring(8,date.length);
-                    var month = date.substring(5,7);
-                    var year = date.substring(0,4);
-
-                    date = month + "/" + day + "/" + year;
-
-                    td[3].innerHTML = date;
-
-                    var statusString = "";
-                    if (post.Status == 0) {
-                        statusString = "Open";
-                    }
-                    else if (post.Status == 1) {
-                        statusString = "Pending";
-                    }
-
-                    td[4].innerHTML = statusString;
                 }
+            } while (swapped);
 
-                /* set up each rows's onClick actions */
-                setupPosts(posts);
+            var template = document.querySelector('#tmplt');
+            for (var i = 0; i < posts.length; i++) {
+                var currRow = document.getElementById("post-"+i);
+                var td = currRow.querySelectorAll('td');
+                td[0].innerHTML = posts[i].P_Title;
+                td[1].innerHTML = posts[i].Username;
+                td[2].innerHTML = posts[i].P_Location;
 
-                console.log(response.status);
-                console.log(response);
-                if(response.status == 200){
-                    console.log("success");
-                }else if(response.status == 401){
-                    console.log("failure");
-                }
-            }).catch(function(response) {
-                console.log(response.status);
-                console.log(response);
-                if(response.status == 401){
-                    console.log("failure");
-                }
-            })
+                var date = posts[i].CreationTime.substring(0,10);
+                var day = date.substring(8,date.length);
+                var month = date.substring(5,7);
+                var year = date.substring(0,4);
+
+                date = month + "/" + day + "/" + year;
+
+                td[3].innerHTML = date;
+
+                var statusString = "";
+                if (post.Status == 0) {
+	                statusString = "Open";
+	            }
+	            else if (post.Status == 1) {
+	            	if (currentMode == modeEnum.POSTED) {
+	                statusString = "Pending";
+	            	}
+	            	else {
+	            		statusString = "Won";
+	            	}
+	            }
+	            else if (post.Status == 2) {
+	            	statusString= "Completed"
+	            }
+
+
+                td[4].innerHTML = statusString;
+            }
+
+            /* set up each rows's onClick actions */
+            setupPosts(posts);
+
+            console.log(response.status);
+            console.log(response);
+            if(response.status == 200){
+                console.log("success");
+            }else if(response.status == 401){
+                console.log("failure");
+            }
+        }).catch(function(response) {
+            console.log(response.status);
+            console.log(response);
+            if(response.status == 401){
+                console.log("failure");
+            }
+        });
     };
 
     /* sets up all posts onClick actions (display info, load bids, and map) */
@@ -380,6 +458,9 @@ $scope.sortByLowestBid = function() {
         // Get the modal and the table rows
         var openModal = document.getElementById('openModal');
         var pendingModal = document.getElementById('pendingModal');
+        var wonModal = document.getElementById('wonModal');
+        var completedPosterModal = document.getElementById('completedPosterModal');
+        var completedBidderModal = document.getElementById('completedBidderModal');
         var rows = document.getElementById("postTable").rows;
 
         /* set the onclick action for each row/post */
@@ -408,21 +489,47 @@ $scope.sortByLowestBid = function() {
                     $scope.Pid = post.Pid;
                     global_postId = post.Pid;
 
-                    if (post.P_Image != "") {
-                       document.getElementById("post_image").src = post.P_Image;
-                    }
-                    else {
-                        document.getElementById("post_image").src = "assets/img/girl.png";
-                    }
 
-                    
+                    var postImage = null;
                     var statusString = "";
                     if (post.Status == 0) {
-                        statusString = "Open";
+               			statusString = "Open";
+                        postImage = document.getElementById('open_image');
+		            }
+		            else if (post.Status == 1) {
+		            	if (currentMode == modeEnum.POSTED) {
+		                    statusString = "Pending";
+
+                            postImage = document.getElementById('pending_image');
+		            	}
+		            	else {
+		            		statusString = "Won";
+
+                            postImage = document.getElementById('won_image');
+		            	}
+		            }
+		            else if (post.Status == 2) {
+                        statusString= "Completed"
+                        if (currentMode == modeEnum.POSTED) {
+                            postImage = document.getElementById('completed_poster_image');
+                        }
+                        else {
+                            postImage = document.getElementById('completed_bidder_image');
+                        }
+		            }
+
+                    postImage.addEventListener('error', function(){
+                        console.log('loading img failed.');  
+                        postImage.src = "assets/img/girl.png";
+                    });
+
+                    if (post.P_Image != "") {
+                       postImage .src = post.P_Image;
                     }
-                    else if (post.Status == 1) {
-                        statusString = "Pending";
+                    else {
+                        postImage .src = "assets/img/girl.png";
                     }
+
                     
                     $scope.status = statusString
 
@@ -440,12 +547,29 @@ $scope.sortByLowestBid = function() {
                         loadBids(bidData, 0);
                         $scope.$apply();
                     }
-                    else {
-                        pendingModal.style.display = "block";
+                    else if (post.Status == 1) {
+                        if (currentMode == modeEnum.POSTED) {
+                            pendingModal.style.display = "block";
+                        }
+                        else if (currentMode == modeEnum.WON) {
+                            wonModal.style.display = "block";
+                        }
                         // Load bid history for current post
                         var bidData = new Object();
                         bidData.PostId = post.Pid;
                         loadBids(bidData, 1);
+                        $scope.$apply();
+                    }
+                    else if (post.Status == 2) {
+                        if (currentMode == modeEnum.POSTED) {
+                            completedPosterModal.style.display = "block";
+                        }
+                        else {
+                            completedBidderModal.style.display = "block";
+                        }
+                        var bidData = new Object();
+                        bidData.PostId = post.Pid;
+                        loadBids(bidData, 2);
                         $scope.$apply();
                     }
                 }
@@ -468,6 +592,21 @@ $scope.sortByLowestBid = function() {
             pendingModal.style.display = "none";
         }
 
+        span[2].onclick = function() {
+            expanded = 0;
+            wonModal.style.display = "none";
+        }
+
+        span[3].onclick = function() {
+            expanded = 0;
+            completedPosterModal.style.display = "none";
+        }
+
+        span[4].onclick = function() {
+            expanded = 0;
+            completedBidderModal.style.display = "none";
+        }
+
         // When the user clicks anywhere outside of the modal, close it
         window.onclick = function(event) {
             if (event.target == openModal) {
@@ -480,15 +619,28 @@ $scope.sortByLowestBid = function() {
                 expanded = 0;
                 pendingModal.style.display = "none";
             }
+            else if (event.target == wonModal) {
+                expanded = 0;
+                pendingModal.style.display = "none";
+            }
+            else if (event.target == completedPosterModal) {
+                expanded = 0;
+                completedPosterModal.style.display = "none";
+            }
+            else if (event.target == completedBidderModal) {
+                expanded = 0;
+                completedBidderModal.style.display = "none";
+            }
         }
     }
 
     /* load bids for a post */
     function loadBids(bidData, status) {
+        console.log("load bids");
         /* make request */
         $http.post("/GetBids", bidData).then(function(response) {
             var bids = response.data.Result;
-             $scope.bidInfo = bids;
+            $scope.bidInfo = bids;
             var bidData = []
             var template = null;
 
@@ -496,7 +648,20 @@ $scope.sortByLowestBid = function() {
                template = document.querySelector('#openBidTemplate');
             }
             else if (status == 1) {
-                template = document.querySelector('#pendingBidTemplate');
+                if (currentMode == modeEnum.POSTED) {
+                    template = document.querySelector('#pendingBidTemplate');
+                }
+                else {
+                    template = document.querySelector('#wonBidTemplate');
+                }
+            }
+            else if (status == 2) {
+                if (currentMode == modeEnum.POSTED) {
+                    template = document.querySelector('#completedPosterBidTemplate');
+                }
+                else {
+                    template = document.querySelector('#completedBidderBidTemplate');
+                }
             }
 
             while(template.parentNode.hasChildNodes()) {
@@ -505,6 +670,7 @@ $scope.sortByLowestBid = function() {
                 template.parentNode.removeChild(template.parentNode.lastChild);
             }
 
+            console.log("before for loop in getbids");
             /* clone template row and fill in bid info */
             for (var i = 0; i < bids.length; i++) {
 
@@ -544,6 +710,7 @@ $scope.sortByLowestBid = function() {
 
             }
 
+            console.log("call myMap");
             /* call display map function */
             myMap(myUser.U_Location, status);
         }).catch(function(response) {
@@ -564,6 +731,39 @@ $scope.sortByLowestBid = function() {
             console.log("error in Close Post");
         })
     } 
+
+    // Called when the "Completed" button is clicked
+    $scope.completeButton = function() {
+    	 console.log("Completed Button function");
+        var bid = {PostId:$scope.Pid};
+
+        /* close post */
+        $http.post('/CompletePost', bid).then(function(response) {
+           location.reload(true);
+           console.log("Close Post: " + bid.PostId + ", amount: " + bid.Amount);
+        }).catch(function(response) {
+            console.log("error in Close Post");
+        })
+    } 
+
+    $scope.changeMode = function() {
+        if (currentMode == modeEnum.POSTED) {
+            currentMode = modeEnum.WON;
+        }
+        else if (currentMode == modeEnum.WON) {
+            currentMode = modeEnum.POSTED;
+        }
+        /* clear old rows */
+        var tableParent = document.querySelector('#tmplt').parentNode;
+        var postRows = tableParent.querySelectorAll('tr');
+        for (var i = 0; i < postRows.length; i++) {
+            if (postRows[i].id.includes("post")) {
+                tableParent.removeChild(postRows[i]);
+            }
+        }
+
+        displayPosts();
+    }
 }]);
 
 function acceptBid(el) {
@@ -616,10 +816,36 @@ function myMap(loc, status) {
             });
         }
         else if (status == 1) {
-             var map = new google.maps.Map(document.getElementById('pending_map'), {
-               mapTypeId: google.maps.MapTypeId.TERRAIN,
-               zoom: 10
-            });
+            if (currentMode == modeEnum.POSTED) {
+                var map = new google.maps.Map(document.getElementById('pending_map'), {
+                    mapTypeId: google.maps.MapTypeId.TERRAIN,
+                    zoom: 10
+
+                });
+            } 
+            else {
+                var map = new google.maps.Map(document.getElementById('won_map'), {
+                    mapTypeId: google.maps.MapTypeId.TERRAIN,
+                    zoom: 10
+
+                });
+            }
+        }
+        else if (status == 2) {
+            if (currentMode == modeEnum.POSTED) {
+                var map = new google.maps.Map(document.getElementById('completed_poster_map'), {
+                    mapTypeId: google.maps.MapTypeId.TERRAIN,
+                    zoom: 10
+
+                });
+            } 
+            else {
+                var map = new google.maps.Map(document.getElementById('completed_bidder_map'), {
+                    mapTypeId: google.maps.MapTypeId.TERRAIN,
+                    zoom: 10
+
+                });
+            }
         }
 
        var geocoder = new google.maps.Geocoder();

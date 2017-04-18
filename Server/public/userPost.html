@@ -19,6 +19,7 @@
 <div class = form>
 <table>
     <tr>
+<<<<<<< HEAD
        <div class=sorter id=mainselection align=left>
   <select ng-app='myApp' ng-controller="mainController" ng-model="selected" ng-change="sortType()">
   
@@ -29,6 +30,7 @@
       <option value="num_bids">Sort By Number of Bids</option>
   
 </select>
+
     </tr>
 </table>
 
@@ -98,7 +100,7 @@
                 </p>
                 </td>
                 <td>
-                    <img id = "post_image" class="img-circle" src="assets/img/girl.png" alt="ProfilePic" style="width:300px;height:300px;">
+                    <img id = "open_image" class="img-circle" src="assets/img/girl.png" alt="ProfilePic" style="width:300px;height:300px;">
                 </td>
                 </tr>
             </table>
@@ -148,11 +150,170 @@
                 </table>
                 <br>
                 <p>
-                  <button ng-click="closePostButton(); $event.stopPropagation();">Completed</button>
+                  <button ng-click="completeButton(); $event.stopPropagation();">Completed</button>
                 </p>
                 </td>
                 <td>
-                    <img id = "post_image" class="img-circle" src="assets/img/girl.png" alt="ProfilePic" style="width:300px;height:300px;">
+                    <img id = "pending_image" class="img-circle" src="assets/img/girl.png" alt="ProfilePic" style="width:300px;height:300px;">
+                </td>
+                </tr>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <br>
+        </div>
+    </div>
+</div>
+
+<!-- The Modal -->
+<div id="wonModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close">&times;</span>
+            <h2>{{title}}</h2>
+        </div>
+        <div class="modal-body">
+            <table class="modal-table">
+                <td>
+                    <p>Owner: {{owner}}</p>
+                    <p>Contact Info: {{phone}}</p>
+                    <p>Description: {{desc}}</p>
+                    <p>Location: {{location}}</p>
+                    <p>Status: {{status}}</p>
+                    <div id="won_map" style="width:400px;height:400px;background:yellow"></div>
+                </td>
+                <td valign="top">
+                  <p>Winning Bid:</p>
+                  <table id = "wonBidTable" class="bid-table">
+                  <tr>
+                    <th>Time</th>
+                    <th>User</th>
+                    <th>Amount</th>
+                    <th>Rating</th>
+                  </tr>
+                  <template id="wonBidTemplate">
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  </template>
+                </table>
+                <br>
+                </td>
+                <td>
+                    <img id = "won_image" class="img-circle" src="assets/img/girl.png" alt="ProfilePic" style="width:300px;height:300px;">
+                </td>
+                </tr>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <br>
+        </div>
+    </div>
+</div>
+
+<!-- The Modal -->
+<div id="completedPosterModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close">&times;</span>
+            <h2>{{title}}</h2>
+        </div>
+        <div class="modal-body">
+            <table class="modal-table">
+                <td>
+                    <p>Owner: {{owner}}</p>
+                    <p>Contact Info: {{phone}}</p>
+                    <p>Description: {{desc}}</p>
+                    <p>Location: {{location}}</p>
+                    <p>Status: {{status}}</p>
+                    <div id="completed_poster_map" style="width:400px;height:400px;background:yellow"></div>
+                </td>
+                <td valign="top">
+                  <p>Winning Bid:</p>
+                  <table id = "completedPosterBidTable" class="bid-table">
+                  <tr>
+                    <th>Time</th>
+                    <th>User</th>
+                    <th>Amount</th>
+                    <th>Rating</th>
+                  </tr>
+                  <template id="completedPosterBidTemplate">
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  </template>
+                </table>
+                <br>
+                <p>
+                    <button ng-click="completeButton(); $event.stopPropagation();">Rate Bidder</button>
+                </p>
+                </td>
+                <td>
+                    <img id = "completed_poster_image" class="img-circle" src="assets/img/girl.png" alt="ProfilePic" style="width:300px;height:300px;">
+                </td>
+                </tr>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <br>
+        </div>
+    </div>
+</div>
+
+<!-- The Modal -->
+<div id="completedBidderModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close">&times;</span>
+            <h2>{{title}}</h2>
+        </div>
+        <div class="modal-body">
+            <table class="modal-table">
+                <td>
+                    <p>Owner: {{owner}}</p>
+                    <p>Contact Info: {{phone}}</p>
+                    <p>Description: {{desc}}</p>
+                    <p>Location: {{location}}</p>
+                    <p>Status: {{status}}</p>
+                    <div id="completed_bidder_map" style="width:400px;height:400px;background:yellow"></div>
+                </td>
+                <td valign="top">
+                  <p>Winning Bid:</p>
+                  <table id = "completedBidderBidTable" class="bid-table">
+                  <tr>
+                    <th>Time</th>
+                    <th>User</th>
+                    <th>Amount</th>
+                    <th>Rating</th>
+                  </tr>
+                  <template id="completedBidderBidTemplate">
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  </template>
+                </table>
+                <br>
+                <p>
+                    <button ng-click="completeButton(); $event.stopPropagation();">Rate Poster</button>
+                </p>
+                </td>
+                <td>
+                    <img id = "completed_bidder_image" class="img-circle" src="assets/img/girl.png" alt="ProfilePic" style="width:300px;height:300px;">
                 </td>
                 </tr>
             </table>
