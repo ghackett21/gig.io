@@ -514,7 +514,7 @@ $scope.sortByLowestBid = function() {
                        postImage .src = post.P_Image;
                     }
                     else {
-                        postImage .src = "assets/img/girl.png";
+                        postImage .src = "assets/img/dfaultImage.jpg";
                     }
 
                     $scope.location = post.P_Location;
