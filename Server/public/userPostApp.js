@@ -141,6 +141,28 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
         }
     }
 
+    $scope.sortType = function() {
+     console.log("in sort type")
+     var sortKey = $scope.selected;
+     console.log(sortKey);
+     switch (sortKey) {
+       case 'age':
+         $scope.sortByAge();
+         break;
+       case 'low_bid':
+         $scope.sortByLowestBid();
+         break;
+       case 'dist':
+         $scope.sortByDistance();
+         break;
+       case 'num_bids':
+         $scope.sortByNumOfBids();
+         break;
+       default:
+     }
+     //$translate.use(langKey);
+   }
+
     $scope.sortByLowestBid = function() {
         var bidVal1;
         var bidVal2;
