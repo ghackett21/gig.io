@@ -268,10 +268,9 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
                 }
             } while (swapped);
 
-            var post = posts[i];
-
             var template = document.querySelector('#tmplt');
             for (var i = 0; i < posts.length; i++) {
+                var post = posts[i];
                 var currRow = document.getElementById("post-"+i);
                 var td = currRow.querySelectorAll('td');
                 td[0].innerHTML = post.P_Title;
