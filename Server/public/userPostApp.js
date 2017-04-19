@@ -387,7 +387,7 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
 	            	statusString= "Completed"
 	            }
 
-                td[3].innerHTML = statusString;
+                td[4].innerHTML = statusString;
             }
 
             /* set up each rows's onClick actions */
