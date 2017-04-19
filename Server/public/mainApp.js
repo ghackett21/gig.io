@@ -507,14 +507,14 @@ $scope.sortByLowestBid = function() {
 
                     postImage.addEventListener('error', function(){
                         console.log('loading img failed.');  
-                        postImage.src = "assets/img/defaultImage.jpg";
+                        postImage.src = "assets/img/defaultImage.png";
                     });
 
                     if (post.P_Image != "") {
                        postImage .src = post.P_Image;
                     }
                     else {
-                        postImage .src = "assets/img/defaultImage.jpg";
+                        postImage .src = "assets/img/defaultImage.png";
                     }
 
                     $scope.location = post.P_Location;
