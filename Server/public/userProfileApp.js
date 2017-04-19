@@ -32,7 +32,7 @@ app.controller("profileController", [ '$scope', '$http', function($scope, $http)
 
         profileImage.addEventListener('error', function(){
             console.log('loading img failed.');  
-            profileImage.src = "assets/img/girl.png";
+            profileImage.src = "assets/img/defaultImage.png";
         });
 
         /* display profile image */
@@ -40,7 +40,7 @@ app.controller("profileController", [ '$scope', '$http', function($scope, $http)
            profileImage.src = user.U_Image;
         }
         else {
-            profileImage.src = "assets/img/girl.png";
+            profileImage.src = "assets/img/defaultImage.png";
         }
     };
 }]);
