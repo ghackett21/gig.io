@@ -175,8 +175,8 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
             do {
                 swapped = false;
                 for (var i=0; i < posts.length-1; i++) {
-                    bidVal1 = posts[i].NumberOfBids;
-                    bidVal2 = posts[i+1].NumberOfBids;
+                    bidVal1 = posts[i].LowestBid;
+                    bidVal2 = posts[i+1].LowestBid;
 
                     if (bidVal1 < bidVal2) {
                         var temp = posts[i];
