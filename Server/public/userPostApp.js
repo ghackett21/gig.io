@@ -353,11 +353,12 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
 
             var template = document.querySelector('#tmplt');
             for (var i = 0; i < posts.length; i++) {
+                var post = posts[i];
                 var currRow = document.getElementById("post-"+i);
                 var td = currRow.querySelectorAll('td');
-                td[0].innerHTML = posts[i].P_Title;
-                td[1].innerHTML = posts[i].Username;
-                td[2].innerHTML = posts[i].P_Location;
+                td[0].innerHTML = post.P_Title;
+                td[1].innerHTML = post.Username;
+                td[2].innerHTML = post.P_Location;
 
                 var statusString = "";
                 if (post.Status == 0) {
@@ -423,13 +424,14 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
 
             var template = document.querySelector('#tmplt');
             for (var i = 0; i < posts.length; i++) {
+                var post = posts[i];
                 var currRow = document.getElementById("post-"+i);
                 var td = currRow.querySelectorAll('td');
-                td[0].innerHTML = posts[i].P_Title;
-                td[1].innerHTML = posts[i].Username;
-                td[2].innerHTML = posts[i].P_Location;
+                td[0].innerHTML = post.P_Title;
+                td[1].innerHTML = post.Username;
+                td[2].innerHTML = post.P_Location;
 
-                var date = posts[i].CreationTime.substring(0,10);
+                var date = post.CreationTime.substring(0,10);
                 var day = date.substring(8,date.length);
                 var month = date.substring(5,7);
                 var year = date.substring(0,4);
