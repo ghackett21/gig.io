@@ -185,6 +185,7 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
                         posts[i+1] = temp;
                         swapped = true;
                     }
+                    console.log("bidVal1: " + bidVal1 + ", bidVal2: " + bidVal2 + ", swapped?: " + swapped);
                 }
             } while (swapped);
 
