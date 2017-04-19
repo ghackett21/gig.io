@@ -164,6 +164,7 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
    }
 
     $scope.sortByLowestBid = function() {
+        console.log("Sort by lowest bid");
         var bidVal1;
         var bidVal2;
         var temp;
