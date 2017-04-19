@@ -362,6 +362,15 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
                 td[1].innerHTML = post.Username;
                 td[2].innerHTML = post.P_Location;
 
+                var date = post.CreationTime.substring(0,10);
+                var day = date.substring(8,date.length);
+                var month = date.substring(5,7);
+                var year = date.substring(0,4);
+
+                date = month + "/" + day + "/" + year;
+
+                td[3].innerHTML = date;
+
                 var statusString = "";
                 if (post.Status == 0) {
 	                statusString = "Open";
