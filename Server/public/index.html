@@ -9,38 +9,31 @@
 <body ng-app="myApp" ng-controller="mainController">
 
 <div ng-include="'navbar.html'"></div>
-
 <br>
 <br>
-
-<h1>Welcome to Gig.io</h1>
 <br>
 <br>
+<h1>Welcome to gig.io</h1>
 
-<table>
-  <tr>
-    <td>
-      <button ng-click="sortByAge()">Sort By Newest</button>
-    </td>
-    <td>
-      <button ng-click="sortByLowestBid()">Sort By Lowest Bid</button>
-    </td>
-    <td>
-      <button ng-click="sortByDistance()">Sort By Distance</button>
-    </td>
-    <td>
-      <button ng-click="sortByNumOfBids()">Sort By Number of Bids</button>
-    </td>
-  </tr>
-</table>
-
-<table id="postTable">
+<div class = form>
+<div class=sorter id=mainselection align=left>
+  <select ng-model="selected" ng-change="sortType()">
+  
+    
+      <option value="age">Sort By Newest</option>
+      <option value="low_bid">Sort By Lowest Bid</option>
+      <option value="dist">Sort By Distance</option>
+      <option value="num_bids">Sort By Number of Bids</option>
+  
+</select>
+</div>
+<table id="postTable" class =center>
   <tr class="clickable">
     <th>Job Title</th>
     <th>Owner</th>
     <th ng-click="sortByDistance()">Location</th>
 	<th ng-click="sortByLowestBid()">Current Bid</th>
-	<th ng-click="sortByNumOfBids()" >Number of Bids</th>
+	<th ng-click="sortByNumOfBids()" >Number of Bidders</th>
     <th ng-click="sortByAge()">Date Posted</th>
   </tr>
   <template id="tmplt">
@@ -54,7 +47,7 @@
   </tr>
   </template>
 </table>
-
+</div>
 <!-- The Modal -->
 <div id="myModal" class="modal">
 
@@ -62,12 +55,12 @@
   <div class="modal-content">
     <div class="modal-header">
       <span class="close">&times;</span>
-      <h2>{{title}}</h2>
+      <font size=1><h1>{{title}}</h2></font>
     </div>
     <div class="modal-body">
       <table class="modal-table">
         <td>
-          <p>Owner: {{owner}}</p>
+          <p>Owner: <b><a class='prof-link' style="font-size:24px" ng-click="viewUserProfile()" cursor="pointer">{{owner}}</a></b></p>
           <p>Contact Info: {{phone}}</p>
           <p>Description: {{desc}}</p>
           <p>Location: {{location}}</p>
@@ -83,24 +76,23 @@
             <th>Rating</th>
           </tr>
           <template id="bidTemplate">
-          <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
           </template>
-        </table>
-        <br><p>Enter bid:</p>
-        <p>
-          <i>$</i><input type="number" ng-model="bid.Amount" placeholder="Bid amount"/>
-          <button ng-click="placeBid(); $event.stopPropagation();">Place bid</button>
-        </p>
+          </table>
+          <br><p>Enter bid:</p>
+            <p>
+              <i>$</i><input type="number" ng-model="bid.Amount" placeholder="Bid amount"/>
+              <button ng-click="placeBid(); $event.stopPropagation();">Place bid</button>
+            </p>
         </td>
         <td>
           <img id = "post_image" class="img-circle" src="assets/img/girl.png" alt="ProfilePic" style="width:300px;height:300px;">
         </td>
-      </tr>
       </table>
     </div>
     <div class="modal-footer">
@@ -109,7 +101,6 @@
       <button formaction="bid.html" type="button" align="right-side">Enter Bid</button>
       </form>
     <br>-->
-    <br>
     </div>
   </div>
 </div>

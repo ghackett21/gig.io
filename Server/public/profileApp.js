@@ -34,6 +34,22 @@ app.controller("profileController", [ '$scope', '$http', function($scope, $http)
                 AddImage();
             }*/
             template.parentNode.appendChild(clone);
+
+
+            var profileImage = document.getElementById('profile_image');
+
+            profileImage.addEventListener('error', function(){
+                console.log('loading img failed.');  
+                profileImage.src = "assets/img/defaultImage.png";
+            });
+
+            /* display profile image */
+            if (user.U_Image != "") {
+               profileImage.src = user.U_Image;
+            }
+            else {
+                profileImage.src = "assets/img/defaultImage.png";
+            }
         })
     };
 }]);

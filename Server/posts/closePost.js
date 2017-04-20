@@ -19,56 +19,70 @@ module.exports = function(req, res) {
 		}
 	}
 
+	console.log("close post: Bidid: " + req.body.Bidid + ", PostId: " + req.body.PostId);
+
 	/* check for missing args */
-	if (req.body.PostId == undefined || req.body.Amount == undefined) {
-      console.log("Close Post: undfined args: requires UserId (optional), PostId, and Amount");
+	if (req.body.PostId == undefined) {
+      console.log("Close Post: undfined args: requires BidId (optional) and PostId");
 		callback(-1);
 	}
-	else if (req.body.UserId == undefined) {
-		closePost(null, req.body.PostId, req.body.Amount, callback);
+	else if (req.body.Bidid == undefined) {
+		closePost(null, req.body.PostId, callback);
 	}
 	else {
-      closePost(req.body.UserId, req.body.PostId, req.body.Amount, callback);
+      closePost(req.body.Bidid, req.body.PostId, callback);
 	}
 }
 
-function closePost(userId, postId, amount, callback) {
+function closePost(bidId, postId, callback) {
 	/* check if there is winner */
-	if (userId == null) {
+	if (bidId == null) {
 		/* no winner - delete post */
 		console.log("Close post " + postId + " with no winner.");
 		deletePostHelper(postId, callback);
 	}
 	else {
-		console.log("Close post " + postId + " with winning bid by user " + userId);
-
-            var mailOptions = {
-				from: 'gigdotio@gmail.com', // sender address
-				to: req.user.Email, // list of receivers
-				subject: 'Post has been closed', // Subject line
-				text: "This is a notification to alert you that your post has been closed."
-			};
-
-	transporter.sendMail(mailOptions, function(error, info){
-		if(error){
-		    return console.log(error);
-		}
-		console.log('Message sent: ' + info.response);
-	});
+		console.log("Close post " + postId + " with winning bid " + bidId);
+		/*
+        var mailOptions = {
+			from: 'gigdotio@gmail.com', // sender address
+			to: req.user.Email, // list of receivers
+			subject: 'Post has been closed', // Subject line
+			text: "This is a notification to alert you that your post has been closed."
+		};
 
 
-	    /* change post status to pending */
-	    var updatePostStatus = "UPDATE Posting SET STATUS=" + 1 + " WHERE Pid=" + postId;
+		transporter.sendMail(mailOptions, function(error, info){
+			if(error){
+			    return console.log(error);
+			}
+			console.log('Message sent: ' + info.response);
+		});
+		*/
 
-	    connection.query(updatePostStatus, function(err, rows) {
-	      if (err) {
-	        console.log("Close Post: database error!");
-	        return callback(-2);
-	      }
-	      else {
-	      	/* send notification */
-	        return callback(0);
-	      }
-	    });
+		/* get userId of winning bidder */
+		var selectUid = "SELECT Uid FROM Bids WHERE Bidid=" + bidId;
+
+		connection.query(selectUid, function(err, rows) {
+			if (err) {
+				console.log("Close Post: error getting Uid: " + err);
+				return callback(-2);
+			}
+			else {
+				/* change post status to pending */
+			    var updatePostStatus = "UPDATE Posting SET STATUS=" + 1 + ", Winning_Bidid=" + bidId + ", Winning_Uid=" + rows[0].Uid + " WHERE Pid=" + postId;
+
+			    connection.query(updatePostStatus, function(err, rows) {
+			      if (err) {
+			        console.log("Close Post: database error!" + err);
+			        return callback(-2);
+			      }
+			      else {
+			      	/* send notification */
+			        return callback(0);
+			      }
+			    });
+			}
+		});
 	}
 }

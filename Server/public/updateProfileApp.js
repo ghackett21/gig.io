@@ -5,6 +5,7 @@ app.controller("updateProfileController", [ '$scope', '$http', function($scope, 
     $scope.status = "";
 
     $scope.update = function() {
+        console.log($scope.user);
         if ($scope.user != null) {
             console.log("email = " + $scope.user.email);
             console.log("description = " + $scope.user.description);

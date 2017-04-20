@@ -1,8 +1,5 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:300);
-:root{
-    --main-color: #44cccc;
-    --second-color: #22bbcc;
-}
+@import url(//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);
 
 
 h1 {
@@ -74,7 +71,7 @@ h1 {
 }
 
 .clickable {
-    cursor: pointer;
+	cursor: pointer;
 }
 
 /* The Modal (background) */
@@ -148,11 +145,11 @@ h1 {
 }
 
 body {
-  background: var(--main-color); /* fallback for old browsers */
-  background: -webkit-linear-gradient(right, var(--main-color), var(--second-color));
-  background: -moz-linear-gradient(right, var(--main-color), var(--second-color));
-  background: -o-linear-gradient(right, var(--main-color), var(--second-color));
-  background: linear-gradient(to left, var(--main-color), var(--second-color));
+  background: #76b852; /* fallback for old browsers */
+  background: -webkit-linear-gradient(right, #76b852, #8DC26F);
+  background: -moz-linear-gradient(right, #76b852, #8DC26F);
+  background: -o-linear-gradient(right, #76b852, #8DC26F);
+  background: linear-gradient(to left, #76b852, #8DC26F);
   font-family: "Roboto", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -172,7 +169,7 @@ input, select {
 input[type=submit] {
     display: block;
     width: 25%;
-    background-color: var(--main-color);
+    background-color: #76b852;
     color: white;
     padding: 14px 20px;
     margin: 5px auto;
@@ -183,10 +180,10 @@ input[type=submit] {
 }
 
 input[type=submit]:hover {
-    background-color: var(--second-color);
+    background-color: #569832;
 }
 
-#Title {
+div {
     width: 60%;
     border-radius: 5px;
     background-color: #f2f2f2;
@@ -195,19 +192,43 @@ input[type=submit]:hover {
   
 }
 
-label {
-    width: 30%;
-    text-align: right;
-}
-
 form {
     width: 100%;
     
 }
-div{
-    margin-top: 100px;
-}
-    
+
 label, input {
     display: inline-block;
 }
+
+textarea {
+  resize: none;
+  width: 100%;
+  margin: auto;
+  float: right;
+
+  position: relative;
+  
+  text-align: left;
+  
+}
+
+
+@import url(//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);
+fieldset{   
+  
+  margin:auto;
+}
+
+fieldset, label { margin: 0; padding: 0; }
+body{ margin: 20px; }
+
+ select {
+    width: 50%;
+    padding: 9px;
+    
+    border-radius: 4px;
+    background-color: #f1f1f1;
+}
+
+
