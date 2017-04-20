@@ -348,7 +348,7 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
 
                     console.log("dist1: " + dist1 + ", dist2: " + dist2);
 
-                    if (dist1 < dist2) {
+                    if (dist1 > dist2) {
                         var temp = posts[i];
                         posts[i] = posts[i+1];
                         posts[i+1] = temp;
