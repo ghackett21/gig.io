@@ -346,6 +346,8 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
 
                     dist2 = getDistanceFromLatLonInKm(posts[i+1].P_Lat, posts[i+1].P_Long, myUser.U_Lat, myUser.U_Long);
 
+                    console.log("dist1: " + dist1 + ", dist2: " + dist2);
+
                     if (dist1 < dist2) {
                         var temp = posts[i];
                         posts[i] = posts[i+1];
