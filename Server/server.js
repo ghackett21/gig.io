@@ -285,7 +285,7 @@ app.post("/CreateRating", function(req, res) {
  	createRating(req, res);
 });
 
-app.post("/GetUserReposts", function(req, res) {
+app.post("/GetUserReports", function(req, res) {
 	getUserReposts(req, res);
 });
 
