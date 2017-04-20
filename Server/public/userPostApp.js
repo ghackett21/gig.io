@@ -387,85 +387,112 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
         var time2;
         var temp;
         var swapped;
-        $http.post('/getUserPosts').then(function(response) {
-            posts = response.data.result;
+        if (currentMode == modeEnum.POSTED) {
+            $http.post('/getUserPosts').then(function(response) {
+                posts = response.data.result;
 
-            console.log("user: " + myUser + ", lat: " + myUser.U_Lat + ", long: " + myUser.U_Long);
+                sortByDistanceHelper(posts);
 
-            /* sort posts by distance to user's location */
-            do {
-                swapped = false;
-                for (var i=0; i < posts.length-1; i++) {
-                    dist1 = getDistanceFromLatLonInKm(posts[i].P_Lat, posts[i].P_Long, myUser.U_Lat, myUser.U_Long)
-
-                    dist2 = getDistanceFromLatLonInKm(posts[i+1].P_Lat, posts[i+1].P_Long, myUser.U_Lat, myUser.U_Long);
-
-                    console.log("dist1: " + dist1 + ", dist2: " + dist2);
-
-                    if (dist1 > dist2) {
-                        var temp = posts[i];
-                        posts[i] = posts[i+1];
-                        posts[i+1] = temp;
-                        swapped = true;
-                    }
+                console.log(response.status);
+                console.log(response);
+                if(response.status == 200){
+                    console.log("success");
+                }else if(response.status == 401){
+                    console.log("failure");
                 }
-            } while (swapped);
+            }).catch(function(response) {
+                console.log(response.status);
+                console.log(response);
+                if(response.status == 401){
+                    console.log("failure");
+                }
+            });
+        }
+        else {
+            $http.post('/getWonPosts').then(function(response) {
+                posts = response.data.result;
 
-            var template = document.querySelector('#tmplt');
-            for (var i = 0; i < posts.length; i++) {
-                var post = posts[i];
-                var currRow = document.getElementById("post-"+i);
-                var td = currRow.querySelectorAll('td');
-                td[0].innerHTML = post.P_Title;
-                td[1].innerHTML = post.Username;
-                td[2].innerHTML = post.P_Location;
+                sortByDistanceHelper(posts);
 
-                var date = post.CreationTime.substring(0,10);
-                var day = date.substring(8,date.length);
-                var month = date.substring(5,7);
-                var year = date.substring(0,4);
-
-                date = month + "/" + day + "/" + year;
-
-                td[3].innerHTML = date;
-
-                var statusString = "";
-                if (post.Status == 0) {
-	                statusString = "Open";
-	            }
-	            else if (post.Status == 1) {
-	            	if (currentMode == modeEnum.POSTED) {
-	                statusString = "Pending";
-	            	}
-	            	else {
-	            		statusString = "Won";
-	            	}
-	            }
-	            else if (post.Status == 2) {
-	            	statusString= "Completed"
-	            }
-
-                td[4].innerHTML = statusString;
-            }
-
-            /* set up each rows's onClick actions */
-            setupPosts(posts);
-
-            console.log(response.status);
-            console.log(response);
-            if(response.status == 200){
-                console.log("success");
-            }else if(response.status == 401){
-                console.log("failure");
-            }
-        }).catch(function(response) {
-            console.log(response.status);
-            console.log(response);
-            if(response.status == 401){
-                console.log("failure");
-            }
-        })
+                console.log(response.status);
+                console.log(response);
+                if(response.status == 200){
+                    console.log("success");
+                }else if(response.status == 401){
+                    console.log("failure");
+                }
+            }).catch(function(response) {
+                console.log(response.status);
+                console.log(response);
+                if(response.status == 401){
+                    console.log("failure");
+                }
+            });
+        }
     };
+
+    function sortByDistanceHelper(posts) {
+        console.log("user: " + myUser + ", lat: " + myUser.U_Lat + ", long: " + myUser.U_Long);
+
+        /* sort posts by distance to user's location */
+        do {
+            swapped = false;
+            for (var i=0; i < posts.length-1; i++) {
+                dist1 = getDistanceFromLatLonInKm(posts[i].P_Lat, posts[i].P_Long, myUser.U_Lat, myUser.U_Long)
+
+                dist2 = getDistanceFromLatLonInKm(posts[i+1].P_Lat, posts[i+1].P_Long, myUser.U_Lat, myUser.U_Long);
+
+                console.log("dist1: " + dist1 + ", dist2: " + dist2);
+
+                if (dist1 > dist2) {
+                    var temp = posts[i];
+                    posts[i] = posts[i+1];
+                    posts[i+1] = temp;
+                    swapped = true;
+                }
+            }
+        } while (swapped);
+
+        var template = document.querySelector('#tmplt');
+        for (var i = 0; i < posts.length; i++) {
+            var post = posts[i];
+            var currRow = document.getElementById("post-"+i);
+            var td = currRow.querySelectorAll('td');
+            td[0].innerHTML = post.P_Title;
+            td[1].innerHTML = post.Username;
+            td[2].innerHTML = post.P_Location;
+
+            var date = post.CreationTime.substring(0,10);
+            var day = date.substring(8,date.length);
+            var month = date.substring(5,7);
+            var year = date.substring(0,4);
+
+            date = month + "/" + day + "/" + year;
+
+            td[3].innerHTML = date;
+
+            var statusString = "";
+            if (post.Status == 0) {
+                statusString = "Open";
+            }
+            else if (post.Status == 1) {
+                if (currentMode == modeEnum.POSTED) {
+                statusString = "Pending";
+                }
+                else {
+                    statusString = "Won";
+                }
+            }
+            else if (post.Status == 2) {
+                statusString= "Completed"
+            }
+
+            td[4].innerHTML = statusString;
+        }
+
+        /* set up each rows's onClick actions */
+        setupPosts(posts);
+    }
 
     $scope.sortByNumOfBids = function() {
         var time1;
