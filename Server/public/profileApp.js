@@ -56,7 +56,8 @@ app.controller("profileController", [ '$scope', '$http', function($scope, $http)
             console.log(userInfo);
             $http.post('/GetUserRatings', userInfo).then(function(response) {
                   var template = document.querySelector('#rating_tmplt');
-                  var arr = response.data.result;
+                  var arr = response.data.Result;
+                  console.log(response.data);
                   console.log(arr);
                   if(arr == null)
                     return;
@@ -65,8 +66,8 @@ app.controller("profileController", [ '$scope', '$http', function($scope, $http)
                       var td = clone.querySelectorAll('td');
                       var currRating = arr[i];
 
-                      var thisUser = {userId:currRating.Uid};
-                      $http.post("/GetUser", userToView).then(function(response) {
+                      var thisUser = {userId:currRating.UidRater};
+                      $http.post("/GetUser", thisUser).then(function(response) {
                             td[0].innerHTML = response.data.Result[0].Username;
                       })
                       td[1].innerHTML = currRating.RatingValue;
