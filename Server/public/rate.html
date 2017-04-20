@@ -14,14 +14,14 @@
 
 
 
-<div align=center style="padding-left:16px" >
+<div class=box align=center style="padding-left:16px" >
   <h2 align=center>Have a conflict with a user? Leave a report and let us know what happened!</h2>
   <p align=center></p>
 <br>
 	<h3 id="status" align=center>{{status}}</h3>
 
 
-<form name="rateUser">
+<div class=stars align=center><form name="rateUser">
 <fieldset class="rating">
 
     <input type="radio" id="star5" ng-model="rate.score" name="rating" value="5" /><label class = "full" for="star5" title="Awesome - 5 stars"></label>
@@ -35,7 +35,7 @@
     <input type="radio" id="star1" ng-model="rate.score" name="rating" value="1" /><label class = "full" for="star1" title="Sucks big time - 1 star"></label>
     <input type="radio" id="starhalf" ng-model="rate.score" name="rating" value="0.5" /><label class="half" for="starhalf" title="Sucks big time - 0.5 stars"></label>
 </fieldset><br>
-	 
+</div>	 
         <br>
         <div align=center><label for="description">Briefly describe why you gave this rating. Include any relevant pictures and a short description of your interaction with the user. <br></label></div>
         <br>
