@@ -322,7 +322,7 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
         }
     };
 
-    funtion sortByAgeHelper(post) {
+    function sortByAgeHelper(post) {
         /* Sort posts by date */
         do {
             swapped = false;
