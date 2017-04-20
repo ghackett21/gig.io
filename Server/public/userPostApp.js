@@ -336,7 +336,7 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
         $http.post('/getUserPosts').then(function(response) {
             posts = response.data.result;
 
-            console.log("user: " + myUser + ", lat: " + myUser.U_Lat + ", long: " + myUser.Long);
+            console.log("user: " + myUser + ", lat: " + myUser.U_Lat + ", long: " + myUser.U_Long);
 
             /* sort posts by distance to user's location */
             do {
