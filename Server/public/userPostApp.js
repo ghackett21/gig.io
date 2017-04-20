@@ -897,6 +897,7 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
     } 
 
     $scope.changeMode = function() {
+		console.log("hi");
         if (currentMode == modeEnum.POSTED) {
             currentMode = modeEnum.WON;
         }
@@ -907,7 +908,8 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
         var tableParent = document.querySelector('#tmplt').parentNode;
         var postRows = tableParent.querySelectorAll('tr');
         for (var i = 0; i < postRows.length; i++) {
-            if (postRows[i].id.includes("post")) {
+			console.log(postRows[i].id);
+            if (postRows[i].id.indexOf("post") > -1) {
                 tableParent.removeChild(postRows[i]);
             }
         }
