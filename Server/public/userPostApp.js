@@ -190,7 +190,7 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
                 }
             });
         }
-        eles {
+        else {
             $http.post('/getWonPosts').then(function(response) {
                 posts = response.data.result;
 
