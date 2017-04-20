@@ -52,7 +52,7 @@
         </tr>
     </thead>
     <tbody ng-repeat="users in userList | filter:searchInput">
-		<tr ng-click="" class="odd gradeX" >
+		<tr ng-click="adminModal(users.Uid)" class="odd gradeX" >
             <td>{{users.Uid}}</td>
             <td>{{users.Username}}</td>
             <td>{{users.U_Location}}</td>
