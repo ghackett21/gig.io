@@ -14,9 +14,10 @@ app.controller("profileController", [ '$scope', '$http', function($scope, $http)
 		});
 	};
     window.onload = function() {
+        var user;
     	$http.post('/GetUser').then(function(response) {
     	    console.log(response.data.Result[0]);
-     	    var user = response.data.Result[0];
+     	    user = response.data.Result[0];
      	    var template = document.querySelector('#tmplt');
      	    var clone = template.content.cloneNode(true);
      	    var h1 = clone.querySelectorAll('h1');
@@ -50,6 +51,30 @@ app.controller("profileController", [ '$scope', '$http', function($scope, $http)
             else {
                 profileImage.src = "assets/img/defaultImage.png";
             }
+
+            var userInfo = {userId:user.Uid};
+            console.log(userInfo);
+            $http.post('/GetUserRatings', userInfo).then(function(response) {
+                  var template = document.querySelector('#rating_tmplt');
+                  var arr = response.data.Result;
+                  console.log(response.data);
+                  console.log(arr);
+                  if(arr == null)
+                    return;
+                  for (var i = 0 ; i < arr.length; i++) {
+                      var clone = template.content.cloneNode(true);
+                      var td = clone.querySelectorAll('td');
+                      var currRating = arr[i];
+
+                      var thisUser = {userId:currRating.UidRater};
+                      $http.post("/GetUser", thisUser).then(function(response) {
+                            td[0].innerHTML = response.data.Result[0].Username;
+                      })
+                      td[1].innerHTML = currRating.RatingValue;
+                      td[2].innerHTML = currRating.Comment;
+                      template.parentNode.appendChild(clone);
+                  }
+            })
         })
     };
 }]);

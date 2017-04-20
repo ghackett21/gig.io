@@ -804,7 +804,7 @@ app.controller("adminController", ['$scope', '$http', function($scope, $http) {
         
 	};
 
-	adminModal = function(uid){
+	$scope.adminModal = function(uid){
 		console.log("hello " + uid);
 	}
 
