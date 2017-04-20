@@ -657,15 +657,7 @@ app.controller("adminController", ['$scope', '$http', function($scope, $http) {
             //console.log(response.data.Result[0]);
         	$scope.user = response.data.Result[0];
         })
-    //<tbody ng-repeat="users in userList">
-   //       <tr class="odd grade{{users.NumberOfStrikes}}">
-    //        <td>{{users.Username}}</td>
-    //        <td>{{users.U_Location}}</td>
-    //        <td>{{users.Uid}}</td>
-    //        <td class="center"> {{users.AVG_PostRate}}</td>
-   //        <td class="center">{{users.NumberOfStrikes}}</td>
-    //      </tr>
-	//</tbody>
+
         /* request post data */
 		$http.post('/GetAllUsers').then(function(response) {
 			console.log("GET ALL USERS")
@@ -693,6 +685,10 @@ app.controller("adminController", ['$scope', '$http', function($scope, $http) {
 		})
         
 	};
+
+	adminModal = function(uid){
+		console.log("hello " + uid);
+	}
 
     /* sets up all posts onClick actions (display info, load bids, and map) */
     function setupPosts(posts) {
