@@ -23,7 +23,7 @@ var connection = require('./../helpers/connection');
 
 function getUserPosts(userId, callback) {
 	console.log("GetUserPosts: userId " + userId);
-	var select = "SELECT Posting.P_Title, Posting.Pid, Posting.P_Location, Posting.CreationTime, Posting.P_Description, Posting.Status, Posting.P_Image, Posting.NumberOfBids, Posting.LowestBid, Users.Uid, Users.Username, Users.U_Description, Users.U_Location, Users.PhoneNumber, Users.DateJoined, Users.EmailAddress, Users.AVG_PostRate, Users.AVG_BidRate FROM Posting Inner Join Users On Posting.Uid=Users.Uid WHERE Users.Uid LIKE " + userId;
+	var select = "SELECT Posting.P_Title, Posting.Pid, Posting.P_Location, Posting.P_Lat, Posting.P_Long, Posting.CreationTime, Posting.P_Description, Posting.Status, Posting.P_Image, Posting.NumberOfBids, Posting.LowestBid, Users.Uid, Users.Username, Users.U_Description, Users.U_Location, Users.PhoneNumber, Users.DateJoined, Users.EmailAddress, Users.AVG_PostRate, Users.AVG_BidRate FROM Posting Inner Join Users On Posting.Uid=Users.Uid WHERE Users.Uid LIKE " + userId;
 
 	connection.query(select, function(err, rows) {
 		if (err) {
