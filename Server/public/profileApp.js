@@ -28,6 +28,7 @@ app.controller("profileController", [ '$scope', '$http', function($scope, $http)
             h3[2].innerHTML = 'Bid Rating ' + user.AVG_BidRate + '/5.0';
             h3[3].innerHTML = user.PhoneNumber;
             h3[4].innerHTML = user.EmailAddress;
+            h3[5].innerHTML = user.U_Location;
 
             /*var rating = user.AverageRating;
 
