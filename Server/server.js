@@ -169,6 +169,14 @@ app.get('/userProfile.html', ensureAuthenticated, function(req, res) {
     res.sendFile(__dirname + '/public/userProfile.html');
 });
 
+app.get('/rateBidder.html', ensureAuthenticated, function(req, res) {
+    res.sendFile(__dirname + '/public/rateBidder.html');
+});
+
+app.get('/ratePoster.html', ensureAuthenticated, function(req, res) {
+    res.sendFile(__dirname + '/public/ratePoster.html');
+});
+
 app.use(express.static(path.join(__dirname, '/public')));
 
 passport.use(new LocalStrategy(
