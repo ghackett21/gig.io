@@ -65,7 +65,7 @@ function createRatingHelper(ratingType, userId, userIdRater, comment, ratingValu
 			if (ratingState == 3) {
 				console.log("Ratings for this post have already been submitted, cannot submit more than one rating per user per post.");
 				/* return -3 special state */
-				console.log(-3);
+				return callback(-3);
 			}
 
 			if (userId == rows[0].Uid) {
@@ -79,7 +79,7 @@ function createRatingHelper(ratingType, userId, userIdRater, comment, ratingValu
 				else {
 					console.log("Ratings for this post have already been submitted, cannot submit more than one rating per user per post.");
 					/* return -3 special state */
-					console.log(-3);
+					return callback(-3);
 				}
 			}
 			else if (userId == rows[0].Winning_Uid) {
@@ -92,7 +92,7 @@ function createRatingHelper(ratingType, userId, userIdRater, comment, ratingValu
 				else {
 					console.log("Ratings for this post have already been submitted, cannot submit more than one rating per user per post.");
 					/* return -3 special state */
-					console.log(-3);
+					retrun callback(-3);
 				}
 			}
 			else {
