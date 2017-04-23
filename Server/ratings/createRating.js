@@ -26,7 +26,7 @@ module.exports = function(req, res){
 		console.log("CreateRating: undefined args: requires ratingType, userId, userIdRater, postId, and comment");
 		callback(-1);
 	}
-	else if (req.body.ratingType != "Bid" && req.body.ratingType != "Posting") {
+	else if (req.body.ratingType != "Bid" && req.body.ratingType != "Post") {
 		/* check that rating type is valid */
 		console.log("CreateRating: ratingType must be either \"Bid\" or \"Post\".");
 		callback(-1);
