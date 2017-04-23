@@ -23,7 +23,7 @@ app.controller("rateController", [ '$scope', '$http', function($scope, $http){
         }
 
 
-        var rate_req = {"comment":$scope.rating.description, "userId":localStorage.getItem("bidder_username"), "ratingValue":$scope.rating.score, "postId":localStorage.getItem("postId"), "ratingType":"Bid"};
+        var rate_req = {"comment":$scope.rating.description, "userId":localStorage.getItem("bidder_userid"), "ratingValue":$scope.rating.score, "postId":localStorage.getItem("postId"), "ratingType":"Bid"};
 
         console.log("rating: " + rate_req);
 

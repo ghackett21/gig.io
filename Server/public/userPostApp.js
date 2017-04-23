@@ -859,7 +859,6 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
                     td[4].id = bids[i].Bidid;
                 }
 
-                localStorage.setItem("bidder_username", bids[i].Username);
 
                 template.parentNode.appendChild(clone);
 
