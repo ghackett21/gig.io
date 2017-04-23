@@ -813,20 +813,26 @@ app.controller("adminController", ['$scope', '$http', function($scope, $http) {
         })
 
         $http.post('/GetUserReports', format).then(function(response) {
-        	$scope.reportL = response.data.Result[0];
+        	$scope.reportL = response.data.Result;
 			console.log("reportL = %j", $scope.reportL);
+			if($scope.reportL[0] == undefined){
+				document.getElementById('reportHistory').style.display = "none";
+				document.getElementById('noReports').style.display = "block";
+			}
         })
 		console.log("hello " + uid);
 		var modal = document.getElementById('myModal');
 
         /* set display content */
-		modal.style.display = "block";
+		modal.style.display = "flex";
        // $scope.$apply();
 
         $scope.close = function() {
             /* set flag */
             expanded = 0;
             modal.style.display = "none";
+			document.getElementById('reportHistory').style.display = "block";
+			document.getElementById('noReports').style.display = "none";
         }
 	}
 

@@ -67,10 +67,10 @@
 </div>
 
 <!-- The Modal -->
-<div id="myModal" class="modal">
+<div id="myModal" class="modal vertical-align-center" style="align-items: center; justify-content: center; overflow:hidden;">
 
   <!-- Modal content -->
-  <div class="modal-content">
+  <div class="modal-content" style="margin: auto;">
     <div class="modal-header">
       <span class="close" ng-click="close()">&times;</span>
       <h2>Reports</h2>
@@ -78,12 +78,12 @@
     <div class="modal-body">
       <table class="modal-table">
         <td>
-          <p>Name: {{userL.Username}}</p>
+          <p>Username: {{userL.Username}}</p>
           <p>Contact: {{userL.PhoneNumber}}</p>
           <p>Description: {{userL.U_Description}}</p>
           <p>Location: {{userL.U_Location}}</p>
         </td>
-        <td valign="top">
+        <td id="reportHistory"valign="top">
           <p>Report history:</p>
           <table class="report-table">
 			<thead>
@@ -94,16 +94,19 @@
 				<th>Description</th>
 				</tr>
 			</thead>
-		    <tbody>
+		    <tbody ng-repeat="report in reportL">
 		    	<tr>
-		    	<td>{{reportL.Time}}</td>
-		        <td>{{reportL.UidReporter}}</td>
-		        <td>{{reportL.Type}}</td>
-		        <td>{{reportL.Comment}}</td>
+		    	<td>{{report.Time}}</td>
+		        <td>{{report.UidReporter}}</td>
+		        <td>{{report.Type}}</td>
+		        <td>{{report.Comment}}</td>
 		    	</tr>
 		      </tbody>
         	</table>
-      </tr>
+		</td>
+		<td id="noReports" style="display:none;">
+			<p style="text-align:center;"> No Reports to be shown.</p>
+		</td>
       </table>
     </div>
     <div class="modal-footer">
