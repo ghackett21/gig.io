@@ -76,6 +76,11 @@ function createRatingHelper(ratingType, userId, userIdRater, comment, ratingValu
 				else if (ratingState == 2) {
 					ratingState = 3;
 				}
+				else {
+					console.log("Ratings for this post have already been submitted, cannot submit more than one rating per user per post.");
+					/* return -3 special state */
+					console.log(-3);
+				}
 			}
 			else if (userId == rows[0].Winning_Uid) {
 				if (ratingState == 0) {
@@ -83,6 +88,11 @@ function createRatingHelper(ratingType, userId, userIdRater, comment, ratingValu
 				}
 				else if (ratingState == 1) {
 					ratingState = 3;
+				}
+				else {
+					console.log("Ratings for this post have already been submitted, cannot submit more than one rating per user per post.");
+					/* return -3 special state */
+					console.log(-3);
 				}
 			}
 			else {
