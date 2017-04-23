@@ -457,7 +457,7 @@ $scope.sortByLowestBid = function() {
                     /* fill in row information */
                     console.log("Fixing HTML");
                     td[0].innerHTML = date; 
-                    td[1].innerHTML = "<b><a class=\'prof-link ng-binding\' style=\"font-size:24px\" onclick=\"angular.element(this).scope().viewBidUserProfile(" + bids[i].Uid + ")\">" + bids[i].Username + "</a></b>";
+                    td[1].innerHTML = "<b><a class=\'bidprof-link ng-binding\' style=\"font-size:18px\" onclick=\"angular.element(this).scope().viewBidUserProfile(" + bids[i].Uid + ")\">" + bids[i].Username + "</a></b>";
                     td[2].innerHTML = amountString;
                     td[3].innerHTML = bids[i].AVG_BidRate + "/5";
                     template.parentNode.appendChild(clone);

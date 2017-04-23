@@ -277,7 +277,7 @@ app.post("/GetBids", function(req, res) {
 	getBids(req, res);
 });
 
-app.post('GetUserRatings', function(req, res) {
+app.post('/GetUserRatings', function(req, res) {
 	getUserRatings(req, res);
 })
 
