@@ -9,6 +9,8 @@ app.controller("ratePosterController", [ '$scope', '$http', function($scope, $ht
     $scope.rating;
     $scope.status = "";
     $scope.rate = function() {
+        console.log("rate poster");
+
         console.log("score = " + $scope.rating.score);
         console.log("description = " + $scope.rating.description);
         

@@ -9,6 +9,8 @@ app.controller("rateBidderController", [ '$scope', '$http', function($scope, $ht
     $scope.rating;
     $scope.status = "";
     $scope.rate = function() {
+        console.log("rate bidder");
+
         console.log("score = " + $scope.rating.score);
         console.log("description = " + $scope.rating.description);
         
