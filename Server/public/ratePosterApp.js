@@ -5,7 +5,7 @@
 
 var app = angular.module("myApp", []);
 
-app.controller("rateController", [ '$scope', '$http', function($scope, $http){
+app.controller("ratePosterController", [ '$scope', '$http', function($scope, $http){
     $scope.rating;
     $scope.status = "";
     $scope.rate = function() {
@@ -23,7 +23,7 @@ app.controller("rateController", [ '$scope', '$http', function($scope, $http){
         }
 
 
-        var rate_req = {"comment":$scope.rating.description, "userId":localStorage.getItem("bidder_userId"), "ratingValue":$scope.rating.score, "postId":localStorage.getItem("postId"), "ratingType":"Bid"};
+        var rate_req = {"comment":$scope.rating.description, "userId":localStorage.getItem("post_userId"), "ratingValue":$scope.rating.score, "postId":localStorage.getItem("postId"), "ratingType":"Post"};
 
         console.log("rating: " + rate_req);
 

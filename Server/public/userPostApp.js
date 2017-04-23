@@ -640,6 +640,7 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
                     global_postId = post.Pid;
 
                     localStorage.setItem("postId", post.Pid);
+                    localStorage.setItem("post_userId", post.Uid)
 
 
                     var postImage = null;

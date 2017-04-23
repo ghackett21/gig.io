@@ -5,7 +5,7 @@
 
 var app = angular.module("myApp", []);
 
-app.controller("rateController", [ '$scope', '$http', function($scope, $http){
+app.controller("rateBidderController", [ '$scope', '$http', function($scope, $http){
     $scope.rating;
     $scope.status = "";
     $scope.rate = function() {
