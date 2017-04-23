@@ -22,9 +22,12 @@ app.controller("rateController", [ '$scope', '$http', function($scope, $http){
             return;
         }
 
-        console.log("rate: " + $scope.rating);
 
-        $http.post('/CreateRating', $scope.rating).then(function(response) {
+        var rate_req = {"comment":$scope.rating.description, "userId":localStorage.getItem("bidder_username"), "ratingValue":$scope.rating.score, "postId":localStorage.getItem("postId")};
+
+        console.log("rating: " + rate_req);
+
+        $http.post('/CreateRating', rate_req).then(function(response) {
                     $scope.rate = null;
                     console.log(response);
                     if(response.data.State == 0){

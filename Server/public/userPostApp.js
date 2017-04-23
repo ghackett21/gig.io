@@ -639,6 +639,8 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
                     $scope.Pid = post.Pid;
                     global_postId = post.Pid;
 
+                    localStorage.setItem("postId", post.Pid);
+
 
                     var postImage = null;
                     var statusString = "";
@@ -856,6 +858,9 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
                 if (status == 0) {
                     td[4].id = bids[i].Bidid;
                 }
+
+                localStorage.setItem("bidder_username", bids[i].Username);
+
                 template.parentNode.appendChild(clone);
 
             }

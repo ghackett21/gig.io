@@ -20,7 +20,7 @@ module.exports = function(req, res){
 	}
 
 	/* check for undefined args */
-	if (req.body.comment == undefined || req.body.userId == undefined || req.body.userIdRater == undefined || req.body.ratingValue == undefined || req.body.postId == undefined) {
+	if (req.body.comment == undefined || req.body.userId == undefined || req.body.ratingValue == undefined || req.body.postId == undefined) {
 		console.log("CreateRating: undefined args: requires ratingType, userId, userIdRater, postId, and comment");
 		callback(-1);
 	}
@@ -29,13 +29,13 @@ module.exports = function(req, res){
 		console.log("CreateRating: ratingType must be either \"Bid\" or \"Post\".");
 		callback(-1);
 	}
-	else if (req.body.userId == req.body.userIdRater) {
+	else if (req.body.userId == req.user.Uid) {
 		/* check that userId and userIdRater are not equal */
 		console.log("CreateRating: a user cannot rate themselves!");
 		return callback(-1);
 	}
 	else {
-		createRatingHelper(req.body.ratingType, req.body.userId, req.body.userIdRater, req.body.comment, req.body.ratingValue, req.body.postId, callback);
+		createRatingHelper(req.body.ratingType, req.body.userId, req.user.Uid, req.body.comment, req.body.ratingValue, req.body.postId, callback);
 	}
 }
 
