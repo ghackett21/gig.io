@@ -805,7 +805,29 @@ app.controller("adminController", ['$scope', '$http', function($scope, $http) {
 	};
 
 	$scope.adminModal = function(uid){
+		var format = {userId:uid};
+		//format.userId = uid
+        $http.post('/GetUser', format).then(function(response) {
+        	$scope.userL = response.data.Result[0];
+			console.log("userL = %j", $scope.userL);
+        })
+
+        $http.post('/GetUserReports', format).then(function(response) {
+        	$scope.reportL = response.data.Result[0];
+			console.log("reportL = %j", $scope.reportL);
+        })
 		console.log("hello " + uid);
+		var modal = document.getElementById('myModal');
+
+        /* set display content */
+		modal.style.display = "block";
+       // $scope.$apply();
+
+        $scope.close = function() {
+            /* set flag */
+            expanded = 0;
+            modal.style.display = "none";
+        }
 	}
 
     /* sets up all posts onClick actions (display info, load bids, and map) */
@@ -833,22 +855,10 @@ app.controller("adminController", ['$scope', '$http', function($scope, $http) {
                     var post = posts[j];
 
                     /* set display content */
-                    $scope.owner = post.Username;
+                    $scope.name = post.Username;
                     $scope.phone = post.PhoneNumber;
                     $scope.desc = post.P_Description;
-                    $scope.title = post.P_Title;
-                    $scope.Pid = post.Pid;
-
-                    if (post.P_Image != "") {
-                       document.getElementById("post_image").src = post.P_Image;
-                    }
-                    else {
-                        document.getElementById("post_image").src = "assets/img/girl.png";
-                    }
-
-                    $scope.location = post.P_Location;
-                    address = post.P_Location;
-                    modal.style.display = "block";
+					$scope.location = post.P_Location;
                     $scope.$apply();
 
                     // Load bid history for current post
