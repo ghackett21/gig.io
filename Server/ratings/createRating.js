@@ -19,6 +19,8 @@ module.exports = function(req, res){
 			}
 	}
 
+	console.log("comment: " + req.body.comment + ", userId: " + req.body.userId + ", ratingValue: " + req.body.ratingValue + ", postId: " + req.body.postId + ", ratingType: " + req.body.ratingType);
+
 	/* check for undefined args */
 	if (req.body.comment == undefined || req.body.userId == undefined || req.body.ratingValue == undefined || req.body.postId == undefined) {
 		console.log("CreateRating: undefined args: requires ratingType, userId, userIdRater, postId, and comment");
