@@ -92,7 +92,7 @@ function createRatingHelper(ratingType, userId, userIdRater, comment, ratingValu
 				else {
 					console.log("Ratings for this post have already been submitted, cannot submit more than one rating per user per post.");
 					/* return -3 special state */
-					retrun callback(-3);
+					return callback(-3);
 				}
 			}
 			else {
