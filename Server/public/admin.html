@@ -67,45 +67,46 @@
 </div>
 
 <!-- The Modal -->
-<div id="myModal" class="modal">
+<div id="myModal" class="modal vertical-align-center" style="align-items: center; justify-content: center; overflow:hidden;">
 
   <!-- Modal content -->
-  <div class="modal-content">
+  <div class="modal-content" style="margin: auto;">
     <div class="modal-header">
-      <span class="close">&times;</span>
-      <h2>{{title}}</h2>
+      <span class="close" ng-click="close()">&times;</span>
+      <h2>Reports</h2>
     </div>
     <div class="modal-body">
       <table class="modal-table">
         <td>
-          <p>Owner: {{owner}}</p>
-          <p>Contact Info: {{phone}}</p>
-          <p>Description: {{desc}}</p>
-          <p>Location: {{location}}</p>
-          <div id="map" style="width:400px;height:400px;background:yellow"></div>
+          <p>Username: {{userL.Username}}</p>
+          <p>Contact: {{userL.PhoneNumber}}</p>
+          <p>Description: {{userL.U_Description}}</p>
+          <p>Location: {{userL.U_Location}}</p>
         </td>
-        <td valign="top">
-          <p>Bid history:</p>
-          <table class="bid-table">
-          <tr>
-            <th>Time</th>
-            <th>User</th>
-            <th>Amount</th>
-            <th>Rating</th>
-          </tr>
-          <template id="bidTemplate">
-          <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-          </template>
-        </table>
-        <td>
-          <img id = "post_image" class="img-circle" src="assets/img/girl.png" alt="ProfilePic" style="width:300px;height:300px;">
-        </td>
-      </tr>
+        <td id="reportHistory"valign="top">
+          <p>Report history:</p>
+          <table class="report-table">
+			<thead>
+				<tr>
+				<th>Time</th>
+				<th>Reported By</th>
+				<th>Type</th>
+				<th>Description</th>
+				</tr>
+			</thead>
+		    <tbody ng-repeat="report in reportL">
+		    	<tr>
+		    	<td>{{report.Time}}</td>
+		        <td>{{report.UidReporter}}</td>
+		        <td>{{report.Type}}</td>
+		        <td>{{report.Comment}}</td>
+		    	</tr>
+		      </tbody>
+        	</table>
+		</td>
+		<td id="noReports" style="display:none;">
+			<p style="text-align:center;"> No Reports to be shown.</p>
+		</td>
       </table>
     </div>
     <div class="modal-footer">
