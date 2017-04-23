@@ -21,6 +21,9 @@ app.controller("rateController", [ '$scope', '$http', function($scope, $http){
             $scope.status = "Make Sure to fill in all required fields.";
             return;
         }
+
+        console.log("rate: " + $scope.rate);
+
         $http.post('/CreateRating', $scope.rate).then(function(response) {
                     $scope.rate = null;
                     console.log(response);
