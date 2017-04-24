@@ -10,7 +10,19 @@ var mylat;
 app.controller("makePostController", [ '$scope', '$http', function($scope, $http) {
     $scope.post;
     $scope.status = "";
+	$scope.user;
     
+
+    window.onload = function() {
+    	$http.post('/GetUser').then(function(response) {
+     	    $scope.user = response.data.Result[0];
+			if($scope.user.Admin == 1){
+					var nav = document.getElementById('secret');
+					nav.innerHTML = "<a href=\"admin.html\">AdminCP</a>";
+			}
+		});
+	}
+
     $scope.makePost = function() {
         console.log("title = " + $scope.post.title);
         console.log("description = " + $scope.post.description);
@@ -50,6 +62,7 @@ app.controller("makePostController", [ '$scope', '$http', function($scope, $http
             console.log(myResult.lat() + " , " + myResult.lng());
             $scope.post.lat = myResult.lat();
             $scope.post.lng = myResult.lng();
+
             console.log("$scope.post: " + $scope.post);
 
             /* make createPost request */

@@ -1,4 +1,3 @@
-var connection = require('./../helpers/connection');
 var deleteUserHelper = require('./../users/deleteUserHelper');
 
 /**

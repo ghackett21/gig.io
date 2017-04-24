@@ -26,7 +26,10 @@ app.controller("profileController", [ '$scope', '$http', function($scope, $http)
         h3[3].innerHTML = localStorage.getItem("phone");
         h3[4].innerHTML = localStorage.getItem("email");
         template.parentNode.appendChild(clone);
-
+		if(user.Admin == 1){
+			var nav = document.getElementById('secret');
+			nav.innerHTML = "<a href=\"admin.html\">AdminCP</a>";
+		}
 
         var profileImage = document.getElementById('profile_image');
 

@@ -851,9 +851,9 @@ app.controller("adminController", ['$scope', '$http', function($scope, $http) {
 		$scope.deleteUser = function(uid){
 			var format = {userId:uid};
 			$scope.close();
-		 	//$http.post('/DeleteUser', format).then(function(response) {
-			//
-        	//})
+		 	$http.post('/DeleteUser', format).then(function(response) {
+				
+        	});
 		}
 	}
 

@@ -13,6 +13,10 @@ app.controller("updateProfileController", [ '$scope', '$http', function($scope, 
             console.log("phone number = " + $scope.user.phone);
             console.log("location = " + $scope.user.location);
             console.log("username = " + $scope.user.username);
+			if($scope.user.Admin == 1){
+					var nav = document.getElementById('secret');
+					nav.innerHTML = "<a href=\"admin.html\">AdminCP</a>";
+			}
 
             if($scope.user.email != undefined && $scope.user.email.match(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/) == null){
                 /* make sure email is valud */
