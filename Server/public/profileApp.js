@@ -71,10 +71,7 @@ app.controller("profileController", [ '$scope', '$http', function($scope, $http)
                       var td = clone.querySelectorAll('td');
                       var currRating = arr[i];
 
-                      var thisUser = {userId:currRating.UidRater};
-                      $http.post("/GetUser", thisUser).then(function(response) {
-                            td[0].innerHTML = response.data.Result[0].Username;
-                      })
+                      td[0].innerHTML = currRating.Username;
                       td[1].innerHTML = currRating.RatingValue;
                       td[2].innerHTML = currRating.Comment;
                       template.parentNode.appendChild(clone);
