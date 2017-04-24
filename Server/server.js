@@ -183,10 +183,12 @@ app.get('*', ensureAuthenticated, function(req, res) {
     res.sendFile(__dirname + '/public/404.html');
 });
 
+/*
 app.use(function(req,res){
   console.log("kill me");
   res.sendFile(__dirname + '/public/404.html');
 });
+*/
 
 //app.use(express.static(path.join(__dirname, '/public')));
 
