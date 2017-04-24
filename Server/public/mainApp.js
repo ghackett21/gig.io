@@ -31,6 +31,10 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http, $c
         $http.post('/GetUser').then(function(response) {
                         //console.log(response.data.Result[0]);
                         myUser = response.data.Result[0];
+						if(myUser.Admin == 1){
+							var nav = document.getElementById('secret');
+							nav.innerHTML = "<a href=\"admin.html\">AdminCP</a>";
+						}
         })
 
         /* request post data */
@@ -593,7 +597,12 @@ $scope.sortByLowestBid = function() {
                 td[0].innerHTML = date;
                 td[1].innerHTML = "<b><a class=\'bidprof-link ng-binding\' style=\"font-size:18px\" onclick=\"angular.element(this).scope().viewBidUserProfile(" + bids[i].Uid + ")\">" + bids[i].Username + "</a></b>";
                 td[2].innerHTML = amountString;
-                td[3].innerHTML = bids[i].AVG_BidRate + "/5";
+                
+                /* format bid rating so it is only displayed to one decimal */
+                var bidText = bids[i].AVG_BidRate + "";
+                bidText = bidText.substring(0, bidText.indexOf(".") + 2) + "/5";
+                td[3].innerHTML = bidText;
+
                 template.parentNode.appendChild(clone);
             }
             /* call display map function */
@@ -774,6 +783,10 @@ app.controller("adminController", ['$scope', '$http', function($scope, $http) {
         $http.post('/GetUser').then(function(response) {
             //console.log(response.data.Result[0]);
         	$scope.user = response.data.Result[0];
+						if($scope.user.Admin == 1){
+							var nav = document.getElementById('secret');
+							nav.innerHTML = "<a href=\"admin.html\">AdminCP</a>";
+						}
         })
 
         /* request post data */
@@ -834,7 +847,17 @@ app.controller("adminController", ['$scope', '$http', function($scope, $http) {
 			document.getElementById('reportHistory').style.display = "block";
 			document.getElementById('noReports').style.display = "none";
         }
+
+		$scope.deleteUser = function(uid){
+			var format = {userId:uid};
+			$scope.close();
+		 	//$http.post('/DeleteUser', format).then(function(response) {
+			//
+        	//})
+		}
 	}
+
+
 
     /* sets up all posts onClick actions (display info, load bids, and map) */
     function setupPosts(posts) {
