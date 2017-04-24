@@ -30,16 +30,13 @@ app.controller("rateBidderController", [ '$scope', '$http', function($scope, $ht
         console.log("rating: " + rate_req);
 
         $http.post('/CreateRating', rate_req).then(function(response) {
-                    $scope.rate = null;
-                    console.log(response);
-                    if(response.data.State == 0){
-                        $scope.status = "Rating submitted successfully. Thank you for your feedback on this user.";
-                    }
-                }).catch(function(response) {
-                    console.log("error submitting rating");
-                });
-       
-    };
-    
-
+            $scope.rate = null;
+            console.log(response);
+            if(response.data.State == 0){
+                $scope.status = "Rating submitted successfully. Thank you for your feedback on this user.";
+            }
+        }).catch(function(response) {
+            console.log("error submitting rating");
+        });
+    }; 
 }]);
