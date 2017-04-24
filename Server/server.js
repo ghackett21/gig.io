@@ -177,7 +177,16 @@ app.get('/ratePoster.html', ensureAuthenticated, function(req, res) {
     res.sendFile(__dirname + '/public/ratePoster.html');
 });
 
-app.use(express.static(path.join(__dirname, '/public')));
+app.get('*', ensureAuthenticated, function(req, res) {
+    res.sendFile(__dirname + '/public/404.html');
+});
+
+app.use(function(req,res){
+  console.log("kill me");
+  res.sendFile(__dirname + '/public/404.html');
+});
+
+//app.use(express.static(path.join(__dirname, '/public')));
 
 passport.use(new LocalStrategy(
 	function(username, password, done) {
@@ -197,6 +206,8 @@ passport.use(new LocalStrategy(
 		});
 	}
 ));
+
+
 
 app.post('/login', passport.authenticate('local', { failureRedirect: '/login'}), function(req, res) {
 	login(req, res);
@@ -325,6 +336,7 @@ app.post("/sendMail", function(req, res) {
  app.post("/ClosePost", function(req, res) { 
  	closePost(req, res);
  });
+
 /* start express server */
 var server = app.listen(8081, function() {
 	var host = server.address().address;

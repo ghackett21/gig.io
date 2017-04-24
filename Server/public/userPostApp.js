@@ -36,6 +36,10 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
         $http.post('/GetUser').then(function(response) {
                         //console.log(response.data.Result[0]);
                         myUser = response.data.Result[0];
+						if(myUser.Admin == 1){
+							var nav = document.getElementById('secret');
+							nav.innerHTML = "<a href=\"admin.html\">AdminCP</a>";
+						}
         });
         displayPosts();
 
@@ -943,6 +947,7 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
                 localStorage.setItem("phone", response.data.Result[0].PhoneNumber);
                 localStorage.setItem("email", response.data.Result[0].EmailAddress);
                 localStorage.setItem("profileImage", response.data.Result[0].U_Image);
+				localStorage.setItem("Admin", response.data.Result[0].Admin);
                 window.open("userProfile.html", "_top");
             }).catch(function(response) {
                 console.log("error getting user");
