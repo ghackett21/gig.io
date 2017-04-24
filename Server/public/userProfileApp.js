@@ -23,12 +23,12 @@ app.controller("profileController", [ '$scope', '$http', function($scope, $http)
         h3[0].innerHTML = localStorage.getItem("description");
 
         /* format post rating so it is only displayed to one decimal */
-        var postText = user.AVG_PostRate + "";
+        var postText = localStorage.getItem("post_rating") + "";
         postText = postText.substring(0, postText.indexOf(".") + 2) + "/5";
         h3[1].innerHTML = 'Post Rating: ' + postText;
 
         /* format bid rating so it is only displayed to one decimal */
-        var bidText = user.AVG_BidRate + "";
+        var bidText = ocalStorage.getItem("bid_rating") + "";
         bidText = bidText.substring(0, bidText.indexOf(".") + 2) + "/5";
         h3[2].innerHTML = 'Bid Rating ' + bidText;
 
