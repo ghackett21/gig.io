@@ -28,7 +28,7 @@ app.controller("profileController", [ '$scope', '$http', function($scope, $http)
         h3[1].innerHTML = 'Post Rating: ' + postText;
 
         /* format bid rating so it is only displayed to one decimal */
-        var bidText = ocalStorage.getItem("bid_rating") + "";
+        var bidText = localStorage.getItem("bid_rating") + "";
         bidText = bidText.substring(0, bidText.indexOf(".") + 2) + "/5";
         h3[2].innerHTML = 'Bid Rating ' + bidText;
 
