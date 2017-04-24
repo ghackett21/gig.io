@@ -858,7 +858,7 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
 
                 /* format bid rating so it is only displayed to one decimal */
                 var bidText = bids[i].AVG_BidRate + "";
-                bidText = bidText.substring(0, indexOf(".") + 2) + "/5";
+                bidText = bidText.substring(0, bidText.indexOf(".") + 2) + "/5";
                 td[3].innerHTML = bidText;
 
                 if (status == 0) {
