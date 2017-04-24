@@ -855,7 +855,12 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
                 td[0].innerHTML = date; 
                 td[1].innerHTML = "<b><a class=\'bidprof-link ng-binding\' style=\"font-size:18px\" onclick=\"angular.element(this).scope().viewBidUserProfile(" + bids[i].Uid + ")\">" + bids[i].Username + "</a></b>";
                 td[2].innerHTML = amountString
-                td[3].innerHTML = bids[i].AVG_BidRate + "/5";
+
+                /* format bid rating so it is only displayed to one decimal */
+                var bidText = bids[i].AVG_BidRate + "";
+                bidText = bidText.substring(0, indexOf(".") + 2) + "/5";
+                td[3].innerHTML = bidText;
+
                 if (status == 0) {
                     td[4].id = bids[i].Bidid;
                 }
