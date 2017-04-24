@@ -874,9 +874,9 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
             console.log("call myMap");
             /* call display map function */
             myMap(myUser.U_Location, status);
-        }).catch(function(response) {
-            console.log("error getting bids");
-        });
+        });//.catch(function(response) {
+            //console.log("error getting bids");
+        //});
     }
 
 
