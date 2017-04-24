@@ -29,6 +29,46 @@ body {
     font-family: 'Open Sans', sans-serif;
 }
 
+.button {
+  display: inline-block;
+  border-radius: 4px;
+  background-color: #22bbcc;
+  border: none;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 28px;
+  padding: 20px;
+  width: 220px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.button span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.button span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.button:hover span {
+  padding-right: 25px;
+}
+
+.button:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+
 h1 {
 font-family: 'Raleway', sans-serif;}
 
@@ -51,6 +91,13 @@ h5 {
 	margin-left:5px;
 }
 
+
+.reportState1 {
+	background-color:#FF6666;
+}
+.reportState0 {
+	background-color:#FFFFB2;
+}
 /***********BLOCKS & WRAPS***********/
 
 /*--- Dash Unit / Used in Dashboard page ---*/

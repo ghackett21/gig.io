@@ -16,7 +16,8 @@
   	<!-- DataTables Initialization -->
     <script type="text/javascript" src="Theme/assets/js/datatables/jquery.dataTables.js"></script>
 <style>
-	body { padding-bottom:50px; }
+	body { padding-bottom:50px; 
+		   background-color: #44cccc;}
 
 </style>
 
@@ -27,7 +28,7 @@
 <br>
 <br>
 
-<h1>AdminCP</h1>
+<h1 style="text-align:center;">AdminCP</h1>
 <br>
 <br>
 
@@ -95,7 +96,7 @@
 				</tr>
 			</thead>
 		    <tbody ng-repeat="report in reportL">
-		    	<tr>
+		    	<tr class="reportState{{report.State}}">
 		    	<td>{{report.Time}}</td>
 		        <td>{{report.UidReporter}}</td>
 		        <td>{{report.Type}}</td>
@@ -110,11 +111,7 @@
       </table>
     </div>
     <div class="modal-footer">
-    <!--<br>
-      <form>
-      <button formaction="bid.html" type="button" align="right-side">Enter Bid</button>
-      </form>
-    <br>-->
+		<button class="button"><span>Delete User</span></button>
     <br>
     </div>
   </div>
