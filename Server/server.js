@@ -25,6 +25,7 @@ var register = require('./users/register');
 var updateProfile = require('./users/updateProfile');
 var getUser = require('./users/getUser');
 var getAllUsers = require('./users/getAllUsers');
+var deleteUser = require('./users/deleteUser');
 
 /* posts */
 var getAllPosts = require('./posts/getAllPosts');
@@ -303,6 +304,10 @@ app.post("/CreateReport", function(req, res) {
 
 app.post("/CompletePost", function(req, res) {
 	completePost(req, res);
+});
+
+app.post("/DeleteUser", function(req, res) {
+	deleteUser(req, res);
 });
 
 app.post("/sendMail", function(req, res) {
