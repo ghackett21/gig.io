@@ -35,6 +35,9 @@ app.controller("rateBidderController", [ '$scope', '$http', function($scope, $ht
             if(response.data.State == 0){
                 $scope.status = "Rating submitted successfully. Thank you for your feedback on this user.";
             }
+            else if (response.data.State == -3) {
+                $scope.status = "Cannot submit multiple ratings for single post.";
+            }
         }).catch(function(response) {
             console.log("error submitting rating");
         });
