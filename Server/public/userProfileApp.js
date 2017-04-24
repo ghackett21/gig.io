@@ -21,8 +21,17 @@ app.controller("profileController", [ '$scope', '$http', function($scope, $http)
         h1[0].innerHTML = user;
         var h3 = clone.querySelectorAll('h3');
         h3[0].innerHTML = localStorage.getItem("description");
-        h3[1].innerHTML = 'Post Rating: ' + localStorage.getItem("post_rating") + '/5.0';
-        h3[2].innerHTML = 'Bid Rating ' + localStorage.getItem("bid_rating") + '/5.0';
+
+        /* format post rating so it is only displayed to one decimal */
+        var postText = user.AVG_PostRate + "";
+        postText = postText.substring(0, postText.indexOf(".") + 2) + "/5";
+        h3[1].innerHTML = 'Post Rating: ' + postText;
+
+        /* format bid rating so it is only displayed to one decimal */
+        var bidText = user.AVG_BidRate + "";
+        bidText = bidText.substring(0, bidText.indexOf(".") + 2) + "/5";
+        h3[2].innerHTML = 'Bid Rating ' + bidText;
+
         h3[3].innerHTML = localStorage.getItem("phone");
         h3[4].innerHTML = localStorage.getItem("email");
         template.parentNode.appendChild(clone);
