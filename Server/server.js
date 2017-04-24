@@ -26,6 +26,7 @@ var updateProfile = require('./users/updateProfile');
 var getUser = require('./users/getUser');
 var getAllUsers = require('./users/getAllUsers');
 var deleteUser = require('./users/deleteUser');
+var strikeUser = require('./users/strikeUser');
 
 /* posts */
 var getAllPosts = require('./posts/getAllPosts');
@@ -319,6 +320,10 @@ app.post("/CompletePost", function(req, res) {
 
 app.post("/DeleteUser", function(req, res) {
 	deleteUser(req, res);
+});
+
+app.post("/StrikeUser", function(req, res) {
+	strikeUser(req, res);
 });
 
 app.post("/sendMail", function(req, res) {
