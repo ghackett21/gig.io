@@ -31,6 +31,10 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http, $c
         $http.post('/GetUser').then(function(response) {
                         //console.log(response.data.Result[0]);
                         myUser = response.data.Result[0];
+						if(myUser.Admin == 1){
+							var nav = document.getElementById('secret');
+							nav.innerHTML = "<a href=\"admin.html\">AdminCP</a>";
+						}
         })
 
         /* request post data */
@@ -774,6 +778,10 @@ app.controller("adminController", ['$scope', '$http', function($scope, $http) {
         $http.post('/GetUser').then(function(response) {
             //console.log(response.data.Result[0]);
         	$scope.user = response.data.Result[0];
+						if($scope.user.Admin == 1){
+							var nav = document.getElementById('secret');
+							nav.innerHTML = "<a href=\"admin.html\">AdminCP</a>";
+						}
         })
 
         /* request post data */
@@ -834,7 +842,17 @@ app.controller("adminController", ['$scope', '$http', function($scope, $http) {
 			document.getElementById('reportHistory').style.display = "block";
 			document.getElementById('noReports').style.display = "none";
         }
+
+		$scope.deleteUser = function(uid){
+			var format = {userId:uid};
+			$scope.close();
+		 	//$http.post('/DeleteUser', format).then(function(response) {
+			//
+        	//})
+		}
 	}
+
+
 
     /* sets up all posts onClick actions (display info, load bids, and map) */
     function setupPosts(posts) {
