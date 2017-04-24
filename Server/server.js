@@ -191,7 +191,7 @@ app.use(function(req,res){
 });
 */
 
-//app.use(express.static(path.join(__dirname, '/public')));
+app.use(express.static(path.join(__dirname, '/public')));
 
 passport.use(new LocalStrategy(
 	function(username, password, done) {
