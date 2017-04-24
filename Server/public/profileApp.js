@@ -32,12 +32,12 @@ app.controller("profileController", [ '$scope', '$http', function($scope, $http)
             /* format post rating so it is only displayed to one decimal */
             var postText = user.AVG_PostRate + "";
             postText = postText.substring(0, postText.indexOf(".") + 2) + "/5";
-            h3[1].innerHTML = postText;
+            h3[1].innerHTML = 'Post Rating: ' + postText;
 
             /* format bid rating so it is only displayed to one decimal */
             var bidText = user.AVG_BidRate + "";
             bidText = bidText.substring(0, bidText.indexOf(".") + 2) + "/5";
-            h3[2].innerHTML = bidText;
+            h3[2].innerHTML = 'Bid Rating ' + bidText;
 
             h3[3].innerHTML = user.PhoneNumber;
             h3[4].innerHTML = user.EmailAddress;
