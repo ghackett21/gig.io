@@ -31,6 +31,7 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http, $c
         /* requst information about the currently logged-in user */
         $http.post('/GetUser').then(function(response) {
             //console.log(response.data.Result[0]);
+			
             myUser = response.data.Result[0];
 			if(myUser.Admin == 1){
 				var nav = document.getElementById('secret');
@@ -39,8 +40,9 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http, $c
             /* save admin status */     
             localStorage.setItem("userAdmin", myUser.Admin); 
             localStorage.setItem("currentUid", myUser.Uid); 
+		$scope.sortByAge();
         })
-
+		
         /* request post data */
 		$http.post('/GetAllPosts').then(function(response) {
 			//$scope.user = null;
@@ -115,6 +117,7 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http, $c
 				console.log("failure");
 			}
 		})
+		$scope.sortByAge();
         
 	};
 
@@ -201,6 +204,9 @@ $scope.sortByLowestBid = function() {
        case 'num_bids':
          $scope.sortByNumOfBids();
          break;
+	   case 'oldest':
+         $scope.sortByOldest();
+         break;
        default:
      }
      //$translate.use(langKey);
@@ -271,7 +277,71 @@ $scope.sortByLowestBid = function() {
             }
         })
 	};
+	$scope.sortByOldest = function() {
+	    var time1;
+        var time2;
+        var temp;
+        var swapped;
+        $http.post('/GetAllPosts').then(function(response) {
+            posts = response.data.result;
 
+            /* Sort posts by date */
+            do {
+                swapped = false;
+                for (var i=0; i < posts.length-1; i++) {
+                    time1 = new Date(posts[i].CreationTime);
+                    time2 = new Date(posts[i+1].CreationTime);
+
+                    if (time1.getTime() > time2.getTime()) {
+                        //console.log("I'm In!");
+                        var temp = posts[i];
+                        posts[i] = posts[i+1];
+                        posts[i+1] = temp;
+                        swapped = true;
+                    }
+                }
+            } while (swapped);
+
+            var template = document.querySelector('#tmplt');
+            for (var i = 0; i < posts.length; i++) {
+                var currRow = document.getElementById("post-"+i);
+                var td = currRow.querySelectorAll('td');
+                td[0].innerHTML = posts[i].P_Title;
+                td[1].innerHTML = posts[i].Username;
+                td[2].innerHTML = posts[i].P_Location;
+                if (posts[i].NumberOfBids != 0)
+                    td[3].innerHTML = '$' + posts[i].LowestBid;
+                else
+                    td[3].innerHTML = "-";
+                td[4].innerHTML = posts[i].NumberOfBids;
+                var date = posts[i].CreationTime.substring(0,10);
+                var day = date.substring(8,date.length);
+                var month = date.substring(5,7);
+                var year = date.substring(0,4);
+
+                date = month + "/" + day + "/" + year;
+
+                td[5].innerHTML = date;
+            }
+
+             /* set up each rows's onClick actions */
+            setupPosts(posts);
+
+            console.log(response.status);
+            console.log(response);
+            if(response.status == 200){
+                console.log("success");
+            }else if(response.status == 401){
+                console.log("failure");
+            }
+        }).catch(function(response) {
+            console.log(response.status);
+            console.log(response);
+            if(response.status == 401){
+                console.log("failure");
+            }
+        })
+	};
 	$scope.sortByDistance = function() {
 	    var time1;
         var time2;

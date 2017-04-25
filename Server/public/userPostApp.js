@@ -42,6 +42,7 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
 				nav.innerHTML = "<a href=\"admin.html\">AdminCP</a>";
 			}
         });
+		$scope.sortByAge();
         displayPosts();
 
     }
@@ -946,6 +947,7 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
             window.open("userProfile.html", "_top");
         }
     }
+
 
     $scope.viewBidUserProfile = function(uid) {
         console.log("In viewBidUserProfile");
