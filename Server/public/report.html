@@ -10,17 +10,17 @@
 <script src="reportApp.js"></script>
 </head>
 <body ng-app="myApp" ng-controller="reportController">
-<div ng-include="'navbar.html'"></div>
-
+<ul id="navbar" ng-include="'navbar.html'"></ul>
+<br><br><br>
 
 <div style="padding-left:16px" >
-  <h2 align=center>Have a conflict with a user? Leave a report and let us know what happened!</h2>
+  <h2 ng-show="status == ''" align=center>Have a conflict with a user? Leave a report and let us know what happened!</h2>
   <p align=center></p>
 <br>
 	<h3 id="status" align=center>{{status}}</h3>
 
 
-<form name="reportUser">
+<form  ng-show="status == ''" name="reportUser">
       
         <label for="reason">Reason for reporting:</label>
         <!--<input padding-left="5px" ng-model="report.reason" id="reason" type="text"  class="validate" required>-->
