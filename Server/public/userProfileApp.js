@@ -7,7 +7,7 @@ app.controller("profileController", [ '$scope', '$http', function($scope, $http)
     			//window.location = response.data.redirect;
     		});
     };
-    
+
 	$scope.logout = function() {
 		$http.post('/logout').then(function(response) {
 			console.log("response = %j", response);
@@ -81,7 +81,7 @@ app.controller("profileController", [ '$scope', '$http', function($scope, $http)
                     var td = clone.querySelectorAll('td');
                     var currRating = arr[i];
 
-                    td[0].innerHTML = currRating.Username;
+                    td[0].innerHTML = "<b><a class=\'bidprof-link ng-binding\' style=\"font-size:18px\" onclick=\"angular.element(this).scope().otherUserProfile(" + currRating.UidRater + ")\">" + currRating.Username + "</a></b>";
                     td[1].innerHTML = currRating.RatingValue;
                     td[2].innerHTML = currRating.Comment;
 
@@ -97,5 +97,12 @@ app.controller("profileController", [ '$scope', '$http', function($scope, $http)
         }).catch(function(response) {
             console.log("error getting user");
         })
+    };
+
+    $scope.otherUserProfile = function(uid) {
+        console.log("In viewBidUserProfile");
+        console.log(uid);
+        localStorage.setItem("userId", uid); 
+        window.open("userProfile.html", "_top");
     };
 }]);
