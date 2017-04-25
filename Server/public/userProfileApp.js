@@ -102,7 +102,12 @@ app.controller("profileController", [ '$scope', '$http', function($scope, $http)
     $scope.otherUserProfile = function(uid) {
         console.log("In viewBidUserProfile");
         console.log(uid);
-        localStorage.setItem("userId", uid); 
-        window.open("userProfile.html", "_top");
+        if (uid == localStorage.getItem(currentUid)) {
+            window.open("profile.html", "_top");
+        }
+        else {
+            localStorage.setItem("userId", uid); 
+            window.open("userProfile.html", "_top");
+        }
     };
 }]);
