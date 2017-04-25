@@ -29,12 +29,15 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http, $c
 	window.onload = function() {
         /* requst information about the currently logged-in user */
         $http.post('/GetUser').then(function(response) {
-                        //console.log(response.data.Result[0]);
-                        myUser = response.data.Result[0];
-						if(myUser.Admin == 1){
-							var nav = document.getElementById('secret');
-							nav.innerHTML = "<a href=\"admin.html\">AdminCP</a>";
-						}
+            //console.log(response.data.Result[0]);
+            myUser = response.data.Result[0];
+			if(myUser.Admin == 1){
+				var nav = document.getElementById('secret');
+				nav.innerHTML = "<a href=\"admin.html\">AdminCP</a>";
+			}
+            /* save admin status */     
+            localStorage.setItem("userAdmin", myUser.Admin); 
+            localStorage.setItem("currentUid", myUser.Uid); 
         })
 
         /* request post data */
@@ -616,44 +619,26 @@ $scope.sortByLowestBid = function() {
     $scope.viewUserProfile = function() {
         console.log("In viewUserProfile");
         console.log(currUid);
-        var userToView = {userId:currUid};
-        $http.post("/GetUser", userToView).then(function(response) {
-            console.log("Hello World");
-            console.log(response);
-            console.log(response.data.Result[0].Username);
-            localStorage.setItem("username", response.data.Result[0].Username);
-            localStorage.setItem("description", response.data.Result[0].U_Description);
-            localStorage.setItem("post_rating", response.data.Result[0].AVG_PostRate);
-            localStorage.setItem("bid_rating", response.data.Result[0].AVG_BidRate);
-            localStorage.setItem("phone", response.data.Result[0].PhoneNumber);
-            localStorage.setItem("email", response.data.Result[0].EmailAddress);
-            localStorage.setItem("profileImage", response.data.Result[0].U_Image);
+        if (myUser.Uid == currUid) {
+            window.open("profile.html", "_top");
+        }
+        else {
+            localStorage.setItem("userId", currUid);       
             window.open("userProfile.html", "_top");
-        }).catch(function(response) {
-            console.log("error getting user");
-        })
+        }
     }
 
     $scope.viewBidUserProfile = function(uid) {
-            console.log("In viewBidUserProfile");
-            console.log(uid);
-            var userToView = {userId:uid};
-            $http.post("/GetUser", userToView).then(function(response) {
-                console.log("Hello World");
-                console.log(response);
-                console.log(response.data.Result[0].Username);
-                localStorage.setItem("username", response.data.Result[0].Username);
-                localStorage.setItem("description", response.data.Result[0].U_Description);
-                localStorage.setItem("post_rating", response.data.Result[0].AVG_PostRate);
-                localStorage.setItem("bid_rating", response.data.Result[0].AVG_BidRate);
-                localStorage.setItem("phone", response.data.Result[0].PhoneNumber);
-                localStorage.setItem("email", response.data.Result[0].EmailAddress);
-                localStorage.setItem("profileImage", response.data.Result[0].U_Image);
-                window.open("userProfile.html", "_top");
-            }).catch(function(response) {
-                console.log("error getting user");
-            })
+        console.log("In viewBidUserProfile");
+        console.log(uid);
+        if (myUser.Uid == uid) {
+            window.open("profile.html", "_top");
         }
+        else {
+            localStorage.setItem("userId", uid); 
+            window.open("userProfile.html", "_top");
+        }
+    }
 
 }]);
 
@@ -783,10 +768,10 @@ app.controller("adminController", ['$scope', '$http', function($scope, $http) {
         $http.post('/GetUser').then(function(response) {
             //console.log(response.data.Result[0]);
         	$scope.user = response.data.Result[0];
-						if($scope.user.Admin == 1){
-							var nav = document.getElementById('secret');
-							nav.innerHTML = "<a href=\"admin.html\">AdminCP</a>";
-						}
+				if($scope.user.Admin == 1){
+					var nav = document.getElementById('secret');
+					nav.innerHTML = "<a href=\"admin.html\">AdminCP</a>";
+				}
         })
 
         /* request post data */

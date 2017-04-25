@@ -1,9 +1,27 @@
+var nodemailer = require('nodemailer');
 /**
  * Send Notification to User
  * Params <Email to send to, Message to Send, Subject>
  */
 
-module.exports = function(req.res) {
+module.exports = function(req, poster, state) {
+	//post title and winning bid
+	//posters username
+	var emails = [];
+	var msg;
+	if(state == 0){
+		msg = "lost";
+	}else{
+		msg = "Congratulations, "+ req[0].Username +", you won an auction!\n\nPost title: " + req[0].P_Title + ".\nFor the amount of : $" + req[0].Amount + "\nYou can contact the poster, " + poster[0].Username + ", to decide on a time at: " + poster[0].EmailAddress + "\n\nWe thank you for your support of our service,\nGig.io Team\n";
+	}
+
+	for(var i = 0; i < req.length; i++){
+		emails.push(req[i].EmailAddress);
+	}
+	
+	
+	console.log("sendNotification emails = " + emails);
+	console.log("sendNotification req = %j", req);
 
 	var transporter = nodemailer.createTransport({
         service: 'Gmail',
@@ -15,9 +33,9 @@ module.exports = function(req.res) {
 
 	var mailOptions = {
 		from: 'gigdotio@gmail.com', // sender address
-		to: req.email, 					// list of receivers
-		subject: req.subject, 
-		text: req.msg
+		to: emails, 					// list of receivers
+		subject: "Gig.io Bid Notification", 
+		text: msg
 	};
 
 	transporter.sendMail(mailOptions, function(error, info){

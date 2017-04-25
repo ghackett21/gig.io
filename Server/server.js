@@ -10,6 +10,8 @@ var nodemailer = require('nodemailer');
 
 /* delete later */
 var connection = require('./helpers/connection');
+var sendNotification = require('./helpers/sendNotification');
+var sendBidNotifications = require('./helpers/sendBidNotifications');
 
 /* users */
 var login = require('./users/login');
@@ -18,6 +20,7 @@ var updateProfile = require('./users/updateProfile');
 var getUser = require('./users/getUser');
 var getAllUsers = require('./users/getAllUsers');
 var deleteUser = require('./users/deleteUser');
+var strikeUser = require('./users/strikeUser');
 
 /* posts */
 var getAllPosts = require('./posts/getAllPosts');
@@ -170,6 +173,15 @@ app.get('/ratePoster.html', ensureAuthenticated, function(req, res) {
     res.sendFile(__dirname + '/public/ratePoster.html');
 });
 
+app.get('/admin.html', ensureAuthenticated, function(req, res) {
+	if (req.user.Admin == 1) {
+	    res.sendFile(__dirname + '/public/admin.html');
+	}
+	else {
+		res.sendFile(__dirname + '/public/index.html');
+	}
+});
+
 
 app.use(express.static(path.join(__dirname, '/public')));
 
@@ -304,6 +316,15 @@ app.post("/CreateReport", function(req, res) {
 app.post("/CompletePost", function(req, res) {
 	completePost(req, res);
 });
+
+app.post("/DeleteUser", function(req, res) {
+	deleteUser(req, res);
+});
+
+app.post("/StrikeUser", function(req, res) {
+	strikeUser(req, res);
+});
+
 
  app.post("/ClosePost", function(req, res) { 
  	closePost(req, res);

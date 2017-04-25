@@ -7,14 +7,16 @@ app.controller("profileController", [ '$scope', '$http', function($scope, $http)
     			//window.location = response.data.redirect;
     		});
     };
+
 	$scope.logout = function() {
 		$http.post('/logout').then(function(response) {
 			console.log("response = %j", response);
 			window.location = response.data.redirect;
 		});
 	};
-    window.onload = function() {
-        var user;
+
+  window.onload = function() {
+      var user;
     	$http.post('/GetUser').then(function(response) {
     	    console.log(response.data.Result[0]);
      	    user = response.data.Result[0];
@@ -28,19 +30,22 @@ app.controller("profileController", [ '$scope', '$http', function($scope, $http)
             h1[0].innerHTML = user.Username;
             var h3 = clone.querySelectorAll('h3');
             h3[0].innerHTML = user.U_Description;
-            h3[1].innerHTML = 'Post Rating: ' + user.AVG_PostRate + '/5.0';
-            h3[2].innerHTML = 'Bid Rating ' + user.AVG_BidRate + '/5.0';
+
+            /* format post rating so it is only displayed to one decimal */
+            var postText = user.AVG_PostRate + "";
+            postText = postText.substring(0, postText.indexOf(".") + 2) + "/5";
+            h3[1].innerHTML = 'Post Rating: ' + postText;
+
+            /* format bid rating so it is only displayed to one decimal */
+            var bidText = user.AVG_BidRate + "";
+            bidText = bidText.substring(0, bidText.indexOf(".") + 2) + "/5";
+            h3[2].innerHTML = 'Bid Rating ' + bidText;
+
             h3[3].innerHTML = user.PhoneNumber;
             h3[4].innerHTML = user.EmailAddress;
             h3[5].innerHTML = user.U_Location;
 
-            /*var rating = user.AverageRating;
-
-            for(var i = 0; i < rating; i++) {
-                AddImage();
-            }*/
             template.parentNode.appendChild(clone);
-
 
             var profileImage = document.getElementById('profile_image');
 
@@ -71,15 +76,26 @@ app.controller("profileController", [ '$scope', '$http', function($scope, $http)
                       var td = clone.querySelectorAll('td');
                       var currRating = arr[i];
 
-                      var thisUser = {userId:currRating.UidRater};
-                      $http.post("/GetUser", thisUser).then(function(response) {
-                            td[0].innerHTML = response.data.Result[0].Username;
-                      })
+                      td[0].innerHTML = "<b><a class=\'bidprof-link ng-binding\' style=\"font-size:18px\" onclick=\"angular.element(this).scope().otherUserProfile(" + currRating.UidRater + ")\">" + currRating.Username + "</a></b>";
                       td[1].innerHTML = currRating.RatingValue;
                       td[2].innerHTML = currRating.Comment;
+
+                      // Format date
+                      var date = currRating.DateOfRating.substring(5, 7) + "/" +
+                          currRating.DateOfRating.substring(8, 10) + "/" +
+                          currRating.DateOfRating.substring(0, 4);
+
+                      td[3].innerHTML = date;
                       template.parentNode.appendChild(clone);
                   }
             })
         })
+    };
+
+    $scope.otherUserProfile = function(uid) {
+        console.log("In viewBidUserProfile");
+        console.log(uid);
+        localStorage.setItem("userId", uid); 
+        window.open("userProfile.html", "_top");
     };
 }]);
