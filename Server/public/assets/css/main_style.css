@@ -1,33 +1,10 @@
-ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: #333;
+:root{
+    --main-color: #44cccc;
+    --second-color: #22bbcc;
 }
-
-ol {
-    background: #ff9999;
-    padding: 20px;
-}
-
-ol la {
-    background: #ffe5e5;
-    padding: 5px;
-    margin-left: 35px;
-}
-
-li {
-    float: left;
-}
-
-li a {
-    display: block;
-    color: white;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-}
+/* #76b852;
+  #8DC26F;
+*/
 
 li a:hover:not(.active) {
     background-color: #111;
@@ -39,7 +16,16 @@ li a:hover:not(.active) {
 
 table {
     border-collapse: collapse;
-    width: 100%;
+    width: 90%;
+}
+table.bid-table{
+border-collapse: collapse;
+width: 100%;
+}
+
+table.center {
+    margin-left:auto; 
+    margin-right:auto;
 }
 
 th, td {
@@ -50,14 +36,15 @@ th, td {
 tr:nth-child(even){background-color: #f2f2f2}
 
 th {
-    background-color: #4CAF50;
+    background-color: var(--main-color);
     color: white;
 }
 
 h1 {
+    font-family: "Roboto", sans-serif;
     text-align: center;
-    text-transform: uppercase;
-    color: #4CAF50;
+    font-size-adjust: 1.6;
+    /*color: #4CAF50;*/
 }
 
 .clickable {
@@ -120,18 +107,19 @@ h1 {
     cursor: pointer;
 }
 
+
 .modal-header {
     padding: 2px 16px;
-    background-color: #5cb85c;
-    color: white;
+    background-color: #FFFFFF;
+    color: black;
 }
 
 .modal-body {padding: 2px 16px;}
 
 .modal-footer {
-    padding: 2px 16px;
-    background-color: #5cb85c;
-    color: white;
+    /*padding: 2px 16px;*/
+    background-color: #FFFFFF;
+    color: black;
 }
 
 .modal-table {
@@ -143,3 +131,104 @@ h1 {
     height: 300px;
     display: block;
 }
+
+a.prof-link {
+    cursor: pointer;
+    color: royalblue;
+    }
+
+a.bidprof-link {
+    cursor: pointer;
+    color: orange;
+    }
+
+body {
+    /*background-image: url("/assets/img/stockbg.jpg");*/
+    background: var(--main-color); /* fallback for old browsers */
+  background: -webkit-linear-gradient(right, var(--main-color), var(--second-color));
+  background: -moz-linear-gradient(right, var(--main-color), var(--second-color));
+  background: -o-linear-gradient(right, var(--main-color), var(--second-color));
+  background: linear-gradient(to left, var(--main-color), var(--second-color));
+  font-family: "Roboto", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.image { 
+   position: relative; 
+   width: 100%; /* for IE 6 */
+}
+
+h2 { 
+   position: absolute; 
+   top: 200px; 
+   left: 0; 
+   width: 100%; 
+}
+
+h2 span { 
+   color: white; 
+   font: bold 24px/45px Helvetica, Sans-Serif; 
+   letter-spacing: -1px;  
+   background: rgb(0, 0, 0); // fallback color 
+   background: rgba(0, 0, 0, 0.7);
+   padding: 10px; 
+}
+
+
+.form {
+  position: relative;
+  z-index: 1;
+  background: #FFFFFF;
+  max-width: 1200px;
+  margin: 0 auto 100px;
+  padding: 45px 0px;
+  text-align: center;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+
+#mainselection select {
+   border: 0;
+   color: #EEE;
+   background: transparent;
+   font-size: 15px;
+   font-weight: bold;
+   padding: 2px 10px;
+   width: 378px;
+    
+   *width: 350px;
+   *background: #58B14C;
+   -webkit-appearance: none;
+}
+
+#mainselection {
+   overflow:hidden;
+   width:235px;
+    margin-left: 5%;
+   margin-bottom: 10px;
+   -moz-border-radius: 9px 9px 9px 9px;
+   -webkit-border-radius: 9px 9px 9px 9px;
+   border-radius: 9px 9px 9px 9px;
+   box-shadow: 0px 0px 0px #330033;
+   background: var(--main-color) url("http://i62.tinypic.com/15xvbd5.png") no-repeat scroll 319px center;
+}
+select{
+  color: white;
+}
+
+select option {
+  color: white;
+  background-color: var(--main-color);
+} 
+    
+    
+.sorter{
+    padding-right: 120px;
+    padding-left: 0%;
+    padding-top: .5%;
+    padding-bottom: .5%;
+}
+    
+    option{
+        color: white;
+    }

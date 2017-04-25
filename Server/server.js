@@ -24,6 +24,9 @@ var login = require('./users/login');
 var register = require('./users/register');
 var updateProfile = require('./users/updateProfile');
 var getUser = require('./users/getUser');
+var getAllUsers = require('./users/getAllUsers');
+var deleteUser = require('./users/deleteUser');
+var strikeUser = require('./users/strikeUser');
 
 /* posts */
 var getAllPosts = require('./posts/getAllPosts');
@@ -33,6 +36,8 @@ var getPost = require('./posts/getPost');
 var createPost = require('./posts/createPost');
 var deleteInactivePosts = require('./posts/deleteInactivePosts');
 var closePost = require('./posts/closePost');
+var getWonPosts = require('./posts/getWonPosts');
+var completePost = require('./posts/completePost');
 
 /* bidding */
 var getBids = require('./bidding/getBids');
@@ -59,6 +64,8 @@ passport.deserializeUser(function(user, done) {
 
 function findByUsername(username, fn) {
 	var select = "SELECT * FROM Users WHERE Username LIKE " + connection.escape(username);
+
+	/* query is not case sensitve */
 	connection.query(select, function(err, rows) {
 		if (err) {
 			/* an error occured */
@@ -67,8 +74,15 @@ function findByUsername(username, fn) {
 		}
 		else {
 			if (rows.length == 1) {
-				console.log("findbyuser sending rows[0]: %j", rows[0]);
-				return fn(null, rows[0]);
+				/* compare username - case sensitive */
+				if (username == rows[0].Username) {
+					console.log("findbyuser sending rows[0]: %j", rows[0]);
+					return fn(null, rows[0]);
+				}
+				else {
+					console.log("Username case mismatch");
+					return fn(null, null);
+				}
 			}
 			else {
 				console.log("why am i here");
@@ -153,6 +167,46 @@ app.get('/bid.html', ensureAuthenticated, function(req, res) {
     res.sendFile(__dirname + '/public/bid.html');
 });
 
+app.get('/userProfile.html', ensureAuthenticated, function(req, res) {
+    res.sendFile(__dirname + '/public/userProfile.html');
+});
+
+app.get('/rateBidder.html', ensureAuthenticated, function(req, res) {
+    res.sendFile(__dirname + '/public/rateBidder.html');
+});
+
+app.get('/ratePoster.html', ensureAuthenticated, function(req, res) {
+    res.sendFile(__dirname + '/public/ratePoster.html');
+});
+
+app.get('/admin.html', ensureAuthenticated, function(req, res) {
+	if (req.user.Admin == 1) {
+	    res.sendFile(__dirname + '/public/admin.html');
+	}
+	else {
+		res.sendFile(__dirname + '/public/index.html');
+	}
+});
+
+/*
+app.get('/login.html', function(req, res) {
+	res.sendFile(__dirname + '/public/login.html');
+});
+
+
+app.get('*', ensureAuthenticated, function(req, res) {
+    res.sendFile(__dirname + '/public/404.html');
+});
+*/
+
+
+/*
+app.use(function(req,res){
+  console.log("kill me");
+  res.sendFile(__dirname + '/public/404.html');
+});
+*/
+
 app.use(express.static(path.join(__dirname, '/public')));
 
 passport.use(new LocalStrategy(
@@ -163,7 +217,7 @@ passport.use(new LocalStrategy(
 				console.log("Incorrect Username");
 		        return done(null, false, { message: 'Incorrect username.' });
 		    }
-		console.log("password = %s, hash = %s, result = %b\n", password,  user.Password, bcrypt.compareSync(password, user.Password));
+			console.log("password = %s, hash = %s, result = %b\n", password,  user.Password, bcrypt.compareSync(password, user.Password));
 		    if(!bcrypt.compareSync(password, user.Password)){
 				console.log("Incorrect Password");
 		        return done(null, false, { message: 'Incorrect password.' });
@@ -173,6 +227,8 @@ passport.use(new LocalStrategy(
 		});
 	}
 ));
+
+
 
 app.post('/login', passport.authenticate('local', { failureRedirect: '/login'}), function(req, res) {
 	login(req, res);
@@ -221,6 +277,10 @@ app.post('/GetUser', function(req, res) {
  	getUser(req, res);
 });
 
+app.post('/GetAllUsers', function(req, res) {
+ 	getAllUsers(req, res);
+});
+
 app.post('/UpdateProfile', function(req, res) {
 	updateProfile(req, res);
 });
@@ -237,8 +297,12 @@ app.post("/GetAllPosts", function(req, res) {
 	getAllPosts(req, res);
 });
 
- app.post("/GetUserPosts", function(req, res) {
+app.post("/GetUserPosts", function(req, res) {
  	getUserPosts(req, res);
+});
+
+app.post("/GetWonPosts", function(req, res) {
+ 	getWonPosts(req, res);
 });
 
 app.post("/DeletePost", function(req, res) {
@@ -253,7 +317,7 @@ app.post("/GetBids", function(req, res) {
 	getBids(req, res);
 });
 
-app.post('GetUserRatings', function(req, res) {
+app.post('/GetUserRatings', function(req, res) {
 	getUserRatings(req, res);
 })
 
@@ -261,12 +325,24 @@ app.post("/CreateRating", function(req, res) {
  	createRating(req, res);
 });
 
-app.post("/GetUserReposts", function(req, res) {
-	getUserReposts(req, res);
+app.post("/GetUserReports", function(req, res) {
+	getUserReports(req, res);
 });
 
 app.post("/CreateReport", function(req, res) {
 	createReport(req, res);
+});
+
+app.post("/CompletePost", function(req, res) {
+	completePost(req, res);
+});
+
+app.post("/DeleteUser", function(req, res) {
+	deleteUser(req, res);
+});
+
+app.post("/StrikeUser", function(req, res) {
+	strikeUser(req, res);
 });
 
 app.post("/sendMail", function(req, res) {
@@ -289,6 +365,7 @@ app.post("/sendMail", function(req, res) {
  app.post("/ClosePost", function(req, res) { 
  	closePost(req, res);
  });
+
 /* start express server */
 var server = app.listen(8081, function() {
 	var host = server.address().address;

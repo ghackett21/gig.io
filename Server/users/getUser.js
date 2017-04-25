@@ -28,7 +28,7 @@ module.exports = function(req, res) {
  }
 
  function getUser(userId, callback) {
- 	console.log("GetUser: userId" + userId);
+ 	console.log("GetUser: userId " + userId);
 
  	var select = "SELECT * FROM Users WHERE Uid LIKE '" + userId + "'";
 

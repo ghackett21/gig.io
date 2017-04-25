@@ -2,19 +2,19 @@
 <html>
 <head>
   <link href="assets/css/profile_style.css" rel="stylesheet" type="text/css">
+  <link href="assets/css/main_style.css" rel="stylesheet" type="text/css">
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
   <script src="profileApp.js"></script>
   <script src="data.js"></script>
 </head>
 <body ng-app="myProfileApp" ng-controller="profileController">
 <div ng-include="'navbar.html'"></div>
-<!--<input type="button" onclick="location.href='updateProfile.html'" value="Edit Profile">-->
-<a href="updateProfile.html" class="btn btn-default">Edit Profile</a>
 <br>
 <br>
 <br>
+<div class=form>
 <template id="tmplt">
-<center><img class="img-circle" src="assets/img/girl.png" alt="ProfilePic" style="width:420px;height:420px;"></center>
+<center><img id = "profile_image" class="img-circle" src="assets/img/girl.png" alt="ProfilePic" style="width:420px;height:420px;"></center>
 <br>
 <center><h1></h1></center>
 <br>
@@ -29,7 +29,28 @@
 <br>
 <center><h3></h3></center>
 <br>
+<center><h3></h3></center>
+<br>
+  <table align="center" id="reviewTable" class =center>
+    <tr>
+      <th>User</th>
+      <th>Rating</th>
+      <th>Comments</th>
+      <th>Date</th>
+    </tr>
+    <template id="rating_tmplt">
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+    </template>
+  </table>
 </template>
+<a href="updateProfile.html" class="btn btn-default">Edit Profile</a>
+<br>
+</div>
 <script src="navbar.js"></script>
 </body>
 </html>

@@ -4,14 +4,13 @@
 
 <head>
  
-<link rel="stylesheet" href="assets/css/makepost_style.css" type="text/css">
+<link rel="stylesheet" href="assets/css/report_style.css" type="text/css">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
 	
-<script src="app.js"></script>
+<script src="reportApp.js"></script>
 </head>
 <body ng-app="myApp" ng-controller="reportController">
-<ul id="navbar" ng-include="'navbar.html'"></ul>
-
+<div ng-include="'navbar.html'"></div>
 
 
 <div style="padding-left:16px" >
@@ -24,18 +23,25 @@
 <form name="reportUser">
       
         <label for="reason">Reason for reporting:</label>
-        <input padding-left="5px" ng-model="report.reason" id="reason" type="text"  class="validate" required>
+        <!--<input padding-left="5px" ng-model="report.reason" id="reason" type="text"  class="validate" required>-->
+	<select ng-model="report.reason" id="reason" class="validate" required>
+  		<option value="payment">The user did not pay as promised</option>
+  		<option value="noWork">The user did not do the work agreed upon</option>
+  		<option value="badjob">The user completed the task but the results were unsatisfactory</option>
+  		<option value="late">The user did not complete the task by the deadline agreed upon</option>
+		<option value="other">Other (Please tell us more in the description!)</option>
+	</select>
       <br>
-        <label for="description">Briefly describe what happened. Please be specific and include any relevant pictures or dates. </label>
-        <input ng-model="report.description" id="description" type="text"  class="validate" required>
-      <br>
-
+        <label for="description" align=center>Briefly describe what happened. Please be specific and include any relevant pictures or dates. </label>
+		<textarea rows="4" cols="80" id="description" form="reportUser" ng-model="report.description" class="validate" required>
+Enter text here...</textarea><br>
+        <!--<input ng-model="report.description" id="description" type="text"  class="validate" required>-->
         <input ng-click="report()" type="submit" value="Submit">
     </form><br>
     
     </div>
 <script src="navbar.js"></script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIqZ1SHXEe7CUj8Gv9MvVQLWrI-3k4isQ&callback=myMap"></script>
+
 <script 
 </body>
 </html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+        
+
+<head>
+ 
+<link rel="stylesheet" href="assets/css/rate_style.css" type="text/css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
+	
+<script src="ratePosterApp.js"></script>
+</head>
+<body ng-app="myApp" ng-controller="ratePosterController">
+<ul id="navbar" ng-include="'navbar.html'"></ul>
+
+
+
+<div class=box align=center style="padding-left:16px" >
+  <h2 align=center>How would you rate your interaction with this user?</h2>
+  <p align=center></p>
+<br>
+	<h3 id="status" align=center>{{status}}</h3>
+<br>
+
+
+<div class=stars align=center><form name="rateUser">
+<fieldset class="rating">
+
+    <input type="radio" id="star5" ng-model="rating.score" name="rating" value="5" /><label class = "full" for="star5" title="Awesome - 5 stars"></label>
+    <input type="radio" id="star4half" ng-model="rating.score" name="rating" value="4.5" /><label class="half" for="star4half" title="Pretty good - 4.5 stars"></label>
+    <input type="radio" id="star4" ng-model="rating.score" name="rating" value="4" /><label class = "full" for="star4" title="Pretty good - 4 stars"></label>
+    <input type="radio" id="star3half" ng-model="rating.score"  name="rating" value="3.5" /><label class="half" for="star3half" title="Meh - 3.5 stars"></label>
+    <input type="radio" id="star3" ng-model="rating.score" name="rating" value="3" /><label class = "full" for="star3" title="Meh - 3 stars"></label>
+    <input type="radio" id="star2half" ng-model="rating.score" name="rating" value="2.5" /><label class="half" for="star2half" title="Kinda bad - 2.5 stars"></label>
+    <input type="radio" id="star2" ng-model="rating.score" name="rating" value="2" /><label class = "full" for="star2" title="Kinda bad - 2 stars"></label>
+    <input type="radio" id="star1half" ng-model="rating.score" name="rating" value="1.5" /><label class="half" for="star1half" title="Meh - 1.5 stars"></label>
+    <input type="radio" id="star1" ng-model="rating.score" name="rating" value="1" /><label class = "full" for="star1" title="Sucks big time - 1 star"></label>
+    <input type="radio" id="starhalf" ng-model="rating.score" name="rating" value="0.5" /><label class="half" for="starhalf" title="Sucks big time - 0.5 stars"></label>
+</fieldset><br>
+</div>	 
+        <br>
+        <div align=center><label for="description">Briefly describe why you gave this rating. Include any relevant details and a short description of your interaction with the user. <br></label></div>
+        <br>
+		<textarea rows="4" cols="80" id="description" form="rateUser" ng-model="rating.description" class="validate" required>
+Enter text here...</textarea><br>
+	<br><br>
+	<br>
+	<br>
+        <input ng-click="rate()" type="submit" value="Submit">
+    </form><br>
+    
+    </div>
+<script src="navbar.js"></script>
+
+<script 
+</body>
+</html>

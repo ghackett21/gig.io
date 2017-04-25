@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <link href="assets/css/register_style.css" rel="stylesheet" type="text/css">
+  <link href="assets/css/updateProfile_style.css" rel="stylesheet" type="text/css">
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
   <script src="updateProfileApp.js"></script>
   <script src="data.js"></script>
 </head>
 <body ng-app="myUpdateProfileApp" ng-controller="updateProfileController">
+
 <div ng-include="'navbar.html'"></div>
 
-<div style="padding-left:16px" >
+<div id="Title" style="padding-left:16px" >
   <h2 align=center>Update your profile information</h2>
 <br>
 	<h3 id="status" align=center>{{status}}</h3>
@@ -17,22 +18,29 @@
 
 <form name="updateProfile">
       
-        <label for="Update Email">Update Email:</label>
+        <label for="Change Email">Change Email:</label>
         <input padding-left="5px" ng-model="user.email" id="email" type="email"  class="validate">
       <br>
         <label for="Update Description">Update Description:</label>
         <input ng-model="user.description" id="description" type="text"  class="validate">
-      <br>  
+      <br>
         <label for="Update Link">Update Image Link:	</label>
         <input ng-model="user.image" id="iamge" type="text"  class="validate">
       <br>
-        <label for="Update Phone Number">Update Phone Number:</label>
+        <label for="Change Phone Number">Change Phone Number:</label>
         <input ng-model="user.phone" id="phone" type="tel" class="validate">
+      <br>
+        <label for="Change Address">Change Address:</label>
+        <input ng-model="user.location" id="address" type="text" class="validate">
+      <br>
+        <label for="Change Username">Change Username:</label>
+        <input ng-model="user.username" id="username" type="text" class="validate">
       <br>
         <input ng-click="update()" type="submit" value="Submit">
     </form><br>
     
     </div>
   <script src="navbar.js"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIqZ1SHXEe7CUj8Gv9MvVQLWrI-3k4isQ&callback=myMap"></script>
     </body>
 </html>

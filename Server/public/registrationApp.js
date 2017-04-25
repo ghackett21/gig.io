@@ -40,8 +40,8 @@ app.controller("registrationController", [ '$scope', '$http', function($scope, $
             return;
         }
         else {
-                /* get coordinates of location and make register request */
-                getCoordinatesForRegister($scope.user.location);
+            /* get coordinates of location and make register request */
+            getCoordinatesForRegister($scope.user.location);
         }
     };
 
@@ -51,27 +51,31 @@ app.controller("registrationController", [ '$scope', '$http', function($scope, $
     var geocoder = new google.maps.Geocoder();
     geocoder.geocode({
         'address' : location
-        },
-        function(results, status) {
-            if (status == google.maps.GeocoderStatus.OK) {
-                var myResult = results[0].geometry.location;
-                console.log(myResult.lat() + " , " + myResult.lng());
-                $scope.user.lat = myResult.lat();
-                $scope.user.lng = myResult.lng();
-                console.log("$scope.user: " + $scope.user);
+    },
+    function(results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+            var myResult = results[0].geometry.location;
+            console.log(myResult.lat() + " , " + myResult.lng());
+            $scope.user.lat = myResult.lat();
+            $scope.user.lng = myResult.lng();
+            console.log("$scope.user: " + $scope.user);
 
-                /* make register request */
-                $http.post('/RegisterButton', $scope.user).then(function(response) {
-                    $scope.user = null;
-                    console.log(response);
-                    if(response.data.State == 0){
-                        $scope.status = "Registration Successful! Proceed to Login";
-                    }
-                }).catch(function(response) {
-                    console.log("error registering");
-                });
-           }
-       
+            /* make register request */
+            $http.post('/RegisterButton', $scope.user).then(function(response) {
+                $scope.user = null;
+                console.log(response);
+                if(response.data.State == 0){
+                    $scope.status = "Registration Successful! Proceed to Login";
+					window.open("index.html","_top");
+                }
+            }).catch(function(response) {
+                console.log("error registering");
+            });
+        }
+        else {
+             /* display message */
+            alert("Please enter valid address!");
+        }
     });
 
     }

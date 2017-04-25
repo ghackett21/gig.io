@@ -10,7 +10,19 @@ var mylat;
 app.controller("makePostController", [ '$scope', '$http', function($scope, $http) {
     $scope.post;
     $scope.status = "";
+	$scope.user;
     
+
+    window.onload = function() {
+    	$http.post('/GetUser').then(function(response) {
+     	    $scope.user = response.data.Result[0];
+			if($scope.user.Admin == 1){
+					var nav = document.getElementById('secret');
+					nav.innerHTML = "<a href=\"admin.html\">AdminCP</a>";
+			}
+		});
+	}
+
     $scope.makePost = function() {
         console.log("title = " + $scope.post.title);
         console.log("description = " + $scope.post.description);
@@ -43,26 +55,31 @@ app.controller("makePostController", [ '$scope', '$http', function($scope, $http
     var geocoder = new google.maps.Geocoder();
     geocoder.geocode({
         'address' : location
-        },
-        function(results, status) {
-            if (status == google.maps.GeocoderStatus.OK) {
-                var myResult = results[0].geometry.location;
-                console.log(myResult.lat() + " , " + myResult.lng());
-                $scope.post.lat = myResult.lat();
-                $scope.post.lng = myResult.lng();
-                console.log("$scope.post: " + $scope.post);
+    },
+    function(results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+            var myResult = results[0].geometry.location;
+            console.log(myResult.lat() + " , " + myResult.lng());
+            $scope.post.lat = myResult.lat();
+            $scope.post.lng = myResult.lng();
 
-                /* make createPost request */
-                $http.post('/CreatePost', $scope.post).then(function(response) {
-                    $scope.post = null;
-                    console.log(response);
-                    if(response.data.State == 0){
-                        $scope.status = "Post successfully created! Don't forget to check for bids.";
-                    }
-                }).catch(function(response) {
-                    console.log("error creating post");
-                });
-           }
+            console.log("$scope.post: " + $scope.post);
+
+            /* make createPost request */
+            $http.post('/CreatePost', $scope.post).then(function(response) {
+                $scope.post = null;
+                console.log(response);
+                if(response.data.State == 0){
+                    $scope.status = "Post successfully created! Don't forget to check for bids.";
+                }
+            }).catch(function(response) {
+                console.log("error creating post");
+            });
+       }
+       else {
+             /* display message */
+            alert("Please enter valid address!");
+        }
         
     });
 

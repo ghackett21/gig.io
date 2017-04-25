@@ -7,11 +7,14 @@
     <a href="javascript:void(0);" style="font-size:15px;" onclick="myFunction()">☰</a>
   </li>
 </ul>-->
- 
+<nav> 
 <ul class="topnav" id="myTopnav">
+  <link href="assets/css/navbar_style.css" rel="stylesheet" type="text/css">
   <li><a href="index.html"><img src="assets/img/home.png" alt="Home page" height=20 width=20></img></a></li>
   <li><a href="profile.html">My Profile</a><li>
   <li><a href="userPost.html">View My Posts</a><li>
-    <li><a href="makepost.html"><img src="assets/img/plus.png" alt="Make a new Post" height=20 width=20></img></a></li>
+  <li id="secret"></li>
+  <li><a href="makepost.html"><img src="assets/img/plus.png" alt="Make a new Post" height=20 width=20></img></a></li>
   <li style="float:right"><a ng-click="logout()" href="#">Logout</a><li>
 </ul>
+</nav>
