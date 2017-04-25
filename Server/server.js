@@ -189,18 +189,6 @@ app.get('/admin.html', ensureAuthenticated, function(req, res) {
 });
 
 /*
-app.get('/login.html', function(req, res) {
-	res.sendFile(__dirname + '/public/login.html');
-});
-
-
-app.get('*', ensureAuthenticated, function(req, res) {
-    res.sendFile(__dirname + '/public/404.html');
-});
-*/
-
-
-/*
 app.use(function(req,res){
   console.log("kill me");
   res.sendFile(__dirname + '/public/404.html');
@@ -247,6 +235,10 @@ app.get('/login', function(req, res, next) {
 		}
 		})(req, res, next);
 
+});
+
+app.get('*', ensureAuthenticated, function(req, res) {
+    res.sendFile(__dirname + '/public/404.html');
 });
 
 app.post('/logout', function(req, res) {
