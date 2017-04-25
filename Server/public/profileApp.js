@@ -80,7 +80,7 @@ app.controller("profileController", [ '$scope', '$http', function($scope, $http)
                       var td = clone.querySelectorAll('td');
                       var currRating = arr[i];
 
-                      td[0].innerHTML = "<b><a class=\'bidprof-link ng-binding\' style=\"font-size:18px\" onclick=\"angular.element(this).scope().viewBidUserProfile(" + userId:user.Uid + ")\">" + currRating.Username + "</a></b>";
+                      td[0].innerHTML = "<b><a class=\'bidprof-link ng-binding\' style=\"font-size:18px\" onclick=\"angular.element(this).scope().viewBidUserProfile(" + user.Uid + ")\">" + currRating.Username + "</a></b>";
                       td[1].innerHTML = currRating.RatingValue;
                       td[2].innerHTML = currRating.Comment;
 
