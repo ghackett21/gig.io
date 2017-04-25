@@ -762,7 +762,7 @@ app.controller("adminController", ['$scope', '$http', function($scope, $http) {
 					nav.innerHTML = "<a href=\"admin.html\">AdminCP</a>";
 				}
                 else {
-                    window.open("index.html", "_top");
+                    //window.open("index.html", "_top");
                 }
         })
 
