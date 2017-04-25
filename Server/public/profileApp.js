@@ -83,7 +83,14 @@ app.controller("profileController", [ '$scope', '$http', function($scope, $http)
                       td[0].innerHTML = currRating.Username;
                       td[1].innerHTML = currRating.RatingValue;
                       td[2].innerHTML = currRating.Comment;
-                      td[3].innerHTML = currRating.DateOfRating;
+
+                      // Format date
+                      var date = currRating.DateOfRating.substring(5, 7) + "/" +
+                          currRating.DateOfRating.substring(8, 10) + "/" +
+                          currRating.DateOfRating.substring(0, 4) + ", " +
+                          currRating.DateOfRating.substring(11, 16);
+
+                      td[3].innerHTML = date;
                       template.parentNode.appendChild(clone);
                   }
             })
