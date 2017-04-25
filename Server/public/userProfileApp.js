@@ -54,5 +54,33 @@ app.controller("profileController", [ '$scope', '$http', function($scope, $http)
         else {
             profileImage.src = "assets/img/defaultImage.png";
         }
+
+        var userInfo = {userId:user.Uid};
+        console.log(userInfo);
+        $http.post('/GetUserRatings', userInfo).then(function(response) {
+            var template = document.querySelector('#rating_tmplt');
+            var arr = response.data.Result;
+            console.log(response.data);
+            console.log(arr);
+            if(arr == null)
+                return;
+            for (var i = 0 ; i < arr.length; i++) {
+                var clone = template.content.cloneNode(true);
+                var td = clone.querySelectorAll('td');
+                var currRating = arr[i];
+
+                td[0].innerHTML = currRating.Username;
+                td[1].innerHTML = currRating.RatingValue;
+                td[2].innerHTML = currRating.Comment;
+
+                  // Format date
+                var date = currRating.DateOfRating.substring(5, 7) + "/" +
+                    currRating.DateOfRating.substring(8, 10) + "/" +
+                    currRating.DateOfRating.substring(0, 4);
+
+                td[3].innerHTML = date;
+                template.parentNode.appendChild(clone);
+            }
+        });
     };
 }]);
