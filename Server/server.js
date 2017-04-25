@@ -179,6 +179,10 @@ app.get('/ratePoster.html', ensureAuthenticated, function(req, res) {
     res.sendFile(__dirname + '/public/ratePoster.html');
 });
 
+app.get('/admin.html', ensureAuthenticated, function(req, res) {
+    res.sendFile(__dirname + '/public/admin.html');
+});
+
 /*
 app.get('*', ensureAuthenticated, function(req, res) {
     res.sendFile(__dirname + '/public/404.html');
