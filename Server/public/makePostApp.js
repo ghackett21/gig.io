@@ -11,7 +11,15 @@ app.controller("makePostController", [ '$scope', '$http', function($scope, $http
     $scope.post;
     $scope.status = "";
 	$scope.user;
-    
+
+    /* logout user on button press */
+    $scope.logout = function() {
+        console.log("logout function called");
+        $http.post('/logout').then(function(response) {
+            console.log("response = %j", response);
+            window.location = response.data.redirect;
+        });
+    };
 
     window.onload = function() {
     	$http.post('/GetUser').then(function(response) {
