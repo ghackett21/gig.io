@@ -87,8 +87,7 @@ app.controller("profileController", [ '$scope', '$http', function($scope, $http)
                       // Format date
                       var date = currRating.DateOfRating.substring(5, 7) + "/" +
                           currRating.DateOfRating.substring(8, 10) + "/" +
-                          currRating.DateOfRating.substring(0, 4) + ", " +
-                          currRating.DateOfRating.substring(11, 16);
+                          currRating.DateOfRating.substring(0, 4);
 
                       td[3].innerHTML = date;
                       template.parentNode.appendChild(clone);
