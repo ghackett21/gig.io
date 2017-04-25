@@ -29,7 +29,7 @@ function getUserRatings(userId, callback) {
 	console.log("GetUserRatings userId " + userId);
 	
 	/* NEEDS TO RETURN INDIVIDUAL RATINGS - NOT AVERAGE RATINGS */
-	var select = "SELECT RATINGS.Rid, Ratings.UidRater, RATINGS.RatingValue, RATINGS.Comment, RATINGS.RatingType, RATINGS.DateOfRating, Users.Username FROM RATINGS INNER JOIN Users On RATINGS.UidRater=Users.Uid WHERE RATINGS.Uid=" + userId;
+	var select = "SELECT RATINGS.Rid, RATINGS.UidRater, RATINGS.RatingValue, RATINGS.Comment, RATINGS.RatingType, RATINGS.DateOfRating, Users.Username FROM RATINGS INNER JOIN Users On RATINGS.UidRater=Users.Uid WHERE RATINGS.Uid=" + userId;
 
 	connection.query(select, function(err, rows) { 
 		if (err) {
