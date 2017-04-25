@@ -92,8 +92,8 @@ app.controller("profileController", [ '$scope', '$http', function($scope, $http)
                     template.parentNode.appendChild(clone);
                 }
             });
-        })//.catch(function(response) {
-            //console.log("error getting user");
-        //})
+        }).catch(function(response) {
+            console.log("error getting user");
+        })
     };
 }]);
