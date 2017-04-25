@@ -8,14 +8,6 @@ var session = require('express-session');
 var bcrypt = require('bcrypt');
 var nodemailer = require('nodemailer');
 
-var transporter = nodemailer.createTransport({
-        service: 'Gmail',
-        auth: {
-            user: 'gigdotio@gmail.com', // Your email id
-            pass: 'geofffff' // Your password
-        }
-    });
-
 /* delete later */
 var connection = require('./helpers/connection');
 
@@ -178,16 +170,8 @@ app.get('/ratePoster.html', ensureAuthenticated, function(req, res) {
     res.sendFile(__dirname + '/public/ratePoster.html');
 });
 
-app.get('*', ensureAuthenticated, function(req, res) {
-    res.sendFile(__dirname + '/public/404.html');
-});
 
-app.use(function(req,res){
-  console.log("kill me");
-  res.sendFile(__dirname + '/public/404.html');
-});
-
-//app.use(express.static(path.join(__dirname, '/public')));
+app.use(express.static(path.join(__dirname, '/public')));
 
 passport.use(new LocalStrategy(
 	function(username, password, done) {
@@ -257,6 +241,10 @@ app.post('/GetUser', function(req, res) {
  	getUser(req, res);
 });
 
+app.post('/DeleteUser', function(req, res) {
+	deleteUser(req, res);
+});
+
 app.post('/GetAllUsers', function(req, res) {
  	getAllUsers(req, res);
 });
@@ -317,27 +305,6 @@ app.post("/CompletePost", function(req, res) {
 	completePost(req, res);
 });
 
-app.post("/DeleteUser", function(req, res) {
-	deleteUser(req, res);
-});
-
-app.post("/sendMail", function(req, res) {
-
-            var mailOptions = {
-				from: 'gigdotio@gmail.com', // sender address
-				to: 'putemailhere', // list of receivers
-				subject: 'Subject', // Subject line
-				text: "text"
-			};
-
-	transporter.sendMail(mailOptions, function(error, info){
-		if(error){
-		    return console.log(error);
-		}
-		console.log('Message sent: ' + info.response);
-	});
-
-});
  app.post("/ClosePost", function(req, res) { 
  	closePost(req, res);
  });
