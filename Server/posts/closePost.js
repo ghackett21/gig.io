@@ -1,4 +1,6 @@
 /* closePost.js */
+var sendBidNotifications = require('./../helpers/sendBidNotifications');
+var sendNotification = require('./../helpers/sendNotification');
 var connection = require('./../helpers/connection');
 var deletePostHelper = require("./../posts/deletePostHelper");
 
@@ -79,6 +81,7 @@ function closePost(bidId, postId, callback) {
 			      }
 			      else {
 			      	/* send notification */
+		sendBidNotifications(postId);
 			        return callback(0);
 			      }
 			    });

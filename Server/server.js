@@ -8,16 +8,10 @@ var session = require('express-session');
 var bcrypt = require('bcrypt');
 var nodemailer = require('nodemailer');
 
-var transporter = nodemailer.createTransport({
-        service: 'Gmail',
-        auth: {
-            user: 'gigdotio@gmail.com', // Your email id
-            pass: 'geofffff' // Your password
-        }
-    });
-
 /* delete later */
 var connection = require('./helpers/connection');
+var sendNotification = require('./helpers/sendNotification');
+var sendBidNotifications = require('./helpers/sendBidNotifications');
 
 /* users */
 var login = require('./users/login');
@@ -188,12 +182,6 @@ app.get('/admin.html', ensureAuthenticated, function(req, res) {
 	}
 });
 
-/*
-app.use(function(req,res){
-  console.log("kill me");
-  res.sendFile(__dirname + '/public/404.html');
-});
-*/
 
 app.use(express.static(path.join(__dirname, '/public')));
 
@@ -269,6 +257,10 @@ app.post('/GetUser', function(req, res) {
  	getUser(req, res);
 });
 
+app.post('/DeleteUser', function(req, res) {
+	deleteUser(req, res);
+});
+
 app.post('/GetAllUsers', function(req, res) {
  	getAllUsers(req, res);
 });
@@ -337,23 +329,7 @@ app.post("/StrikeUser", function(req, res) {
 	strikeUser(req, res);
 });
 
-app.post("/sendMail", function(req, res) {
 
-            var mailOptions = {
-				from: 'gigdotio@gmail.com', // sender address
-				to: 'putemailhere', // list of receivers
-				subject: 'Subject', // Subject line
-				text: "text"
-			};
-
-	transporter.sendMail(mailOptions, function(error, info){
-		if(error){
-		    return console.log(error);
-		}
-		console.log('Message sent: ' + info.response);
-	});
-
-});
  app.post("/ClosePost", function(req, res) { 
  	closePost(req, res);
  });

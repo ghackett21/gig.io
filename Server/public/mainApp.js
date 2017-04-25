@@ -908,15 +908,17 @@ app.controller("adminController", ['$scope', '$http', function($scope, $http) {
 			document.getElementById('noReports').style.display = "none";
         }
 
-		$scope.deleteUser = function(uid){
-			var format = {userId:uid};
-			$scope.close();
-		 	$http.post('/DeleteUser', format).then(function(response) {
-				
-        	});
-		}
 	}
-
+		$scope.deleteUser = function(uid){
+			var format1 = {userId:uid};
+			console.log("uid = %j", format1);
+			//$scope.close();
+        	$http.post('/DeleteUser', format1).then(function(response) {
+				console.log("Delete");
+        	}).catch(function(response) {
+				console.log("ded");			
+			});
+		}
 
 
     /* sets up all posts onClick actions (display info, load bids, and map) */
