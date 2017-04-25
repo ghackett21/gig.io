@@ -15,6 +15,7 @@ app.controller("profileController", [ '$scope', '$http', function($scope, $http)
 	};
     window.onload = function() {
         var Uid = localStorage.getItem("userId");
+        console.log("UserId: " + Uid);
 
         var userToView = {userId:Uid};
         $http.post("/GetUser", userToView).then(function(response) {
