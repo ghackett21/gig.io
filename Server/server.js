@@ -188,6 +188,7 @@ app.get('/admin.html', ensureAuthenticated, function(req, res) {
 	}
 });
 
+/*
 app.get('/login.html', function(req, res) {
 	res.sendFile(__dirname + '/public/login.html');
 });
@@ -196,6 +197,7 @@ app.get('/login.html', function(req, res) {
 app.get('*', ensureAuthenticated, function(req, res) {
     res.sendFile(__dirname + '/public/404.html');
 });
+*/
 
 
 /*
