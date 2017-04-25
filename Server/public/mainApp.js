@@ -757,10 +757,13 @@ app.controller("adminController", ['$scope', '$http', function($scope, $http) {
         $http.post('/GetUser').then(function(response) {
             //console.log(response.data.Result[0]);
         	$scope.user = response.data.Result[0];
-						if($scope.user.Admin == 1){
-							var nav = document.getElementById('secret');
-							nav.innerHTML = "<a href=\"admin.html\">AdminCP</a>";
-						}
+				if($scope.user.Admin == 1){
+					var nav = document.getElementById('secret');
+					nav.innerHTML = "<a href=\"admin.html\">AdminCP</a>";
+				}
+                else {
+                    window.open("index.html", "_top");
+                }
         })
 
         /* request post data */

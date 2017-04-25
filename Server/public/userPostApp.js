@@ -35,12 +35,12 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
     window.onload = function() {
         /* requst information about the currently logged-in user */
         $http.post('/GetUser').then(function(response) {
-                        //console.log(response.data.Result[0]);
-                        myUser = response.data.Result[0];
-						if(myUser.Admin == 1){
-							var nav = document.getElementById('secret');
-							nav.innerHTML = "<a href=\"admin.html\">AdminCP</a>";
-						}
+            //console.log(response.data.Result[0]);
+            myUser = response.data.Result[0];
+			if(myUser.Admin == 1){
+				var nav = document.getElementById('secret');
+				nav.innerHTML = "<a href=\"admin.html\">AdminCP</a>";
+			}
         });
         displayPosts();
 
