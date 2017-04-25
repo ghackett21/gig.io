@@ -21,8 +21,17 @@ app.controller("profileController", [ '$scope', '$http', function($scope, $http)
         h1[0].innerHTML = user;
         var h3 = clone.querySelectorAll('h3');
         h3[0].innerHTML = localStorage.getItem("description");
-        h3[1].innerHTML = 'Post Rating: ' + localStorage.getItem("post_rating") + '/5.0';
-        h3[2].innerHTML = 'Bid Rating ' + localStorage.getItem("bid_rating") + '/5.0';
+
+        /* format post rating so it is only displayed to one decimal */
+        var postText = localStorage.getItem("post_rating") + "";
+        postText = postText.substring(0, postText.indexOf(".") + 2) + "/5";
+        h3[1].innerHTML = 'Post Rating: ' + postText;
+
+        /* format bid rating so it is only displayed to one decimal */
+        var bidText = localStorage.getItem("bid_rating") + "";
+        bidText = bidText.substring(0, bidText.indexOf(".") + 2) + "/5";
+        h3[2].innerHTML = 'Bid Rating ' + bidText;
+
         h3[3].innerHTML = localStorage.getItem("phone");
         h3[4].innerHTML = localStorage.getItem("email");
         template.parentNode.appendChild(clone);
@@ -45,5 +54,33 @@ app.controller("profileController", [ '$scope', '$http', function($scope, $http)
         else {
             profileImage.src = "assets/img/defaultImage.png";
         }
+
+        var userInfo = {userId:user.Uid};
+        console.log(userInfo);
+        $http.post('/GetUserRatings', userInfo).then(function(response) {
+            var template = document.querySelector('#rating_tmplt');
+            var arr = response.data.Result;
+            console.log(response.data);
+            console.log(arr);
+            if(arr == null)
+                return;
+            for (var i = 0 ; i < arr.length; i++) {
+                var clone = template.content.cloneNode(true);
+                var td = clone.querySelectorAll('td');
+                var currRating = arr[i];
+
+                td[0].innerHTML = currRating.Username;
+                td[1].innerHTML = currRating.RatingValue;
+                td[2].innerHTML = currRating.Comment;
+
+                  // Format date
+                var date = currRating.DateOfRating.substring(5, 7) + "/" +
+                    currRating.DateOfRating.substring(8, 10) + "/" +
+                    currRating.DateOfRating.substring(0, 4);
+
+                td[3].innerHTML = date;
+                template.parentNode.appendChild(clone);
+            }
+        });
     };
 }]);
