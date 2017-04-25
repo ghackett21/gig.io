@@ -83,6 +83,7 @@ app.controller("profileController", [ '$scope', '$http', function($scope, $http)
                       td[0].innerHTML = currRating.Username;
                       td[1].innerHTML = currRating.RatingValue;
                       td[2].innerHTML = currRating.Comment;
+                      td[3].innerHtlm = currRating.DateOfRating
                       template.parentNode.appendChild(clone);
                   }
             })
