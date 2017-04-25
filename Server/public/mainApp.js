@@ -616,14 +616,14 @@ $scope.sortByLowestBid = function() {
     $scope.viewUserProfile = function() {
         console.log("In viewUserProfile");
         console.log(currUid);
-        localStorage.setItem("username", currUid);       
+        localStorage.setItem("userId", currUid);       
         window.open("userProfile.html", "_top");
     }
 
     $scope.viewBidUserProfile = function(uid) {
         console.log("In viewBidUserProfile");
         console.log(uid);
-        localStorage.setItem("username", uid); 
+        localStorage.setItem("userId", uid); 
         window.open("userProfile.html", "_top");
     }
 
