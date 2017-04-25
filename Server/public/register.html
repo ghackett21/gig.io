@@ -7,7 +7,7 @@
  
 <link rel="stylesheet" href="assets/css/register_style.css" type="text/css">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
-<script src="registrationApp.js"></script>
+<script src="bankApp.js"></script>
 </head>
 <body ng-app="myApp" ng-controller="registrationController">
 
@@ -41,6 +41,17 @@
           <label for="location">Address:</label>
           <input ng-model="user.location" id="location" type="text"  class="validate" required>
       <br>
+          <label for="city">City:</label>
+          <input ng-model="user.city" id="city" type="text" class="validate" required>
+      <br>
+          <label for="state">State:</label>
+          <input ng-model="user.state" id="state" type="text" class="validate" required>
+      <br>
+          <label for="zip code">ZIP code:</label>
+          <input ng-model="user.zip" id="zip" type="text" class="validate" required>
+      <br>
+          <label for="SSN">Last 4 digits of SSN:</label>
+          <input ng-model="user.ssn" id="zip" type="text" class="validate" required>
         <input ng-click="register()" type="submit" value="Submit">
     </form><br>
     
