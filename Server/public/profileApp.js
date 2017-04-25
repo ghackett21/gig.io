@@ -7,14 +7,16 @@ app.controller("profileController", [ '$scope', '$http', function($scope, $http)
     			//window.location = response.data.redirect;
     		});
     };
+
 	$scope.logout = function() {
 		$http.post('/logout').then(function(response) {
 			console.log("response = %j", response);
 			window.location = response.data.redirect;
 		});
 	};
-    window.onload = function() {
-        var user;
+
+  window.onload = function() {
+      var user;
     	$http.post('/GetUser').then(function(response) {
     	    console.log(response.data.Result[0]);
      	    user = response.data.Result[0];
@@ -43,13 +45,7 @@ app.controller("profileController", [ '$scope', '$http', function($scope, $http)
             h3[4].innerHTML = user.EmailAddress;
             h3[5].innerHTML = user.U_Location;
 
-            /*var rating = user.AverageRating;
-
-            for(var i = 0; i < rating; i++) {
-                AddImage();
-            }*/
             template.parentNode.appendChild(clone);
-
 
             var profileImage = document.getElementById('profile_image');
 
@@ -80,7 +76,7 @@ app.controller("profileController", [ '$scope', '$http', function($scope, $http)
                       var td = clone.querySelectorAll('td');
                       var currRating = arr[i];
 
-                      td[0].innerHTML = "<b><a class=\'bidprof-link ng-binding\' style=\"font-size:18px\" onclick=\"angular.element(this).scope().viewBidUserProfile(" + user.Uid + ")\">" + currRating.Username + "</a></b>";
+                      td[0].innerHTML = "<b><a class=\'bidprof-link ng-binding\' style=\"font-size:18px\" onclick=\"angular.element(this).scope().otherUserProfile(" + currRating.UidRater + ")\">" + currRating.Username + "</a></b>";
                       td[1].innerHTML = currRating.RatingValue;
                       td[2].innerHTML = currRating.Comment;
 
@@ -94,5 +90,12 @@ app.controller("profileController", [ '$scope', '$http', function($scope, $http)
                   }
             })
         })
+    };
+
+    $scope.otherUserProfile = function(uid) {
+        console.log("In viewBidUserProfile");
+        console.log(uid);
+        localStorage.setItem("userId", uid); 
+        window.open("userProfile.html", "_top");
     };
 }]);
