@@ -188,7 +188,7 @@ app.get('/admin.html', ensureAuthenticated, function(req, res) {
 	}
 });
 
-app.get('/login.html', function(reqm res) {
+app.get('/login.html', function(req, res) {
 	res.sendFile(__dirname + '/public/login.html');
 });
 
