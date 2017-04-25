@@ -938,15 +938,25 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
     $scope.viewUserProfile = function() {
         console.log("In viewUserProfile");
         console.log(currUid);
-        localStorage.setItem("userId", currUid);       
-        window.open("userProfile.html", "_top");
+        if (myUser.Uid == currUid) {
+            window.open("profile.html", "_top");
+        }
+        else {
+            localStorage.setItem("userId", currUid);       
+            window.open("userProfile.html", "_top");
+        }
     }
 
     $scope.viewBidUserProfile = function(uid) {
         console.log("In viewBidUserProfile");
         console.log(uid);
-        localStorage.setItem("userId", uid); 
-        window.open("userProfile.html", "_top");
+        if (myUser.Uid == uid) {
+            window.open("profile.html", "_top");
+        }
+        else {
+            localStorage.setItem("userId", uid); 
+            window.open("userProfile.html", "_top");
+        }
     }
 }]);
 
