@@ -22,6 +22,7 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
     $scope.test = "test";
     $scope.bidInfo;
     global_http = $http;
+    var currUid = -1;
 
 	$scope.logout = function() {
 		$http.post('/logout').then(function(response) {
@@ -634,6 +635,8 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
                             break;
                     }
                     var post = posts[j];
+
+                    currUid = post.Uid;
 
                     /* set display content */
                     $scope.owner = post.Username;
