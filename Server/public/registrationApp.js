@@ -65,8 +65,8 @@ app.controller("registrationController", [ '$scope', '$http', function($scope, $
                 $scope.user = null;
                 console.log(response);
                 if(response.data.State == 0){
-                    $scope.status = "Registration Successful! Proceed to Login";
-					window.open("index.html","_top");
+                    $scope.status = "Registration Successful! Proceed to enter banking info!";
+					window.open("bank.html","_top");
                 }
             }).catch(function(response) {
                 console.log("error registering");
