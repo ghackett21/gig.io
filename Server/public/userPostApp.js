@@ -22,6 +22,7 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
     $scope.test = "test";
     $scope.bidInfo;
     global_http = $http;
+    var currUid = -1;
 
 	$scope.logout = function() {
 		$http.post('/logout').then(function(response) {
@@ -635,6 +636,8 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
                     }
                     var post = posts[j];
 
+                    currUid = post.Uid;
+
                     /* set display content */
                     $scope.owner = post.Username;
                     $scope.phone = post.PhoneNumber;
@@ -933,46 +936,17 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
     }
 
     $scope.viewUserProfile = function() {
-            console.log("In viewUserProfile");
-            console.log(currUid);
-            var userToView = {userId:currUid};
-            $http.post("/GetUser", userToView).then(function(response) {
-                console.log("Hello World");
-                console.log(response);
-                console.log(response.data.Result[0].Username);
-                localStorage.setItem("username", response.data.Result[0].Username);
-                localStorage.setItem("description", response.data.Result[0].U_Description);
-                localStorage.setItem("post_rating", response.data.Result[0].AVG_PostRate);
-                localStorage.setItem("bid_rating", response.data.Result[0].AVG_BidRate);
-                localStorage.setItem("phone", response.data.Result[0].PhoneNumber);
-                localStorage.setItem("email", response.data.Result[0].EmailAddress);
-                localStorage.setItem("profileImage", response.data.Result[0].U_Image);
-				localStorage.setItem("Admin", response.data.Result[0].Admin);
-                window.open("userProfile.html", "_top");
-            }).catch(function(response) {
-                console.log("error getting user");
-            })
+        console.log("In viewUserProfile");
+        console.log(currUid);
+        localStorage.setItem("userId", currUid);       
+        window.open("userProfile.html", "_top");
     }
 
     $scope.viewBidUserProfile = function(uid) {
-            console.log("In viewBidUserProfile");
-            console.log(uid);
-            var userToView = {userId:uid};
-            $http.post("/GetUser", userToView).then(function(response) {
-                console.log("Hello World");
-                console.log(response);
-                console.log(response.data.Result[0].Username);
-                localStorage.setItem("username", response.data.Result[0].Username);
-                localStorage.setItem("description", response.data.Result[0].U_Description);
-                localStorage.setItem("post_rating", response.data.Result[0].AVG_PostRate);
-                localStorage.setItem("bid_rating", response.data.Result[0].AVG_BidRate);
-                localStorage.setItem("phone", response.data.Result[0].PhoneNumber);
-                localStorage.setItem("email", response.data.Result[0].EmailAddress);
-                localStorage.setItem("profileImage", response.data.Result[0].U_Image);
-                window.open("userProfile.html", "_top");
-            }).catch(function(response) {
-                console.log("error getting user");
-            })
+        console.log("In viewBidUserProfile");
+        console.log(uid);
+        localStorage.setItem("userId", uid); 
+        window.open("userProfile.html", "_top");
     }
 }]);
 
@@ -986,9 +960,9 @@ function acceptBid(el) {
     /* close post */
     global_http.post('/ClosePost', bid).then(function(response) {
        location.reload(true);
-    })//.catch(function(response) {
-       // console.log("error in Close Post");
-    //})
+    }).catch(function(response) {
+       console.log("error in Close Post");
+    });
 }
 
 
