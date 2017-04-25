@@ -92,8 +92,8 @@ app.controller("profileController", [ '$scope', '$http', function($scope, $http)
 
 
             window.open("userProfile.html", "_top");
-        }).catch(function(response) {
-            console.log("error getting user");
-        })
+        })//.catch(function(response) {
+            //console.log("error getting user");
+        //})
     };
 }]);
