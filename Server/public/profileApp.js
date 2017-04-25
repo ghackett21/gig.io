@@ -33,17 +33,17 @@ app.controller("profileController", [ '$scope', '$http', function($scope, $http)
 
             /* format post rating so it is only displayed to one decimal */
             var postText = user.AVG_PostRate + "";
-            postText = postText.substring(0, postText.indexOf(".") + 2) + "/5";
+            postText = postText.substring(0, postText.indexOf(".") + 2) + " / 5";
             h3[1].innerHTML = 'Post Rating: ' + postText;
 
             /* format bid rating so it is only displayed to one decimal */
             var bidText = user.AVG_BidRate + "";
-            bidText = bidText.substring(0, bidText.indexOf(".") + 2) + "/5";
-            h3[2].innerHTML = 'Bid Rating ' + bidText;
+            bidText = bidText.substring(0, bidText.indexOf(".") + 2) + " / 5";
+            h3[2].innerHTML = 'Bid Rating: ' + bidText;
 
-            h3[3].innerHTML = user.PhoneNumber;
-            h3[4].innerHTML = user.EmailAddress;
-            h3[5].innerHTML = user.U_Location;
+            h3[3].innerHTML = 'Phone Number: ' + user.PhoneNumber;
+            h3[4].innerHTML = 'Email Address: ' + user.EmailAddress;
+            h3[5].innerHTML = 'Address: ' + user.U_Location;
 
             template.parentNode.appendChild(clone);
 

@@ -8,6 +8,15 @@ var app = angular.module("myApp", []);
 app.controller("ratePosterController", [ '$scope', '$http', function($scope, $http){
     $scope.rating;
     $scope.status = "";
+
+    /* logout user on button press */
+    $scope.logout = function() {
+        $http.post('/logout').then(function(response) {
+            console.log("response = %j", response);
+            window.location = response.data.redirect;
+        });
+    };
+    
     $scope.rate = function() {
         console.log("rate poster");
 

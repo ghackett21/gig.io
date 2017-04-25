@@ -225,6 +225,10 @@ app.get('/login', function(req, res, next) {
 
 });
 
+app.get('*', ensureAuthenticated, function(req, res) {
+    res.sendFile(__dirname + '/public/404.html');
+});
+
 app.post('/logout', function(req, res) {
   console.log('logging out');
   req.session.destroy();
