@@ -92,9 +92,6 @@ app.controller("profileController", [ '$scope', '$http', function($scope, $http)
                     template.parentNode.appendChild(clone);
                 }
             });
-
-
-            window.open("userProfile.html", "_top");
         })//.catch(function(response) {
             //console.log("error getting user");
         //})
