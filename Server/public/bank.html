@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+        <script src="data.js"></script>
+
+
+<head>
+ 
+<link rel="stylesheet" href="assets/css/register_style.css" type="text/css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
+<script src="registrationApp.js"></script>
+</head>
+<body ng-app="myApp" ng-controller="registrationController">
+
+
+
+
+<div style="padding-left:16px" >
+  <h2 align=center>Enter your banking information.</h2>
+  <p align=center>Please provide the following information so we can set up your account.</p>
+<br>
+	<h3 id="status" align=center>{{status}}</h3>
+
+
+<form name="registration">
+      
+        <label for="routingNum">Routing Number:</label>
+        <input padding-left="5px" ng-model="user.routingNum" id="routingNum" type="text"  class="validate" required>
+      <br>
+        <label for="accountNum">Account Number:</label>
+        <input ng-model="user.accountNum" id="accountNum" type="text"  class="validate" required>
+      <br>  
+        <label for="accountType">Account Type:</label>
+        <input ng-model="user.accountType" id="accountType" type="text"  class="validate" required>
+      <br>
+        <label for="name">Name of Account Holder:</label>
+        <input ng-model="user.name" id="name" type="text"  class="validate" required>
+        <input ng-click="createAccount()" type="submit" value="Submit">
+    </form><br>
+    
+    </div>
+<script src="https://ghackett21.github.io/gig.io/navbar.js"></script>
+</body>
+</html>
