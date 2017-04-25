@@ -761,9 +761,6 @@ app.controller("adminController", ['$scope', '$http', function($scope, $http) {
 					var nav = document.getElementById('secret');
 					nav.innerHTML = "<a href=\"admin.html\">AdminCP</a>";
 				}
-                else {
-                    //window.open("index.html", "_top");
-                }
         })
 
         /* request post data */
