@@ -932,8 +932,8 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
                 tableParent.removeChild(postRows[i]);
             }
         }
-        $scope.sortByAge();
         displayPosts();
+        $scope.sortByAge();
     }
 
     $scope.viewUserProfile = function() {
