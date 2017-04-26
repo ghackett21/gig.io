@@ -566,9 +566,9 @@ $scope.sortByLowestBid = function() {
                 default:
                     $scope.sortByAge();
             }       
-        }).catch(function(response) {
-            console.log("error bidding");
-        });
+        })//.catch(function(response) {
+            //console.log("error bidding, ");
+        //});
     };
 
     /* sets up all posts onClick actions (display info, load bids, and map) */
