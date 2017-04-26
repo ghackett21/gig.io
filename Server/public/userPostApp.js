@@ -43,7 +43,6 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
 			}
         });
         displayPosts();
-        $scope.sortByAge();
 
     }
 
@@ -54,6 +53,7 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
             /* request post data */
             $http.post('/getUserPosts').then(function(response) {
                 fillRows(response);
+                $scope.sortByAge();
             }).catch(function(response) {
                 /* catch error in reponse */
                 $scope.user = null;
