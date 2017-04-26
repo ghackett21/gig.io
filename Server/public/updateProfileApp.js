@@ -24,6 +24,17 @@ app.controller("updateProfileController", [ '$scope', '$http', function($scope, 
                 return;
             }
 
+            /* check that fields are not blank */
+            if $scope.user.description == "" {
+                $scope.user.description = null;
+            }
+            if ($scope.user.username == "") {
+                $scope.user.username = null;
+            }
+            if ($scope.user.phone == "") {
+                $scope.user.phone = null;
+            }
+
             if ($scope.user.location == undefined) {
                 /* make register request */
                 $http.post('/UpdateProfile', $scope.user).then(function(response) {
