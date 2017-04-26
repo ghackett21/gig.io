@@ -24,8 +24,12 @@ app.controller("updateProfileController", [ '$scope', '$http', function($scope, 
                 return;
             }
 
-            if ($scope.user.description == "") {
+            if ($scope.user.description.match(/^\s+$/)) {
                 $scope.user.description = undefined;
+            }
+
+            if ($scope.user.image == "") {
+                $scope.user.image = undefined;
             }
 
             if ($scope.user.location == undefined) {
