@@ -8,6 +8,13 @@ var app = angular.module("myApp", []);
 app.controller("reportController", [ '$scope', '$http', function($scope, $http) {
     $scope.report;
     $scope.status = "";
+    window.onload = function() {
+        if(localStorage.getItem("userAdmin")  == 1){
+            var nav = document.getElementById('secret');
+            nav.innerHTML = "<a href=\"admin.html\">AdminCP</a>";
+        } 
+    }
+
     $scope.report = function() {
         console.log("reason = " + $scope.report.reason);
         console.log("description = " + $scope.report.description);
