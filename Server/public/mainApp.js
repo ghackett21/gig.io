@@ -547,7 +547,7 @@ $scope.sortByLowestBid = function() {
                     template.parentNode.appendChild(clone);
                 }
             }
-            switch (sortKey) {
+            switch (sortType) {
                 case 'age':
                     $scope.sortByAge();
                     break;
