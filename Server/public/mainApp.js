@@ -123,6 +123,7 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http, $c
 
 $scope.sortByLowestBid = function() {
         console.log("I'm in!");
+        currentSort = "low_bid";
 	    var bidVal1;
         var bidVal2;
         var temp;
@@ -191,6 +192,7 @@ $scope.sortByLowestBid = function() {
 	 console.log("in sort type")
      var sortKey = $scope.selected;
      console.log(sortKey);
+     currentSort = sortKey
      switch (sortKey) {
        case 'age':
          $scope.sortByAge();
@@ -545,10 +547,29 @@ $scope.sortByLowestBid = function() {
                     template.parentNode.appendChild(clone);
                 }
             }
-            
+            console.log("currentSort = " + currentSort);
+            switch (currentSort) {
+                case 'age':
+                    $scope.sortByAge();
+                    break;
+                case 'low_bid':
+                    $scope.sortByLowestBid();
+                    break;
+                case 'dist':
+                    $scope.sortByDistance();
+                    break;
+                case 'num_bids':
+                    $scope.sortByNumOfBids();
+                    break;
+                case 'oldest':
+                    $scope.sortByOldest();
+                    break;
+                default:
+                    //$scope.sortByAge();
+            }       
         }).catch(function(response) {
-            console.log("error bidding");
-        })
+            console.log("error bidding, ");
+        });
     };
 
     /* sets up all posts onClick actions (display info, load bids, and map) */
