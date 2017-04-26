@@ -44,6 +44,7 @@ var getUserRatings = require('./ratings/getUserRatings');
 /* report endpoints */
 var getUserReports = require('./reports/getUserReports');
 var createReport = require('./reports/createReport');
+var clearPendingReports = require('./reports/clearPendingReports');
 
 
 passport.serializeUser(function(user, done) {
@@ -333,9 +334,13 @@ app.post("/StrikeUser", function(req, res) {
 	strikeUser(req, res);
 });
 
-
  app.post("/ClosePost", function(req, res) { 
  	closePost(req, res);
+ });
+
+
+ app.post("/clearPendingReports", function(req, res) { 
+ 	clearPendingReports(req, res);
  });
 
 /* start express server */
