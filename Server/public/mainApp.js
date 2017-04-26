@@ -565,7 +565,7 @@ $scope.sortByLowestBid = function() {
                     $scope.sortByOldest();
                     break;
                 default:
-                    $scope.sortByAge();
+                    //$scope.sortByAge();
             }       
         }).catch(function(response) {
             console.log("error bidding, ");
