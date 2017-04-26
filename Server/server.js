@@ -174,7 +174,7 @@ app.get('/ratePoster.html', ensureAuthenticated, function(req, res) {
 });
 
 app.get('/report.html', ensureAuthenticated, function(req, res) {
-    res.sendFile(__dirname + '/public/ratePoster.html');
+    res.sendFile(__dirname + '/public/report.html');
 });
 
 app.get('/admin.html', ensureAuthenticated, function(req, res) {
