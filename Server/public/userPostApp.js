@@ -933,7 +933,7 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
             }
         }
         $scope.sortByAge();
-        //displayPosts();
+        displayPosts();
     }
 
     $scope.viewUserProfile = function() {
