@@ -24,6 +24,10 @@ app.controller("updateProfileController", [ '$scope', '$http', function($scope, 
                 return;
             }
 
+            if ($scope.user.description == "") {
+                $scope.user.description = undefined;
+            }
+
             if ($scope.user.location == undefined) {
                 /* make register request */
                 $http.post('/UpdateProfile', $scope.user).then(function(response) {
