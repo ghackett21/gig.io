@@ -23,6 +23,12 @@
 
 <form name="registration">
       
+        <label for="firstName">First Name:</label>
+        <input ng-model="user.firstName" id="firstName" type="firstName" class="validate" type="text" required>
+      <br>
+        <label for="lastName">Last Name:</label>
+        <input ng-model="user.lastName" id="lastName" type="lastName" class="validate" type="text" required>
+      <br>
         <label for="username">Username:</label>
         <input padding-left="5px" ng-model="user.username" id="username" type="text"  class="validate" required>
       <br>
@@ -49,6 +55,9 @@
       <br>
           <label for="zip code">ZIP code:</label>
           <input ng-model="user.zip" id="zip" type="text" class="validate" required>
+      <br>
+          <label for="birth date">Birth date:</label>
+          <input ng-model="user.birthDate" id="birthDate" type="text" class="validate" required>
       <br>
           <label for="SSN">Last 4 digits of SSN:</label>
           <input ng-model="user.ssn" id="zip" type="text" class="validate" required>

@@ -1,6 +1,7 @@
 var bcrypt = require('bcrypt');
 var connection = require('./../helpers/connection');
 var getDate = require('./../helpers/getDate');
+var appToken = require('./../helpers/dwollaClient');
 
 /**
  * Register a new user with the provided username and password.
@@ -54,23 +55,43 @@ function register(user, callback) {
 				return callback(-3);
 			}
 			else {
-				var hash = bcrypt.hashSync(user.password, 10);
-				console.log("HASH = " + hash);
-				/* if username is not already used */
-				var insert = "INSERT INTO Users (Username, Password, EmailAddress, PhoneNumber, NumberOfStrikes, NUM_BidRate, NUM_PostRate, AVG_BidRate, AVG_PostRate, DateJoined, U_Location, U_Lat, U_Long) VALUES (" + connection.escape(user.username) + ", '" + hash + "'," + connection.escape(user.email) + "," + connection.escape(user.phone) + " , 0, 0, 0, 0, 0, '" + getDate() + "', " + connection.escape(user.location) + ", " + user.lat + ", " + user.lng + ")";
 
-				connection.query(insert, function(err, rows) {
-					if (err) {
-						/* an error occured */
-						console.log("Register Failed", err);
-						return callback(-2);
-					}
-					else {
-						console.log("Register Successful");
-						return callback(0);
+                // Send user to Dwolla
+                var requestBody = {
+                    firstName: user.firstName,
+                    lastName: user.lastName,
+                    email: user.email,
+                    type: 'personal',
+                    address1: user.location,
+                    city: user.city,
+                    state: user.state,
+                    postalCode: user.zip,
+                    dateOfBirth: user.birthDate,
+                    ssn: user.ssn
+                };
 
-					}
-				});
+                appToken.post('customers', requestBody).then(function(res) {
+                    var dwollaID = res.headers.get('location');
+                    dwollaID = dwollaID.replace("https://api-sandbox.dwolla.com/customers/", "");
+ 
+				    var hash = bcrypt.hashSync(user.password, 10);
+				    console.log("HASH = " + hash);
+				    /* if username is not already used */
+				    var insert = "INSERT INTO Users (Username, Password, EmailAddress, PhoneNumber, NumberOfStrikes, NUM_BidRate, NUM_PostRate, AVG_BidRate, AVG_PostRate, DateJoined, U_Location, U_Lat, U_Long, dwollaUID) VALUES (" + connection.escape(user.username) + ", '" + hash + "'," + connection.escape(user.email) + "," + connection.escape(user.phone) + " , 0, 0, 0, 0, 0, '" + getDate() + "', " + connection.escape(user.location) + ", " + user.lat + ", " + user.lng + ", " + connection.escape(dwollaID) + ")";
+
+				    connection.query(insert, function(err, rows) {
+					    if (err) {
+						    /* an error occured */
+						    console.log("Register Failed", err);
+						    return callback(-2);
+					    }
+					    else {
+						    console.log("Register Successful");
+						    return callback(0);
+
+					    }
+				    });
+                });
 			}
 		}
 	});

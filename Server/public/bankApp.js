@@ -24,7 +24,9 @@ app.controller("bankController", [ '$scope', '$http', function($scope, $http) {
 
         // TODO - send info to server
         $http.post('/BankButton', $scope.user).then(function(response) {
-            
+            $scope.user = null;
+            console.log(response);
+
             // navigate to login
             window.open("index.html", "_top");
         }).catch(function(response) {
