@@ -123,7 +123,7 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http, $c
 
 $scope.sortByLowestBid = function() {
         console.log("I'm in!");
-        currentSort = "lowest_bid";
+        currentSort = "low_bid";
 	    var bidVal1;
         var bidVal2;
         var temp;
