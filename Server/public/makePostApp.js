@@ -11,7 +11,15 @@ app.controller("makePostController", [ '$scope', '$http', function($scope, $http
     $scope.post;
     $scope.status = "";
 	$scope.user;
-    
+
+    /* logout user on button press */
+    $scope.logout = function() {
+        console.log("logout function called");
+        $http.post('/logout').then(function(response) {
+            console.log("response = %j", response);
+            window.location = response.data.redirect;
+        });
+    };
 
     window.onload = function() {
     	$http.post('/GetUser').then(function(response) {
@@ -38,10 +46,6 @@ app.controller("makePostController", [ '$scope', '$http', function($scope, $http
             $scope.status = "Make Sure to fill in all required fields.";
             return;
         }
-        /*if($scope.post.imageLink.match((http(s?):)|([/|.|\w|\s])*\.(?:jpg|gif|png) == null){
-            $scope.status = "Please enter a valid imageLink URL";
-            return;
-        }*/
 
         /* get coordinates of location and send request for create post */
         var myloc = $scope.post.location;
@@ -74,6 +78,7 @@ app.controller("makePostController", [ '$scope', '$http', function($scope, $http
                 }
             }).catch(function(response) {
                 console.log("error creating post");
+                alert("Error creating post!");
             });
        }
        else {

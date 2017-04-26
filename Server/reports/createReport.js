@@ -5,7 +5,7 @@ var connection = require('./../helpers/connection');
 
 /**
 * Create a new Rating
-* Accepts: ratingType ("Bid" or "Post"), Comment, userIdRater, userId, ratingValue 
+* Accepts: ratingType ("Bid" or "Post"), Comment, userIdReporter, userId, ratingValue 
 * Returns: State
 */
 module.exports = function(req, res){
@@ -22,24 +22,27 @@ module.exports = function(req, res){
 	}
 
 	/* check for undefined args */
-	if (req.body.comment == undefined || req.body.userId == undefined || req.body.userIdReporter == undefined || req.body.type == undefined) {
-		console.log("CreateRating: undefined args: requires ratingType, userId, userIdRater, and comment");
+	if (req.body.comment == undefined ||  req.body.userId == undefined || req.body.type == undefined) {
+		console.log("CreateReport: undefined args: requires comment, userId, and type");
+		console.log("userId: "+req.body.userId);
+		console.log("comment: "+req.body.comment);
+		console.log("type: "+req.body.type);
 		callback(-1);
 	}
-	else if (req.body.userId == req.body.userIdRater) {
-		/* check that userId and userIdRater are not equal */
+	else if (req.user.Uid == req.body.userId) {
+		/* check that userId and userIdReporter are not equal */
 		console.log("CreateReport: a user cannot report themselves!");
 		return callback(-1);
 	}
 	else {
-		createReport(req.body.userId, req.body.type, req.body.userIdReporter, req.body.comment, callback);
+		createReport(req.body.userId, req.body.type, req.user.Uid, req.body.comment, callback);
 	}
 }
 
 function createReport(userId, type, userIdReporter, comment, callback) {
 	console.log("CreateReport: type: " + type + ", userId: " + userId + ", userIdReporter: " + userIdReporter + ", comment: " + comment);
 
-	var insert = "INSERT INTO Reports (Uid, Type, UidReporter, Time, Comment) VALUES (" + connection.escape(userId) + ", " + connection.escape(type) + ", " + connection.escape(userIdRater) + ", '" + getDate() + "', " + connection.escape(comment) + ")";
+	var insert = "INSERT INTO Reports (Uid, Type, UidReporter, Time, Comment) VALUES (" + connection.escape(userId) + ", " + connection.escape(type) + ", " + connection.escape(userIdReporter) + ", '" + getDate() + "', " + connection.escape(comment) + ")";
 
 	connection.query(insert, function(err, rows) { 
 		if (err) {

@@ -53,6 +53,7 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
             /* request post data */
             $http.post('/getUserPosts').then(function(response) {
                 fillRows(response);
+                $scope.sortByAge();
             }).catch(function(response) {
                 /* catch error in reponse */
                 $scope.user = null;
@@ -931,8 +932,8 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
                 tableParent.removeChild(postRows[i]);
             }
         }
-
         displayPosts();
+        $scope.sortByAge();
     }
 
     $scope.viewUserProfile = function() {
@@ -946,6 +947,7 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
             window.open("userProfile.html", "_top");
         }
     }
+
 
     $scope.viewBidUserProfile = function(uid) {
         console.log("In viewBidUserProfile");

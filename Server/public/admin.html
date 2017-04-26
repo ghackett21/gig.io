@@ -48,8 +48,7 @@
             <th>UID</th>
         	<th>Username</th>
             <th>Location</th>
-            <th>Rating</th>
-            <th>Reports</th>
+            <th>Strikes</th>
         </tr>
     </thead>
     <tbody ng-repeat="users in userList | filter:searchInput">
@@ -57,7 +56,6 @@
             <td>{{users.Uid}}</td>
             <td>{{users.Username}}</td>
             <td>{{users.U_Location}}</td>
-            <td class="center">{{users.AVG_PostRate}}</td>
             <td class="center">{{users.NumberOfStrikes}}</td>
           </tr>
 	</tbody>
@@ -111,7 +109,7 @@
       </table>
     </div>
     <div class="modal-footer">
-		<button class="button" ng-click="deleteUser()"><span>Delete User</span></button>
+		<button class="button" ng-click="deleteUser(userL.Uid)"><span>Delete User</span></button>
     <br>
     </div>
   </div>

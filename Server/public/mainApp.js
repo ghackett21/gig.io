@@ -11,6 +11,7 @@ var myUser;
 var loc_distance;
 var expanded = 0;
 var currUid = 0;
+var currentSort = null;
 
 app.controller("mainController", [ '$scope', '$http', function($scope, $http, $compile) {
 	$scope.user;
@@ -27,9 +28,11 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http, $c
 
     /* load user and post data  when page loads */
 	window.onload = function() {
+        currentSort = "age";
         /* requst information about the currently logged-in user */
         $http.post('/GetUser').then(function(response) {
             //console.log(response.data.Result[0]);
+			
             myUser = response.data.Result[0];
 			if(myUser.Admin == 1){
 				var nav = document.getElementById('secret');
@@ -38,8 +41,9 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http, $c
             /* save admin status */     
             localStorage.setItem("userAdmin", myUser.Admin); 
             localStorage.setItem("currentUid", myUser.Uid); 
+		$scope.sortByAge();
         })
-
+		
         /* request post data */
 		$http.post('/GetAllPosts').then(function(response) {
 			//$scope.user = null;
@@ -114,11 +118,13 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http, $c
 				console.log("failure");
 			}
 		})
+		$scope.sortByAge();
         
 	};
 
 $scope.sortByLowestBid = function() {
         console.log("I'm in!");
+        currentSort = "low_bid";
 	    var bidVal1;
         var bidVal2;
         var temp;
@@ -187,6 +193,7 @@ $scope.sortByLowestBid = function() {
 	 console.log("in sort type")
      var sortKey = $scope.selected;
      console.log(sortKey);
+     currentSort = sortKey
      switch (sortKey) {
        case 'age':
          $scope.sortByAge();
@@ -199,6 +206,9 @@ $scope.sortByLowestBid = function() {
          break;
        case 'num_bids':
          $scope.sortByNumOfBids();
+         break;
+	   case 'oldest':
+         $scope.sortByOldest();
          break;
        default:
      }
@@ -270,7 +280,71 @@ $scope.sortByLowestBid = function() {
             }
         })
 	};
+	$scope.sortByOldest = function() {
+	    var time1;
+        var time2;
+        var temp;
+        var swapped;
+        $http.post('/GetAllPosts').then(function(response) {
+            posts = response.data.result;
 
+            /* Sort posts by date */
+            do {
+                swapped = false;
+                for (var i=0; i < posts.length-1; i++) {
+                    time1 = new Date(posts[i].CreationTime);
+                    time2 = new Date(posts[i+1].CreationTime);
+
+                    if (time1.getTime() > time2.getTime()) {
+                        //console.log("I'm In!");
+                        var temp = posts[i];
+                        posts[i] = posts[i+1];
+                        posts[i+1] = temp;
+                        swapped = true;
+                    }
+                }
+            } while (swapped);
+
+            var template = document.querySelector('#tmplt');
+            for (var i = 0; i < posts.length; i++) {
+                var currRow = document.getElementById("post-"+i);
+                var td = currRow.querySelectorAll('td');
+                td[0].innerHTML = posts[i].P_Title;
+                td[1].innerHTML = posts[i].Username;
+                td[2].innerHTML = posts[i].P_Location;
+                if (posts[i].NumberOfBids != 0)
+                    td[3].innerHTML = '$' + posts[i].LowestBid;
+                else
+                    td[3].innerHTML = "-";
+                td[4].innerHTML = posts[i].NumberOfBids;
+                var date = posts[i].CreationTime.substring(0,10);
+                var day = date.substring(8,date.length);
+                var month = date.substring(5,7);
+                var year = date.substring(0,4);
+
+                date = month + "/" + day + "/" + year;
+
+                td[5].innerHTML = date;
+            }
+
+             /* set up each rows's onClick actions */
+            setupPosts(posts);
+
+            console.log(response.status);
+            console.log(response);
+            if(response.status == 200){
+                console.log("success");
+            }else if(response.status == 401){
+                console.log("failure");
+            }
+        }).catch(function(response) {
+            console.log(response.status);
+            console.log(response);
+            if(response.status == 401){
+                console.log("failure");
+            }
+        })
+	};
 	$scope.sortByDistance = function() {
 	    var time1;
         var time2;
@@ -466,14 +540,37 @@ $scope.sortByLowestBid = function() {
                     td[0].innerHTML = date; 
                     td[1].innerHTML = "<b><a class=\'bidprof-link ng-binding\' style=\"font-size:18px\" onclick=\"angular.element(this).scope().viewBidUserProfile(" + bids[i].Uid + ")\">" + bids[i].Username + "</a></b>";
                     td[2].innerHTML = amountString;
-                    td[3].innerHTML = bids[i].AVG_BidRate + "/5";
+
+                    /* format bid rating so it is only displayed to one decimal */
+                    var bidText = bids[i].AVG_BidRate + "";
+                    bidText = bidText.substring(0, bidText.indexOf(".") + 2) + "/5";
+                    td[3].innerHTML = bidText;
                     template.parentNode.appendChild(clone);
                 }
             }
-            
+            console.log("currentSort = " + currentSort);
+            switch (currentSort) {
+                case 'age':
+                    $scope.sortByAge();
+                    break;
+                case 'low_bid':
+                    $scope.sortByLowestBid();
+                    break;
+                case 'dist':
+                    $scope.sortByDistance();
+                    break;
+                case 'num_bids':
+                    $scope.sortByNumOfBids();
+                    break;
+                case 'oldest':
+                    $scope.sortByOldest();
+                    break;
+                default:
+                    //$scope.sortByAge();
+            }       
         }).catch(function(response) {
-            console.log("error bidding");
-        })
+            console.log("error bidding, ");
+        });
     };
 
     /* sets up all posts onClick actions (display info, load bids, and map) */
@@ -833,15 +930,17 @@ app.controller("adminController", ['$scope', '$http', function($scope, $http) {
 			document.getElementById('noReports').style.display = "none";
         }
 
-		$scope.deleteUser = function(uid){
-			var format = {userId:uid};
-			$scope.close();
-		 	$http.post('/DeleteUser', format).then(function(response) {
-				
-        	});
-		}
 	}
-
+		$scope.deleteUser = function(uid){
+			var format1 = {userId:uid};
+			console.log("uid = %j", format1);
+			//$scope.close();
+        	$http.post('/DeleteUser', format1).then(function(response) {
+				console.log("Delete");
+        	}).catch(function(response) {
+				console.log("ded");			
+			});
+		}
 
 
     /* sets up all posts onClick actions (display info, load bids, and map) */

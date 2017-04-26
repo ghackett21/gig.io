@@ -1,19 +1,23 @@
 /**
- * makePostApp.js
- * This file is the controller for the make post page
+ * reportApp.js
+ * This file is the controller for the report page
  */
 
 var app = angular.module("myApp", []);
 
-var mylong;
-var mylat;
 app.controller("reportController", [ '$scope', '$http', function($scope, $http) {
     $scope.report;
     $scope.status = "";
-    
+    window.onload = function() {
+        if(localStorage.getItem("userAdmin")  == 1){
+            var nav = document.getElementById('secret');
+            nav.innerHTML = "<a href=\"admin.html\">AdminCP</a>";
+        } 
+    }
+
     $scope.report = function() {
-        console.log("reason = " + $scope.post.title);
-        console.log("description = " + $scope.post.description);
+        console.log("reason = " + $scope.report.reason);
+        console.log("description = " + $scope.report.description);
         if($scope.report == undefined){
             return;
         }
@@ -23,7 +27,13 @@ app.controller("reportController", [ '$scope', '$http', function($scope, $http) 
             $scope.status = "Make Sure to fill in all required fields.";
             return;
         }
-		$http.post('/createReport', $scope.post).then(function(response) {
+		var report_req = {"comment":$scope.report.description,"userId":localStorage.getItem("userId"),"type":$scope.report.reason};
+
+		console.log("report: "+ report_req);
+		console.log("comment: "+$scope.report.description);
+		console.log("userId (user being reported): "+localStorage.getItem("userId"));
+		console.log("type: "+$scope.report.reason);
+		$http.post('/createReport', report_req).then(function(response) {
                     $scope.report = null;
                     console.log(response);
                     if(response.data.State == 0){

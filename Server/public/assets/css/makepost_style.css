@@ -212,3 +212,15 @@ form {
 label, input {
     display: inline-block;
 }
+
+    textarea {
+  resize: none;
+  width: 40%;
+  margin: 5px;
+  
+
+  position: relative;
+  font-family: "Roboto", sans-serif;
+  text-align: left;
+  
+}
