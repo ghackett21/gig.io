@@ -16,25 +16,25 @@
 
 
 <div id="Title" style="padding-left:16px" >
-  <h2 align=center>Create a post for a job you're looking for someone to help with!</h2>
+  <h2 ng-show="status == ''" align=center>Create a post for a job you're looking for someone to help with!</h2>
   <p align=center></p>
 <br>
 	<h3 id="status" align=center>{{status}}</h3>
 
 
-<form name="postCreation">
+<form ng-show="status == ''" name="postCreation">
       
         <label for="title">Post title:</label>
         <input padding-left="5px" ng-model="post.title" id="title" type="text"  class="validate" required>
       <br>
         <label for="description">Description of the work you are requesting:</label>
-        <input ng-model="post.description" id="description" type="text"  class="validate" required>
+        <textarea rows="4" cols="80" ng-model="post.description" id="description" type="text"  class="validate" required>Enter Description Here...</textarea>
       <br>
 	<label for="location">Location where the work will take place:</label>
         <input padding-left="5px" ng-model="post.location" id="location" type="text"  class="validate" required>
       <br>
 	<label for="image">Picture URL (Optional):</label>
-        <input padding-left="5px" ng-model="post.imageLink" id="picture" type="url">
+        <input maxlength="99" placeholder="Image url must be less than 99 characters" padding-left="5px" ng-model="post.imageLink" id="picture" type="url">
       <br>  
         <input ng-click="makePost()" type="submit" value="Submit">
     </form><br>
