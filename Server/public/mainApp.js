@@ -28,6 +28,7 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http, $c
 
     /* load user and post data  when page loads */
 	window.onload = function() {
+        currentSort = "age";
         /* requst information about the currently logged-in user */
         $http.post('/GetUser').then(function(response) {
             //console.log(response.data.Result[0]);
