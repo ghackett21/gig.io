@@ -78,6 +78,7 @@ app.controller("makePostController", [ '$scope', '$http', function($scope, $http
                 }
             }).catch(function(response) {
                 console.log("error creating post");
+                alert("Error creating post!");
             });
        }
        else {
