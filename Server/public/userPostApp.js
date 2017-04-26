@@ -42,8 +42,8 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
 				nav.innerHTML = "<a href=\"admin.html\">AdminCP</a>";
 			}
         });
-		$scope.sortByAge();
         displayPosts();
+        $scope.sortByAge();
 
     }
 
