@@ -46,10 +46,6 @@ app.controller("makePostController", [ '$scope', '$http', function($scope, $http
             $scope.status = "Make Sure to fill in all required fields.";
             return;
         }
-        /*if($scope.post.imageLink.match((http(s?):)|([/|.|\w|\s])*\.(?:jpg|gif|png) == null){
-            $scope.status = "Please enter a valid imageLink URL";
-            return;
-        }*/
 
         /* get coordinates of location and send request for create post */
         var myloc = $scope.post.location;
