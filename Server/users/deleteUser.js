@@ -1,3 +1,4 @@
+var connection = require('./../helpers/connection');
 var deleteUserHelper = require('./../users/deleteUserHelper');
 
 /**
@@ -6,15 +7,14 @@ var deleteUserHelper = require('./../users/deleteUserHelper');
  * Returns state
  */
 module.exports = function(req, res) {
- 	console.log("GetUser");
-	console.log("user = %s", JSON.stringify(req.user) );
+ 	console.log("DeleteUser");
  	/* callback to handle response */
  	var callback = function(result) {
  		if (result < 0) {
- 			res.json({'Response': 'GetUser failed', 'State': result});
+ 			res.json({'Response': 'DeleteUser failed', 'State': result});
  		}
  		else {
- 			res.json({'Response': 'GetUser successful', 'State': 0});
+ 			res.json({'Response': 'DeleteUser successful', 'State': 0});
  		}
  	}
 
@@ -25,4 +25,5 @@ module.exports = function(req, res) {
  	else {
  		deleteUserHelper(req.body.userId, callback);
  	}
- }
+}
+
