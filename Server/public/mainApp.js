@@ -914,7 +914,11 @@ app.controller("adminController", ['$scope', '$http', function($scope, $http) {
 				document.getElementById('reportHistory').style.display = "none";
 				document.getElementById('noReports').style.display = "block";
 			}
-        })
+        });
+
+        $http.post('/ClearPendingReports', format).then(function(reponse) {
+            console.log("Pending reports cleared");
+        });
 		console.log("hello " + uid);
 		var modal = document.getElementById('myModal');
 
