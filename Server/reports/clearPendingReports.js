@@ -27,7 +27,7 @@ module.exports = function(req, res) {
 function getUserReports(userId, callback) {
 	console.log("GetUserReports: userId " + userId);
 	
-	var select = "UPDATE Users Set PendingReports=0 WHERE Uid LIKE " + userId;
+	var select = "UPDATE Users SET PendingReports=0 WHERE Uid LIKE " + userId;
 
 	connection.query(select, function(err, rows) { 
 		if (err) {
@@ -35,7 +35,17 @@ function getUserReports(userId, callback) {
 			return callback(-2);
 		}
 		else {
-			return callback(0);
+			var updateReports = "UPDATE Reports SET State=1 WHERE Uid=" + userId + " AND State=0";
+
+			connection.query(updateReports, function(err, rows) {
+				if (err) {
+					console.log("Clear pending reports: error updating reports state " + err);
+					return callback(-2);
+				}
+				else {
+					return callback(0);
+				}
+			});
 		}
 	});
 }
