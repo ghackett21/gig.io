@@ -24,7 +24,7 @@ app.controller("updateProfileController", [ '$scope', '$http', function($scope, 
                 return;
             }
 
-            if (/\S/.test($scope.user.description)) {
+            if (!/\S/.test($scope.user.description)) {
                 $scope.user.description = undefined;
             }
 
