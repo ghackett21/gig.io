@@ -35,7 +35,7 @@ function getUserReports(userId, callback) {
 			return callback(-2);
 		}
 		else {
-			var updateReports = "UPDATE Reports SET State=1 WHER Uid=" + userId + " AND State=0";
+			var updateReports = "UPDATE Reports SET State=1 WHERE Uid=" + userId + " AND State=0";
 
 			connection.query(updateReports, function(err, rows) {
 				if (err) {
