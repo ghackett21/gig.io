@@ -66,7 +66,7 @@ function register(user, callback) {
 						return callback(-2);
 					}
 					else {
-						var selectUserId = "SELECT Uid from USERS WHERER Username=" + connection.escape(user.username) + " AND Password='" + hash + "'";
+						var selectUserId = "SELECT Uid from USERS WHERE Username=" + connection.escape(user.username) + " AND Password='" + hash + "'";
 
 						connection.query(selectUserId, function(err, rows) {
 							if (err) {
