@@ -24,12 +24,21 @@ app.controller("updateProfileController", [ '$scope', '$http', function($scope, 
                 return;
             }
 
+            /* catch fields that are only whitespace */
             if (!/\S/.test($scope.user.description)) {
                 $scope.user.description = undefined;
             }
 
-            if ($scope.user.image == "") {
+            if (!/\S/.test($scope.user.image)) {
                 $scope.user.image = undefined;
+            }
+
+            if (!/\S/.test($scope.user.phone)) {
+                $scope.user.phone = undefined;
+            }
+
+            if (!/\S/.test($scope.user.username)) {
+                $scope.user.username = undefined;
             }
 
             if ($scope.user.location == undefined) {
