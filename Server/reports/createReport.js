@@ -50,7 +50,7 @@ function createReport(userId, type, userIdReporter, comment, callback) {
 			return callback(-2);
 		}
 		else {
-			var update = "UPDATE Users SET PendingReports to PendingReports+1 WHERE Uid=" + userId.
+			var update = "UPDATE Users SET PendingReports to PendingReports+1 WHERE Uid=" + userId;
 
 			connection.query(update, function(err, rows) {
 				if (err) {
