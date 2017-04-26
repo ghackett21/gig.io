@@ -123,7 +123,7 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http, $c
 
 $scope.sortByLowestBid = function() {
         console.log("I'm in!");
-        sortType = "lowest_bid";
+        currentSort = "lowest_bid";
 	    var bidVal1;
         var bidVal2;
         var temp;
@@ -192,7 +192,7 @@ $scope.sortByLowestBid = function() {
 	 console.log("in sort type")
      var sortKey = $scope.selected;
      console.log(sortKey);
-     sortType = sortKey
+     currentSort = sortKey
      switch (sortKey) {
        case 'age':
          $scope.sortByAge();
@@ -547,7 +547,7 @@ $scope.sortByLowestBid = function() {
                     template.parentNode.appendChild(clone);
                 }
             }
-            switch (sortType) {
+            switch (currentSort) {
                 case 'age':
                     $scope.sortByAge();
                     break;
