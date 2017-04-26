@@ -932,6 +932,7 @@ app.controller("adminController", ['$scope', '$http', function($scope, $http) {
             modal.style.display = "none";
 			document.getElementById('reportHistory').style.display = "block";
 			document.getElementById('noReports').style.display = "none";
+            location.reload();
         }
 
 	}
