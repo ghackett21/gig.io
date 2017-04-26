@@ -50,7 +50,18 @@ function createReport(userId, type, userIdReporter, comment, callback) {
 			return callback(-2);
 		}
 		else {
-			return callback(0);
+			var update = "UPDATE Users SET PendingReports=PendingReports+1 WHERE Uid=" + userId;
+
+			connection.query(update, function(err, rows) {
+				if (err) {
+					console.log("Create Report: error updating user: " + err);
+					return callback(-2);
+				}
+				else {
+					console.log("Create Report successful");
+					return callback(0);
+				}
+			});
 		}
 	});
 }

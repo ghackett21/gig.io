@@ -49,6 +49,7 @@
         	<th>Username</th>
             <th>Location</th>
             <th>Strikes</th>
+            <th>Pending Reports</th>
         </tr>
     </thead>
     <tbody ng-repeat="users in userList | filter:searchInput">
@@ -57,6 +58,7 @@
             <td>{{users.Username}}</td>
             <td>{{users.U_Location}}</td>
             <td class="center">{{users.NumberOfStrikes}}</td>
+            <td>{{users.PendingReports}}</td>
           </tr>
 	</tbody>
 </table>
