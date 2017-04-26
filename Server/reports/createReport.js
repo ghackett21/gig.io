@@ -35,7 +35,7 @@ module.exports = function(req, res){
 		return callback(-1);
 	}
 	else {
-		createReport(req.user.Uid, req.body.type, req.body.userId, req.body.comment, callback);
+		createReport(req.body.userId, req.body.type, req.user.Uid, req.body.comment, callback);
 	}
 }
 
