@@ -24,7 +24,7 @@ app.controller("updateProfileController", [ '$scope', '$http', function($scope, 
                 return;
             }
 
-            if ($scope.user.description.match(/^\s+$/)) {
+            if (/^\s+$/.test($scope.user.description)) {
                 $scope.user.description = undefined;
             }
 
