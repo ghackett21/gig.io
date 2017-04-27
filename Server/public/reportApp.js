@@ -16,6 +16,7 @@ app.controller("reportController", [ '$scope', '$http', function($scope, $http) 
                 var nav = document.getElementById('secret');
                 nav.innerHTML = "<a href=\"admin.html\">AdminCP</a>";
             });
+        }
     }
 
     $scope.report = function() {
