@@ -17,7 +17,7 @@ app.controller("mainController", [ '$scope', '$http', function($scope, $http, $c
 	$scope.user;
     $scope.userToView;
     $scope.test = "test";
-
+	$scope.showBidButton="";
     /* logout user on button press */
 	$scope.logout = function() {
 		$http.post('/logout').then(function(response) {
@@ -602,6 +602,9 @@ $scope.sortByLowestBid = function() {
                     console.log(post);
                     currUid = post.Uid;
                     $scope.owner = post.Username;
+					if ($scope.owner == myUser.Username) {
+						$scope.showBidButton="false";}
+					else{$scope.showBidButton="";}
                     $scope.phone = post.PhoneNumber;
                     $scope.desc = post.P_Description;
                     $scope.title = post.P_Title;

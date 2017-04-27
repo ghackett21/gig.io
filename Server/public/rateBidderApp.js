@@ -8,7 +8,7 @@ var app = angular.module("myApp", []);
 app.controller("rateBidderController", [ '$scope', '$http', function($scope, $http){
     $scope.rating;
     $scope.status = "";
-
+	$scope.show="";
     /* logout user on button press */
     $scope.logout = function() {
         $http.post('/logout').then(function(response) {
@@ -16,6 +16,17 @@ app.controller("rateBidderController", [ '$scope', '$http', function($scope, $ht
             window.location = response.data.redirect;
         });
     };
+
+    window.onload = function() {
+        $http.post('/GetUser').then(function(response) {
+            //console.log(response.data.Result[0]);
+            myUser = response.data.Result[0];
+            if(myUser.Admin == 1){
+                var nav = document.getElementById('secret');
+                nav.innerHTML = "<a href=\"admin.html\">AdminCP</a>";
+            }
+        });
+    }
     
     $scope.rate = function() {
         console.log("rate bidder");
@@ -43,9 +54,11 @@ app.controller("rateBidderController", [ '$scope', '$http', function($scope, $ht
             console.log(response);
             if(response.data.State == 0){
                 $scope.status = "Rating submitted successfully. Thank you for your feedback on this user.";
+				$scope.show="false";
             }
             else if (response.data.State == -3) {
-                $scope.status = "Cannot submit multiple ratings for single post.";
+                $scope.status = "Cannot submit multiple ratings for a single post.";
+				$scope.show="false";
             }
         }).catch(function(response) {
             console.log("error submitting rating");

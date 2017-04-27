@@ -54,13 +54,14 @@ app.controller("profileController", [ '$scope', '$http', function($scope, $http)
 
             var profileImage = document.getElementById('profile_image');
 
-            profileImage.addEventListener('error', function(){
-                console.log('loading img failed.');  
-                profileImage.src = "assets/img/defaultImage.png";
-            });
-
+           // profileImage.addEventListener('error', function(){
+           //     console.log('loading img failed.');  
+           //     profileImage.src = "assets/img/defaultImage.png";
+           // });
+			console.log("GEOFFOOFOOFOFF %j", response.data.Result[0]);
             /* display profile image */
             if (response.data.Result[0].U_Image != "null" && response.data.Result[0].U_Image != "") {
+		       console.log("we here");
                profileImage.src = response.data.Result[0].U_Image;
             }
             else {
