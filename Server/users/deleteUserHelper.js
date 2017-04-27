@@ -12,7 +12,7 @@
  			return callback(-2);
  		}
  		else {
- 			var deletePosts = "DELETE FROM Posting WHERE Uid=" + userId;
+ 			var deletePosts = "DELETE FROM Posting WHERE Uid=" + userId + " OR Winning_Uid=" + userId;
 
  			connection.query(deletePosts, function(err, rows) {
  				if (err) {
