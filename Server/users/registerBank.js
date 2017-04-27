@@ -65,13 +65,31 @@ function registerBank(user, callback) {
 
                 appToken.post(requestURL, requestBody).then(function(res) {
                     var paySourceID = res.headers.get('location');
+                    var fundingURL = paySourceID;
                     paySourceID = paySourceID.replace("https://api-sandbox.dwolla.com/funding-sources/", "");
 
                     console.log(paySourceID);
+                   
+                    // Initiate micro-deposits
+                    var microDepositURL = fundingURL + "/micro-deposits";
+                    console.log(microDepositURL);
+                    appToken.post(microDepositURL).then(function(res) {
+                       console.log('initiated micro-deposits');
+                       // Verify micro-deposits
+                       var requestBody = {
+                            amount1: {
+                                value: '0.03',
+                                currency: 'USD'
+                            },
+                            amount2: {
+                                value: '0.09',
+                                currency: 'USD'
+                            }
+                       };
+                       appToken.post(microDepositURL, requestBody);
+                    });
+ 
 
-    				//var selectUserId = "SELECT Uid from Users WHERE Username=" + connection.escape(user.username) + " AND Password='" + hash + "'";
-				    //var insert = "INSERT INTO Users (Username, Password, EmailAddress, PhoneNumber, NumberOfStrikes, NUM_BidRate, NUM_PostRate, AVG_BidRate, AVG_PostRate, DateJoined, U_Location, U_Lat, U_Long, dwollaUID) VALUES (" + connection.escape(user.username) + ", '" + hash + "'," + connection.escape(user.email) + "," + connection.escape(user.phone) + " , 0, 0, 0, 0, 0, '" + getDate() + "', " + connection.escape(user.location) + ", " + user.lat + ", " + user.lng + ", " + connection.escape(dwollaID) + ")";
-                    
                     var insert = "UPDATE Users SET dwollaPaySourceID=" + connection.escape(paySourceID) + " WHERE dwollaUID=" + connection.escape(user.dwollaID.dwollaUID);
                     console.log(insert);
 
@@ -87,7 +105,7 @@ function registerBank(user, callback) {
 
 					    }
 				    });
-                });
+               });
 			//}
 //		}
 	//});
