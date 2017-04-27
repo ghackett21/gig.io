@@ -1,4 +1,6 @@
 
+ var connection = require('./../helpers/connection');
+
  module.exports = function(userId, callback) {
  	console.log("Delete User: userId " + userId);
 
