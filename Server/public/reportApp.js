@@ -8,7 +8,7 @@ var app = angular.module("myApp", []);
 app.controller("reportController", [ '$scope', '$http', function($scope, $http) {
     $scope.report;
     $scope.status = "";
-
+	$scope.show="";
    window.onload = function() {
             if (localStorage.getItem("userAdmin") == 1){
                 var nav = document.getElementById('secret');
@@ -39,6 +39,7 @@ app.controller("reportController", [ '$scope', '$http', function($scope, $http) 
                     console.log(response);
                     if(response.data.State == 0){
                         $scope.status = "Report submitted successfully.";
+						$scope.show="false";
                     }
                 }).catch(function(response) {
                     console.log("error submitting report");

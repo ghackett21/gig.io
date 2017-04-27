@@ -11,7 +11,7 @@ app.controller("makePostController", [ '$scope', '$http', function($scope, $http
     $scope.post;
     $scope.status = "";
 	$scope.user;
-
+	$scope.show="";
     /* logout user on button press */
     $scope.logout = function() {
         console.log("logout function called");
@@ -75,6 +75,7 @@ app.controller("makePostController", [ '$scope', '$http', function($scope, $http
                 console.log(response);
                 if(response.data.State == 0){
                     $scope.status = "Post successfully created! Don't forget to check for bids.";
+					$scope.show="false";
                 }
             }).catch(function(response) {
                 console.log("error creating post");
