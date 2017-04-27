@@ -16,6 +16,17 @@ app.controller("ratePosterController", [ '$scope', '$http', function($scope, $ht
             window.location = response.data.redirect;
         });
     };
+
+    window.onload = function() {
+        $http.post('/GetUser').then(function(response) {
+            //console.log(response.data.Result[0]);
+            myUser = response.data.Result[0];
+            if(myUser.Admin == 1){
+                var nav = document.getElementById('secret');
+                nav.innerHTML = "<a href=\"admin.html\">AdminCP</a>";
+            }
+        });
+    }
     
     $scope.rate = function() {
         console.log("rate poster");
