@@ -18,6 +18,7 @@ var dwollaClient = require('./helpers/dwollaClient');
 /* users */
 var login = require('./users/login');
 var register = require('./users/register');
+var registerBank = require('./users/registerBank');
 var updateProfile = require('./users/updateProfile');
 var getUser = require('./users/getUser');
 var getAllUsers = require('./users/getAllUsers');
@@ -241,11 +242,11 @@ app.post('/logout', function(req, res) {
 app.post('/RegisterButton', function(req, res) {
 	register(req, res);
 });
-/*
-app.post('/BankButton', funtion(req, res) {
-    registerBankAccount(req, res);
+
+app.post('/BankButton', function(req, res) {
+    registerBank(req, res);
 });
-*/
+
 
 /* test stuff by sam, dont worry about this */
 

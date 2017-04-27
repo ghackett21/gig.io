@@ -1,6 +1,7 @@
 /* closePost.js */
 var connection = require('./../helpers/connection');
 var deletePostHelper = require("./../posts/deletePostHelper");
+var appToken = require('./../helpers/dwollaClient');
 
 /** close a Post -
  * UserId is optional, if one is provied they are notified and the post is set to pending,
@@ -48,4 +49,27 @@ function completePost(bidId, postId, callback) {
 	        return callback(0);
 	    }
     });
+
+    //TODO - get user bank info from DB
+    // Process transaction with dwolla API
+    var requestBody = {
+        _links: {
+            source: {
+                href: 'temp'//TODO - link
+            },
+            destionation: {
+                href: 'temp'//TODO - link
+            }
+        },
+        amount: {
+            currency: 'USD',
+            value: 'temp'//TODO - get value
+        }
+    };
+
+    appToken.post('transfers', requestBody).then(function(res) {
+        console.log(res.headers.get('location'));
+    });
+
 }
+

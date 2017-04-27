@@ -24,23 +24,20 @@ app.controller("bankController", [ '$scope', '$http', function($scope, $http) {
 
         //  get dwolla ID from GetUser response
         var Uid = localStorage.getItem("userID");
+        Uid = {userId:Uid};
         $http.post('/GetUser', Uid).then(function(response) {
             $scope.user.dwollaID = response.data.Result[0];
-        });
-/*
-        // TODO send info to server
-        $http.post('/BankButton', $scope.user).then(function(response) {
-            $scope.user = null;
-            console.log(response);
 
-            // navigate to login
-            window.open("index.html", "_top");
-        }).catch(function(response) {
-            console.log("error getting banking info");
-        });
-*/
+            // send info to server
+            $http.post('/BankButton', $scope.user).then(function(response) {
+                $scope.user = null;
+                console.log(response);
 
-        
+                // navigate to login
+                window.open("index.html", "_top");
+            }).catch(function(response) {
+                console.log("error getting banking info");
+            });
+        });
     };
-}
-]);
+}]);
