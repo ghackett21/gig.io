@@ -24,6 +24,7 @@ var getUser = require('./users/getUser');
 var getAllUsers = require('./users/getAllUsers');
 var deleteUser = require('./users/deleteUser');
 var strikeUser = require('./users/strikeUser');
+var transfer = require('./users/transfer');
 
 /* posts */
 var getAllPosts = require('./posts/getAllPosts');
@@ -245,6 +246,10 @@ app.post('/RegisterButton', function(req, res) {
 
 app.post('/BankButton', function(req, res) {
     registerBank(req, res);
+});
+
+app.post('/transfer', function(req, res) {
+    transfer(req, res);
 });
 
 

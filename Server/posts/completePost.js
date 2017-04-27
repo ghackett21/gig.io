@@ -20,7 +20,8 @@ module.exports = function(req, res) {
 		}
 	}
 
-	console.log("complete post: Bidid: " + req.body.Bidid + ", PostId: " + req.body.PostId);
+	console.log(req.body);
+    console.log("complete post: Bidid: " + req.body.Bidid + ", PostId: " + req.body.PostId);
 
 	/* check for missing args */
 	if (req.body.PostId == undefined) {
@@ -35,7 +36,10 @@ module.exports = function(req, res) {
 function completePost(bidId, postId, callback) {
 	/* check if there is winner */
 	console.log("Complete post " + postId);
-
+ 
+    console.log(bidId);
+    console.log(postId); // prints as a number
+    
 	/* change post status to pending */
     var updatePostStatus = "UPDATE Posting SET STATUS=" + 2 + " WHERE Pid=" + postId;
 
@@ -49,29 +53,5 @@ function completePost(bidId, postId, callback) {
 	        return callback(0);
 	    }
     });
-
-    //TODO - get user bank info from DB
-    //TODO - get amount from Bids table
-    //TODO - get Uids from Posting table ==> get dwollaPaymentID from Users table
-    // Process transaction with dwolla API
-    var requestBody = {
-        _links: {
-            source: {
-                href: 'temp'//TODO - link
-            },
-            destionation: {
-                href: 'temp'//TODO - link
-            }
-        },
-        amount: {
-            currency: 'USD',
-            value: 'temp'//TODO - get value
-        }
-    };
-
-    appToken.post('transfers', requestBody).then(function(res) {
-        console.log(res.headers.get('location'));
-    });
-
 }
 

@@ -14,7 +14,7 @@ var client = new dwolla.Client({
 /* Dwolla access token */
 // TODO - this expires after 60 minutes
 var appToken = new client.Token({
-    access_token: 'Y8AEX2A8qgJCDszPoThThRgA5wZRQmpMzTtAvsw1SfBEdGVDOJ',
+    access_token: 'bjurpNytS0V8dRushU7OewUZdvnU6Tklut9q3K9eHizXUZZdm2',
     refresh_token: ""
 });
 

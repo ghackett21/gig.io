@@ -874,6 +874,7 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
                 }
 
                 localStorage.setItem("bidder_userId", bids[i].Uid);
+                localStorage.setItem("bid_amount", bids[i].Amount);
 
                 template.parentNode.appendChild(clone);
 
@@ -899,16 +900,44 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
         }).catch(function(response) {
             console.log("error in Close Post");
         })
+
+        console.log(bid.Amount);
+
     } 
 
     // Called when the "Completed" button is clicked
     $scope.completeButton = function() {
-    	 console.log("Completed Button function");
-        var bid = {PostId:$scope.Pid};
+    	console.log("Completed Button function");
 
+        // Send transaction
+        $http.post('/GetUser').then(function(response) {
+            var destination = response.data.Result[0].dwollaPaySourceID;
+            var bidderUid = localStorage.getItem("bidder_userId");
+            var bidAmount = localStorage.getItem("bid_amount");
+            
+            bidderUidObj = {userId:bidderUid};
+            
+            $http.post('/GetUser', bidderUidObj).then(function(response) {
+                var source = response.data.Result[0].dwollaPaySourceID;
+                //TODO - test
+                transferInfo = {dest:destination, src:source, amount:bidAmount};
+                console.log(transferInfo);
+                $http.post('/Transfer', transferInfo).then(function(response) {
+                     console.log(response);
+                })
+            }).catch(function(response) {
+                console.log("error getting bidder");
+            })
+        
+        }).catch(function(response) {
+            console.log("error getting user who clicked completed button");
+        })
+        
+        var bid = {PostId:$scope.Pid};
         /* close post */
         $http.post('/CompletePost', bid).then(function(response) {
-           location.reload(true);
+           //TODO - uncomment
+           //location.reload(true);
            console.log("Close Post: " + bid.PostId + ", amount: " + bid.Amount);
         }).catch(function(response) {
             console.log("error in Close Post");
