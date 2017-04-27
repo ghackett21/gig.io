@@ -224,3 +224,7 @@ label, input {
   text-align: left;
   
 }
+    
+    .formfield * {
+  vertical-align: middle;
+}

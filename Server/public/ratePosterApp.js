@@ -8,7 +8,7 @@ var app = angular.module("myApp", []);
 app.controller("ratePosterController", [ '$scope', '$http', function($scope, $http){
     $scope.rating;
     $scope.status = "";
-
+	$scope.show="";
     /* logout user on button press */
     $scope.logout = function() {
         $http.post('/logout').then(function(response) {
@@ -54,9 +54,11 @@ app.controller("ratePosterController", [ '$scope', '$http', function($scope, $ht
             console.log(response);
             if(response.data.State == 0){
                 $scope.status = "Rating submitted successfully. Thank you for your feedback on this user.";
+				$scope.show="false";
             }
             else if (response.data.State == -3) {
-                $scope.status = "Cannot submit multiple ratings for single post.";
+                $scope.status = "Cannot submit multiple ratings for a single post.";
+				$scope.show="false";
             }
         }).catch(function(response) {
             console.log("error submitting rating");

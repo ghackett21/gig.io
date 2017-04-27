@@ -8,11 +8,14 @@ var app = angular.module("myApp", []);
 app.controller("reportController", [ '$scope', '$http', function($scope, $http) {
     $scope.report;
     $scope.status = "";
+	$scope.show="";
+
     window.onload = function() {
         $http.post('/GetUser').then(function(response) {
             //console.log(response.data.Result[0]);
             myUser = response.data.Result[0];
             if(myUser.Admin == 1){
+
                 var nav = document.getElementById('secret');
                 nav.innerHTML = "<a href=\"admin.html\">AdminCP</a>";
             }
@@ -38,10 +41,12 @@ app.controller("reportController", [ '$scope', '$http', function($scope, $http) 
 		console.log("userId (user being reported): "+localStorage.getItem("userId"));
 		console.log("type: "+$scope.report.reason);
 		$http.post('/createReport', report_req).then(function(response) {
+
             $scope.report = null;
             console.log(response);
             if(response.data.State == 0){
                 $scope.status = "Report submitted successfully.";
+				$scope.show="false";
             }
         }).catch(function(response) {
             console.log("error submitting report");

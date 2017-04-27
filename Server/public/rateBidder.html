@@ -15,7 +15,7 @@
 
 
 <div class=box align=center style="padding-left:16px" >
-  <h2 ng-show="status == ''" align=center>How would you rate your interaction with this user?</h2>
+  <h2 ng-show="show == ''" align=center>How would you rate your interaction with this user?</h2>
   <p align=center></p>
 <br>
 	<h3 id="status" align=center>{{status}}</h3>
@@ -23,7 +23,7 @@
 
 
 <div class=stars align=center><form name="rateUser">
-<fieldset ng-show="status == ''" class="rating">
+<fieldset ng-show="show == ''" class="rating">
 
     <input type="radio" id="star5" ng-model="rating.score" name="rating" value="5" /><label class = "full" for="star5" title="Awesome - 5 stars"></label>
     <input type="radio" id="star4half" ng-model="rating.score" name="rating" value="4.5" /><label class="half" for="star4half" title="Pretty good - 4.5 stars"></label>
@@ -38,14 +38,14 @@
 </fieldset><br>
 </div>	 
         <br>
-        <div ng-show="status == ''" align=center><label for="description">Briefly describe why you gave this rating. Include any relevant details and a short description of your interaction with the user. <br></label></div>
+        <div ng-show="show == ''" align=center><label for="description">Briefly describe why you gave this rating. Include any relevant details and a short description of your interaction with the user. <br></label></div>
         <br>
-		<textarea ng-show="status == ''" rows="4" cols="80" id="description" form="rateUser" ng-model="rating.description" class="validate" required>
+		<textarea ng-show="show == ''" rows="4" cols="80" id="description" form="rateUser" ng-model="rating.description" class="validate" required>
 Enter text here...</textarea><br>
 	<br><br>
 	<br>
 	<br>
-        <input ng-show="status == ''" ng-click="rate()" type="submit" value="Submit">
+        <input ng-show="show == ''" ng-click="rate()" type="submit" value="Submit">
     </form><br>
     
     </div>
