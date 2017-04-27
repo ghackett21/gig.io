@@ -60,9 +60,9 @@ post-title {
 main-title {
     font-family: 'Bungee Outline', cursive;
     text-align: center;
-    font-size-adjust: 1.6;
+    font-size-adjust: .65;
     color: white;
-    font-size: 70px;
+    font-size: 1in;
     /*color: #4CAF50;*/
 }
 
