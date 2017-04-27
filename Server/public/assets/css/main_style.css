@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css?family=Bungee+Outline');
 :root{
     --main-color: #44cccc;
     --second-color: #22bbcc;
@@ -41,9 +42,27 @@ th {
 }
 
 h1 {
+    font-family: 'Bungee Outline', cursive;
+    text-align: center;
+    font-size-adjust: 1.6;
+    color: black;
+    font-size: 70px;
+    /*color: #4CAF50;*/
+}
+
+post-title {
     font-family: "Roboto", sans-serif;
     text-align: center;
     font-size-adjust: 1.6;
+    font-size: 40px;
+}
+
+main-title {
+    font-family: 'Bungee Outline', cursive;
+    text-align: center;
+    font-size-adjust: 1.6;
+    color: white;
+    font-size: 70px;
     /*color: #4CAF50;*/
 }
 

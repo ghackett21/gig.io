@@ -1,12 +1,14 @@
-@import url(https://fonts.googleapis.com/css?family=Roboto:300);
+@import url('https://fonts.googleapis.com/css?family=Bungee+Outline');
 :root{
     --main-color: #44cccc;
     --second-color: #22bbcc;
 }
 
 h1 {
-  font-size: 130px;
+  font-size: 120px;
   text-align: center;
+  font-family: 'Bungee Outline', cursive;
+  color: white;
 }
 
 .login-page {
@@ -20,6 +22,7 @@ h1 {
   background: #FFFFFF;
   max-width: 360px;
   margin: 0 auto 100px;
+  margin-top: -80px;
   padding: 45px;
   text-align: center;
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
