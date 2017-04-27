@@ -83,9 +83,9 @@
             </tr>
           </template>
           </table>
-          <br><p>Enter bid:</p>
-            <p>
-              <i>$</i><input type="number" ng-model="bid.Amount" placeholder="Bid amount"/>
+          <br><p ng-show="showBidButton==''">Enter bid:</p>
+            <p ng-show="showBidButton==''">
+              <i >$</i><input type="number" ng-model="bid.Amount" placeholder="Bid amount"/>
               <button ng-click="placeBid(); $event.stopPropagation();">Place bid</button>
             </p>
         </td>

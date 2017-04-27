@@ -25,7 +25,7 @@
 <form ng-show="show == ''" name="postCreation">
       
         <label for="title">Post title:</label>
-        <input padding-left="5px" ng-model="post.title" id="title" type="text"  class="validate" required>
+        <input maxlength="99" placeholder="Title must be less than 99 characters" padding-left="5px" ng-model="post.title" id="title" type="text"  class="validate" required>
       <br>
 		<p class="formfield">
         <label align=top for="description">Description of the work you are requesting:</label>
@@ -33,7 +33,7 @@
 		</p>
       <br>
 	<label for="location">Location where the work will take place:</label>
-        <input padding-left="5px" ng-model="post.location" id="location" type="text"  class="validate" required>
+        <input maxlength="249" placeholder="Location must be less than 249 characters" padding-left="5px" ng-model="post.location" id="location" type="text"  class="validate" required>
       <br>
 	<label for="image">Picture URL (Optional):</label>
         <input maxlength="99" placeholder="Image url must be less than 99 characters" padding-left="5px" ng-model="post.imageLink" id="picture" type="url">
