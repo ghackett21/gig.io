@@ -21,8 +21,8 @@ module.exports = function(req, res) {
  	}
 
  	/* check for undefined args */
- 	if (req.body.userId  == undefined) {
- 		console.log("Strike user: undefined args: requires userId");
+ 	if (req.body.userId  == undefined || req.body.reportId == undefined) {
+ 		console.log("Strike user: undefined args: requires userId and reportId");
  		return callback(-1);
  	} 
  	else {
@@ -46,11 +46,21 @@ function strikeUser(userId, callback) {
 				connection.query(incrementStrikes, function(err, rows) {
 					if (err) {
 						console.log("Stike User: database error updating number of strikes: " + err);
-						callback(-2);
+						return callback(-2);
 					}
 					else {
-						console.log("Strike user successful");
-						return callback(0);
+						var updateReportState = "UPDATE Reports SET State=2 WHERE Rid=" + reportId;
+
+						connection.query(updateReportState, function(err, rows) {
+							if (err) {
+								console.log("StrikeUser: Error update report state: " + err);
+								return callback(-2);
+							}
+							else {
+								console.log("Strike user successful");
+								return callback(0);
+							}
+						});
 					}
 				});
 			}
@@ -61,3 +71,4 @@ function strikeUser(userId, callback) {
 		}
 	});
 }
+ 
