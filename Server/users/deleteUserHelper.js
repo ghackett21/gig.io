@@ -26,7 +26,7 @@
 		 					return callback(-2);
 		 				}
 		 				else {
-		 					var deleteRatings = "DELETE FROM RATINGS WHERE Uid=" + userId  + " OR UidRater=" userId;
+		 					var deleteRatings = "DELETE FROM RATINGS WHERE Uid=" + userId  + " OR UidRater=" + userId;
 
 		 					connection.query(deleteRatings, function(err, rows) {
 		 						if (err) {
