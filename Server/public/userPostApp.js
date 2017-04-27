@@ -919,11 +919,21 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
             
             $http.post('/GetUser', bidderUidObj).then(function(response) {
                 var source = response.data.Result[0].dwollaPaySourceID;
-                //TODO - test
                 transferInfo = {dest:destination, src:source, amount:bidAmount};
                 console.log(transferInfo);
-                $http.post('/Transfer', transferInfo).then(function(response) {
+                $http.post('/transfer', transferInfo).then(function(response) {
                      console.log(response);
+
+			        var bid = {PostId:$scope.Pid};
+        			/* close post */
+        			$http.post('/CompletePost', bid).then(function(response) {
+          			 	location.reload(true);
+           				console.log("Close Post: " + bid.PostId + ", amount: " + bid.Amount);
+        			}).catch(function(response) {
+           			 	console.log("error in Close Post");
+        			})					
+
+
                 })
             }).catch(function(response) {
                 console.log("error getting bidder");
@@ -933,15 +943,7 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
             console.log("error getting user who clicked completed button");
         })
         
-        var bid = {PostId:$scope.Pid};
-        /* close post */
-        $http.post('/CompletePost', bid).then(function(response) {
-           //TODO - uncomment
-           //location.reload(true);
-           console.log("Close Post: " + bid.PostId + ", amount: " + bid.Amount);
-        }).catch(function(response) {
-            console.log("error in Close Post");
-        })
+
     } 
 
     $scope.changeMode = function() {
