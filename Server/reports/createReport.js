@@ -1,6 +1,7 @@
 /* createReport.js */
 
 var getDate = require('./../helpers/getDate');
+var sendReportNotification = require('./../helpers/sendReportNotification');
 var connection = require('./../helpers/connection');
 
 /**
@@ -59,9 +60,24 @@ function createReport(userId, type, userIdReporter, comment, callback) {
 				}
 				else {
 					console.log("Create Report successful");
-					return callback(0);
+					sendReport(userId, type, callback);
 				}
 			});
+		}
+	});
+}
+
+function sendReport(userId, type, callback){
+
+	var select = "SELECT * FROM Users WHERE Uid LIKE '" + userId + "'";
+
+	connection.query(select, function(err, rows) { 
+		if (err) {
+			console.log("CreateReport: database error: " + err);
+			return callback(-2);
+		}
+		else {
+			sendReportNotification(rows[0], type, callback);
 		}
 	});
 }
