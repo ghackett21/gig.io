@@ -51,6 +51,8 @@ function completePost(bidId, postId, callback) {
     });
 
     //TODO - get user bank info from DB
+    //TODO - get amount from Bids table
+    //TODO - get Uids from Posting table ==> get dwollaPaymentID from Users table
     // Process transaction with dwolla API
     var requestBody = {
         _links: {
