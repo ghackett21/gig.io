@@ -38,14 +38,14 @@ app.controller("reportController", [ '$scope', '$http', function($scope, $http) 
 		console.log("userId (user being reported): "+localStorage.getItem("userId"));
 		console.log("type: "+$scope.report.reason);
 		$http.post('/createReport', report_req).then(function(response) {
-                    $scope.report = null;
-                    console.log(response);
-                    if(response.data.State == 0){
-                        $scope.status = "Report submitted successfully.";
-                    }
-                }).catch(function(response) {
-                    console.log("error submitting report");
-                });
+            $scope.report = null;
+            console.log(response);
+            if(response.data.State == 0){
+                $scope.status = "Report submitted successfully.";
+            }
+        }).catch(function(response) {
+            console.log("error submitting report");
+        });
        
     };
 }]);
