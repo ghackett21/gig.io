@@ -22,7 +22,13 @@ app.controller("bankController", [ '$scope', '$http', function($scope, $http) {
 
         console.log("bank submit button clicked");
 
-        // TODO - send info to server
+        //  get dwolla ID from GetUser response
+        var Uid = localStorage.getItem("userID");
+        $http.post('/GetUser', Uid).then(function(response) {
+            $scope.user.dwollaID = response.data.Result[0];
+        });
+/*
+        // TODO send info to server
         $http.post('/BankButton', $scope.user).then(function(response) {
             $scope.user = null;
             console.log(response);
@@ -32,6 +38,7 @@ app.controller("bankController", [ '$scope', '$http', function($scope, $http) {
         }).catch(function(response) {
             console.log("error getting banking info");
         });
+*/
 
         
     };

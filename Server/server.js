@@ -241,10 +241,11 @@ app.post('/logout', function(req, res) {
 app.post('/RegisterButton', function(req, res) {
 	register(req, res);
 });
-
+/*
 app.post('/BankButton', funtion(req, res) {
     registerBankAccount(req, res);
 });
+*/
 
 /* test stuff by sam, dont worry about this */
 

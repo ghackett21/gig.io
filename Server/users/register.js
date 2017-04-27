@@ -56,7 +56,6 @@ function register(user, callback) {
 			}
 			else {
 
-<<<<<<< HEAD
                 // Send user to Dwolla
                 var requestBody = {
                     firstName: user.firstName,
@@ -82,41 +81,27 @@ function register(user, callback) {
 
 				    connection.query(insert, function(err, rows) {
 					    if (err) {
-						    /* an error occured */
-						    console.log("Register Failed", err);
-						    return callback(-2);
-					    }
-					    else {
-						    console.log("Register Successful");
-						    return callback(0);
+					    	/* an error occured */
+				    		console.log("Register Failed", err);
+			    			return callback(-2);
+		    			}
+	    				else {
+    						var selectUserId = "SELECT Uid from Users WHERE Username=" + connection.escape(user.username) + " AND Password='" + hash + "'";
 
-					    }
+			    			connection.query(selectUserId, function(err, rows) {
+			    				if (err) {
+			    					console.log("Register: error getting user: " + err);
+		    						console.log(-2);
+	    						}
+    							else {
+				    				console.log("Register Successful: Uid=" + rows[0].Uid);
+			    					return callback(rows[0].Uid);
+		    					}
+	    					});
+    					}
 				    });
                 });
-=======
-				connection.query(insert, function(err, rows) {
-					if (err) {
-						/* an error occured */
-						console.log("Register Failed", err);
-						return callback(-2);
-					}
-					else {
-						var selectUserId = "SELECT Uid from Users WHERE Username=" + connection.escape(user.username) + " AND Password='" + hash + "'";
-
-						connection.query(selectUserId, function(err, rows) {
-							if (err) {
-								console.log("Register: error getting user: " + err);
-								console.log(-2);
-							}
-							else {
-								console.log("Register Successful: Uid=" + rows[0].Uid);
-								return callback(rows[0].Uid);
-							}
-						});
-					}
-				});
->>>>>>> refs/remotes/origin/master
-			}
-		}
-	});
+		    }
+	    }
+    });
 }
