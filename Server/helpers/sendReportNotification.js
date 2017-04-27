@@ -8,7 +8,7 @@ module.exports = function(reportee, type, callback) {
 	//post title and winning bid
 	//posters username
 	var msg, email;
-	msg = "Hello, " + reportee.Username +", We are contacting you to let you know that a report was recently filed against you.\nThe given reason was : " + type + ".\n The case will be reviewed shortly.\nBest\n- Gig.io Team\n";
+	msg = "Hello, " + reportee.Username +", We are contacting you to let you know that a report was recently filed against you.\nThe given reason was : " + type + ".\nThe case will be reviewed shortly.\nBest\n- Gig.io Team\n";
 	email = reportee.EmailAddress;
 
 	var transporter = nodemailer.createTransport({
