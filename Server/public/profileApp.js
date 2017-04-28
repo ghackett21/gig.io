@@ -50,7 +50,7 @@ app.controller("profileController", [ '$scope', '$http', function($scope, $http)
             var profileImage = document.getElementById('profile_image');
 
             /* display profile image */
-            if (user.U_Image != "") {
+            if (user.U_Image != "" || user.U_Image != null) {
                profileImage.src = user.U_Image;
             }
             else {
