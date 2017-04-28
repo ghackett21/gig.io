@@ -13,6 +13,7 @@ module.exports = function(req, res) {
 
     console.log("transfer postId: " + req.body.postId);
 
+    /*
     if (req.body.dest == undefined || req.body.amount == undefined
             || req.body.src == undefined) {
         console.log("tranfser: undefined args");
@@ -20,32 +21,63 @@ module.exports = function(req, res) {
     } else {
         transfer(req.body, callback);
     }
+    */
+
+    transfer(req.body, callback);
 }
 
 function transfer(info, callback) {
 
-    console.log(info.dest);
-    console.log(info.amount);
-    console.log(info.src);
+    /* Make sure the post PayState is 0 */
+    var selectPayState = 'SELECT PayState FROM POSTING WHERER PID=' + postId;
 
-    var destLink = "https://api-sandbox.dwolla.com/funding-sources/" + info.dest;
-    var srcLink = "https://api-sandbox.dwolla.com/funding-sources/" + info.src;
-    var requestBody = {
-        _links: {
-            source: {
-                href: srcLink
-            },
-            destination: {
-                href: destLink
-            }
-        },
-        amount: {
-            currency: 'USD',
-            value: info.amount
+    connection.query(selectPayState, function(err, rows) {
+        if (err) {
+            console.log("Transfer: error getting PayState: " + err);
+            return callback(-2);
         }
-    };
-    
-    appToken.post('transfers', requestBody).then(res => res.headers.get('location'));
+        else if (rows[0].PayState > 0) {
+            console.log("Payment already completed for post: " + postId);
+            return callback(-3);
+        }
+        else {
+            console.log(info.dest);
+            console.log(info.amount);
+            console.log(info.src);
 
-    return callback(0);
+            var destLink = "https://api-sandbox.dwolla.com/funding-sources/" + info.dest;
+            var srcLink = "https://api-sandbox.dwolla.com/funding-sources/" + info.src;
+            var requestBody = {
+                _links: {
+                    source: {
+                        href: srcLink
+                    },
+                    destination: {
+                        href: destLink
+                    }
+                },
+                amount: {
+                    currency: 'USD',
+                    value: info.amount
+                }
+            };
+            
+            appToken.post('transfers', requestBody).then(res => res.headers.get('location'));
+
+            /* udpate payState of post */
+
+            var updatePayState = "UPDATE Posting SET PayState=1 WHERE Pid=" + postId;
+
+            connection.query(updatePayState, function(err, rows) {
+                if (err) {
+                    console.log("Transfer: error updating pay state: " + err);
+                    return callback(-2);
+                }
+                else {
+                    console.log("Transfer successful");
+                    return callback(0);
+                }
+            });
+        }
+    });
 }
