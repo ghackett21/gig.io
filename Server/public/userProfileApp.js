@@ -60,7 +60,7 @@ app.controller("profileController", [ '$scope', '$http', function($scope, $http)
            // });
 			console.log("GEOFFOOFOOFOFF %j", response.data.Result[0]);
             /* display profile image */
-            if (response.data.Result[0].U_Image != "null" && response.data.Result[0].U_Image != "") {
+            if (response.data.Result[0].U_Image != "null" && response.data.Result[0].U_Image != "" && response.data.Result[0].U_Image != null) {
 		       console.log("we here");
                profileImage.src = response.data.Result[0].U_Image;
             }

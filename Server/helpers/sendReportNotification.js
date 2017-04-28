@@ -32,7 +32,7 @@ module.exports = function(reportee, type, callback) {
 		    return console.log(error);
 		}
 		console.log('Message sent: ' + info.response);
-		callback(1);
+		return callback(0);
 	});
 
 	
