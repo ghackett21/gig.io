@@ -365,6 +365,7 @@ $scope.sortByLowestBid = function() {
                     console.log("dist2: " + dist2);
 
                     if (dist1 > dist2) {
+                        console.log("Swapped");
                         var temp = posts[i];
                         posts[i] = posts[i+1];
                         posts[i+1] = temp;
