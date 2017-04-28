@@ -13,6 +13,7 @@ module.exports = function(req, res) {
 
 	/* callback to handle response */
 	var callback = function(result) {
+		console.log("closePost callback");
 		if (result < 0) {
 			res.json({"Response": "Close Post failed", "State": result });
 		}

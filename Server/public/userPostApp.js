@@ -897,6 +897,7 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
            location.reload(true);
            console.log("Close Post: " + bid.PostId + ", amount: " + bid.Amount);
         }).catch(function(response) {
+			console.log(response);
             console.log("error in Close Post");
         })
     } 
