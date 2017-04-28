@@ -5,8 +5,7 @@
 <head>
  
 <link rel="stylesheet" href="assets/css/report_style.css" type="text/css">
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
-	
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
 <script src="reportApp.js"></script>
 </head>
 <body ng-app="myApp" ng-controller="reportController">
@@ -14,21 +13,21 @@
 <br><br><br>
 
 <div style="padding-left:16px" >
-  <h2 ng-show="status == ''" align=center>Have a conflict with a user? Leave a report and let us know what happened!</h2>
+  <h2 ng-show="show == ''" align=center>Have a conflict with a user? Leave a report and let us know what happened!</h2>
   <p align=center></p>
 <br>
 	<h3 id="status" align=center>{{status}}</h3>
 
 
-<form  ng-show="status == ''" name="reportUser">
+<form  ng-show="show == ''" name="reportUser">
       
         <label for="reason">Reason for reporting:</label>
         <!--<input padding-left="5px" ng-model="report.reason" id="reason" type="text"  class="validate" required>-->
 	<select ng-model="report.reason" id="reason" class="validate" required>
-  		<option value="payment">The user did not pay as promised</option>
-  		<option value="noWork">The user did not do the work agreed upon</option>
-  		<option value="badjob">The user completed the task but the results were unsatisfactory</option>
-  		<option value="late">The user did not complete the task by the deadline agreed upon</option>
+  		<option value="The user did not pay as promised">The user did not pay as promised</option>
+  		<option value="The user did not do the work agreed upon">The user did not do the work agreed upon</option>
+  		<option value="The user completed the task but the results were unsatisfactory">The user completed the task but the results were unsatisfactory</option>
+  		<option value="The user did not complete the task by the deadline agreed upon">The user did not complete the task by the deadline agreed upon</option>
 		<option value="other">Other (Please tell us more in the description!)</option>
 	</select>
       <br>
@@ -42,6 +41,6 @@ Enter text here...</textarea><br>
     </div>
 <script src="navbar.js"></script>
 
-<script 
 </body>
 </html>
+
