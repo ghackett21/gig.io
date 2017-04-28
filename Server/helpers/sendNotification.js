@@ -43,11 +43,11 @@ module.exports = function(req, poster, state, callback) {
 	};
 	if(emails.length > 0){
 		transporter.sendMail(mailOptions, function(error, info){
-			if(error){
-				return console.log(error);
-			}
 			if(callback != undefined){
 				deletePostHelper(req[0].Pid, callback);
+			}
+			if(error){
+				return console.log(error);
 			}
 			console.log('Message sent: ' + info.response);
 		});
