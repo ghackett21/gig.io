@@ -47,6 +47,8 @@ app.controller("makePostController", [ '$scope', '$http', function($scope, $http
             return;
         }
 
+        var myloc = $scope.post.location;
+
         /* get coordinates of location and send request for create post */
        getCoordinatesForMakePost(myloc);   
     };
