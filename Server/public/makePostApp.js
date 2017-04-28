@@ -57,6 +57,7 @@ $scope.post.lat = 1;
                 console.log(response);
                 if(response.data.State == 0){
                     $scope.status = "Post successfully created! Don't forget to check for bids.";
+                    $scope.show="false";
                 }
             }).catch(function(response) {
                 console.log("error creating post");
