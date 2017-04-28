@@ -17,13 +17,14 @@ app.controller("profileController", [ '$scope', '$http', function($scope, $http)
 
   window.onload = function() {
       var user;
+      console.log("profile onload");
     	$http.post('/GetUser').then(function(response) {
     	    console.log(response.data.Result[0]);
      	    user = response.data.Result[0];
-			if(user.Admin == 1){
-					var nav = document.getElementById('secret');
-					nav.innerHTML = "<a href=\"admin.html\">AdminCP</a>";
-			}
+      		if(user.Admin == 1){
+      				var nav = document.getElementById('secret');
+      				nav.innerHTML = "<a href=\"admin.html\">AdminCP</a>";
+      		}
      	    var template = document.querySelector('#tmplt');
      	    var clone = template.content.cloneNode(true);
      	    var h1 = clone.querySelectorAll('h1');
@@ -48,6 +49,8 @@ app.controller("profileController", [ '$scope', '$http', function($scope, $http)
             template.parentNode.appendChild(clone);
 
             var profileImage = document.getElementById('profile_image');
+
+            console.log("Profile image: " + user.U_Image);
 
             /* display profile image */
             if (user.U_Image != "" || user.U_Image != "null") {
