@@ -30,7 +30,7 @@ module.exports = function(req, res) {
 function transfer(info, callback) {
 
     /* Make sure the post PayState is 0 */
-    var selectPayState = 'SELECT PayState FROM POSTING WHERER Pid=' + info.postId;
+    var selectPayState = 'SELECT PayState FROM POSTING WHERE Pid=' + info.postId;
 
     connection.query(selectPayState, function(err, rows) {
         if (err) {
