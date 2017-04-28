@@ -29,7 +29,7 @@ module.exports = function(req, res) {
 function transfer(info, callback) {
 
     /* Make sure the post PayState is 0 */
-    var selectPayState = 'SELECT PayState FROM POSTING WHERER PID=' + postId;
+    var selectPayState = 'SELECT PayState FROM POSTING WHERER PID=' + info.postId;
 
     connection.query(selectPayState, function(err, rows) {
         if (err) {
@@ -37,7 +37,7 @@ function transfer(info, callback) {
             return callback(-2);
         }
         else if (rows[0].PayState > 0) {
-            console.log("Payment already completed for post: " + postId);
+            console.log("Payment already completed for this post.");
             return callback(-3);
         }
         else {
@@ -66,7 +66,7 @@ function transfer(info, callback) {
 
             /* udpate payState of post */
 
-            var updatePayState = "UPDATE Posting SET PayState=1 WHERE Pid=" + postId;
+            var updatePayState = "UPDATE Posting SET PayState=1 WHERE Pid=" + info.postId;
 
             connection.query(updatePayState, function(err, rows) {
                 if (err) {
