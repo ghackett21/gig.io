@@ -44,7 +44,7 @@ th {
 h1 {
     font-family: 'Bungee Outline', cursive;
     text-align: center;
-    font-size-adjust: 16;
+    /*font-size-adjust: 1.6; */
     color: black;
     font-size: 70px;
     /*color: #4CAF50;*/
@@ -53,7 +53,7 @@ h1 {
 h1.title {
     font-family: "Roboto", sans-serif;
     text-align: center;
-    font-size-adjust: 16;
+    /* font-size-adjust: 16; */
     font-size: 1vw;
 }
 
