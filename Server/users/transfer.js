@@ -1,4 +1,5 @@
 var appToken = require('./../helpers/dwollaClient');
+var connection = require('./../helpers/connection');
 
 module.exports = function(req, res) {
     console.log("transfer");
