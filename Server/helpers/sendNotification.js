@@ -6,12 +6,18 @@ var deletePostHelper = require('./../posts/deletePostHelper');
  */
 
 module.exports = function(req, poster, state, callback) {
-	//post title and winning bid
-	//posters username
 	var emails = [];
 	var msg;
-	console.log("IEHFIUEWHFEUI %j", req[0]);
-	if(req[0] != undefined){
+	//console.log("IEHFIUEWHFEUI %j", req[0]);
+	if(req[0] == undefined){
+		console.log("undef");
+		return 1;
+	}
+	if(req[0].NumberOfBids == 0){
+		console.log("no bids");
+		deletePostHelper(req[0].Pid, callback);
+		return 1;
+	}else{
 		if(state == 0){
 			msg = "Hello, " + req[0].Username +", We are contacting you to let you know the auction for the Post: " + req[0].P_Title + ", just ended and unfortunately you did not win.\n\n Better luck next time!\n - Gig.io Team\n";
 		}else if(state == 1){
@@ -24,8 +30,8 @@ module.exports = function(req, poster, state, callback) {
 	}
 	
 	
-	console.log("sendNotification emails = " + emails);
-	console.log("sendNotification req = %j", req);
+	//console.log("sendNotification emails = " + emails);
+	//console.log("sendNotification req = %j", req);
 
 	var transporter = nodemailer.createTransport({
         service: 'Gmail',
@@ -43,15 +49,13 @@ module.exports = function(req, poster, state, callback) {
 	};
 	if(emails.length > 0){
 		transporter.sendMail(mailOptions, function(error, info){
-			if(callback != undefined){
-				deletePostHelper(req[0].Pid, callback);
-			}
 			if(error){
 				return console.log(error);
 			}
 			console.log('Message sent: ' + info.response);
 		});
 	}
+
 
 	
 }

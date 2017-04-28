@@ -15,8 +15,8 @@ module.exports = function(postid, cb) {
 		}
 		else {
 			//res.json({'Response' : 'sendBid successful', 'State': result});
-			sendNotification(winner, poster, 1);
-			sendNotification(losers, poster, 0, cb);
+			sendNotification(losers, poster, 0);
+			sendNotification(winner, poster, 1, cb);
 		}
 	}
 	
@@ -47,7 +47,7 @@ function GetWinner(postId, callback) {
  	});
 }
 function GetClose(postId, callback){
- 	var select = "SELECT Posting.P_Title, Posting.Pid FROM Posting WHERE Posting.Pid LIKE '" + postId + "'";
+ 	var select = "SELECT Posting.P_Title, Posting.Pid, Posting.NumberOfBids FROM Posting WHERE Posting.Pid LIKE '" + postId + "'";
 
  	connection.query(select, function(err, rows) {
  		if (err) {
@@ -56,7 +56,7 @@ function GetClose(postId, callback){
  			return callback(-2);
  		}
  		else {
-			console.log("uirehuierhge %j", rows[0]);
+
 			GetOtherBids(postId, rows, callback);
  		}
  	});
@@ -65,6 +65,7 @@ function GetClose(postId, callback){
 function GetOtherBids(postId, winner, callback) {
 	//console.log("GETOTHERBIDS WinningUid = " + winner[0].Winning_Uid);
 	console.log("WINNER = %j", winner);
+
 	if(winner[0].Winning_Uid == undefined){
 		var select = "SELECT Bids.Uid, Users.Username, Users.EmailAddress, Posting.Pid, Posting.P_Title FROM Bids INNER JOIN Users On Bids.Uid=Users.Uid INNER JOIN Posting On Bids.Pid=Posting.Pid WHERE Bids.Pid LIKE '" + postId + "'";
 	}else{
