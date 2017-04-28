@@ -346,6 +346,7 @@ $scope.sortByLowestBid = function() {
         })
 	};
 	$scope.sortByDistance = function() {
+        console.log("Sort by distance");
 	    var time1;
         var time2;
         var temp;
@@ -358,8 +359,10 @@ $scope.sortByLowestBid = function() {
                 swapped = false;
                 for (var i=0; i < posts.length-1; i++) {
                     dist1 = getDistanceFromLatLonInKm2(posts[i].P_Lat, posts[i].P_Long, myUser.U_Lat, myUser.U_Long);
+                    console.log("dist1: " + dist1);
 
                     dist2 = getDistanceFromLatLonInKm2(posts[i+1].P_Lat, posts[i+1].P_Long, myUser.U_Lat, myUser.U_Long);
+                    console.log("dist2: " + dist2);
 
                     if (dist1 > dist2) {
                         var temp = posts[i];
