@@ -909,6 +909,7 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
     // Called when the "Completed" button is clicked
     $scope.completeButton = function() {
     	console.log("Completed Button function");
+        console.log("post: " + $scope.Pid);
 
         // Send transaction
         $http.post('/GetUser').then(function(response) {
