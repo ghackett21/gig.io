@@ -2,7 +2,7 @@ var app = angular.module("myApp", []);
 
 app.controller("loginController", [ '$scope', '$http', function($scope, $http) {
     $scope.user;
-    
+    $scope.failed="";
     $scope.clickButton = function() {
 
         if($scope.user == undefined){
@@ -24,6 +24,10 @@ app.controller("loginController", [ '$scope', '$http', function($scope, $http) {
             }else if(response.status == 401){
                 console.log("failure");
             }
+			else{
+				console.log("failed to log in");
+				$scope.failed="Incorrect username or password.";
+			}
             //load response
         }).catch(function(response) {
             $scope.user = null;

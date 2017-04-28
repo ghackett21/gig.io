@@ -13,7 +13,7 @@
 <br>
 <br>
 <br>
-<h1>Welcome to gig.io</h1>
+<center><b><main-title>Welcome to Gig.io</main-title></b></center>
 
 <div class = form>
 <div class=sorter id=mainselection align=left>
@@ -54,7 +54,7 @@
   <div class="modal-content">
     <div class="modal-header">
       <span class="close">&times;</span>
-      <font size=1><h1>{{title}}</h2></font>
+      <center><b><font size=1><h1 class="title">{{title}}</h1></font></b></center>
     </div>
     <div class="modal-body">
       <table class="modal-table">
@@ -83,14 +83,14 @@
             </tr>
           </template>
           </table>
-          <br><p>Enter bid:</p>
-            <p>
-              <i>$</i><input type="number" ng-model="bid.Amount" placeholder="Bid amount"/>
+          <br><p ng-show="showBidButton==''">Enter bid:</p>
+            <p ng-show="showBidButton==''">
+              <i >$</i><input type="number" ng-model="bid.Amount" placeholder="Bid amount"/>
               <button ng-click="placeBid(); $event.stopPropagation();">Place bid</button>
             </p>
         </td>
         <td>
-          <img id = "post_image" class="img-circle" src="assets/img/girl.png" alt="ProfilePic" style="width:300px;height:300px;">
+          <img style="max-width: 700px; max-height:400px;" id = "post_image" class="img-circle" src="assets/img/girl.png" alt="ProfilePic" style="width:300px;height:300px;">
         </td>
       </table>
     </div>

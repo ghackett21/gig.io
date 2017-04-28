@@ -47,6 +47,7 @@ var getUserRatings = require('./ratings/getUserRatings');
 /* report endpoints */
 var getUserReports = require('./reports/getUserReports');
 var createReport = require('./reports/createReport');
+var clearPendingReports = require('./reports/clearPendingReports');
 
 
 passport.serializeUser(function(user, done) {
@@ -174,6 +175,10 @@ app.get('/rateBidder.html', ensureAuthenticated, function(req, res) {
 
 app.get('/ratePoster.html', ensureAuthenticated, function(req, res) {
     res.sendFile(__dirname + '/public/ratePoster.html');
+});
+
+app.get('/report.html', ensureAuthenticated, function(req, res) {
+    res.sendFile(__dirname + '/public/report.html');
 });
 
 app.get('/admin.html', ensureAuthenticated, function(req, res) {
@@ -337,9 +342,13 @@ app.post("/StrikeUser", function(req, res) {
 	strikeUser(req, res);
 });
 
-
  app.post("/ClosePost", function(req, res) { 
  	closePost(req, res);
+ });
+
+
+ app.post("/clearPendingReports", function(req, res) { 
+ 	clearPendingReports(req, res);
  });
 
 /* start express server */

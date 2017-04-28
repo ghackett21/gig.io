@@ -13,6 +13,7 @@ module.exports = function(req, res) {
 
 	/* callback to handle response */
 	var callback = function(result) {
+		console.log("closePost callback");
 		if (result < 0) {
 			res.json({"Response": "Close Post failed", "State": result });
 		}
@@ -41,7 +42,7 @@ function closePost(bidId, postId, callback) {
 	if (bidId == null) {
 		/* no winner - delete post */
 		console.log("Close post " + postId + " with no winner.");
-		deletePostHelper(postId, callback);
+		sendBidNotifications(postId, callback);
 	}
 	else {
 		console.log("Close post " + postId + " with winning bid " + bidId);
@@ -81,7 +82,7 @@ function closePost(bidId, postId, callback) {
 			      }
 			      else {
 			      	/* send notification */
-		sendBidNotifications(postId);
+					sendBidNotifications(postId);
 			        return callback(0);
 			      }
 			    });
