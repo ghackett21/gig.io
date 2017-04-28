@@ -8,7 +8,6 @@ var deletePostHelper = require('./../posts/deletePostHelper');
 module.exports = function(req, poster, state, callback) {
 	var emails = [];
 	var msg;
-	//console.log("IEHFIUEWHFEUI %j", req[0]);
 	if(req[0] == undefined){
 		console.log("undef");
 		return 1;
@@ -29,9 +28,6 @@ module.exports = function(req, poster, state, callback) {
 		emails.push(req[i].EmailAddress);
 	}
 	
-	
-	//console.log("sendNotification emails = " + emails);
-	//console.log("sendNotification req = %j", req);
 
 	var transporter = nodemailer.createTransport({
         service: 'Gmail',

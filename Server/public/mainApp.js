@@ -902,6 +902,14 @@ app.controller("adminController", ['$scope', '$http', function($scope, $http) {
         
 	};
 
+	$scope.acceptReport = function(uid,rid){
+		var format = {reportId:rid,userId:uid};
+		$http.post('/StrikeUser', format ).then(function(response) {
+			console.log(response);
+        });
+
+	}
+
 	$scope.adminModal = function(uid){
 		var format = {userId:uid};
 		//format.userId = uid

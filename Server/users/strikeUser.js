@@ -26,26 +26,26 @@ module.exports = function(req, res) {
  		return callback(-1);
  	} 
  	else {
- 		strikeUser(req.body.userId, callback);
+ 		strikeUser(req.body.userId, req.body.reportId, callback);
  	}
 }
 
-function strikeUser(userId, callback) {
+function strikeUser(userId, reportId, callback) {
 	var selectStrikes = "SELECT NumberOfStrikes FROM Users WHERE Uid=" + userId;
 
 	connection.query(selectStrikes, function(err, rows) {
 		if (err) {
-			console.log("Stike User: database error getting number of strikes: " + err);
+			console.log("Strike User: database error getting number of strikes: " + err);
 			return callback(-2);
 		}
 		else {
 			numStrikes = rows[0].NumberOfStrikes;
 			if (numStrikes < 2) {
-				var incrementStrikes = "UPDATE Users SET NumberOfStikes=NumberOfStrikes+1 WHERE Uid=" + userId;
+				var incrementStrikes = "UPDATE Users SET NumberOfStrikes=NumberOfStrikes+1 WHERE Uid=" + userId;
 
 				connection.query(incrementStrikes, function(err, rows) {
 					if (err) {
-						console.log("Stike User: database error updating number of strikes: " + err);
+						console.log("Strike User: database error updating number of strikes: " + err);
 						return callback(-2);
 					}
 					else {

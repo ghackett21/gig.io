@@ -4,7 +4,7 @@
   <title>AdminCP</title>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
   <script src="mainApp.js"></script>
-  <script src="data.js"></script>
+  <script src="data.js"></script>req.body.userId
 
     <!-- styles -->
     <link href="Theme/assets/css/bootstrap.css" rel="stylesheet">
@@ -17,7 +17,9 @@
     <script type="text/javascript" src="Theme/assets/js/datatables/jquery.dataTables.js"></script>
 <style>
 	body { padding-bottom:50px; 
-		   background-color: #44cccc;}
+		   background-color: #44cccc;
+		 }
+	
 
 </style>
 
@@ -93,7 +95,7 @@
 				<th>Reported By</th>
 				<th>Type</th>
 				<th>Description</th>
-				<th></th>
+				<th>Accept</th>
 				</tr>
 			</thead>
 		    <tbody ng-repeat="report in reportL">
@@ -102,6 +104,7 @@
 		        <td>{{report.UidReporter}}</td>
 		        <td>{{report.Type}}</td>
 		        <td>{{report.Comment}}</td>
+				<td><button style="cursor:pointer;" id="accept" ng-click="acceptReport(report.Uid, report.Rid)">Accept</button></td>
 		    	</tr>
 		      </tbody>
         	</table>

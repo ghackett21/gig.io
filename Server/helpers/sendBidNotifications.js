@@ -30,7 +30,6 @@ function GetWinner(postId, callback) {
 
  	connection.query(select, function(err, rows) {
  		if (err) {
-			console.log("UICHDHSV*&HEEHDUCFHUIEWHFUI");
  			console.log("GetWinner: database error: " + err);
  			return callback(-2);
  		}
@@ -51,7 +50,6 @@ function GetClose(postId, callback){
 
  	connection.query(select, function(err, rows) {
  		if (err) {
-			console.log("UICHDHSV*&HEEHDUCFHUIEWHFUI");
  			console.log("GetClose: database error: " + err);
  			return callback(-2);
  		}
