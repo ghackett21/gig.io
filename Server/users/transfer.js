@@ -11,6 +11,8 @@ module.exports = function(req, res) {
         }
     }
 
+    console.log("transfer postId: " + req.body.postId);
+
     if (req.body.dest == undefined || req.body.amount == undefined
             || req.body.src == undefined) {
         console.log("tranfser: undefined args");

@@ -921,7 +921,7 @@ app.controller("userPostController", [ '$scope', '$http', function($scope, $http
             
             $http.post('/GetUser', bidderUidObj).then(function(response) {
                 var source = response.data.Result[0].dwollaPaySourceID;
-                transferInfo = {dest:destination, src:source, amount:bidAmount};
+                transferInfo = {dest:destination, src:source, amount:bidAmount, postId:$scope.Pid};
                 console.log(transferInfo);
                 $http.post('/transfer', transferInfo).then(function(response) {
                      console.log(response);
