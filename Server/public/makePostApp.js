@@ -48,21 +48,7 @@ app.controller("makePostController", [ '$scope', '$http', function($scope, $http
         }
 
         /* get coordinates of location and send request for create post */
-        var myloc = 1;
-$scope.post.lat = 1;
-            $scope.post.lng = 1;
-       // getCoordinatesForMakePost(myloc);
-                   $http.post('/CreatePost', $scope.post).then(function(response) {
-                $scope.post = null;
-                console.log(response);
-                if(response.data.State == 0){
-                    $scope.status = "Post successfully created! Don't forget to check for bids.";
-                    $scope.show="false";
-                }
-            }).catch(function(response) {
-                console.log("error creating post");
-                alert("Error creating post!");
-            });
+       getCoordinatesForMakePost(myloc);   
     };
 
     function getCoordinatesForMakePost(location) {
