@@ -99,3 +99,19 @@ input[type=submit]:hover {
   text-align: center;
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
 }
+    
+    h1 {
+    font-family: 'Bungee Outline', cursive;
+    text-align: center;
+    font-size-adjust: 1.6;
+    color: black;
+    font-size: 70px;
+    /*color: #4CAF50;*/
+}
+
+h1.username {
+    font-family: 'Bungee Outline', cursive;
+    text-align: center;
+    font-size-adjust: ;
+    font-size: 2vw;
+}
