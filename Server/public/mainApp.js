@@ -378,6 +378,7 @@ $scope.sortByLowestBid = function() {
             for (var i = 0; i < posts.length; i++) {
                 var currRow = document.getElementById("post-"+i);
                 var td = currRow.querySelectorAll('td');
+                console.log("post " + i +  " title: " + posts[i].P_Title);
                 td[0].innerHTML = posts[i].P_Title;
                 td[1].innerHTML = posts[i].Username;
                 td[2].innerHTML = posts[i].P_Location;
